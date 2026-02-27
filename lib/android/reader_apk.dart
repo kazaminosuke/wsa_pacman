@@ -229,10 +229,45 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     }
   }
 
-  void loadInstallInfoOnUIThread(String package, int versionCode) => package.isNotEmpty ? executeInUi(() {
+void loadInstallInfoOnUIThread(String package, int versionCode) => package.isNotEmpty ? executeInUi(() {
     GState.package.update((_) => package);
     loadInstallType(package, versionCode);
   }) : null;
+
+  // =========================================================
+  // UI更新時の「Future変数の巻き込みクラッシュ」を防ぐための静的ヘルパー関数
+  // =========================================================
+  static void _reportEmptyPackage(ApkReader reader) {
+    reader.executeInUi(() {
+      GState.apkTitle.$ = "エラー (パッケージ空)";
+      GState.errorCode.$ = "EMPTY_PKG";
+      GState.errorDesc.$ = "パッケージ情報がありません。";
+      GState.apkInstallState.$ = InstallState.ERROR;
+      GState.apkInstallType.$ = InstallType.INSTALL;
+    });
+  }
+
+  static void _reportAaptError(ApkReader reader, int exitCode, String stderr) {
+    reader.executeInUi(() {
+      GState.apkTitle.$ = "AAPT エラー";
+      GState.apkInstallState.$ = InstallState.ERROR;
+      GState.errorCode.$ = "AAPT_ERR ($exitCode)";
+      GState.errorDesc.$ = stderr;
+      GState.apkInstallType.$ = InstallType.INSTALL;
+    });
+  }
+
+  static void _reportCrash(ApkReader reader, String errMsg, String errStack) {
+    reader.executeInUi(() {
+      GState.apkTitle.$ = "Isolate 突然死";
+      GState.apkInstallState.$ = InstallState.ERROR;
+      GState.errorCode.$ = "CRASH";
+      // RenderFlex overflow (UI崩れ) を防ぐため、エラーログが長すぎる場合は切り詰める
+      String shortStack = errStack.length > 400 ? "${errStack.substring(0, 400)}..." : errStack;
+      GState.errorDesc.$ = "裏方処理クラッシュ:\n$errMsg\n$shortStack";
+      GState.apkInstallType.$ = InstallType.INSTALL;
+    });
+  }
 
   /// Retrieves APK information
   @override
@@ -260,9 +295,11 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
         p.stdout.toString().foldToMap(r'(^|\n)\s*resource\s+(0x[0-9a-zA-Z]*)[\s]+.*\st=0x0*([^\s\n]*).*\sd=0x0*([^\s\n]*)[\s|\n]', (m) => m.group(2)!, 
         (m,old) => Resource((old != null) ? ((old.values as ListQueue<String>)..addAll([m.group(4)!])) : ListQueue<String>.from([m.group(4)!]), old?.type ?? getResType(m.group(3)!)) )
       );
+      
       _stringDump = Process.run('${Env.TOOLS_DIR}\\aapt.exe', ['dump', 'strings', APK_NAME], workingDirectory: APK_DIRECORY).then((p) => 
         p.stdout.toString().toMap(r'(^|\n)\s*String\s+#([0-9]*)\s*:\s*([^\s\n]*)', (m) => int.parse(m.group(2)!), (m) => m.group(3)!)
       );
+      
       _initArchive();
 
       bool legacyIcon = false; 
@@ -282,13 +319,7 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
 
           String package = info?.find(r"(^|\n|\s)name=\s*'([^'\n\s$]*)", 2) ?? "";
           if (package.isEmpty) {
-             executeInUi(() {
-                GState.apkTitle.$ = "エラー (パッケージ空)";
-                GState.errorCode.$ = "EMPTY_PKG";
-                GState.errorDesc.$ = "パッケージ情報がありません。";
-                GState.apkInstallState.$ = InstallState.ERROR;
-                GState.apkInstallType.$ = InstallType.INSTALL;
-             });
+             _reportEmptyPackage(this);
              return;
           }
           
@@ -307,38 +338,29 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
           if (permissions.isEmpty) permissions.add(AndroidPermission.NONE);
           updateState(()=>GState.permissions, permissions);
           
-if (icon?.endsWith(".xml") ?? false) inner = Process.run('${Env.TOOLS_DIR}\\aapt2.exe', ['dump', 'xmltree', '--file', icon!, APK_FILE])..then((value) {
+          if (icon?.endsWith(".xml") ?? false) inner = Process.run('${Env.TOOLS_DIR}\\aapt2.exe', ['dump', 'xmltree', '--file', icon!, APK_FILE])..then((value) {
             if (value.exitCode != 0) return;
             String iconData = value.stdout.toString();
             String? background = iconData.find(r'(^|\n|\s)*E:[\s]?background\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
             String? foreground = iconData.find(r'(^|\n|\s)*E:[\s]?foreground\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
             if (foreground != null) iconUpdThread = _getAdaptiveIconFiles(background, foreground);
-            else iconUpdThread= _getIconFile(icon!); // ←ここにも「!」
+            else iconUpdThread= _getIconFile(icon!);
           }); else if (icon != null && icon.isNotEmpty) {
             iconUpdThread = _getIconFile(icon);
           }
         } else {
-          executeInUi(() {
-             GState.apkTitle.$ = "AAPT エラー";
-             GState.apkInstallState.$ = InstallState.ERROR;
-             GState.errorCode.$ = "AAPT_ERR (${value.exitCode})";
-             GState.errorDesc.$ = value.stderr.toString();
-             GState.apkInstallType.$ = InstallType.INSTALL;
-          });
+          _reportAaptError(this, value.exitCode, value.stderr.toString());
         }
       });
+      
       await process;
       if (inner != null) await inner;
       if (iconUpdThread != null) await iconUpdThread;
       setInUIThread(legacyIcon, (bool v) => setDefaultIcon(v));
+      
     } catch (e, stack) {
-      executeInUi(() {
-        GState.apkTitle.$ = "Isolate 突然死";
-        GState.apkInstallState.$ = InstallState.ERROR;
-        GState.errorCode.$ = "CRASH";
-        GState.errorDesc.$ = "裏方の解析処理がクラッシュしました:\n$e\n$stack";
-        GState.apkInstallType.$ = InstallType.INSTALL;
-      });
+      // Future変数の巻き込みを防ぐため、静的メソッド経由でUIに通知する
+      _reportCrash(this, e.toString(), stack.toString());
     }
   }
 

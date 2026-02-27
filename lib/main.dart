@@ -87,8 +87,8 @@ class Env {
   // 実行ファイル（.exe）があるディレクトリを取得
   static String get EXEC_DIR => File(Platform.resolvedExecutable).parent.path;
 
-  // 絶対パスでツールフォルダを指定
-  static String get TOOLS_DIR => "$EXEC_DIR\\embedded-tools\\";
+  // 絶対パスでツールフォルダを指定（末尾の \\ を削除）
+  static String get TOOLS_DIR => "$EXEC_DIR\\embedded-tools";
       
   static final String POWERSHELL = WinReg.getString(RegHKey.HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell', 'Path')?.value ?? '$SYSTEM_ROOT\\System32\\WindowsPowerShell\\v1.0\\powershell.exe';
   
@@ -270,13 +270,14 @@ class MyApp extends StatelessWidget {
           locale: GState.locale.of(context),
           localizationsDelegates: const [
             AppLocalizations.delegate,
-            locale.GlobalMaterialLocalizations.delegate,
+            locale.GlobalMaterialLocalizations.delegate,  
             FluentLocalizations.delegate,
           ],
           supportedLocales: LocaleUtils.supportedLocales,
           localeResolutionCallback: LocaleUtils.localeResolutionCallback,
           routes: {'/': (_) => Constants.installMode ? const ApkInstaller() : const MyHomePage()},
           theme: FluentThemeData(
+            fontFamily: 'Yu Gothic UI', // ★ ここを追加するだけで全体がクッキリします！
             scaffoldBackgroundColor: Colors.transparent,
             micaBackgroundColor: Colors.transparent,
             navigationPaneTheme: const NavigationPaneThemeData(

@@ -28,7 +28,7 @@ class FlexibleInfoBar extends StatelessWidget {
       builder: (context, BoxConstraints constraints) {
         return FluentInfoBar(
           title: SizedBox(
-            height: (constraints.maxHeight-25),// - (constraints.maxHeight-constr.maxHeight),
+            height: (constraints.maxHeight - 40), // ★ はみ出さないように 40 に変更
             child: material.Scaffold(
               backgroundColor: Colors.transparent,
               appBar: _PaddedTitle(DefaultTextStyle(

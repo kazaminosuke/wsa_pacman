@@ -4,6 +4,9 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
+// 以下を追加
+import 'package:wsa_pacman/global_state.dart';
+import 'package:wsa_pacman/android/android_utils.dart';
 import 'package:synchronized/synchronized.dart';
 
 class _IsolateMessage<E extends Enum> {
@@ -14,31 +17,26 @@ class _IsolateMessage<E extends Enum> {
 
 class _IsolateData<O, FLAGS extends Enum> {
   O? data;
-  final Completer<SendPort> _uiToIsolatePortCompleter;
-  SendPort? _uiToIsolatePort;
-  final SendPort _isolateToUiPort;
+  final SendPort _isolateToUiPort; // Completerを消して、安全なSendPortだけにする
   
-  _IsolateData._withCompleter(this.data, final Completer<SendPort> portCompleter) : _uiToIsolatePortCompleter = portCompleter, _isolateToUiPort = (ReceivePort()..listen((message) {
-    if (message is VoidCallback) {message();}
-    else if (message is SendPort) {portCompleter.complete(message);}
-  })).sendPort;
-
-  _IsolateData(O data) : this._withCompleter(data, Completer());
+  _IsolateData(this.data, this._isolateToUiPort);
 
   //Listener has to execute this in the main thread
   void _executeInUi(VoidCallback callback) {
     _isolateToUiPort.send(callback);
   }
-  void _sendToIsolate(_IsolateMessage<FLAGS> a) async {
-    (_uiToIsolatePort ?? (_uiToIsolatePort = await _uiToIsolatePortCompleter.future)).send(a);
-  }
 }
 
 class IsolateRef<O, FLAGS extends Enum> {
   final _IsolateData<O, FLAGS> _data;
-  IsolateRef._(this._data);
+  final Completer<SendPort> _uiToIsolatePortCompleter; // ここにCompleterを引っ越し
+  SendPort? _uiToIsolatePort;
 
-  void sendFlag(FLAGS flag, bool value) => _data._sendToIsolate(_IsolateMessage(flag, value));
+  IsolateRef._(this._data, this._uiToIsolatePortCompleter);
+
+  void sendFlag(FLAGS flag, bool value) async {
+    (_uiToIsolatePort ?? (_uiToIsolatePort = await _uiToIsolatePortCompleter.future)).send(_IsolateMessage(flag, value));
+  }
 }
 
 /// Simplifies running an isolate
@@ -78,12 +76,35 @@ abstract class IsolateRunner<O, FLAGS extends Enum> {
   @nonVirtual
   IsolateRef<O, FLAGS> start(O data) => IsolateRunner._start(this, data);
 
-  /// Starts a process to read apk data
-  static IsolateRef<O, FLAGS> _start<O, FLAGS extends Enum>(IsolateRunner<O, FLAGS> runner, O data) {
-    //APK_FILE = fileName;
-    //Recheck installation type when connected
-    final isolateRef = IsolateRef._(_IsolateData<O, FLAGS>(data));
-    compute(runner._runInitIsolate, isolateRef._data);
+static IsolateRef<O, FLAGS> _start<O, FLAGS extends Enum>(IsolateRunner<O, FLAGS> runner, O data) {
+    final receivePort = ReceivePort();
+    final portCompleter = Completer<SendPort>();
+
+    // UI側でメッセージを受け取る処理
+    receivePort.listen((message) {
+      if (message is VoidCallback) {
+        message();
+      } else if (message is SendPort) {
+        if (!portCompleter.isCompleted) portCompleter.complete(message);
+      }
+    });
+
+    // Isolateに送るための、Completerを含まない安全なデータ
+    final minimalData = _IsolateData<O, FLAGS>(data, receivePort.sendPort);
+    final isolateRef = IsolateRef._(minimalData, portCompleter);
+
+    compute(runner._runInitIsolate, minimalData).catchError((e, stack) {
+      print("🚨🚨🚨 COMPUTE FATAL ERROR: $e");
+      print("🚨🚨🚨 STACK TRACE:\n$stack");
+      
+      // 画面側にもエラーを表示させる
+      GState.apkTitle.$ = "Isolate 起動失敗";
+      GState.apkInstallState.$ = InstallState.ERROR;
+      GState.errorCode.$ = "COMPUTE_ERR";
+      GState.errorDesc.$ = "Isolateの起動時にクラッシュしました:\n$e";
+      GState.apkInstallType.$ = InstallType.INSTALL;
+    });
+    
     runner.postStartCallback(isolateRef);
     return isolateRef;
   }

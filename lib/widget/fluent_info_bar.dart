@@ -92,11 +92,13 @@ class FluentInfoBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  title,
+                  Flexible(child: title), // ★ はみ出し防止のため Flexible で囲む
                   if (content != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0),
-                      child: content,
+                    Flexible( // ★ ここも Flexible で囲む
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: content,
+                      ),
                     ),
                   if (action != null)
                     Padding(
