@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, curly_braces_in_flow_control_structures, constant_identifier_names
 
-import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:ffi/ffi.dart';
@@ -39,13 +38,13 @@ enum _FILE_INFO_BY_HANDLE_CLASS {
   FileNormalizedNameInfo, MaximumFileInfoByHandleClass
 }
 
-class _STORAGE_PROPERTY_QUERY extends Struct {
+base class _STORAGE_PROPERTY_QUERY extends Struct {
   @ULONG() external int propertyId;
   @ULONG() external int queryType;
   external Pointer<BYTE> additionalParameters;
 }
 
-class _DEVICE_SEEK_PENALTY_DESCRIPTOR extends Struct {
+base class _DEVICE_SEEK_PENALTY_DESCRIPTOR extends Struct {
   @DWORD() external int version;
   @DWORD() external int size;
   @BOOLEAN() external int incursSeekPenalty;
@@ -282,6 +281,7 @@ extension WinFile on File {
         free(info);
       }
     }
+    return null;
   }
 }
 

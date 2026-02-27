@@ -5,7 +5,6 @@ import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:meta/meta.dart';
 
 class _IsolateMessage<E extends Enum> {
   final E flag;
@@ -47,8 +46,8 @@ class IsolateRef<O, FLAGS extends Enum> {
 /// Allows waiting for a signal from the UI thread
 /// Most fields are static not to be caught up in the executeInUi method
 abstract class IsolateRunner<O, FLAGS extends Enum> {
-  static late final _flags = <Enum, Completer<bool>>{};
-  static late final _flagsLock = Lock();
+  static final _flags = <Enum, Completer<bool>>{};
+  static final _flagsLock = Lock();
   static late final dynamic _data;
   static late final _IsolateData _pData;
 

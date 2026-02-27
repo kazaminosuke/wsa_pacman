@@ -1,11 +1,10 @@
-import 'dart:ui';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 
 class FluentInfoBar extends StatelessWidget {
   /// Creates an info bar.
   const FluentInfoBar({
-    Key? key,
+    super.key,
     required this.title,
     this.content,
     this.action,
@@ -13,7 +12,7 @@ class FluentInfoBar extends StatelessWidget {
     this.style,
     this.isLong = false,
     this.onClose,
-  }) : super(key: key);
+  });
 
   /// The severity of this InfoBar. Defaults to [InfoBarSeverity.info]
   final InfoBarSeverity severity;
@@ -61,8 +60,8 @@ class FluentInfoBar extends StatelessWidget {
       if (this.content == null) return null;
       return DefaultTextStyle(
         style: FluentTheme.of(context).typography.body ?? const TextStyle(),
-        child: this.content!,
         softWrap: true,
+        child: this.content!,
       );
     }();
     final action = () {

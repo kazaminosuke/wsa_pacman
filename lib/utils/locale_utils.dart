@@ -8,8 +8,8 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart' as widgets;
 import 'package:win32/win32.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wsa_pacman/l10n/app_localizations.dart';
+export 'package:wsa_pacman/l10n/app_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter_localizations/flutter_localizations.dart' as locale;
 import 'package:wsa_pacman/windows/win_io.dart';
@@ -23,15 +23,15 @@ const List<String> _RTL_LANGUAGE_OVERRIDES = <String>[
 extension LocaleUtils on Locale {
   _NamedLocale _asNamedLocale([int? lcid]) => lcid == null ? _NamedLocale(languageCode, countryCode, scriptCode) : _NamedLocaleLCID(lcid, languageCode, countryCode);
   _SystemLocale get _asSystemLocale => _SystemLocale(languageCode, countryCode, scriptCode);
-  static late final NamedLocale _DEFAULT_SYSTEM_LOCALE = _SystemLocale("en");
-  static late final _DEFAULT_LOCALIZATION = lookupAppLocalizations(_DEFAULT_SYSTEM_LOCALE);
+  static final NamedLocale _DEFAULT_SYSTEM_LOCALE = _SystemLocale("en");
+  static final _DEFAULT_LOCALIZATION = lookupAppLocalizations(_DEFAULT_SYSTEM_LOCALE);
   //static late final _LOCALE = {for (final l in supportedLocales) l.lcid : l};
-  static late final NamedLocale SYSTEM_LOCALE = (() {
+  static final NamedLocale SYSTEM_LOCALE = (() {
     try {return (intl.Intl.systemLocale = intl.Intl.canonicalizedLocale(Platform.localeName)).asLocale?._asSystemLocale ?? _DEFAULT_SYSTEM_LOCALE;}
     catch (e) {return intl.Intl.systemLocale.asLocale?._asSystemLocale ?? _DEFAULT_SYSTEM_LOCALE;}
   })();
 
-  static late final supportedLocales = SplayTreeSet<NamedLocale>.from(AppLocalizations.supportedLocales.map<NamedLocale>((l) => _NamedLocale(l.languageCode, l.countryCode, l.scriptCode)), (a, b) => a.name.compareTo(b.name));
+  static final supportedLocales = SplayTreeSet<NamedLocale>.from(AppLocalizations.supportedLocales.map<NamedLocale>((l) => _NamedLocale(l.languageCode, l.countryCode, l.scriptCode)), (a, b) => a.name.compareTo(b.name));
   int? toLCID() => _WinLocale.localeToLCID(toLanguageTag());
   static NamedLocale? fromLCID(int lcid) => lcid == 0 ? SYSTEM_LOCALE : _WinLocale.localeFromLCID(lcid);
   static NamedLocale fromLCIDOrDefault(int lcid) => fromLCID(lcid) ?? SYSTEM_LOCALE;
@@ -67,30 +67,21 @@ extension LocaleUtils on Locale {
 }
 
 // Only used to add extra missing RTL languages
-class _WidgetsLocalizationsOverridesDelegate extends widgets.LocalizationsDelegate<widgets.WidgetsLocalizations> {
-  const _WidgetsLocalizationsOverridesDelegate();
-  @override bool isSupported(Locale locale) => true;
-  @override Future<widgets.WidgetsLocalizations> load(Locale locale) => WidgetLocalizationOverrides.load(locale);
-  @override bool shouldReload(_WidgetsLocalizationsOverridesDelegate old) => false;
-  @override String toString() => 'WidgetLocalizationOverrides.delegate(all locales)';
-}
-
-// Only used to add extra missing RTL languages
-class WidgetLocalizationOverrides extends locale.GlobalWidgetsLocalizations {
-  WidgetLocalizationOverrides(Locale locale) : super(locale) {
-    final String language = locale.languageCode.toLowerCase();
-    TextDirection defaultDirection = super.textDirection;
-    _textDirection = defaultDirection == TextDirection.rtl ? defaultDirection : 
-        _RTL_LANGUAGE_OVERRIDES.contains(language) ? TextDirection.rtl : TextDirection.ltr;
-  }
+//class WidgetLocalizationOverrides extends locale.GlobalWidgetsLocalizations {
+  //WidgetLocalizationOverrides(Locale locale) : super(locale) {
+    //final String language = locale.languageCode.toLowerCase();
+    //TextDirection defaultDirection = super.textDirection;
+    //_textDirection = defaultDirection == TextDirection.rtl ? defaultDirection : 
+        //_RTL_LANGUAGE_OVERRIDES.contains(language) ? TextDirection.rtl : TextDirection.ltr;
+  //}
   
-  late TextDirection _textDirection;
-  static const widgets.LocalizationsDelegate<widgets.WidgetsLocalizations> delegate = _WidgetsLocalizationsOverridesDelegate();
-  @override TextDirection get textDirection => _textDirection;
-  static Future<widgets.WidgetsLocalizations> load(Locale locale) {
-    return SynchronousFuture<widgets.WidgetsLocalizations>(WidgetLocalizationOverrides(locale));
-  }
-}
+  //late TextDirection _textDirection;
+  //static const widgets.LocalizationsDelegate<widgets.WidgetsLocalizations> delegate = _WidgetsLocalizationsOverridesDelegate();
+  //@override TextDirection get textDirection => _textDirection;
+  //static Future<widgets.WidgetsLocalizations> load(Locale locale) {
+    //return SynchronousFuture<widgets.WidgetsLocalizations>(WidgetLocalizationOverrides(locale));
+  //}
+//}
 
 
 class _WinLocale {
@@ -142,15 +133,15 @@ class _WinLocale {
 
 
 abstract class NamedLocale extends Locale {
-  const NamedLocale._(String _languageCode, [String? _countryCode, String? _scriptCode]) : 
-      super.fromSubtags(languageCode: _languageCode, countryCode: _countryCode, scriptCode: _scriptCode);
+  const NamedLocale._(String languageCode, [String? countryCode, String? scriptCode]) : 
+      super.fromSubtags(languageCode: languageCode, countryCode: countryCode, scriptCode: scriptCode);
   String get name;
   int get lcid;
 }
 
 class _NamedLocale extends NamedLocale {
   bool? _isValid;
-  _NamedLocale(String _languageCode, [String? _countryCode, String? _scriptCode]) : super._(_languageCode, _countryCode, _scriptCode);
+  _NamedLocale(super._languageCode, [super._countryCode, super._scriptCode]) : super._();
   @override late final String name = lookupAppLocalizations(this).locale_desc;
   @override late final int lcid = toLCID() ?? (){throw ArgumentError("Unknown language tag: ${toLanguageTag()}");}();
   @override int get hashCode => lcid;
@@ -166,8 +157,8 @@ class _NamedLocaleLCID extends _NamedLocale {
 }
 
 class _SystemLocale extends NamedLocale {
-  _SystemLocale(String _languageCode, [String? _countryCode, String? _scriptCode]) : super._(_languageCode, _countryCode) {
-    if (_scriptCode != null) scriptCode = _scriptCode;
+  _SystemLocale(super._languageCode, [super._countryCode, String? scriptCode]) : super._() {
+    if (scriptCode != null) scriptCode = scriptCode;
   }
   // ignore: overridden_fields
   @override late String? scriptCode = _WinLocale.parentScriptCode(this);

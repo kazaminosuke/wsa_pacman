@@ -10,7 +10,6 @@ import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/main.dart';
 import 'package:wsa_pacman/utils/wsa_utils.dart';
 import 'package:wsa_pacman/widget/smooth_list_view.dart';
-import 'package:wsa_pacman/widget/themed_pane_item.dart';
 import 'package:wsa_pacman/windows/win_io.dart';
 import 'package:wsa_pacman/widget/adaptive_icon.dart';
 import 'package:wsa_pacman/widget/flexible_info_bar.dart';
@@ -25,7 +24,7 @@ import 'dart:developer';
 
 
 class ApkInstaller extends StatefulWidget {
-  const ApkInstaller({Key? key}) : super(key: key);
+  const ApkInstaller({super.key});
 
   static void createLaunchIcon(String package, String appName) {
     WinIO.createShortcut(
@@ -45,7 +44,7 @@ class ApkInstaller extends StatefulWidget {
     log("EXIT CODE: ${result.exitCode}");
     String error = result.stderr.toString();
     log("OUTPUT: ${result.stdout}");
-    log("ERROR: ${error}");
+    log("ERROR: $error");
     if (result.exitCode == 0) GState.apkInstallState.update((_) => InstallState.SUCCESS);
     else if (result.isTimeout) {
       GState.apkInstallState.update((_) => InstallState.TIMEOUT);
@@ -133,8 +132,8 @@ class _ApkInstallerState extends State<ApkInstaller> {
               const SizedBox(height: 10),
               Text(lang.installer_message),
               const SizedBox(height: 10),
-              Text((oldVersion.isNotEmpty ? lang.installer_info_version_change(oldVersion, version) : lang.installer_info_version(version)).replaceAll(' ', '\u00A0'), style: TextStyle(color: theme.disabledColor), overflow: TextOverflow.ellipsis, maxLines: 1),
-              Text(lang.installer_info_package(package).replaceAll(' ', '\u00A0'), style: TextStyle(color: theme.disabledColor), overflow: TextOverflow.ellipsis, maxLines: 1),
+              Text((oldVersion.isNotEmpty ? lang.installer_info_version_change(oldVersion, version) : lang.installer_info_version(version)).replaceAll(' ', '\u00A0'), style: TextStyle(color: theme.resources.textFillColorDisabled), overflow: TextOverflow.ellipsis, maxLines: 1),
+              Text(lang.installer_info_package(package).replaceAll(' ', '\u00A0'), style: TextStyle(color: theme.resources.textFillColorDisabled), overflow: TextOverflow.ellipsis, maxLines: 1),
               /*SmoothListView(
                 padding: EdgeInsets.only(
                   bottom: kPageDefaultVerticalPadding,
@@ -148,8 +147,8 @@ class _ApkInstallerState extends State<ApkInstaller> {
           ),
           const SizedBox(height: 10),
           Expanded(child: ClipRRect(borderRadius: BorderRadius.circular(10), child: Container(
-            //decoration: ChipTheme.of(context).decoration?.resolve({ButtonStates.focused})?.lerpTo(SnackbarTheme.of(context).decoration, 0.07),
-            color: mica.disabled || theme.brightness.isDark ? theme.inactiveBackgroundColor.lerpWith(theme.scaffoldBackgroundColor, 0.65)
+            //decoration: ChipTheme.of(context).decoration?.resolve({WidgetState.focused})?.lerpTo(SnackbarTheme.of(context).decoration, 0.07),
+            color: mica.disabled || theme.brightness== Brightness.dark ? theme.inactiveBackgroundColor.lerpWith(theme.scaffoldBackgroundColor, 0.65)
               : theme.scaffoldBackgroundColor.lerpWith(theme.inactiveBackgroundColor, 0.038),
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             //color: Colors.red, 
@@ -158,16 +157,13 @@ class _ApkInstallerState extends State<ApkInstaller> {
             children: [
               for (var permission in GState.permissions.of(context)) Container(
                 padding: EdgeInsets.only(right: isLtr ? 10 : 0, left: isLtr ? 0 : 10),
-                child: ThemablePaneItem(
-                  title: Text(permission.description(lang)),
-                  icon: permission.icon,
-                  translucent: mica.enabled
-                ).build(
-                  context,
-                  false,
-                  (){1;},
-                  displayMode: PaneDisplayMode.open,
-                )
+child: Row(
+                  children: [
+                    permission.icon,
+                    const SizedBox(width: 10),
+                    Expanded(child: Text(permission.description(lang))),
+                  ],
+                ),
               )
             ],
           )))),
@@ -178,18 +174,18 @@ class _ApkInstallerState extends State<ApkInstaller> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               noMoveWindow(Button(
-                child: Text(lang.installer_btn_cancel),
                 onPressed: false ? null : (){appWindow.close();},
+                child: Text(lang.installer_btn_cancel),
               )),
               const SizedBox(width: 15),
               noMoveWindow(ToggleButton(
-                child: Text(startingWSA ? lang.installer_btn_starting : installType?.buttonText(lang) ?? lang.installer_btn_loading),
                 checked: true,
                 style: installType == InstallType.DOWNGRADE ? warningButtonTheme : null,
                 onChanged: !canInstall ? null : (_){
                   if (Constants.packageType.directInstall) ApkInstaller.installApk(Constants.packageFile, ipAddress, port, lang, installTimeout, installType == InstallType.DOWNGRADE);
                   else GState.installCallback.$?.call(ipAddress, port, lang, installTimeout, installType == InstallType.DOWNGRADE);
                 },
+                child: Text(startingWSA ? lang.installer_btn_starting : installType?.buttonText(lang) ?? lang.installer_btn_loading),
               )),
               /*const SizedBox(width: 15),noMoveWindow(ToggleButton(
                 child: const Text('TEST-ICON'),
@@ -204,7 +200,7 @@ class _ApkInstallerState extends State<ApkInstaller> {
           const SizedBox(height: 10),
           Text(lang.installer_installing(appTitle)),
           const Spacer(),
-          Row(children: const [Expanded(child: ProgressBar(strokeWidth: 6))]),
+          const Row(children: [Expanded(child: ProgressBar(strokeWidth: 6))]),
         ];
         case InstallState.SUCCESS: return [
           titleWidget,
@@ -227,9 +223,9 @@ class _ApkInstallerState extends State<ApkInstaller> {
               )),
               (){return isLaunchable ? const SizedBox(width: 15) : const SizedBox.shrink();}(),
               (){return isLaunchable ? noMoveWindow(ToggleButton(
-                child: Text(lang.installer_btn_open),
                 checked: true,
                 onChanged: (_){if (createShortcut) ApkInstaller.createLaunchIcon(package, appTitle); WSAUtils.launchApp(package); appWindow.close();},
+                child: Text(lang.installer_btn_open),
               )) : const SizedBox.shrink();}()
             ]
           )

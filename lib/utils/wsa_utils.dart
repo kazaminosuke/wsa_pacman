@@ -16,15 +16,11 @@ class WSAUtils {
   static bool shutdown() => launch("/shutdown");
   static bool modifyApp(String package) => launch("/modify $package");
   static bool launchPartial() => launch("/partiallyrunning");
-  //launch("/jump");    // No idea what this does
-  //launch("/deeplink wsa-client://legal-settings");    // Legal settings, pretty useless stuff
 }
 
 class WSAPkgInfo extends WinPkgInfo {
   late final String clientID;
-
-  WSAPkgInfo.fromSystemPath(String systemPath) : super.fromSystemPath(systemPath);
-
+  WSAPkgInfo.fromSystemPath(super.systemPath) : super.fromSystemPath();
   @override void parseManifestExtras(String manifest) {
     String? clientInfo = RegExp('<\\s*Application${REGEX_XML_NOCLOSE}Executable\\s*=\\s*${REGEX_QUOTED_PATTERN((c)=>"[^$c>]*WsaClient.exe")}$REGEX_XML_NOCLOSE', caseSensitive: false, multiLine: true, dotAll: true)
       .firstMatch(manifest)?.group(0);
@@ -32,18 +28,14 @@ class WSAPkgInfo extends WinPkgInfo {
   }
 }
 
-class _TimeoutProcessResult extends ProcessResult {
-  _TimeoutProcessResult() : super(-1, -1, null, null);
-}
-
+final _timeoutResult = ProcessResult(-1, -1, 'TIMEOUT', 'TIMEOUT');
 extension ProcessResultTimeout on ProcessResult {
-  bool get isTimeout => this is _TimeoutProcessResult;
+  bool get isTimeout => identical(this, _timeoutResult);
 }
 
 extension ADBUtils on Future<ProcessResult> {
   Future<ProcessResult> defaultError() => onError((error, stackTrace) => ProcessResult(-1, -1, null, null));
-  Future<ProcessResult> processTimeout(Duration duration) =>
-    timeout(duration, onTimeout: () => Future.value(_TimeoutProcessResult()));
+  Future<ProcessResult> processTimeout(Duration duration) => timeout(duration, onTimeout: () => Future.value(_timeoutResult));
 
   static String get deviceName => '${GState.ipAddress.$}:${GState.androidPort.$}';
   static String _toName(String ipAddress, int port) => '$ipAddress:$port';
@@ -59,16 +51,15 @@ extension ADBUtils on Future<ProcessResult> {
   static Future<ProcessResult> withWSA(String command, {String? param, String? workDir}) => withDevice(deviceName, command, param: param, workDir: workDir);
 
   static Future<ProcessResult> devices() => command('devices');
-
   static Future<ProcessResult> disconnect(String device) => command('disconnect', param: device);
   static Future<ProcessResult> disconnectAddress(String ipAddress, int port) => disconnect(_toName(ipAddress, port));
   static Future<ProcessResult> disconnectWSA() => disconnect(deviceName);
-
   static Future<ProcessResult> connect(String device) => command('connect', param: device);
   static Future<ProcessResult> connectAddress(String ipAddress, int port) => connect(_toName(ipAddress, port));
   static Future<ProcessResult> connectWSA() => connect(deviceName);
 
-  static Future<ProcessResult> shell(String device, String command) => withDevice(device, 'shell', param: command);
+// 修正後：command.split(' ') を追加して、コマンドをバラバラにして渡すようにします
+  static Future<ProcessResult> shell(String device, String command) => _withDevice(device, 'shell', args: command.split(' '));
   static Future<ProcessResult> shellToAddress(String ipAddress, int port, String command) => shell(_toName(ipAddress, port), command);
   static Future<ProcessResult> shellToWSA(String command) => shell(deviceName, command);
 

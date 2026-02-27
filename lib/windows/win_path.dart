@@ -11,13 +11,13 @@ import 'package:win32/win32.dart';
 
 class WinPath {
   /// Get the path of the temporary directory (typically %TEMP%)
-  static late String temp = Directory.systemTemp.absolute.path;
+  static String temp = Directory.systemTemp.absolute.path;
 
   /// Sub-directory inside %TEMP% to use by the application
-  static late String tempSubdir = Directory.systemTemp.createTempSync("WSA-PacMan-").absolute.path;
+  static String tempSubdir = Directory.systemTemp.createTempSync("WSA-PacMan-").absolute.path;
 
   /// Get the desktop path
-  static late String desktop = (){
+  static String desktop = (){
     final appsFolder = GUIDFromString(FOLDERID_Desktop);
     final ppszPath = calloc<PWSTR>();
 

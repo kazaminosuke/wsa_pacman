@@ -7,12 +7,12 @@ import 'package:flutter/widgets.dart';
 class _MoveWindowNoMaximize extends StatelessWidget {
   final bool dragBlocker;
   final Widget child;
-  const _MoveWindowNoMaximize(this.dragBlocker, {Key? key, required this.child}) : super(key: key);
+  const _MoveWindowNoMaximize(this.dragBlocker, {super.key, required this.child});
   @override
   Widget build(BuildContext context) => GestureDetector(
-    child: child,
     behavior: dragBlocker ? HitTestBehavior.opaque : HitTestBehavior.translucent, 
-    onPanStart: dragBlocker ? (_){} : (_){appWindow.startDragging();}
+    onPanStart: dragBlocker ? (_){} : (_){appWindow.startDragging();},
+    child: child
   );
 }
 

@@ -61,6 +61,7 @@ class WinWMI {
     finally {
       enumerator?.release() ?? free(pEnumerator);
     }
+    return null;
   }
 
   static IWbemServices? get _service => __serviceResult ?? _initService();

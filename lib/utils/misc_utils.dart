@@ -14,7 +14,7 @@ class DynamicTimer {
   Timer? _timer;
 
   DynamicTimer(this._callback) : _durationUs = -1;
-  DynamicTimer.periodic(Duration _duration, this._callback) : _durationUs = _duration.inMicroseconds, _timer = Timer.periodic(_duration, _callback);
+  DynamicTimer.periodic(Duration duration, this._callback) : _durationUs = duration.inMicroseconds, _timer = Timer.periodic(duration, _callback);
 
   void cancel() => _timer?.cancel();
   int get tick => _tick + (_timer?.tick ?? 0);

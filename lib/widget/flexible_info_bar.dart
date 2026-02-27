@@ -6,14 +6,14 @@ import 'package:wsa_pacman/widget/smooth_list_view.dart';
 class FlexibleInfoBar extends StatelessWidget {
 
   const FlexibleInfoBar({
-    Key? key,
+    super.key,
     required this.title,
     this.content,
     this.action,
     this.severity = InfoBarSeverity.info,
     this.style,
     this.onClose,
-  }) : super(key: key);
+  });
 
   final InfoBarSeverity severity;
   final InfoBarThemeData? style;
@@ -37,8 +37,8 @@ class FlexibleInfoBar extends StatelessWidget {
               )),
               body: (content != null) ? SmoothListView(children: [DefaultTextStyle(
                 style: FluentTheme.of(context).typography.body ?? const TextStyle(),
-                child: content!,
                 softWrap: true,
+                child: content!,
               )]) : null
             )
           ),

@@ -4,7 +4,7 @@ import 'package:wsa_pacman/utils/misc_utils.dart';
 class FluentCard extends StatefulWidget {
   /// Creates an expander
   const FluentCard({
-    Key? key,
+    super.key,
     this.leading,
     required this.content,
     this.icon,
@@ -18,31 +18,31 @@ class FluentCard extends StatefulWidget {
     this.headerHeight = 68.5,
     this.headerBackgroundColor,
     this.contentBackgroundColor,
-  }) : super(key: key);
+  });
 
-  static Color backgroundColor(ThemeData style, Set<ButtonStates> states, [bool isClickable = true]) {
+  static Color backgroundColor(FluentThemeData style, Set<WidgetState> states, [bool isClickable = true]) {
     if (style.brightness == Brightness.light) {
       if (!states.isDisabled && isClickable) {
-        if (states.isPressing) return const ColorConst.withOpacity(0xf9f9f9, 0.2);
-        if (states.isHovering) return const ColorConst.withOpacity(0xf9f9f9, 0.4);
+        if (states.isPressed) return const ColorConst.withOpacity(0xf9f9f9, 0.2);
+        if (states.isHovered) return const ColorConst.withOpacity(0xf9f9f9, 0.4);
       }
       return const ColorConst.withOpacity(0xFFFFFF, 0.7);
     } else {
       if (!states.isDisabled && isClickable) {
-        if (states.isPressing) return const ColorConst.withOpacity(0xFFFFFF, 0.03);
-        if (states.isHovering) return const ColorConst.withOpacity(0xFFFFFF, 0.082);
+        if (states.isPressed) return const ColorConst.withOpacity(0xFFFFFF, 0.03);
+        if (states.isHovered) return const ColorConst.withOpacity(0xFFFFFF, 0.082);
       }
       return const ColorConst.withOpacity(0xFFFFFF, 0.05);
     }
   }
 
-  static Color borderColor(ThemeData style, Set<ButtonStates> states, [bool isInner = false, bool isClickable = true]) {
+  static Color borderColor(FluentThemeData style, Set<WidgetState> states, [bool isInner = false, bool isClickable = true]) {
     if (style.brightness == Brightness.light) {
-      if (isClickable && states.isHovering && !states.isPressing) return const Color(0xFF212121).withOpacity(0.22);
+      if (isClickable && states.isHovered && !states.isPressed) return const Color(0xFF212121).withOpacity(0.22);
       return const Color(0xFF212121).withOpacity(isInner ? 0.25 : 0.17);
     } else {
-      if (isClickable && states.isPressing) return Colors.white.withOpacity(0.062);
-      if (isClickable && states.isHovering) return Colors.white.withOpacity(0.02);
+      if (isClickable && states.isPressed) return Colors.white.withOpacity(0.062);
+      if (isClickable && states.isHovered) return Colors.white.withOpacity(0.02);
       return isInner ? Colors.white.withOpacity(0.02) : Colors.black.withOpacity(0.52);
     }
   }
@@ -113,7 +113,7 @@ class FluentCard extends StatefulWidget {
 
 class FluentCardState extends State<FluentCard>
     with SingleTickerProviderStateMixin {
-  late ThemeData theme;
+  late FluentThemeData theme;
 
   late AnimationController _controller;
 
@@ -134,8 +134,8 @@ class FluentCardState extends State<FluentCard>
 
   /// If this widget acts as a button and is disabled, gray out all text and icons
   Widget buttonStyled(Widget child) => !widget.isButton || widget.onPressed != null ? child : IconTheme.merge(
-    data: IconThemeData(color: theme.disabledColor), 
-    child: DefaultTextStyle.merge(style: TextStyle(color: theme.disabledColor), child: child)
+    data: IconThemeData(color: theme.resources.textFillColorDisabled), 
+    child: DefaultTextStyle.merge(style: TextStyle(color: theme.resources.textFillColorDisabled), child: child)
   );
 
   @override

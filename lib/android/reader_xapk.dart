@@ -26,7 +26,7 @@ enum Architecture {
 }
 
 extension Architectures on Architecture {
-  static late final fullRegex = '(${[for (final arch in Architecture.values) for (final label in arch.labels) label].join('|')})';
+  static final fullRegex = '(${[for (final arch in Architecture.values) for (final label in arch.labels) label].join('|')})';
   get regex => '(${[for (final label in labels) label].join('|')})';
   List<String> get labels => (){switch (this) {
     case Architecture.i386: return ["i386", "i686", "i586", "i486", "x86"];
@@ -41,7 +41,7 @@ extension Architectures on Architecture {
 class XapkReader extends IsolateRunner<String, APK_READER_FLAGS> {
   static int _versionCode = 0;
   static late Future<Archive> _xapkArchive;
-  static late final Directory _xapkTempDir = Directory(WinPath.tempSubdir).createTempSync("XAPK-Extracted@$pid@");
+  static final Directory _xapkTempDir = Directory(WinPath.tempSubdir).createTempSync("XAPK-Extracted@$pid@");
 
   Future<Archive> _initArchiveFile(File file) async => ZipDecoder().decodeBuffer(InputFileStream(file.path));
   void _initArchive() {
@@ -150,16 +150,48 @@ class XapkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     executeInUi(() {
       if (manifest.packageName.isNotEmpty) ApkReader.loadInstallType(manifest.packageName, manifest.versionCode);
       GState.installCallback.$ = (ipAddress, port, lang, timeout, [downgrade = false]) => installXApk(installDir, apkList, manifest.expansions, ipAddress, port, lang, timeout, disposeLock, downgrade);
+      GState.apkInstallType.$ = InstallType.INSTALL;
     });
   }
 
-  @override
+@override
   void run() async { try {
     _initArchive();
     final archive = (await _xapkArchive);
     log("LOADING MANIFEST");
     final manifestFile = archive.findFile('manifest.json');
-    if (manifestFile == null) return;
+    
+    // ▼▼ .apks / .apkm 用のフォールバック処理 ▼▼
+    if (manifestFile == null) {
+      log("MANIFEST NOT FOUND. FALLBACK TO RAW APK EXTRACTION.");
+      final apkFiles = archive.files.where((f) => f.name.toLowerCase().endsWith('.apk')).toList();
+      if (apkFiles.isEmpty) throw Exception("No APK files found in archive");
+
+      executeInUi(() {
+        GState.apkTitle.$ = path.basename(data);
+        GState.version.$ = "Split APK Bundle";
+        GState.package.$ = "Multiple APKs";
+        GState.permissions.$ = {AndroidPermission.NONE};
+      });
+      ApkReader.setDefaultIcon(await waitFlag(APK_READER_FLAGS.LEGACY_ICON));
+
+      final apkList = apkFiles.map((f) => f.name).toList();
+      String installDir = _xapkTempDir.absolute.path;
+      final disposeLock = FileDisposeQueue();
+      
+      await waitFlag(APK_READER_FLAGS.UI_LOADED);
+      archive.extractAllSync(_xapkTempDir, disposeLock: disposeLock);
+      
+      executeInUi(() {
+        GState.installCallback.$ = (ipAddress, port, lang, timeout, [downgrade = false]) => 
+            installXApk(installDir, apkList, [], ipAddress, port, lang, timeout, disposeLock, downgrade);
+      });
+
+      log("DIRECTORY: ${_xapkTempDir.path}");
+      return;
+    }
+    // ▲▲ ここまで ▲▲
+
     log("READING MANIFEST");
     final manifest = _decodeManifest(manifestFile.content as List<int>);
     final permissions = AndroidPermissionList.fromNames(manifest.permissions);
@@ -182,6 +214,7 @@ class XapkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     _xapkTempDir.deleteSync(recursive: true);
     //(await _xapkArchive).clear();
   }}
+
 
   @override
   FutureOr<void> postStartCallback(IsolateRef<String, APK_READER_FLAGS> isolate) {

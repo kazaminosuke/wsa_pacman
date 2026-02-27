@@ -12,14 +12,14 @@ import '../main.dart';
 import '../global_state.dart';
 
 class ScreenWSA extends StatefulWidget {
-  const ScreenWSA({Key? key}) : super(key: key);
+  const ScreenWSA({super.key});
 
   @override
   _ScreenWSAState createState() => _ScreenWSAState();
 }
 
 class EmptyElement extends Element {
-  EmptyElement(Empty widget) : super(widget);
+  EmptyElement(Empty super.widget);
   @override
   void performRebuild() {}
   @override
@@ -28,12 +28,12 @@ class EmptyElement extends Element {
   Empty get widget => super.widget as Empty;
 }
 class Empty extends Widget {
-  const Empty();
+  const Empty({super.key});
 
   @override
   Element createElement() => EmptyElement(this);
 }
-Expanded EMPTY = Expanded(child: Column());
+Expanded EMPTY = const Expanded(child: Column());
 
 class _ScreenWSAState extends State<ScreenWSA> {
   //_FormsState(this.gsmap);
@@ -42,7 +42,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
   final autoSuggestBox = TextEditingController();
 
   final _clearController = TextEditingController();
-  bool _showPassword = false;
+  final bool _showPassword = false;
   final values = ['Blue', 'Green', 'Yellow', 'Red'];
   String? comboBoxValue;
 
@@ -90,25 +90,27 @@ class _ScreenWSAState extends State<ScreenWSA> {
           const SizedBox(height: 20),
           Text(lang.wsa_manage, style: FluentTheme.of(context).typography.bodyLarge),
           const SizedBox(height: 20),
-          FluentCard(
+FluentCard(
             leading: const Icon(Mdi.android , size: 23),
             content: Text(lang.wsa_manage_app),
             isButton: true,
-            onPressed: connectionStatus.isDisconnected ? 
-                null : () => ADBUtils.shellToAddress(GState.ipAddress.of(context), GState.androidPort.of(context), 
-                  r'am start -f 0x10008000 -n com.android.settings/.Settings\$ManageApplicationsActivity'),
+            // アプリ管理画面を開く（シングルクォートで確実に渡す）
+            onPressed: connectionStatus.isDisconnected ? null : () {
+              ADBUtils.shellToAddress(GState.ipAddress.of(context), GState.androidPort.of(context), 
+                r"am start -n 'com.android.settings/.Settings$ManageApplicationsActivity'");
+            },
           ),
           smallSpacer,
           FluentCard(
             leading: const Icon(Mdi.cogs, size: 23),
             content: Text(lang.wsa_manage_settings),
             isButton: true,
-            onPressed: connectionStatus.isDisconnected ?
-                connectionStatus.isPoweredOn ? () => WSAUtils.launchSettings() : null : 
-                () => ADBUtils.shellToAddress(GState.ipAddress.of(context), GState.androidPort.of(context), 
-                  r'am start com.android.settings/.Settings'),
+            // 全体設定を開く
+            onPressed: connectionStatus.isDisconnected ? null : () {
+              ADBUtils.shellToAddress(GState.ipAddress.of(context), GState.androidPort.of(context), 
+                'am start -n com.android.settings/.Settings');
+            },
           )
-
         ],
       ),
     );

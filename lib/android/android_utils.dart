@@ -31,8 +31,11 @@ enum AppPackage {
 
 extension AppPackageType on AppPackage {
   static AppPackage fromArguments(List<String> args) => args.isEmpty ? AppPackage.NONE : fromFilename(args.first);
+  
+  // ★修正：.xapk に加えて、.apks と .apkm も XAPK（分割APK）として判定するように追加
   static AppPackage fromFilename(String? name) => name == null || name.isEmpty ? AppPackage.NONE : 
-      name.endsWith(".xapk") ? AppPackage.XAPK : AppPackage.APK;
+      (name.endsWith(".xapk") || name.endsWith(".apks") || name.endsWith(".apkm")) ? AppPackage.XAPK : AppPackage.APK;
+      
   IsolateRef<String, APK_READER_FLAGS>? Function(String) get read { switch (this) {
     case AppPackage.APK: return ApkReader().start;
     case AppPackage.XAPK: return XapkReader().start;

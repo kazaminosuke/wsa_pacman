@@ -10,7 +10,7 @@ class AdaptiveIcon extends StatelessWidget {
   Widget? background;
   Widget? foreground;
 
-  AdaptiveIcon({Key? key, this.radius = 0.6, this.background, this.foreground, this.backColor, bool noScale = false}) : _scale = noScale ? 1 : 1.5 ,super(key: key);
+  AdaptiveIcon({super.key, this.radius = 0.6, this.background, this.foreground, this.backColor, bool noScale = false}) : _scale = noScale ? 1 : 1.5;
 
   @override
   Widget build(BuildContext context) {

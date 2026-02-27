@@ -1,7 +1,6 @@
 import 'dart:ui' as ui;
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:fluent_ui/src/controls/form/selection_controls.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 
@@ -13,8 +12,8 @@ class _TextBoxSelectionGestureDetectorBuilder extends TextSelectionGestureDetect
   _TextBoxSelectionGestureDetectorBuilder({required _TextBoxState state})  : _state = state, super(delegate: state);
   final _TextBoxState _state;
 
-  @override void onDragSelectionEnd(DragEndDetails details) => _state._requestKeyboard();
-  @override void onSingleTapUp(TapUpDetails details) {
+  @override void onDragSelectionEnd(TapDragEndDetails details) => _state._requestKeyboard();
+  @override void onSingleTapUp(TapDragUpDetails details) {
     if (_state._clearGlobalKey.currentContext != null) {
       final RenderBox renderBox = _state._clearGlobalKey.currentContext!.findRenderObject() as RenderBox;
       final Offset localOffset = renderBox.globalToLocal(details.globalPosition);
@@ -27,7 +26,7 @@ class _TextBoxSelectionGestureDetectorBuilder extends TextSelectionGestureDetect
 }
 
 class FluentTextBox extends StatefulWidget {
-  const FluentTextBox({Key? key, this.controller, this.focusNode, this.padding = kTextBoxPadding, this.clipBehavior = Clip.antiAlias,
+  const FluentTextBox({super.key, this.controller, this.focusNode, this.padding = kTextBoxPadding, this.clipBehavior = Clip.antiAlias,
     this.placeholder, this.placeholderStyle, this.prefix, this.outsidePrefix, this.prefixMode = OverlayVisibilityMode.always,
     this.outsidePrefixMode = OverlayVisibilityMode.always, this.suffix, this.outsideSuffix, this.suffixMode = OverlayVisibilityMode.always,
     this.outsideSuffixMode = OverlayVisibilityMode.always, TextInputType? keyboardType, this.textInputAction, this.style, this.strutStyle,
@@ -53,8 +52,7 @@ class FluentTextBox extends StatefulWidget {
             'Use keyboardType TextInputType.multiline when using TextInputAction.newline on a multiline TextField.'),
         keyboardType = keyboardType ?? (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
         toolbarOptions = toolbarOptions ?? (obscureText ? const ToolbarOptions(selectAll: true, paste: true)
-            : const ToolbarOptions(copy: true, cut: true, selectAll: true, paste: true)),
-        super(key: key);
+            : const ToolbarOptions(copy: true, cut: true, selectAll: true, paste: true));
 
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -434,7 +432,7 @@ class _TextBoxState extends State<FluentTextBox>
     super.build(context);
     assert(debugCheckHasDirectionality(context));
     assert(debugCheckHasFluentTheme(context));
-    final ThemeData theme = FluentTheme.of(context);
+    final FluentThemeData theme = FluentTheme.of(context);
     final TextEditingController controller = _effectiveController;
     final List<TextInputFormatter> formatters =
         widget.inputFormatters ?? <TextInputFormatter>[];
@@ -444,22 +442,22 @@ class _TextBoxState extends State<FluentTextBox>
     }
 
     final TextStyle textStyle = TextStyle(
-      color: enabled ? theme.inactiveColor : theme.disabledColor,
+      color: enabled ? theme.inactiveColor : theme.resources.textFillColorDisabled,
     );
 
     final Brightness keyboardAppearance =
         widget.keyboardAppearance ?? theme.brightness;
     final Color cursorColor = theme.inactiveColor;
-    final Color disabledColor = theme.disabledColor;
-    final Color backgroundColor = fluentComboBoxColor(theme.brightness.isDark, _effectiveFocusNode.hasFocus);
+    final Color disabledColor = theme.resources.textFillColorDisabled;
+    final Color backgroundColor = fluentComboBoxColor(theme.brightness== Brightness.dark, _effectiveFocusNode.hasFocus);
 
     final TextStyle placeholderStyle = widget.placeholderStyle ??
         textStyle.copyWith(
           color: !enabled
-              ? theme.brightness.isLight
+              ? theme.brightness== Brightness.light
                   ? const Color.fromRGBO(0, 0, 0, 0.3614)
                   : const Color.fromRGBO(255, 255, 255, 0.3628)
-              : theme.brightness.isLight
+              : theme.brightness== Brightness.light
                   ? const Color.fromRGBO(0, 0, 0, 0.6063)
                   : const Color.fromRGBO(255, 255, 255, 0.786),
           fontWeight: FontWeight.w400,
@@ -549,12 +547,12 @@ class _TextBoxState extends State<FluentTextBox>
             borderRadius: radius,
             border: Border.all(
                 width: 1,
-                color: theme.brightness.isLight
+                color: theme.brightness== Brightness.light
                     ? const Color.fromRGBO(0, 0, 0, 0.08)
                     : const Color.fromRGBO(255, 255, 255, 0.07)),
             color: enabled
                 ? backgroundColor
-                : theme.brightness.isLight
+                : theme.brightness== Brightness.light
                     ? const Color.fromRGBO(249, 249, 249, 0.3)
                     : const Color.fromRGBO(255, 255, 255, 0.04),
           ),
@@ -565,7 +563,7 @@ class _TextBoxState extends State<FluentTextBox>
                     ? theme.accentColor
                     : !enabled
                         ? Colors.transparent
-                        : theme.brightness.isLight
+                        : theme.brightness== Brightness.light
                             ? const Color.fromRGBO(0, 0, 0, 0.45)
                             : const Color.fromRGBO(255, 255, 255, 0.54),
                 width: _effectiveFocusNode.hasFocus ? 2 : 0,
@@ -623,9 +621,9 @@ class _TextBoxState extends State<FluentTextBox>
           child: () {
             if (widget.header != null) {
               return InfoLabel(
-                child: listener,
                 label: widget.header!,
                 labelStyle: widget.headerStyle,
+                child: listener,
               );
             }
             return listener;

@@ -1,11 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:wsa_pacman/widget/fluent_card.dart';
-import 'package:wsa_pacman/widget/themed_pane_item.dart';
 
 class ExpanderWin11 extends StatefulWidget {
   /// Creates an expander
   const ExpanderWin11({
-    Key? key,
+    super.key,
     this.leading,
     required this.header,
     required this.content,
@@ -19,7 +18,7 @@ class ExpanderWin11 extends StatefulWidget {
     this.headerHeight = 68.5,
     this.headerBackgroundColor,
     this.contentBackgroundColor,
-  }) : super(key: key);
+  });
 
   /// The leading widget.
   ///
@@ -92,7 +91,7 @@ class ExpanderWin11 extends StatefulWidget {
 
 class ExpanderWin11State extends State<ExpanderWin11>
     with SingleTickerProviderStateMixin {
-  late ThemeData theme;
+  late FluentThemeData theme;
 
   late bool _open;
   bool get open => _open;
@@ -215,8 +214,8 @@ class ExpanderWin11State extends State<ExpanderWin11>
           width: double.infinity,
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            border: Border.all(width: borderSize, color: FluentCard.borderColor(theme, {ButtonStates.none}, false, false)),
-            color: FluentCard.backgroundColor(theme, {ButtonStates.none}, false),
+            border: Border.all(width: borderSize, color: FluentCard.borderColor(theme, {WidgetState.disabled}, false, false)),
+            color: FluentCard.backgroundColor(theme, {WidgetState.disabled}, false),
             borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4.0)),
           ),
           child: widget.content,

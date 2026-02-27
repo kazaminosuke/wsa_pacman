@@ -14,11 +14,11 @@ class WinVer {
   int minor;
   WinVer._(this.major, this.minor);
 
-  static late final String WIN_CAPTION = WinWMI.queryString('Caption', 'Win32_OperatingSystem') ?? '';
+  static final String WIN_CAPTION = WinWMI.queryString('Caption', 'Win32_OperatingSystem') ?? '';
 
   @override String toString() => '$major.$minor';
 
-  static late final WinVer version = (){
+  static final WinVer version = (){
     final versionInfo = calloc<OSVERSIONINFO>();
     versionInfo.ref.dwOSVersionInfoSize = sizeOf<OSVERSIONINFO>();
 
@@ -30,11 +30,11 @@ class WinVer {
 
   static bool isAtLeast(int major, int minor) => version.major > major || version.major == major && version.minor >= minor;
 
-  static late final bool isWindowsXPOrGreater = isAtLeast(5, 1);
-  static late final bool isWindowsVistaOrGreater = isAtLeast(6, 0);
-  static late final bool isWindows7OrGreater = isAtLeast(6, 1);
-  static late final bool isWindows8OrGreater = isAtLeast(6, 2);
-  static late final bool isWindows10OrGreater = isAtLeast(10, 0);
-  static late final bool isWindows11OrGreater = isAtLeast(10, 1) || 
+  static final bool isWindowsXPOrGreater = isAtLeast(5, 1);
+  static final bool isWindowsVistaOrGreater = isAtLeast(6, 0);
+  static final bool isWindows7OrGreater = isAtLeast(6, 1);
+  static final bool isWindows8OrGreater = isAtLeast(6, 2);
+  static final bool isWindows10OrGreater = isAtLeast(10, 0);
+  static final bool isWindows11OrGreater = isAtLeast(10, 1) || 
       (isAtLeast(10, 0) && !WIN_CAPTION.contains(RegExp(r'(^|\s)(Windows 10x?|Server 2016)($|\s)', caseSensitive: false)) );
 }

@@ -5,8 +5,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wsa_pacman/l10n/app_localizations.dart';
+export 'package:wsa_pacman/l10n/app_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:protobuf/protobuf.dart';
 import 'package:wsa_pacman/android/android_utils.dart';
@@ -63,7 +63,7 @@ class GState {
 const String UNLOCALIZED_OPTION = "UNLOCALIZED_OPTION";
 
 extension Options_Micas_Ext on Options_Mica {
-  static late final bool isSupported = WinVer.isWindows11OrGreater;
+  static final bool isSupported = WinVer.isWindows11OrGreater;
   bool get supported => isSupported;
   bool get disabled => this == Options_Mica.DISABLED || !isSupported;
   bool get enabled => this != Options_Mica.DISABLED && isSupported;
@@ -121,13 +121,13 @@ class AppOptions {
     // TODO options file migration; remove eventually
     final oldDirectory = Directory("${Env.USER_PROFILE}${RegExp(r'.*[/\\]$').hasMatch(Env.USER_PROFILE) ? '' : r'\'}.wsamanager\\");
     // TODO options file migration; remove eventually
-    final _oldOtionsFile = File("${oldDirectory.path}\\options.bin");
+    final oldOtionsFile = File("${oldDirectory.path}\\options.bin");
     final directory = Directory("${Env.USER_PROFILE}${RegExp(r'.*[/\\]$').hasMatch(Env.USER_PROFILE) ? '' : r'\'}.wsa-pacman\\")..createSync();
     // TODO options file migration; remove eventually
     if (oldDirectory.existsSync()) {
-      if (_oldOtionsFile.existsSync()) {
-        if (!File("${directory.path}\\options.bin").existsSync()) _oldOtionsFile.copySync("${directory.path}\\options.bin");
-        _oldOtionsFile.deleteSync();
+      if (oldOtionsFile.existsSync()) {
+        if (!File("${directory.path}\\options.bin").existsSync()) oldOtionsFile.copySync("${directory.path}\\options.bin");
+        oldOtionsFile.deleteSync();
       }
       oldDirectory.delete(recursive: false);
     }
@@ -174,8 +174,8 @@ class PersistableValue<T> extends SharedValue<T> {
   static final List<Function(Options options)> _reinitializers = [];
   static void reinitializeAll() => AppOptions.withOptions((options) {for (final reinitializer in _reinitializers) reinitializer(options);});
 
-  PersistableValue({String? key, required T value, required T Function(Options options) loader, required Function(Options options, T value) setter, bool autosave = false})
-      : _setter = setter, super(key: key, value: value, autosave: autosave){
+  PersistableValue({super.key, required super.value, required T Function(Options options) loader, required Function(Options options, T value) setter, super.autosave})
+      : _setter = setter{
     reinitializer(Options options) {super.setIfChanged(loader(options)); _initializer = null;}
     _initializer = AppOptions.withOptions(reinitializer);
     _reinitializers.add(reinitializer);

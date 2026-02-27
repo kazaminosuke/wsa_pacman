@@ -58,14 +58,14 @@ class LateUpdater<E> {
 }
 
 class ScreenSettings extends StatefulWidget {
-  ScreenSettings({Key? key, this.controller}) : super(key: key);
+  const ScreenSettings({super.key, this.controller});
   final ScrollController? controller;
 
   @override
-  State<StatefulWidget> createState() => ScreenSettingsState(controller: this.controller);
+  State<StatefulWidget> createState() => ScreenSettingsState(controller: controller);
 }
 
-late final androidPortUpdater = LateUpdater<int>(GState.androidPort.$, (value){
+final androidPortUpdater = LateUpdater<int>(GState.androidPort.$, (value){
   GState.androidPort..update((p0) => value)..persist();
   log("AGGIORNATO: ${GState.androidPort.$}");
 });
@@ -75,38 +75,42 @@ class ScreenSettingsState extends State<ScreenSettings> {
   ScreenSettingsState({this.controller});
   final ScrollController? controller;
 
-  static late final _exBackground = _loadIcon("assets/icons/missing_icon_background.si");
-  static late final _exForeground = _loadIcon("assets/icons/missing_icon_foreground.si");
-  static late final _exLegacyIcon = _loadIcon("assets/icons/missing_icon_legacy.si");
+  static final _exBackground = _loadIcon("assets/icons/missing_icon_background.si");
+  static final _exForeground = _loadIcon("assets/icons/missing_icon_foreground.si");
+  static final _exLegacyIcon = _loadIcon("assets/icons/missing_icon_legacy.si");
 
   static Future<ScalableImageWidget> _loadIcon(String asset) async {
     var scalable = ScalableImage.fromSIAsset(rootBundle, asset);
     return ScalableImageWidget(si: await scalable);
   }
 
-  static List<Widget> optionsListDeferred<E extends ProtobufEnum, V>(List<E> values, String Function(E)? title, V Function(E e) getter, bool Function(V v) checked, Function(E e, V v) updater) => List.generate(values.length, (index) {
+static List<Widget> optionsListDeferred<E extends ProtobufEnum, V>(List<E> values, String Function(E)? title, V Function(E e) getter, bool Function(V v) checked, Function(E e, V v) updater) => List.generate(values.length, (index) {
     final modeOpt = values[index];
     final mode = getter(modeOpt);
     return Padding(
       padding: index != values.length - 1 ? const EdgeInsets.only(bottom: 8.0) : EdgeInsets.zero,
-      child: RadioButton(
-        checked: checked(mode),
-        onChanged: (value) {
-          if (value) {
-            updater(modeOpt, mode);
-            //GState.theme..update((p0) => modeOpt)..persist();
-            //themeMode = mode;
-          }
-        },
-        content: Text(title != null ? title(modeOpt) : modeOpt.toString().normalized),
+child: Row(
+        children: [
+          Checkbox(
+            checked: checked(mode),
+            onChanged: (bool? value) {
+              if (value == true) {
+                updater(modeOpt, mode);
+              }
+            },
+          ),
+          const SizedBox(width: 8),
+          Text(title != null ? title(modeOpt) : modeOpt.toString().normalized),
+        ],
       ),
     );
   });
 
+
   static List<Widget> optionsList<E extends ProtobufEnum>(List<E> values, String Function(E)? title, bool Function(E e) checked, Function(E e) updater) =>
       optionsListDeferred<E, E>(values, title, (e) => e, checked, (e, v) => updater(e));
   
-  static late final _localeItems = <NamedLocale>[LocaleUtils.SYSTEM_LOCALE].followedBy(LocaleUtils.supportedLocales).map((l)=>ComboboxItem(child: Text(l.name), value: l)).toList();
+  static final _localeItems = <NamedLocale>[LocaleUtils.SYSTEM_LOCALE].followedBy(LocaleUtils.supportedLocales).map((l)=>ComboBoxItem(value: l, child: Text(l.name))).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +119,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
     final locale_lang = GState.locale.of(context);
     final lang = AppLocalizations.of(context)!;
     
-    final tooltipThemeData = TooltipThemeData(decoration: () {
+   final tooltipThemeData = TooltipThemeData(decoration: () { 
       const radius = BorderRadius.zero;
       final shadow = [
         BoxShadow(

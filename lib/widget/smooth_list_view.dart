@@ -45,12 +45,12 @@ class SmoothListView extends DynMouseScroll {
       addRepaintBoundaries: addRepaintBoundaries,
       addSemanticIndexes: addSemanticIndexes,
       cacheExtent: cacheExtent,
-      children: children,
       semanticChildCount: semanticChildCount,
       dragStartBehavior: dragStartBehavior,
       keyboardDismissBehavior: keyboardDismissBehavior,
       restorationId: restorationId,
-      clipBehavior: clipBehavior
+      clipBehavior: clipBehavior,
+      children: children
     )
   );
 }

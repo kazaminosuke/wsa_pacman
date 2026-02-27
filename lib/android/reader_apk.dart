@@ -20,7 +20,6 @@ import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/main.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
-import 'package:archive/archive.dart';
 import 'package:flutter/services.dart';
 
 import 'dart:developer';
@@ -31,7 +30,7 @@ import '../utils/string_utils.dart';
 import '../utils/misc_utils.dart';
 
 extension on int {
-  String get asResId => "0x"+toRadixString(16).padLeft(8, '0');
+  String get asResId => "0x${toRadixString(16).padLeft(8, '0')}";
 }
 
 /// Reads apk file data on a different process and updates global state
@@ -122,10 +121,10 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     var xml = utf8.decode(await _decodeXml(encoded), allowMalformed: true);
     if (!isGradient) xml = xml.replaceAllMapped(RegExp('([\\s\\n]android:pathData=[\'"])[^M]*(M\\s*-?[0-9])'), (m) => m.group(1)!+m.group(2)! )
       .replaceAllMapped(RegExp('<(([a-zA-Z0-9]*)\\s+$REGEX_XML_NOCLOSE)(android:fillColor=[\'"])(type1/([0-9]*)[\'"])($REGEX_XML_NOCLOSE)>', multiLine: true, dotAll: true), 
-        (m) => '<${m.group(1)!}${m.group(7)!.endsWith("/") ? m.group(7)!.substring(0, m.group(7)!.length-1) : m.group(7)!}>\n${_getGradientPlaceholder(futureGradients!, "0x"+int.parse(m.group(6)!).toRadixString(16).padLeft(8, '0'))}${m.group(7)!.endsWith("/") ? "\n</${m.group(2)}>" : "\n"}')
-      .replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => m.group(1)!+'#'+(int.parse(m.group(4)!).toRadixString(16).padLeft(8, '0')) )
+        (m) => '<${m.group(1)!}${m.group(7)!.endsWith("/") ? m.group(7)!.substring(0, m.group(7)!.length-1) : m.group(7)!}>\n${_getGradientPlaceholder(futureGradients!, "0x${int.parse(m.group(6)!).toRadixString(16).padLeft(8, '0')}")}${m.group(7)!.endsWith("/") ? "\n</${m.group(2)}>" : "\n"}')
+      .replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => '${m.group(1)!}#${int.parse(m.group(4)!).toRadixString(16).padLeft(8, '0')}' )
       .replaceAllMapped(RegExp('([\\s\\n]android:fillType=[\'"])([0-9]*)'), (m) => m.group(1)!+ (fillType[m.group(2)!] ?? "winding") );
-    else xml = xml.replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => m.group(1)!+'#'+(int.parse(m.group(4)!).toRadixString(16).padLeft(8, '0')) )
+    else xml = xml.replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => '${m.group(1)!}#${int.parse(m.group(4)!).toRadixString(16).padLeft(8, '0')}' )
       .replaceAll(RegExp("(xmlns:[^=\\s]*|android:angle)\\s*=\\s*$REGEX_XML_QUOTED"), "")
       .replaceAllMapped(RegExp('(android:type\\s*=\\s*[\'"])([0-9]*)'), (m) => m.group(1)! + (gradientType[m.group(2)!] ?? "linear"));
     
@@ -205,25 +204,30 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     updateStateWith(()=>GState.apkForegroundIcon, isForeXml ? foreXmlData : foreWidget, !isForeXml ? null : (data)=>ScalableImageWidget(si: ScalableImage.fromAvdString(data as String)));
   }
 
-  /// Retrieves installation type (whether installing for the first time, reinstalling the same version, upgrading or downgrading)
-  static Future loadInstallType(String package, int versionCode) async {if (package.isNotEmpty) {
-    String ipAddress = await GState.ipAddress.whenReady();
-    int port = await GState.androidPort.whenReady();
+/// Retrieves installation type (whether installing for the first time, reinstalling the same version, upgrading or downgrading)
+  static Future loadInstallType(String package, int versionCode) async {
+    if (package.isEmpty) return;
+    try {
+      String ipAddress = await GState.ipAddress.whenReady();
+      int port = await GState.androidPort.whenReady();
 
-    return await ADBUtils.shellToAddress(ipAddress, port, 'dumpsys package $package').then((result) {
-      //cmd package dump
+      var result = await ADBUtils.shellToAddress(ipAddress, port, 'dumpsys package $package');
       var verMatch = RegExp(r'(\n|\s|^)versionCode=([0-9]*)[^\n]*(\n([^\s\n]*\s)*versionName=([^\n\s_$]*))?').firstMatch(result.stdout.toString());
       int? oldVersionCode = int.tryParse(verMatch?.group(2) ?? "");
-      if (result.exitCode != 0) GState.apkInstallType.update((_) => InstallType.UNKNOWN);
-      else if (oldVersionCode != null) {
+      
+      if (oldVersionCode != null) {
         GState.apkInstallType.update((_) => (oldVersionCode < versionCode) ? InstallType.UPDATE : 
             (oldVersionCode > versionCode) ? InstallType.DOWNGRADE : InstallType.REINSTALL);
         String oldVersion = verMatch!.group(5) ?? "???";
         GState.oldVersion.update((_) => oldVersion);
+      } else {
+        GState.apkInstallType.update((_) => InstallType.INSTALL);
       }
-      else GState.apkInstallType.update((_) => InstallType.INSTALL);
-    }).onError((_, __) {GState.apkInstallType.update((_) => InstallType.UNKNOWN);});
-  } else return null;}
+    } catch (e) {
+      // エラー時は強制的に新規インストール扱いにしてぐるぐるを止める
+      GState.apkInstallType.update((_) => InstallType.INSTALL);
+    }
+  }
 
   void loadInstallInfoOnUIThread(String package, int versionCode) => package.isNotEmpty ? executeInUi(() {
     GState.package.update((_) => package);
@@ -233,108 +237,109 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
   /// Retrieves APK information
   @override
   void run() async {
-    File _APK_FILE_F = File(APK_FILE = data);
-    bool ntSymlinkCreated = false;
-    String APK_DIRECORY = _APK_FILE_F.parent.path;
-    String APK_NAME = _APK_FILE_F.basename;
-    
-    if (!APK_NAME.isASCII) {
-      String? shortName =  _APK_FILE_F.shortBaseName;
-      if (shortName != null && shortName.isASCII) APK_NAME = shortName;
-      else {
-        String? ntSymlink = NtIO.createTempShortcut(_APK_FILE_F.absolute.path, "install-symlink@$pid.apk");
-        if (ntSymlink != null) {
-          ntSymlinkCreated = true;
-          APK_NAME = ntSymlink;
-          APK_DIRECORY = WinPath.tempSubdir;
+    try {
+      File APK_FILE_F = File(APK_FILE = data);
+      bool ntSymlinkCreated = false;
+      String APK_DIRECORY = APK_FILE_F.parent.path;
+      String APK_NAME = APK_FILE_F.basename;
+      
+      if (!APK_NAME.isASCII) {
+        String? shortName =  APK_FILE_F.shortBaseName;
+        if (shortName != null && shortName.isASCII) APK_NAME = shortName;
+        else {
+          String? ntSymlink = NtIO.createTempShortcut(APK_FILE_F.absolute.path, "install-symlink@$pid.apk");
+          if (ntSymlink != null) {
+            ntSymlinkCreated = true;
+            APK_NAME = ntSymlink;
+            APK_DIRECORY = WinPath.tempSubdir;
+          }
         }
       }
-    }
 
-    _resourceDump = Process.run('${Env.TOOLS_DIR}\\aapt.exe', ['dump', 'resources', APK_NAME], workingDirectory: APK_DIRECORY).then((p) => 
-      p.stdout.toString().foldToMap(r'(^|\n)\s*resource\s+(0x[0-9a-zA-Z]*)[\s]+.*\st=0x0*([^\s\n]*).*\sd=0x0*([^\s\n]*)[\s|\n]', (m) => m.group(2)!, 
-      (m,old) => Resource((old != null) ? ((old.values as ListQueue<String>)..addAll([m.group(4)!])) : ListQueue<String>.from([m.group(4)!]), old?.type ?? getResType(m.group(3)!)) )
-    );
-    //strings.findAll('(^|\\n|\\s)*String\\s+#(${resCodes.join("|")})\\s*:\\s*([^\\s\\n]*)', 3);
-    _stringDump = Process.run('${Env.TOOLS_DIR}\\aapt.exe', ['dump', 'strings', APK_NAME], workingDirectory: APK_DIRECORY).then((p) => 
-      p.stdout.toString().toMap(r'(^|\n)\s*String\s+#([0-9]*)\s*:\s*([^\s\n]*)', (m) => int.parse(m.group(2)!), (m) => m.group(3)!)
-    );
-    _initArchive();
+      _resourceDump = Process.run('${Env.TOOLS_DIR}\\aapt.exe', ['dump', 'resources', APK_NAME], workingDirectory: APK_DIRECORY).then((p) => 
+        p.stdout.toString().foldToMap(r'(^|\n)\s*resource\s+(0x[0-9a-zA-Z]*)[\s]+.*\st=0x0*([^\s\n]*).*\sd=0x0*([^\s\n]*)[\s|\n]', (m) => m.group(2)!, 
+        (m,old) => Resource((old != null) ? ((old.values as ListQueue<String>)..addAll([m.group(4)!])) : ListQueue<String>.from([m.group(4)!]), old?.type ?? getResType(m.group(3)!)) )
+      );
+      _stringDump = Process.run('${Env.TOOLS_DIR}\\aapt.exe', ['dump', 'strings', APK_NAME], workingDirectory: APK_DIRECORY).then((p) => 
+        p.stdout.toString().toMap(r'(^|\n)\s*String\s+#([0-9]*)\s*:\s*([^\s\n]*)', (m) => int.parse(m.group(2)!), (m) => m.group(3)!)
+      );
+      _initArchive();
 
-    bool legacyIcon = await waitFlag(APK_READER_FLAGS.LEGACY_ICON);
-    Future<bool> legacyIconFound = (legacyIcon) ? Process.run('${Env.TOOLS_DIR}\\axmldec.exe', ['-i', APK_FILE], stdoutEncoding: null).then((value) async {
-      String manifest = utf8.decode(await _decodeXml(value.stdout), allowMalformed: true);
-      String? icon = RegExp('<application\\s+${REGEX_XML_NOCLOSE}android:icon\\s*=\\s*$REGEX_QUOTED_TYPE', multiLine: true, dotAll: true).firstMatch(manifest)?.group(2);
+      bool legacyIcon = false; 
+      Future<bool> legacyIconFound = Future.value(false);
 
-      Resource? resource = icon != null ? await getResources(int.parse(icon).asResId) : null;
-      // first: smaller - last: bigger ? (taking the second one)
-      Iterator<String>? legacyIconFiles = resource?.values.where((e) => !e.endsWith('.xml')).iterator;
-      String? iconFile = (legacyIconFiles?.moveNext() ?? false) ? legacyIconFiles!.current : null;
-      if (legacyIconFiles?.moveNext() ?? false) iconFile = legacyIconFiles!.current;
-      if (iconFile != null) await _getIconFile(iconFile);
-      return iconFile != null;
-    }).onError((_,__) => false) : Future.value(false);
+      Future? iconUpdThread;
+      Future<ProcessResult>? inner;
+      
+      var process = Process.run('${Env.TOOLS_DIR}\\aapt.exe', ['dump', 'badging', APK_NAME], stdoutEncoding: utf8, workingDirectory: APK_DIRECORY).then((value) async {
+        if (ntSymlinkCreated) NtIO.deleteNtTempDirJunction();
+        if (value.exitCode == 0) {
+          String dump = value.stdout;
+          String? info = dump.find(r'(^|\n)package:.*');
 
-    Future? iconUpdThread;
-    Future<ProcessResult>? inner;
-    var process = Process.run('${Env.TOOLS_DIR}\\aapt.exe', ['dump', 'badging', APK_NAME], stdoutEncoding: utf8, workingDirectory: APK_DIRECORY).then((value) async {
-      if (ntSymlinkCreated) NtIO.deleteNtTempDirJunction();
-      if (value.exitCode == 0) {
-        String dump = value.stdout;
-        String? info = dump.find(r'(^|\n)package:.*');
+          int versionCode = int.parse(info?.find(r"(^|\n|\s)versionCode=\s*'([^'\n\s$]*)", 2) ?? "0");
+          setInUIThread(versionCode, (int v)=>ApkReader._versionCode = v);
 
-        int versionCode = int.parse(info?.find(r"(^|\n|\s)versionCode=\s*'([^'\n\s$]*)", 2) ?? "0");
-        setInUIThread(versionCode, (int v)=>ApkReader._versionCode = v);
-
-        String package = info?.find(r"(^|\n|\s)name=\s*'([^'\n\s$]*)", 2) ?? "";
-        loadInstallInfoOnUIThread(package, versionCode);
-
-        updateStateWith(()=>GState.version, info, (String? v)=>v?.find(r"(^|\n|\s)versionName=\s*'([^'\n\s_$]*)", 2) ?? "");
-        updateStateWith(()=>GState.activity, dump, (String v)=>v.find(r"(^|\n)(leanback-)?launchable-activity:.*name='([^'\n\s$]*)", 3) ?? "");
-
-        String? application = dump.find(r'(^|\n)application:\s*(.*)');
-        String? title = application?.find(r"(^|\n|\s)label='([^']*)'", 2);
-        String? icon = application?.find(r"(^|\n|\s)icon='([^']*)'", 2);
-        updateState(()=>GState.apkTitle, title ?? "UNKNOWN_TITLE");
-
-        Set<AndroidPermission> permissions = dump.toSet("(^|\\n)\\s*uses-permission(-[^:]*)?:\\s+name=[\"']([^\"'\\n]*)", 
-          (m) => AndroidPermissionList.get(m.group(3)!), (a,b)=> a.index - b.index);
-        if (permissions.isEmpty) permissions.add(AndroidPermission.NONE);
-        updateState(()=>GState.permissions, permissions);
-        
-        if (legacyIcon && await legacyIconFound) return;
-        else if (icon?.endsWith(".xml") ?? false) inner = Process.run('${Env.TOOLS_DIR}\\aapt2.exe', ['dump', 'xmltree', '--file', icon!, APK_FILE])..then((value) {
-          if (value.exitCode != 0) {log("XML ICON ERROR"); return;}
-          String iconData = value.stdout.toString();
-          String? background = iconData.find(r'(^|\n|\s)*E:[\s]?background\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
-          String? foreground = iconData.find(r'(^|\n|\s)*E:[\s]?foreground\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
+          String package = info?.find(r"(^|\n|\s)name=\s*'([^'\n\s$]*)", 2) ?? "";
+          if (package.isEmpty) {
+             executeInUi(() {
+                GState.apkTitle.$ = "エラー (パッケージ空)";
+                GState.errorCode.$ = "EMPTY_PKG";
+                GState.errorDesc.$ = "パッケージ情報がありません。";
+                GState.apkInstallState.$ = InstallState.ERROR;
+                GState.apkInstallType.$ = InstallType.INSTALL;
+             });
+             return;
+          }
           
-          if (DEBUG) log("APK-ICON-IDS: background_id=$background, foreground_id=$foreground");
+          loadInstallInfoOnUIThread(package, versionCode);
 
-          //then is apparently not called immediately
-          /*resourceDump.then((value){
-            String resources = value.stdout.toString();
-            log(resources.findAll('(^|\\s|\\n)*$background[\\s]+.*\\sd=0x0*([^\\s\\n]*)[\\s|\\n]', 2).map((s)=>'#$s').toString());
-          });*/
-          if (foreground != null) iconUpdThread = _getAdaptiveIconFiles(background, foreground);
-          else iconUpdThread= _getIconFile(icon);
-        }); else if (icon != null && icon.isNotEmpty) {
-          //Probably a png
-          iconUpdThread = _getIconFile(icon);
+          updateStateWith(()=>GState.version, info, (String? v)=>v?.find(r"(^|\n|\s)versionName=\s*'([^'\n\s_$]*)", 2) ?? "");
+          updateStateWith(()=>GState.activity, dump, (String v)=>v.find(r"(^|\n)(leanback-)?launchable-activity:.*name='([^'\n\s$]*)", 3) ?? "");
+
+          String? application = dump.find(r'(^|\n)application:\s*(.*)');
+          String? title = application?.find(r"(^|\n|\s)label='([^']*)'", 2);
+          String? icon = application?.find(r"(^|\n|\s)icon='([^']*)'", 2);
+          updateState(()=>GState.apkTitle, title ?? "UNKNOWN_TITLE");
+
+          Set<AndroidPermission> permissions = dump.toSet("(^|\\n)\\s*uses-permission(-[^:]*)?:\\s+name=[\"']([^\"'\\n]*)", 
+            (m) => AndroidPermissionList.get(m.group(3)!), (a,b)=> a.index - b.index);
+          if (permissions.isEmpty) permissions.add(AndroidPermission.NONE);
+          updateState(()=>GState.permissions, permissions);
+          
+if (icon?.endsWith(".xml") ?? false) inner = Process.run('${Env.TOOLS_DIR}\\aapt2.exe', ['dump', 'xmltree', '--file', icon!, APK_FILE])..then((value) {
+            if (value.exitCode != 0) return;
+            String iconData = value.stdout.toString();
+            String? background = iconData.find(r'(^|\n|\s)*E:[\s]?background\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
+            String? foreground = iconData.find(r'(^|\n|\s)*E:[\s]?foreground\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
+            if (foreground != null) iconUpdThread = _getAdaptiveIconFiles(background, foreground);
+            else iconUpdThread= _getIconFile(icon!); // ←ここにも「!」
+          }); else if (icon != null && icon.isNotEmpty) {
+            iconUpdThread = _getIconFile(icon);
+          }
+        } else {
+          executeInUi(() {
+             GState.apkTitle.$ = "AAPT エラー";
+             GState.apkInstallState.$ = InstallState.ERROR;
+             GState.errorCode.$ = "AAPT_ERR (${value.exitCode})";
+             GState.errorDesc.$ = value.stderr.toString();
+             GState.apkInstallType.$ = InstallType.INSTALL;
+          });
         }
-        if (DEBUG) log("APK-INFO:  title='$title', icon='$icon'");
-      }
-      else {
-        log("ERROR");
-      }
-    }).onError((error, stackTrace) {
-      //data.pipe.send("WEEEERROR: $stackTrace");
-    });
-    await process;
-    if (inner != null) await inner;
-    if (iconUpdThread != null) await iconUpdThread;
-    setInUIThread(legacyIcon, (bool v) => setDefaultIcon(v));
-    //(await _apkArchive).clear();
+      });
+      await process;
+      if (inner != null) await inner;
+      if (iconUpdThread != null) await iconUpdThread;
+      setInUIThread(legacyIcon, (bool v) => setDefaultIcon(v));
+    } catch (e, stack) {
+      executeInUi(() {
+        GState.apkTitle.$ = "Isolate 突然死";
+        GState.apkInstallState.$ = InstallState.ERROR;
+        GState.errorCode.$ = "CRASH";
+        GState.errorDesc.$ = "裏方の解析処理がクラッシュしました:\n$e\n$stack";
+        GState.apkInstallType.$ = InstallType.INSTALL;
+      });
+    }
   }
 
   /// Uses the default application icon if no icon has been found

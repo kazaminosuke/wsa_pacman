@@ -1,8 +1,9 @@
 // ignore_for_file: constant_identifier_names, curly_braces_in_flow_control_structures, non_constant_identifier_names
 
-
-
 import 'dart:ui';
+import 'dart:io';
+import 'dart:developer';
+import 'dart:async';
 
 import 'package:flutter/material.dart' as material;
 import 'package:mdi/mdi.dart';
@@ -11,13 +12,11 @@ import 'package:wsa_pacman/android/android_utils.dart';
 import 'package:wsa_pacman/apk_installer.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
-//import 'package:flutter/material.dart' hide showDialog;
 import 'package:shared_value/shared_value.dart';
 import 'package:wsa_pacman/io/isolate_runner.dart';
 import 'package:wsa_pacman/utils/misc_utils.dart';
 import 'package:wsa_pacman/utils/wsa_utils.dart';
 import 'package:wsa_pacman/utils/locale_utils.dart';
-import 'package:wsa_pacman/widget/themed_pane_item.dart';
 import 'package:wsa_pacman/windows/win_info.dart';
 import 'package:wsa_pacman/windows/win_reg.dart';
 import 'package:wsa_pacman/windows/wsa_status.dart';
@@ -32,10 +31,6 @@ import 'package:url_strategy/url_strategy.dart';
 import 'screens/wsa.dart';
 import 'screens/settings.dart';
 import 'utils/string_utils.dart';
-
-import 'dart:io';
-import 'dart:developer';
-import 'dart:async';
 
 import 'theme.dart';
 
@@ -88,16 +83,23 @@ extension __EnumExtension on Enum {
 class Env {
   static final String SYSTEM_ROOT = Platform.environment["SystemRoot"] ?? "";
   static final String USER_PROFILE = Platform.environment["UserProfile"] ?? "";
-  static final String EXEC_DIR = Platform.resolvedExecutable.replaceFirst(RegExp(r'[/\\][^/\\]*$'), r'\');
-  static final String TOOLS_DIR = "${EXEC_DIR}embedded-tools\\";
-  static late final String POWERSHELL = WinReg.getString(RegHKey.HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell', 'Path')?.value ?? '$SYSTEM_ROOT\\System32\\WindowsPowerShell\v1.0\\powershell.exe';
-  static late final String WSA_SYSTEM_PATH = RegExp(r'^(.*)[\\/]+[^\\/]*[\\/]+[^\\/]*$').firstMatch(
+  
+  // 実行ファイル（.exe）があるディレクトリを取得
+  static String get EXEC_DIR => File(Platform.resolvedExecutable).parent.path;
+
+  // 絶対パスでツールフォルダを指定
+  static String get TOOLS_DIR => "$EXEC_DIR\\embedded-tools\\";
+      
+  static final String POWERSHELL = WinReg.getString(RegHKey.HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell', 'Path')?.value ?? '$SYSTEM_ROOT\\System32\\WindowsPowerShell\\v1.0\\powershell.exe';
+  
+  static final String WSA_SYSTEM_PATH = RegExp(r'^(.*)[\\/]+[^\\/]*[\\/]+[^\\/]*$').firstMatch(
       WinReg.getString(RegHKey.HKEY_LOCAL_MACHINE, r'SYSTEM\CurrentControlSet\Services\WsaService', 'ImagePath')?.value.unquoted ??
       WinReg.getString(RegHKey.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\App Paths\WsaClient.exe', null)?.value ?? ''
     )?.group(1) ?? '';
-  static late final String WSA_EXECUTABLE = '$WSA_SYSTEM_PATH\\WsaClient\\WsaClient.exe';
-  static late final bool WSA_INSTALLED = File('$WSA_SYSTEM_PATH\\AppxManifest.xml').existsSync();
-  static late final WSA_INFO = WSAPkgInfo.fromSystemPath(WSA_SYSTEM_PATH);
+
+  static final String WSA_EXECUTABLE = '$WSA_SYSTEM_PATH\\WsaClient\\WsaClient.exe';
+  static final bool WSA_INSTALLED = File('$WSA_SYSTEM_PATH\\AppxManifest.xml').existsSync();
+  static final WSA_INFO = WSAPkgInfo.fromSystemPath(WSA_SYSTEM_PATH);
 }
 
 class WSAPeriodicConnector {
@@ -161,10 +163,6 @@ class WSAPeriodicConnector {
         else if (GState.ipAddress.$ != "localhost") GState.ipAddress.update((old) => "localhost");
       }
     }
-    //else status = ConnectionStatus.DISCONNECTED;
-    /*if (status != prevStatus) {
-      (alert.title as Text).data = ""
-    }*/
     else await _tryConnect();
     if (status != prevStatus) GState.connectionStatus.update((p0) => status.statusAlert);
     _statusInitialized = false;
@@ -187,7 +185,6 @@ class WSAPeriodicConnector {
   }
 }
 
-/// Checks if the current environment is a desktop environment.
 bool get isDesktop {
   if (kIsWeb) return false;
   return [
@@ -198,7 +195,6 @@ bool get isDesktop {
 }
 
 class Constants {
-  //static late final List<String> args;
   static late final String packageFile;
   static late final AppPackage packageType;
   static late final bool installMode;
@@ -206,15 +202,12 @@ class Constants {
 }
 
 void main(List<String> arguments) async {
-  //int prevTime = DateTime.now().millisecondsSinceEpoch;
-  //arguments = [r'C:\Users\Alex\Downloads\firefox-114-1-0.apk'];
-  //arguments = [r'C:\Users\Alex\Downloads\Chrome.xapk'];
-  
-
   WidgetsFlutterBinding.ensureInitialized();
+  await flutter_acrylic.Window.initialize();
+
   const app = MyApp();
   final wrappedApp = SharedValue.wrapApp(app);
-  darkMode = SystemTheme.isDarkMode;
+  darkMode = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
   runApp(wrappedApp);
 
   AppOptions.init();
@@ -223,17 +216,12 @@ void main(List<String> arguments) async {
   Constants.packageType = AppPackageType.fromArguments(arguments);
   Constants.isolate = Constants.installMode ? Constants.packageType.read(arguments.first) : null;
 
-  //await SystemTheme.accentInstance.load();
-  await flutter_acrylic.Window.initialize();
-
   WSAPeriodicConnector._checkConnectionStatus();
 
   flutter_acrylic.Window.hideWindowControls();
-  //flutter_acrylic.Window.setEffect(effect: flutter_acrylic.WindowEffect.mica);
 
   if (isDesktop) {
     doWhenWindowReady(() {
-      //log("UI started after ${DateTime.now().millisecondsSinceEpoch - prevTime}");
       final win = appWindow;
       if (!Constants.installMode) {
         win.minSize = const Size(640, 500);
@@ -245,26 +233,17 @@ void main(List<String> arguments) async {
       }
       win.alignment = Alignment.center;
       win.show();
-      late final _SET_VISIBLE = Constants.isolate?.sendFlag(APK_READER_FLAGS.UI_LOADED, true);
+      late final SET_VISIBLE = Constants.isolate?.sendFlag(APK_READER_FLAGS.UI_LOADED, true);
       late final Timer uiTimer; uiTimer = Timer.periodic(const Duration(milliseconds: 100), (t) {if (win.isVisible) {
-        _SET_VISIBLE;
+        SET_VISIBLE;
         uiTimer.cancel();
       }});
     });
   }
 }
 
-class _FluentLocalizationsEnglish extends LocalizationsDelegate<FluentLocalizations> {
-  const _FluentLocalizationsEnglish();
-
-  @override bool isSupported(Locale locale) => true;
-  @override bool shouldReload(_FluentLocalizationsEnglish old) => false;
-  @override Future<FluentLocalizations> load(Locale locale) => DefaultFluentLocalizations.load(locale);
-  @override String toString() => 'DefaultFluentLocalizations.delegate(en_US)';
-}
-
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   void setMicaEffect(bool micaEnabled, [bool dark = true]) {
     if (WinVer.isWindows11OrGreater)
@@ -278,8 +257,6 @@ class MyApp extends StatelessWidget {
 
     final bool isDark = theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
     setMicaEffect(mica.enabled, isDark);
-    final bool isMicaInstall = Constants.installMode && mica.enabled;
-    final bool IsFullMicaOrInstall = mica.full || isMicaInstall;
     
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -294,52 +271,53 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: const [
             AppLocalizations.delegate,
             locale.GlobalMaterialLocalizations.delegate,
-            WidgetLocalizationOverrides.delegate,
-            //locale.GlobalCupertinoLocalizations.delegate,
-            _FluentLocalizationsEnglish(),
+            FluentLocalizations.delegate,
           ],
           supportedLocales: LocaleUtils.supportedLocales,
           localeResolutionCallback: LocaleUtils.localeResolutionCallback,
           routes: {'/': (_) => Constants.installMode ? const ApkInstaller() : const MyHomePage()},
-          theme: ThemeData(
-            buttonTheme: ButtonThemeData(
-              defaultButtonStyle: ButtonStyle(
-                shadowColor: ButtonState.all(Colors.transparent),
-                border: ButtonState.resolveWith((states) {
-                  if (isDark) {
-                    if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.05));
-                    if (states.isNone || (states.isHovering && !states.isPressing)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.035));
-                    else return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.07));
-                  }
-                  else {
-                    if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.12));
-                    if (states.isNone || (states.isHovering && !states.isDisabled && !states.isPressing)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.22));
-                    else return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.07));
-                  }
-                }),
-                backgroundColor: ButtonState.resolveWith((states) {
-                  if (isDark) {
-                    if (states.isDisabled) return const ColorConst.withOpacity(0xFFFFFF, 0.045);
-                    if (states.isPressing) return const ColorConst.withOpacity(0xFFFFFF, 0.03);
-                    if (states.isHovering) return const ColorConst.withOpacity(0xFFFFFF, 0.08);
-                    return const ColorConst.withOpacity(0xFFFFFF, 0.055);
-                  }
-                  else {
-                    if (states.isDisabled) return const ColorConst.withOpacity(0xf9f9f9, 0.045);
-                    if (states.isPressing) return const ColorConst.withOpacity(0xf0f0f0, 0.4);
-                    if (states.isHovering) return const ColorConst.withOpacity(0xf9f9f9, 0.65);
-                    return const ColorConst.withOpacity(0xFFFFFF, 0.8);
-                  }
-                })
-              ) ,
+          theme: FluentThemeData(
+            scaffoldBackgroundColor: Colors.transparent,
+            micaBackgroundColor: Colors.transparent,
+            navigationPaneTheme: const NavigationPaneThemeData(
+              backgroundColor: Colors.transparent,
             ),
-            scaffoldBackgroundColor: IsFullMicaOrInstall ? Colors.transparent : isDark ? const Color(0xFF272727) : const Color(0xFFf9f9f9),
-            micaBackgroundColor: mica.enabled ? Colors.transparent : isDark ? const Color(0xFF202020) : const Color(0xFFf3f3f3),
             accentColor: appTheme.getColor(isDark),
             brightness: isDark ? Brightness.dark : Brightness.light,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
-              glowFactor: is10footScreen() ? 2.0 : 0.0,
+              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+            ),
+            buttonTheme: ButtonThemeData(
+              defaultButtonStyle: ButtonStyle(
+                shadowColor: const WidgetStatePropertyAll(Colors.transparent),
+                shape: WidgetStateProperty.resolveWith((states) {
+                  BorderSide side;
+                  if (isDark) {
+                    if (states.contains(WidgetState.disabled)) side = const BorderSide(width: 0.5, color: Color(0x0Df0f0f0));
+                    else if (states.isEmpty || (states.contains(WidgetState.hovered) && !states.contains(WidgetState.pressed))) side = const BorderSide(width: 0.5, color: Color(0x09f0f0f0));
+                    else side = const BorderSide(width: 0.5, color: Color(0x12f0f0f0));
+                  } else {
+                    if (states.contains(WidgetState.disabled)) side = const BorderSide(width: 0.5, color: Color(0x1F212121));
+                    else if (states.isEmpty || (states.contains(WidgetState.hovered) && !states.contains(WidgetState.pressed))) side = const BorderSide(width: 0.5, color: Color(0x38212121));
+                    else side = const BorderSide(width: 0.5, color: Color(0x12212121));
+                  }
+                  return RoundedRectangleBorder(side: side);
+                }),
+                backgroundColor: WidgetStateProperty.resolveWith((states) {
+                  if (isDark) {
+                    if (states.contains(WidgetState.disabled)) return const Color(0x0BFFFFFF);
+                    if (states.contains(WidgetState.pressed)) return const Color(0x08FFFFFF);
+                    if (states.contains(WidgetState.hovered)) return const Color(0x14FFFFFF);
+                    return const Color(0x0EFFFFFF);
+                  } else {
+                    if (states.contains(WidgetState.disabled)) return const Color(0x0Bf9f9f9);
+                    if (states.contains(WidgetState.pressed)) return const Color(0x66f0f0f0);
+                    if (states.contains(WidgetState.hovered)) return const Color(0xA6f9f9f9);
+                    return const Color(0xCCFFFFFF);
+                  }
+                }),
+              ),
             ),
           ),
         );
@@ -349,7 +327,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -357,9 +335,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool value = false;
-
   int index = 0;
-
   final colorsController = ScrollController();
   final settingsController = ScrollController();
 
@@ -372,132 +348,122 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    /*flutter_acrylic.Acrylic.setEffect(
-     effect: flutter_acrylic.AcrylicEffect.acrylic,
-     gradientColor: Colors.black.withOpacity(0.2)
-    );*/
+    super.initState();
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     final lang = AppLocalizations.of(context)!;
     final appTheme = context.watch<AppTheme>();
-    final mica = GState.mica.of(context);
     final theme = FluentTheme.of(context);
 
-    return NavigationView(
-      contentShape: RoundedRectangleBorder(
-        side: BorderSide(width: 0.3, color: theme.micaBackgroundColor.lerpWith(Colors.black, 0.25)),
-        borderRadius: const BorderRadius.only(),
-      ),
-      appBar: NavigationAppBar(
-        // height: !kIsWeb ? appWindow.titleBarHeight : 31.0,
-        /*title: () {
-          if (kIsWeb) return const Text(appTitle);
-          return MoveWindow(
-            child: const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(appTitle),
-            ),
-          );
-        }(),*/
-        actions: kIsWeb
-            ? null
-            : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(flex: 1,child: MoveWindow(child: Padding(
-                      padding: const EdgeInsets.only(top: 9, left: 13, right: 13), 
-                      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Text(lang.screen_wsa, style: theme.typography.caption),
-                        const SizedBox(width: 10),
-                        Text('v$appVersion', style: theme.typography.caption?.copyWith(color: theme.inactiveColor.withAlpha(theme.brightness.isLight ? 0x3F : 0x1B))),
-                      ])
-                    ))), 
-                    const WindowButtons()
-                  ],
-                )
-            /*MoveWindow(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [Spacer(), WindowButtons()],
+    return Column(
+      children: [
+        // 1段目：ウィンドウのタイトルバー（薄い文字の正式アプリ名と、右端のバツボタン等）
+        if (!kIsWeb)
+          WindowTitleBarBox(
+            child: Row(
+              children: [
+                Expanded(
+                  child: MoveWindow(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Text(
+                              appTitle, // "WSA Package Manager"
+                              style: theme.typography.caption?.copyWith(color: theme.inactiveColor.withOpacity(0.5)),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'v$appVersion', // "v1.5.0"
+                              style: theme.typography.caption?.copyWith(color: theme.inactiveColor.withOpacity(0.3)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),*/
-      ),
-      pane: NavigationPane(
-        selected: index,
-        onChanged: (i) => setState(() => index = i),
-        header: Container(
-          height: kOneLineTileHeight,
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: material.Row(children: [AnimatedContainer(
-            width: 28,
-            height: 28,
-            duration: const Duration(milliseconds: 750),
-            curve: Curves.fastOutSlowIn,
-            decoration: const BoxDecoration (
-              image: DecorationImage(image:  AssetImage("assets/images/logo.png"))
+                const WindowButtons(),
+              ],
             ),
-          ), const SizedBox(width: 10), Text("WSA PacMan", style: theme.typography.bodyLarge)]),
-        ),
-        displayMode: appTheme.displayMode,
-        indicator: () {
-          switch (appTheme.indicator) {
-            case NavigationIndicators.end:
-              return const EndNavigationIndicator();
-            case NavigationIndicators.sticky:
-            default:
-              return const StickyNavigationIndicator();
-          }
-        }(),
-        items: [
-          // It doesn't look good when resizing from compact to open
-          // PaneItemHeader(header: Text('User Interaction')),
-          ThemablePaneItem(
-            icon: const Icon(Mdi.androidDebugBridge),
-            title: const Text('WSA'),
-            translucent: mica.enabled,
-            forceDisplayMode: appTheme.displayMode
-          )
-          /*PaneItem(
-            icon: Icon(
-              appTheme.displayMode == PaneDisplayMode.top
-                  ? FluentIcons.more
-                  : FluentIcons.more_vertical,
-            ),
-            title: const Text('Others'),
-          ),*/
-        ],
-        footerItems: [
-          PaneItemSeparator(),
-          ThemablePaneItem(
-            icon: const Icon(FluentIcons.settings),
-            title: Text(lang.screen_settings),
-            translucent: mica.enabled,
-            forceDisplayMode: appTheme.displayMode
           ),
-        ],
-      ),
-      content: NavigationBody(index: index, children: [
-        const ScreenWSA(),
-        //const Others(),
-        ScreenSettings(controller: settingsController),
-      ]),
+
+        // 2段目：ナビゲーションバー（ロゴ、WSAタブ、右端に区切り線と設定ボタン）
+        Expanded(
+          child: NavigationView(
+            pane: NavigationPane(
+              selected: index,
+              onChanged: (i) => setState(() => index = i),
+              displayMode: PaneDisplayMode.top,
+              // 左側のヘッダー部分にロゴと「WSA PacMan」を配置
+              header: Padding(
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedContainer(
+                      width: 24,
+                      height: 24,
+                      duration: const Duration(milliseconds: 750),
+                      curve: Curves.fastOutSlowIn,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(image: AssetImage("assets/images/logo.png")),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text("WSA PacMan", style: theme.typography.bodyLarge),
+                    const SizedBox(width: 20), // タブとの少しの隙間
+                  ],
+                ),
+              ),
+              indicator: () {
+                switch (appTheme.indicator) {
+                  case NavigationIndicators.end:
+                    return const EndNavigationIndicator();
+                  case NavigationIndicators.sticky:
+                  default:
+                    return const StickyNavigationIndicator();
+                }
+              }(),
+              items: [
+                PaneItem(
+                  icon: const Icon(Mdi.androidDebugBridge),
+                  title: const Text('WSA'),
+                  body: const ScreenWSA(),
+                )
+              ],
+              footerItems: [
+                // 縦の区切り線を復活
+                PaneItemSeparator(),
+                PaneItem(
+                  icon: const Icon(FluentIcons.settings),
+                  title: Text(lang.screen_settings),
+                  body: ScreenSettings(controller: settingsController),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
 class WindowButtons extends StatelessWidget {
-  const WindowButtons({Key? key}) : super(key: key);
-  static Color windowButtonAlphaColor(ThemeData style, Set<ButtonStates> states) {
+  const WindowButtons({super.key});
+  
+  static Color windowButtonAlphaColor(FluentThemeData style, Set<WidgetState> states) {
     if (style.brightness == Brightness.light) {
-      if (states.isPressing) return Colors.black.withOpacity(0.075);
-      if (states.isHovering) return Colors.black.withOpacity(0.11);
+      if (states.contains(WidgetState.pressed)) return Colors.black.withOpacity(0.075);
+      if (states.contains(WidgetState.hovered)) return Colors.black.withOpacity(0.11);
       return Colors.transparent;
     } else {
-      if (states.isPressing) return Colors.white.withOpacity(0.03);
-      if (states.isHovering) return Colors.white.withOpacity(0.06);
+      if (states.contains(WidgetState.pressed)) return Colors.white.withOpacity(0.03);
+      if (states.contains(WidgetState.hovered)) return Colors.white.withOpacity(0.06);
       return Colors.transparent;
     }
   }
@@ -506,19 +472,21 @@ class WindowButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(debugCheckHasFluentTheme(context));
     assert(debugCheckHasFluentLocalizations(context));
-    final ThemeData theme = FluentTheme.of(context);
+    final FluentThemeData theme = FluentTheme.of(context);
     final mica = GState.mica.of(context);
 
     final buttonColors = WindowButtonColors(
       iconNormal: theme.inactiveColor,
       iconMouseDown: theme.inactiveColor,
       iconMouseOver: theme.inactiveColor,
-      //Fixed button colors
-      mouseOver: mica.enabled ? windowButtonAlphaColor(theme, {ButtonStates.hovering}) : ButtonThemeData.buttonColor(
-          theme.brightness, {ButtonStates.hovering}).lerpWith(Colors.black, 0.12),
-      mouseDown: mica.enabled ? windowButtonAlphaColor(theme, {ButtonStates.pressing}) : ButtonThemeData.buttonColor(
-          theme.brightness, {ButtonStates.pressing}).lerpWith(theme.shadowColor, 0.12).withAlpha(150),
+      mouseOver: mica.enabled 
+          ? windowButtonAlphaColor(theme, {WidgetState.hovered}) 
+          : Colors.transparent, 
+      mouseDown: mica.enabled 
+          ? windowButtonAlphaColor(theme, {WidgetState.pressed}) 
+          : Colors.transparent, 
     );
+    
     final closeButtonColors = WindowButtonColors(
       mouseOver: Colors.red,
       mouseDown: Colors.red.dark,
@@ -526,6 +494,7 @@ class WindowButtons extends StatelessWidget {
       iconMouseOver: Colors.red.basedOnLuminance(),
       iconMouseDown: Colors.red.dark.basedOnLuminance(),
     );
+    
     return Row(children: [
       Tooltip(
         message: FluentLocalizations.of(context).minimizeWindowTooltip,

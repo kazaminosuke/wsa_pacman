@@ -10,20 +10,19 @@ import 'package:wsa_pacman/windows/win_path.dart';
 import 'win_io.dart';
 import 'package:ffi/ffi.dart';
 import 'package:win32/win32.dart';
-import 'package:path/path.dart' as lib_path;
 
 final ntdll = DynamicLibrary.open('ntdll.dll');
 final advapi32 = DynamicLibrary.open('advapi32.dll');
 const _ANYSYZE_ARRAY = 1;
 
-class UNICODE_STRING extends Struct {
+base class UNICODE_STRING extends Struct {
   @USHORT() external int length;
   @USHORT() external int maximumLength;
   external LPWSTR buffer;
   void free() => calloc.free(buffer);
 }
 
-class OBJECT_ATTRIBUTES extends Struct {
+base class OBJECT_ATTRIBUTES extends Struct {
   @ULONG() external int length;
   @HANDLE() external int rootDirectory;
   external Pointer<UNICODE_STRING> objectName;
@@ -42,7 +41,7 @@ class _IO_STATUS_BLOCK__Anonymous_e__Union extends Union {
   @IntPtr() external int hMonitor;
 }*/
 
-class REPARSE_MOUNTPOINT_DATA_BUFFER extends Struct {
+base class REPARSE_MOUNTPOINT_DATA_BUFFER extends Struct {
   @DWORD() external int reparseTag;
   @DWORD() external int reparseDataLength;
   @WORD() external int reserved;
@@ -52,12 +51,12 @@ class REPARSE_MOUNTPOINT_DATA_BUFFER extends Struct {
   @Array(_ANYSYZE_ARRAY) external Array<WCHAR> reparseTarget;
 }
 
-class _TOKEN_PRIVILEGES extends Struct {
+base class _TOKEN_PRIVILEGES extends Struct {
   @DWORD() external int privilegeCount;
   @Array(_ANYSYZE_ARRAY) external Array<_LUID_AND_ATTRIBUTES> privileges;
 }
 
-class _LUID_AND_ATTRIBUTES extends Struct {
+base class _LUID_AND_ATTRIBUTES extends Struct {
   external LUID luid;
   @DWORD() external int attributes;
 }
@@ -168,20 +167,20 @@ class NtIO {
   static const OBJ_CASE_INSENSITIVE = 0x00000040;
   static const SYMBOLIC_LINK_ALL_ACCESS = STANDARD_RIGHTS_REQUIRED | 0x1;
 
-  static late final NT_TEMP_DIR_NAME = Directory(WinPath.tempSubdir).createTempSync("WSA-PacMan-DOS@$pid@").basename;
-  static late final String? _DOS_DIRECTORY = (){
+  static final NT_TEMP_DIR_NAME = Directory(WinPath.tempSubdir).createTempSync("WSA-PacMan-DOS@$pid@").basename;
+  static final String? _DOS_DIRECTORY = (){
     String dirName = "\\BaseNamedObjects\\$NT_TEMP_DIR_NAME";
     return createNativeDirectory(dirName) != null ? dirName : null;
   }();
   
   static const _SE_PRIVILEGE_ENABLED = 0x00000002;
-  static late final _SE_RESTORE_NAME = TEXT("SeRestorePrivilege");
-  static late final _SE_BACKUP_NAME = TEXT("SeBackupPrivilege");
+  static final _SE_RESTORE_NAME = TEXT("SeRestorePrivilege");
+  static final _SE_BACKUP_NAME = TEXT("SeBackupPrivilege");
 
-  static late final int? _NT_JUNCTION_HANDLE = (_DOS_DIRECTORY != null) ? createJunction(_DOS_DIRECTORY!, "${WinPath.tempSubdir}\\$NT_TEMP_DIR_NAME", true) : null;
+  static final int? _NT_JUNCTION_HANDLE = (_DOS_DIRECTORY != null) ? createJunction(_DOS_DIRECTORY!, "${WinPath.tempSubdir}\\$NT_TEMP_DIR_NAME", true) : null;
 
   static int? _SESSION_ID;
-  static late final int? SESSION_ID = () {
+  static final int? SESSION_ID = () {
     if (_SESSION_ID == null) {
       Pointer<Uint32> lpSID  = malloc<Uint32>();
       try {
@@ -203,6 +202,7 @@ class NtIO {
       _NT_JUNCTION_HANDLE;
       return "$NT_TEMP_DIR_NAME\\$shortcutName";
     }
+    return null;
   }
 
   /// Deletes the junction to the NT directory
@@ -290,11 +290,11 @@ class NtIO {
   static String getMessageNt(int code) => getMessageDOS(_NtStatusToDosError(code));
   /// Converts DOS code to an error message
   static String getMessageDOS(int code) {
-    const _FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100;
+    const FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100;
     const LANGID_EN = 0x0409;
     final lpLpBuffer = calloc<Pointer<Utf16>>();
     try {
-      int result = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_ARGUMENT_ARRAY | _FORMAT_MESSAGE_ALLOCATE_BUFFER, nullptr, code, LANGID_EN, lpLpBuffer.cast(), 1024, nullptr);
+      int result = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_ALLOCATE_BUFFER, nullptr, code, LANGID_EN, lpLpBuffer.cast(), 1024, nullptr);
       return result != ERROR_MORE_DATA ? result != 0 ? lpLpBuffer.value.toDartString().replaceFirst(RegExp(r'\.?[\n\s]*$'), '') : "Unknown error" : "Error message too long";
     }
     finally {
@@ -318,6 +318,7 @@ class NtIO {
       free(objAttrs);
       free(lpHandle);
     }
+    return null;
   }
 
   /// Creates a directory inside the object manager
@@ -382,5 +383,6 @@ class NtIO {
       free(attributes);
       free(lpHandle);
     }
+    return null;
   }
 }

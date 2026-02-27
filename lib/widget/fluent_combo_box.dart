@@ -1,5 +1,3 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
-
 import 'dart:math' as math;
 import 'dart:ui' show window;
 
@@ -9,10 +7,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fluent_ui/fluent_ui.dart';
-// ignore: implementation_imports
-import 'package:fluent_ui/src/controls/form/pickers/pickers.dart';
 import 'package:wsa_pacman/utils/misc_utils.dart';
 import 'package:wsa_pacman/widget/smooth_list_view.dart';
+
+const double kPickerHeight = 32.0; // ← すべての import が終わったあとのここに書く
 
 const Duration _kComboboxMenuDuration = Duration(milliseconds: 300);
 const double _kMenuItemHeight = kPickerHeight;
@@ -87,15 +85,15 @@ class _ComboboxScrollBehavior extends ScrollBehavior {
       const ClampingScrollPhysics();
 }
 
-class _ComboboxItemButton<T> extends StatefulWidget {
-  const _ComboboxItemButton({
-    Key? key,
+class _ComboBoxItemButton<T> extends StatefulWidget {
+  const _ComboBoxItemButton({
+    super.key,
     this.padding,
     required this.route,
     required this.buttonRect,
     required this.constraints,
     required this.itemIndex,
-  }) : super(key: key);
+  });
 
   final _ComboboxRoute<T> route;
   final EdgeInsets? padding;
@@ -104,10 +102,10 @@ class _ComboboxItemButton<T> extends StatefulWidget {
   final int itemIndex;
 
   @override
-  _ComboboxItemButtonState<T> createState() => _ComboboxItemButtonState<T>();
+  _ComboBoxItemButtonState<T> createState() => _ComboBoxItemButtonState<T>();
 }
 
-class _ComboboxItemButtonState<T> extends State<_ComboboxItemButton<T>> {
+class _ComboBoxItemButtonState<T> extends State<_ComboBoxItemButton<T>> {
   void _handleFocusChange(bool focused) {
     final bool inTraditionalMode;
     switch (FocusManager.instance.highlightMode) {
@@ -131,7 +129,7 @@ class _ComboboxItemButtonState<T> extends State<_ComboboxItemButton<T>> {
   }
 
   void _handleOnTap() {
-    final ComboboxItem<T> comboboxMenuItem =
+    final ComboBoxItem<T> comboboxMenuItem =
         widget.route.items[widget.itemIndex].item!;
 
     if (comboboxMenuItem.onTap != null) {
@@ -179,7 +177,7 @@ class _ComboboxItemButtonState<T> extends State<_ComboboxItemButton<T>> {
                     if (states.isFocused) {
                       return ButtonThemeData.uncheckedInputColor(
                         theme,
-                        {ButtonStates.hovering},
+                        {WidgetState.hovered},
                       );
                     }
                     return ButtonThemeData.uncheckedInputColor(theme, states);
@@ -193,13 +191,12 @@ class _ComboboxItemButtonState<T> extends State<_ComboboxItemButton<T>> {
                 AnimatedPositioned(
                   duration: theme.fastAnimationDuration,
                   curve: theme.animationCurve,
-                  top: states.isPressing ? 10.0 : 8.0,
-                  bottom: states.isPressing ? 10.0 : 8.0,
-                  child: Container(
+                  top: states.isPressed ? 10.0 : 8.0,
+                  bottom: states.isPressed ? 10.0 : 8.0,
+                child: Container(
                     width: 3.0,
                     decoration: BoxDecoration(
-                      color: theme.accentColor
-                          .resolveFromReverseBrightness(theme.brightness),
+                      color: theme.accentColor, // ← ここをシンプルにしました
                       borderRadius: BorderRadius.circular(50.0),
                     ),
                   ),
@@ -223,13 +220,13 @@ class _ComboboxItemButtonState<T> extends State<_ComboboxItemButton<T>> {
 
 class _ComboboxMenu<T> extends StatefulWidget {
   const _ComboboxMenu({
-    Key? key,
+    super.key,
     this.padding,
     required this.route,
     required this.buttonRect,
     required this.constraints,
     this.comboboxColor,
-  }) : super(key: key);
+  });
 
   final _ComboboxRoute<T> route;
   final EdgeInsets? padding;
@@ -265,7 +262,7 @@ class _ComboboxMenuState<T> extends State<_ComboboxMenu<T>> {
     final _ComboboxRoute<T> route = widget.route;
     final List<Widget> children = <Widget>[
       for (int itemIndex = 0; itemIndex < route.items.length; ++itemIndex)
-        _ComboboxItemButton<T>(
+        _ComboBoxItemButton<T>(
           route: widget.route,
           padding: widget.padding,
           buttonRect: widget.buttonRect,
@@ -495,7 +492,7 @@ class _ComboboxRoute<T> extends PopupRoute<_ComboboxRouteResult<T>> {
 
 class _ComboboxRoutePage<T> extends StatelessWidget {
   const _ComboboxRoutePage({
-    Key? key,
+    super.key,
     required this.route,
     required this.constraints,
     this.items,
@@ -506,7 +503,7 @@ class _ComboboxRoutePage<T> extends StatelessWidget {
     required this.capturedThemes,
     this.style,
     required this.comboboxColor,
-  }) : super(key: key);
+  });
 
   final _ComboboxRoute<T> route;
   final BoxConstraints constraints;
@@ -563,13 +560,13 @@ class _ComboboxRoutePage<T> extends StatelessWidget {
 
 class _MenuItem<T> extends SingleChildRenderObjectWidget {
   const _MenuItem({
-    Key? key,
+    super.key,
     required this.onLayout,
     required this.item,
-  }) : super(key: key, child: item);
+  }) : super(child: item);
 
   final ValueChanged<Size> onLayout;
-  final ComboboxItem<T>? item;
+  final ComboBoxItem<T>? item;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -596,16 +593,15 @@ class _RenderMenuItem extends RenderProxyBox {
 }
 
 // The container widget for a menu item created by a [Combobox]. It
-// provides the default configuration for [ComboboxItem]s, as well as a
+// provides the default configuration for [ComboBoxItem]s, as well as a
 // [Combobox]'s placeholder and disabledHint widgets.
-class _ComboboxItemContainer extends StatelessWidget {
+class _ComboBoxItemContainer extends StatelessWidget {
   /// Creates an item for a combobox menu.
   ///
   /// The [child] argument is required.
-  const _ComboboxItemContainer({
-    Key? key,
+  const _ComboBoxItemContainer({
     required this.child,
-  }) : super(key: key);
+  });
 
   /// The widget below this widget in the tree.
   ///
@@ -624,7 +620,7 @@ class _ComboboxItemContainer extends StatelessWidget {
 
 class FluentCombobox<T> extends StatefulWidget {
   FluentCombobox({
-    Key? key,
+    super.key,
     required this.items,
     this.allowUnknown = false,
     this.selectedItemBuilder,
@@ -647,12 +643,11 @@ class FluentCombobox<T> extends StatefulWidget {
     this.comboboxColor,
   }) : assert(allowUnknown || items == null || items.isEmpty || value == null || items.where((item) => item.value == value).length == 1,
           "There should be exactly one item with [Combobox]'s value: $value. \n"
-          'Either zero or 2 or more [ComboboxItem]s were detected with the same value'),
-        assert(itemHeight == null || itemHeight >= kMinInteractiveDimension),
-        super(key: key);
+          'Either zero or 2 or more [ComboBoxItem]s were detected with the same value'),
+        assert(itemHeight == null || itemHeight >= kMinInteractiveDimension);
 
   final bool allowUnknown;
-  final List<ComboboxItem<T>>? items;
+  final List<ComboBoxItem<T>>? items;
   final T? value;
   final Widget? placeholder;
   final Widget? disabledHint;
@@ -899,13 +894,13 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
           ? widget.placeholder!
           : widget.disabledHint ?? widget.placeholder!;
       if (widget.selectedItemBuilder == null) {
-        displayedHint = _ComboboxItemContainer(child: displayedHint);
+        displayedHint = _ComboBoxItemContainer(child: displayedHint);
       }
 
       placeholderIndex = items.length;
       items.add(DefaultTextStyle(
         style:
-            _textStyle!.copyWith(color: FluentTheme.of(context).disabledColor),
+            _textStyle!.copyWith(color: FluentTheme.of(context).resources.textFillColorDisabled),
         child: IgnorePointer(
           ignoringSemantics: false,
           child: displayedHint,
@@ -940,7 +935,7 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
     Widget result = DefaultTextStyle(
       style: _enabled
           ? _textStyle!
-          : _textStyle!.copyWith(color: FluentTheme.of(context).disabledColor),
+          : _textStyle!.copyWith(color: FluentTheme.of(context).resources.textFillColorDisabled),
       child: Container(
         padding: padding.resolve(Directionality.of(context)),
         height: kPickerHeight,
@@ -973,9 +968,9 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
             return Container(
               decoration: fluentComboBoxDecorationBuilder(context, () {
                 if (_showHighlight) {
-                  return {ButtonStates.focused};
+                  return {WidgetState.focused};
                 } else if (states.isFocused) {
-                  return <ButtonStates>{};
+                  return <WidgetState>{};
                 }
                 return states;
               }()),
@@ -988,41 +983,41 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
   }
 }
 
-BorderSide fluentComboBoxBorderColor(bool isDark, Set<ButtonStates> states) {
+BorderSide fluentComboBoxBorderColor(bool isDark, Set<WidgetState> states) {
   if (isDark) {
     if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.05));
-    if (states.isNone || (states.isHovering && !states.isPressing)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.035));
+    if (states.isNone || (states.isHovered && !states.isPressed)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.035));
     else return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.07));
   }
   else {
     if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.12));
-    if (states.isNone || (states.isHovering && !states.isDisabled && !states.isPressing)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.22));
+    if (states.isNone || (states.isHovered && !states.isDisabled && !states.isPressed)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.22));
     else return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.07));
   }
 }
 
-Color fluentComboBoxColor(bool isDark, Set<ButtonStates> states) {
+Color fluentComboBoxColor(bool isDark, Set<WidgetState> states) {
   if (isDark) {
     if (states.isDisabled) return const ColorConst.withOpacity(0xFFFFFF, 0.045);
-    if (states.isPressing) return const ColorConst.withOpacity(0xFFFFFF, 0.03);
-    if (states.isHovering) return const ColorConst.withOpacity(0xFFFFFF, 0.08);
+    if (states.isPressed) return const ColorConst.withOpacity(0xFFFFFF, 0.03);
+    if (states.isHovered) return const ColorConst.withOpacity(0xFFFFFF, 0.08);
     return const ColorConst.withOpacity(0xFFFFFF, 0.055);
   }
   else {
     if (states.isDisabled) return const ColorConst.withOpacity(0xf9f9f9, 0.045);
-    if (states.isPressing) return const ColorConst.withOpacity(0xf0f0f0, 0.4);
-    if (states.isHovering) return const ColorConst.withOpacity(0xf9f9f9, 0.65);
+    if (states.isPressed) return const ColorConst.withOpacity(0xf0f0f0, 0.4);
+    if (states.isHovered) return const ColorConst.withOpacity(0xf9f9f9, 0.65);
     return const ColorConst.withOpacity(0xFFFFFF, 0.8);
   }
 }
 
 Decoration fluentComboBoxDecorationBuilder(
-    BuildContext context, Set<ButtonStates> states) {
+    BuildContext context, Set<WidgetState> states) {
   assert(debugCheckHasFluentTheme(context));
   final theme = FluentTheme.of(context);
   return BoxDecoration(
     borderRadius: BorderRadius.circular(4.0),
-    border: Border.fromBorderSide(fluentComboBoxBorderColor(theme.brightness.isDark, states)),
-    color: fluentComboBoxColor(theme.brightness.isDark, states),
+    border: Border.fromBorderSide(fluentComboBoxBorderColor(theme.brightness== Brightness.dark, states)),
+    color: fluentComboBoxColor(theme.brightness== Brightness.dark, states),
   );
 }

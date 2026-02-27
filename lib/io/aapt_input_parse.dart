@@ -30,15 +30,15 @@ Map<String, Node> read(String output) {
     if (substrIndex == -1) {newNode = null; continue;}
     inThisNode = true;
     int nodePos = e.indexOf(RegExp(r'[^\s]'));
-    int _lastPos = (lastNodePos ?? nodePos);
+    int lastPos = (lastNodePos ?? nodePos);
 
     String key = e.substring(0,substrIndex).trim();
     String value = e.substring(substrIndex+1).trim();
 
     var parent = lastNode?.parent;
-    if (_lastPos != nodePos || parent != null) {
+    if (lastPos != nodePos || parent != null) {
       inThisNode = false;
-      if (_lastPos < nodePos) {
+      if (lastPos < nodePos) {
         newNode = Node(nodePos, [value], parent: lastNode);
         lastNode!.children[key] = newNode;
         lastNode = newNode;
