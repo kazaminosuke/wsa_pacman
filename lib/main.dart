@@ -374,13 +374,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Row(
                           children: [
                             Text(
-                              appTitle, // "WSA Package Manager"
-                              style: theme.typography.caption?.copyWith(color: theme.inactiveColor.withOpacity(0.5)),
+                              appTitle,
+                              // captionからbodyに変更し、薄さを解除してクッキリさせました！
+                              style: theme.typography.body,
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'v$appVersion', // "v1.5.0"
-                              style: theme.typography.caption?.copyWith(color: theme.inactiveColor.withOpacity(0.3)),
+                              'v$appVersion',
+                              // バージョンも少し濃くして見やすく調整
+                              style: theme.typography.caption?.copyWith(color: theme.inactiveColor.withOpacity(0.6)),
                             ),
                           ],
                         ),
@@ -438,8 +440,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
               footerItems: [
-                // 縦の区切り線を復活
-                PaneItemSeparator(),
+                // ★ 消えてしまう標準のSeparatorの代わりに、自作の「棒」を強制的に描画する！
+                PaneItemHeader(
+                  header: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Container(
+                      width: 1,       // 棒の太さ
+                      height: 16,     // 棒の高さ
+                      color: theme.inactiveColor.withOpacity(0.3), // ちょうどいいグレー
+                    ),
+                  ),
+                ),
                 PaneItem(
                   icon: const Icon(FluentIcons.settings),
                   title: Text(lang.screen_settings),
