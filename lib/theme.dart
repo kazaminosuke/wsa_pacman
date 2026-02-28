@@ -45,7 +45,7 @@ class AppTheme extends ChangeNotifier {
     return File("${directory.path}\\theme_color.txt");
   }
 
-// ★ 追加：ファイルから色を復元する処理
+// ★ 修正：基本の色だけでなく、カスタム色も復元できるように強化！
   void _loadColor() {
     try {
       if (_colorFile.existsSync()) {
@@ -66,7 +66,7 @@ class AppTheme extends ChangeNotifier {
           }
         }
         
-        // ★ 修正：基本の9色以外（スライダーで作ったカスタム色）だった場合の復元処理！
+        // ★ ここが重要：基本の色以外（カスタム色）だった場合、その番号から直接色を復元する
         if (!found) {
           final customColor = Color(colorValue);
           _color = AccentColor('normal', {
@@ -81,7 +81,7 @@ class AppTheme extends ChangeNotifier {
         }
       }
     } catch (e) {
-      // 読み込みエラー時は何もしない（デフォルト色になる）
+      // 読み込みエラー時は何もしない
     }
   }
 

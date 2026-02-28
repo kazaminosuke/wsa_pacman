@@ -218,8 +218,14 @@ abstract class AppLocalizations {
   /// No description provided for @status_missing_desc.
   ///
   /// In en, this message translates to:
-  /// **'WSA not found; this application depends on WSA, please install Windows Subsystem for Android (or the Amazon Appstore) from the Microsoft Store'**
+  /// **'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.'**
   String get status_missing_desc;
+
+  /// No description provided for @btn_wsabuilds.
+  ///
+  /// In en, this message translates to:
+  /// **'Open WSABuilds (GitHub)'**
+  String get btn_wsabuilds;
 
   /// No description provided for @status_unknown.
   ///

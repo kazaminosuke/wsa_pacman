@@ -55,10 +55,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get status_missing_desc =>
-      'WSA não encontrado. Este aplicativo depende do WSA, instale o Windows Subsystem for Android (ou Amazon Appstore) da Microsoft Store';
+      'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.';
 
   @override
-  String get status_unknown => 'Conectando';
+  String get btn_wsabuilds => 'Open WSABuilds (GitHub)';
+
+  @override
+  String get status_unknown => 'Connecting';
 
   @override
   String get status_unknown_desc =>

@@ -55,10 +55,13 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get status_missing_desc =>
-      'WSA یافت نشد. این برنامه وابسته به WSA است، لطفا زیرسیستم ویندوز را برای اندروید (یا اپ استور آمازون) از Microsoft Store را نصب کنید';
+      'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.';
 
   @override
-  String get status_unknown => 'در حال اتصال';
+  String get btn_wsabuilds => 'Open WSABuilds (GitHub)';
+
+  @override
+  String get status_unknown => 'Connecting';
 
   @override
   String get status_unknown_desc => 'در انتظار برقراری اتصال WSA...';

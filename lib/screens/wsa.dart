@@ -69,21 +69,28 @@ class _ScreenWSAState extends State<ScreenWSA> {
             child: FluentInfoBar(
               title: Text(connectionStatus.title(lang)),
               content: Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
+                // ★ 1. 直接 lang から説明文を呼び出す（main.dartの処理で勝手に紐づきます）
                 Text(connectionStatus.desc(lang)),
-                if (connectionStatus.type == ConnectionStatus.ARRESTED) ...[
+                
+                // ★ 2. WSABuildsボタンも、l10nからテキストを取得！
+                if (connectionStatus.type == ConnectionStatus.MISSING) ...[
                   const SizedBox(width: 15.0),
-                  // ★ 白くてシンプルなモダンボタン（文字を黒に変更！）
+                  FilledButton(
+                    child: Text(lang.btn_wsabuilds, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    onPressed: () => Process.run('explorer', ['https://github.com/MustardChef/WSABuilds'])
+                  )
+                ]
+                // 3. WSA停止中の時の「オンにする」ボタン（白くてシンプルなモダンボタン）
+                else if (connectionStatus.type == ConnectionStatus.ARRESTED) ...[
+                  const SizedBox(width: 15.0),
                   Button(
                     style: ButtonStyle(
-                      // 1. 背景色
                       backgroundColor: WidgetStateProperty.resolveWith((states) {
                         if (states.contains(WidgetState.hovered)) return Colors.white.withOpacity(0.9);
                         if (states.contains(WidgetState.pressed)) return Colors.grey[10];
                         return Colors.white;
                       }),
-                      // 2. 文字/アイコン色（★ここを純粋な黒に変更！）
                       foregroundColor: WidgetStateProperty.all(Colors.black),
-                      // 3 & 4. 形と枠線
                       shape: WidgetStateProperty.resolveWith((states) {
                         final borderColor = states.contains(WidgetState.hovered) ? Colors.grey[120] : Colors.grey[80];
                         return RoundedRectangleBorder(
@@ -91,9 +98,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
                           side: BorderSide(color: borderColor ?? const Color(0xFFCCCCCC), width: 0.5),
                         );
                       }),
-                      // 5. パディング
                       padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
-                      // 6. 影
                       elevation: WidgetStateProperty.resolveWith((states) => states.contains(WidgetState.hovered) ? 1.0 : 0.0),
                     ),
                     onPressed: () => WSAUtils.launch(),
@@ -107,6 +112,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
                     ),
                   )
                 ]
+                // 4. 認証エラーなどのボタン
                 else if (connectionStatus.type == ConnectionStatus.UNAUTHORIZED) ...[
                   Button(child: Text(lang.btn_auth), onPressed: () => WSAPeriodicConnector.reconnect()),
                   const SizedBox(width: 15.0),

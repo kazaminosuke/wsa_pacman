@@ -2,7 +2,7 @@ name: wsa_pacman
 description: A GUI package manager and package installer for Windows Subsystem for Android (WSA).
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.6.0+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

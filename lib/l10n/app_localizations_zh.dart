@@ -55,7 +55,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get status_missing_desc =>
-      '未找到 WSA； 此应用程序依赖 WSA，请从 Microsoft Store 安装适用于 Android 的 Windows 子系统（或 Amazon Appstore）';
+      'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.';
+
+  @override
+  String get btn_wsabuilds => 'Open WSABuilds (GitHub)';
 
   @override
   String get status_unknown => '正在连接';
@@ -339,7 +342,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get status_missing_desc =>
-      '未找到 Android 子系統；請從 Microsoft Store 安裝適用於 Windows 的 Android 子系統（或 Amazon Appstore）。';
+      'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.';
+
+  @override
+  String get btn_wsabuilds => 'Open WSABuilds (GitHub)';
 
   @override
   String get status_unknown => '正在連接';

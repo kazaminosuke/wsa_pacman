@@ -55,7 +55,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get status_missing_desc =>
-      'WSA를 찾을 수 없습니다. 본 프로그램은 WSA에 종속되어 있으므로, Microsoft Store에서 Windows Subsystem for Android (또는 Amazon 앱스토어)를 설치하십시오.';
+      'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.';
+
+  @override
+  String get btn_wsabuilds => 'Open WSABuilds (GitHub)';
 
   @override
   String get status_unknown => '연결 중';

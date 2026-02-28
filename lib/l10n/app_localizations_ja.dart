@@ -55,7 +55,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get status_missing_desc =>
-      'WSA が見つかりません。このアプリケーションを使用するにはWSAが必要です。Microsoft StoreからAndroid™️ 用 Windows サブシステムをインストールしてください。';
+      'WSAがシステムに見つかりません。\nMicrosoft公式のWSAは提供が終了したため、有志による『WSABuilds』からの導入をおすすめします。';
+
+  @override
+  String get btn_wsabuilds => 'WSABuilds を開く (GitHub)';
 
   @override
   String get status_unknown => '接続中';

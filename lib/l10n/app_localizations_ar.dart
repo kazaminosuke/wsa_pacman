@@ -55,7 +55,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get status_missing_desc =>
-      'حزمة WSA غير موجودة; و هذا التطبيق يعتمد على WSA, برجاء تحميل نظام اندرويد لويندوز او متجر امازون من متجر مايكروسوفت';
+      'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.';
+
+  @override
+  String get btn_wsabuilds => 'Open WSABuilds (GitHub)';
 
   @override
   String get status_unknown => 'جاري الاتصال';

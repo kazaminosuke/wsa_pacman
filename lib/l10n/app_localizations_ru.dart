@@ -56,10 +56,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get status_missing_desc =>
-      'Подсистема Windows под Android не найдена: это приложение зависит от WSA, установите подсистему Windows для Android (или Магазин приложений Amazon) из магазина Microsoft Store';
+      'WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven \'WSABuilds\'.';
 
   @override
-  String get status_unknown => 'Подключение';
+  String get btn_wsabuilds => 'Open WSABuilds (GitHub)';
+
+  @override
+  String get status_unknown => 'Connecting';
 
   @override
   String get status_unknown_desc =>
