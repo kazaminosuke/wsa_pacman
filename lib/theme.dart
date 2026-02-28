@@ -45,21 +45,39 @@ class AppTheme extends ChangeNotifier {
     return File("${directory.path}\\theme_color.txt");
   }
 
-  // ★ 追加：ファイルから色を復元する処理
+// ★ 追加：ファイルから色を復元する処理
   void _loadColor() {
     try {
       if (_colorFile.existsSync()) {
         final colorValue = int.parse(_colorFile.readAsStringSync());
         final colors = [
-          alpineLandingDark,
+          systemAccentColor,
+          alpineLandingDark, alpineLandingLight,
           Colors.yellow, Colors.orange, Colors.red, Colors.magenta,
           Colors.purple, Colors.blue, Colors.teal, Colors.green,
         ];
+        
+        bool found = false;
         for (var c in colors) {
           if (c.value == colorValue) {
             _color = (identical(c, alpineLandingDark) || identical(c, alpineLandingLight)) ? null : c;
+            found = true;
             break;
           }
+        }
+        
+        // ★ 修正：基本の9色以外（スライダーで作ったカスタム色）だった場合の復元処理！
+        if (!found) {
+          final customColor = Color(colorValue);
+          _color = AccentColor('normal', {
+            'darkest': customColor.withOpacity(0.8),
+            'darker': customColor.withOpacity(0.9),
+            'dark': customColor,
+            'normal': customColor,
+            'light': customColor,
+            'lighter': customColor.withOpacity(0.9),
+            'lightest': customColor.withOpacity(0.8),
+          });
         }
       }
     } catch (e) {

@@ -72,7 +72,40 @@ class _ScreenWSAState extends State<ScreenWSA> {
                 Text(connectionStatus.desc(lang)),
                 if (connectionStatus.type == ConnectionStatus.ARRESTED) ...[
                   const SizedBox(width: 15.0),
-                  Button(child: Text(lang.btn_boot), onPressed: () => WSAUtils.launch())
+                  // ★ 白くてシンプルなモダンボタン（文字を黒に変更！）
+                  Button(
+                    style: ButtonStyle(
+                      // 1. 背景色
+                      backgroundColor: WidgetStateProperty.resolveWith((states) {
+                        if (states.contains(WidgetState.hovered)) return Colors.white.withOpacity(0.9);
+                        if (states.contains(WidgetState.pressed)) return Colors.grey[10];
+                        return Colors.white;
+                      }),
+                      // 2. 文字/アイコン色（★ここを純粋な黒に変更！）
+                      foregroundColor: WidgetStateProperty.all(Colors.black),
+                      // 3 & 4. 形と枠線
+                      shape: WidgetStateProperty.resolveWith((states) {
+                        final borderColor = states.contains(WidgetState.hovered) ? Colors.grey[120] : Colors.grey[80];
+                        return RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          side: BorderSide(color: borderColor ?? const Color(0xFFCCCCCC), width: 0.5),
+                        );
+                      }),
+                      // 5. パディング
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
+                      // 6. 影
+                      elevation: WidgetStateProperty.resolveWith((states) => states.contains(WidgetState.hovered) ? 1.0 : 0.0),
+                    ),
+                    onPressed: () => WSAUtils.launch(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(FluentIcons.power_button, size: 16),
+                        const SizedBox(width: 8),
+                        Text(lang.btn_boot, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  )
                 ]
                 else if (connectionStatus.type == ConnectionStatus.UNAUTHORIZED) ...[
                   Button(child: Text(lang.btn_auth), onPressed: () => WSAPeriodicConnector.reconnect()),
