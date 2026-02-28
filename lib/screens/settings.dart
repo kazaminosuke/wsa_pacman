@@ -72,6 +72,12 @@ final androidPortUpdater = LateUpdater<int>(GState.androidPort.$, (value){
 
 class ScreenSettingsState extends State<ScreenSettings> {
   static const SETTINGS_UPDATE_TIMER = Duration(seconds:3);
+
+  // ★ 追加：カスタムカラーピッカー用のRGB変数（初期値はきれいなブルー）
+  double _customR = 0;
+  double _customG = 120;
+  double _customB = 215;
+
   ScreenSettingsState({this.controller});
   final ScrollController? controller;
 
@@ -119,7 +125,7 @@ child: Row(
     final locale_lang = GState.locale.of(context);
     final lang = AppLocalizations.of(context)!;
     
-   final tooltipThemeData = TooltipThemeData(decoration: () { 
+    final tooltipThemeData = TooltipThemeData(decoration: () { 
       const radius = BorderRadius.zero;
       final shadow = [
         BoxShadow(
@@ -158,7 +164,6 @@ child: Row(
     final legacyIcons = GState.legacyIcons.of(context);
     final autostartWSA = GState.autostartWSA.of(context);
     final installTimeout = GState.installTimeout.of(context);
-    final locale = AppLocalizations.of(context);
 
     final OFF = lang.btn_switch_off;
     final ON = lang.btn_switch_on;
@@ -226,7 +231,7 @@ child: Row(
               divisions: 7,
               label: installTimeout == 0 ? '∞' : '$installTimeout',
               style: SliderThemeData(
-                labelBackgroundColor: theme.brightness == Brightness.dark ? const Color(0x22DDDDDD) : const Color(0x33000000)
+                labelBackgroundColor: theme.accentColor, // ★透明からテーマカラーに修正済み！
               ),
               onChanged: (l){l = (l == 0) ? 15 : (l == 105) ? 0 : l; GState.installTimeout..$=l.toInt()..persist();},
             ))),
@@ -251,20 +256,131 @@ child: Row(
             content: Column(crossAxisAlignment: CrossAxisAlignment.start, children: 
                 optionsListDeferred<Options_Theme, ThemeMode>(Options_Theme.values, (e)=>e.description(lang), (e) => e.mode, (v) => themeMode == v, (e, v) => GState.theme..update((p0) => e)..persist())
             ),
-            //headerBackgroundColor: ThemablePaneItem.uncheckedInputAlphaColor(theme, states),
-            direction: ExpanderDirection.down, // (optional). Defaults to ExpanderDirection.down
-            initiallyExpanded: false, // (false). Defaults to false
+            direction: ExpanderDirection.down,
+            initiallyExpanded: false,
           ),
           smallSpacer,
+
+          // ★追加：最強のカラーパレット＆RGBピッカー機能！
+          ExpanderWin11(
+            leading: const Icon(Mdi.palette, size: 23),
+            header: const Text("テーマカラー"),
+            initiallyExpanded: false,
+            direction: ExpanderDirection.down,
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 32,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      final colors = [
+                        systemAccentColor,
+                        AppTheme.alpineLandingDark,
+                        Colors.yellow, Colors.orange, Colors.red, Colors.magenta,
+                        Colors.purple, Colors.blue, Colors.teal, Colors.green,
+                      ];
+                      final colorNames = ["システム (Windows)", "デフォルト", "Yellow", "Orange", "Red", "Magenta", "Purple", "Blue", "Teal", "Green"];
+                      final color = colors[index];
+                      
+                      final isSelected = appTheme.getColor(theme.brightness == Brightness.dark).value == color.value;
+                      
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Tooltip(
+                          message: colorNames[index],
+                          child: IconButton(
+                            iconButtonMode: IconButtonMode.large,
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(color),
+                              shape: WidgetStateProperty.all(const CircleBorder()),
+                            ),
+                            onPressed: () => appTheme.setColor(color),
+                            icon: isSelected 
+                                ? Icon(FluentIcons.check_mark, size: 14, color: color.basedOnLuminance()) 
+                                : const SizedBox(width: 14, height: 14),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 24),
+                
+                const Text("カスタム色を作成:"),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Container(
+                      width: 48, height: 48,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(_customR.toInt(), _customG.toInt(), _customB.toInt(), 1.0),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: theme.inactiveColor.withOpacity(0.2)),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(children: [
+                            SizedBox(width: 16, child: Text("R", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold))), 
+                            Expanded(child: Slider(min: 0, max: 255, value: _customR, style: SliderThemeData(labelBackgroundColor: Colors.red, activeColor: WidgetStateProperty.all<Color>(Colors.red)), onChanged: (v) => setState(() => _customR = v))),
+                            const SizedBox(width: 8),
+                            SizedBox(width: 64, height: 32, child: NumberBox<int>(value: _customR.toInt(), min: 0, max: 255, mode: SpinButtonPlacementMode.none, onChanged: (v) => setState(() => _customR = (v ?? _customR.toInt()).toDouble()))),
+                          ]),
+                          const SizedBox(height: 8),
+                          Row(children: [
+                            SizedBox(width: 16, child: Text("G", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold))), 
+                            Expanded(child: Slider(min: 0, max: 255, value: _customG, style: SliderThemeData(labelBackgroundColor: Colors.green, activeColor: WidgetStateProperty.all<Color>(Colors.green)), onChanged: (v) => setState(() => _customG = v))),
+                            const SizedBox(width: 8),
+                            SizedBox(width: 64, height: 32, child: NumberBox<int>(value: _customG.toInt(), min: 0, max: 255, mode: SpinButtonPlacementMode.none, onChanged: (v) => setState(() => _customG = (v ?? _customG.toInt()).toDouble()))),
+                          ]),
+                          const SizedBox(height: 8),
+                          Row(children: [
+                            SizedBox(width: 16, child: Text("B", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold))), 
+                            Expanded(child: Slider(min: 0, max: 255, value: _customB, style: SliderThemeData(labelBackgroundColor: Colors.blue, activeColor: WidgetStateProperty.all<Color>(Colors.blue)), onChanged: (v) => setState(() => _customB = v))),
+                            const SizedBox(width: 8),
+                            SizedBox(width: 64, height: 32, child: NumberBox<int>(value: _customB.toInt(), min: 0, max: 255, mode: SpinButtonPlacementMode.none, onChanged: (v) => setState(() => _customB = (v ?? _customB.toInt()).toDouble()))),
+                          ]),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    FilledButton(
+                      child: const Text("適用"),
+                      onPressed: () {
+                        final customColor = Color.fromRGBO(_customR.toInt(), _customG.toInt(), _customB.toInt(), 1.0);
+                        final customAccent = AccentColor('normal', {
+                          'darkest': customColor.withOpacity(0.8),
+                          'darker': customColor.withOpacity(0.9),
+                          'dark': customColor,
+                          'normal': customColor,
+                          'light': customColor,
+                          'lighter': customColor.withOpacity(0.9),
+                          'lightest': customColor.withOpacity(0.8),
+                        });
+                        appTheme.setColor(customAccent);
+                      }
+                    )
+                  ]
+                )
+              ]
+            ),
+          ),
+          smallSpacer,
+
           if (WinVer.isWindows11OrGreater) ExpanderWin11(
             leading: const Icon(Mdi.blur, size: 23),
             header: Text(lang.theme_mica),
             content: Column(crossAxisAlignment: CrossAxisAlignment.start, children: 
                 optionsList<Options_Mica>(Options_Mica.values, (e)=>e.description(lang), (e) => mica == e, (e) => GState.mica..update((_) => e)..persist())
             ),
-            //headerBackgroundColor: ThemablePaneItem.uncheckedInputAlphaColor(theme, states),
-            direction: ExpanderDirection.down, // (optional). Defaults to ExpanderDirection.down
-            initiallyExpanded: false, // (false). Defaults to false
+            direction: ExpanderDirection.down,
+            initiallyExpanded: false,
           ),
           if (WinVer.isWindows11OrGreater) smallSpacer,
           ExpanderWin11(
@@ -277,13 +393,11 @@ child: Row(
               checked: !legacyIcons,
               onChanged: (v) => GState.legacyIcons..$ = !v..persist()
             )]),
-            //headerBackgroundColor: ThemablePaneItem.uncheckedInputAlphaColor(theme, states),
-            direction: ExpanderDirection.down, // (optional). Defaults to ExpanderDirection.down
-            initiallyExpanded: false, // (false). Defaults to false
+            direction: ExpanderDirection.down,
+            initiallyExpanded: false,
           )
         ],
       ),
     );
   }
-  
 }
