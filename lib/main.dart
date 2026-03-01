@@ -33,6 +33,10 @@ import 'screens/settings.dart';
 import 'utils/string_utils.dart';
 
 import 'theme.dart';
+// 衝突を避けるために hide を追加します
+import 'dart:ffi' hide Size;
+import 'package:ffi/ffi.dart';
+import 'package:win32/win32.dart' hide MoveWindow;
 
 const String appTitle = 'WSA Package Manager';
 const String appVersion = '1.6.0';
@@ -242,12 +246,60 @@ void main(List<String> arguments) async {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isFocused = true;
+  Timer? _focusTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    if (isDesktop) {
+      // 0.15秒間隔でOSのフォーカスを監視
+      _focusTimer = Timer.periodic(const Duration(milliseconds: 150), (_) {
+        _checkFocus();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusTimer?.cancel();
+    super.dispose();
+  }
+
+  void _checkFocus() {
+    final foregroundHwnd = GetForegroundWindow();
+    if (foregroundHwnd == 0) return;
+
+    final pidPtr = calloc<Uint32>();
+    GetWindowThreadProcessId(foregroundHwnd, pidPtr);
+    final foregroundPid = pidPtr.value;
+    free(pidPtr);
+
+    final isFocused = (foregroundPid == pid);
+    if (_isFocused != isFocused) {
+      setState(() {
+        _isFocused = isFocused;
+      });
+    }
+  }
+
   void setMicaEffect(bool micaEnabled, [bool dark = true]) {
-    if (WinVer.isWindows11OrGreater)
-      flutter_acrylic.Window.setEffect(effect: micaEnabled ? flutter_acrylic.WindowEffect.mica : flutter_acrylic.WindowEffect.disabled, dark: dark);
+    if (WinVer.isWindows11OrGreater) {
+      flutter_acrylic.Window.setEffect(
+        effect: micaEnabled ? flutter_acrylic.WindowEffect.mica : flutter_acrylic.WindowEffect.disabled,
+        // ライトモード時に黒ベースになるのを防ぐための指定を復活
+        color: dark ? const Color(0x00000000) : const Color(0x00FFFFFF),
+        dark: dark,
+      );
+    }
   }
 
   @override
@@ -257,7 +309,16 @@ class MyApp extends StatelessWidget {
 
     final bool isDark = theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
     setMicaEffect(mica.enabled, isDark);
-    
+
+    // ★ 修正ポイント：Micaが有効かつOSでサポートされているか判定
+    final bool isMicaActive = mica.enabled && WinVer.isWindows11OrGreater;
+
+    // 非アクティブ時、またはMicaが無効な時のベースカラー（ライトなら白系、ダークならグレー）
+    final Color fallbackColor = isDark ? const Color(0xFF202020) : const Color(0xFFF3F3F3);
+
+    // ★ 修正ポイント：「フォーカスが合っている」かつ「Micaが有効」な時だけ背景を透明にする！
+    final Color bgColor = (_isFocused && isMicaActive) ? Colors.transparent : fallbackColor;
+
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
       builder: (context, _) {
@@ -276,8 +337,17 @@ class MyApp extends StatelessWidget {
           supportedLocales: LocaleUtils.supportedLocales,
           localeResolutionCallback: LocaleUtils.localeResolutionCallback,
           routes: {'/': (_) => Constants.installMode ? const ApkInstaller() : const MyHomePage()},
+          
+          builder: (context, child) {
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              color: bgColor,
+              child: child,
+            );
+          },
+
           theme: FluentThemeData(
-            fontFamily: 'Yu Gothic UI', // ★ ここを追加するだけで全体がクッキリします！
+            fontFamily: 'Yu Gothic UI',
             scaffoldBackgroundColor: Colors.transparent,
             micaBackgroundColor: Colors.transparent,
             navigationPaneTheme: const NavigationPaneThemeData(
