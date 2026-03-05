@@ -297,4 +297,88 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get android_permission_nearby_devices =>
       'Xác định vị trí các thiết bị lân cận';
+
+  @override
+  String get screen_uninstall => 'Gỡ cài đặt';
+
+  @override
+  String get scan_system => 'Quét hệ thống';
+
+  @override
+  String get scanning => 'Đang quét...';
+
+  @override
+  String get backup_registry => 'Sao lưu Registry';
+
+  @override
+  String get execute_cleanup => 'Thực hiện dọn dẹp';
+
+  @override
+  String get scanning_wsa_env => 'Đang quét môi trường WSA một cách sâu...';
+
+  @override
+  String get click_scan_to_find_ghost_apps =>
+      'Nhấp vào \'Quét hệ thống\' để tìm các ứng dụng còn sót lại hoặc bị ẩn.';
+
+  @override
+  String get type_registry_only => 'Registry Only';
+
+  @override
+  String get type_orphaned_shortcut => 'Orphaned Shortcut';
+
+  @override
+  String get type_hidden_adb_app => 'Hidden ADB App';
+
+  @override
+  String get cleanup_complete => 'Cleanup Complete';
+
+  @override
+  String cleanup_success_desc(int count) {
+    return 'Completely deleted $count apps and unnecessary data.';
+  }
+
+  @override
+  String get auto_backup_registry => 'Auto-backup before uninstall';
+
+  @override
+  String get backup_cancelled => 'Backup cancelled';
+
+  @override
+  String get backup_success => 'Backup successfully saved';
+
+  @override
+  String get btn_restart_wsa => 'Restart WSA';
+
+  @override
+  String get settings_auto_backup_dir => 'Auto Backup Directory';
+
+  @override
+  String get tooltip_reset_desktop => 'Reset to Default (Desktop)';
+
+  @override
+  String get btn_browse => 'Browse...';
+
+  @override
+  String get settings_theme_color => 'Theme Color';
+
+  @override
+  String get settings_theme_color_system => 'System (Windows)';
+
+  @override
+  String get settings_theme_color_default => 'Default';
+
+  @override
+  String get settings_custom_color => 'Create Custom Color:';
+
+  @override
+  String get btn_apply => 'Apply';
+
+  @override
+  String get dialog_backup_dir_title => 'Select a folder to save auto-backups';
+
+  @override
+  String get dialog_backup_dir_filename => 'Select this folder';
+
+  @override
+  String get dialog_backup_dir_filter => 'Folder|*.none';
 }

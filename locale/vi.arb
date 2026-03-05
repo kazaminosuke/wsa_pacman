@@ -105,5 +105,47 @@
     "android_permission_activity_recognition": "Hoạt động thể chất",
     "android_permission_sensors": "Cảm biến thiết bị",
     "android_permission_sensors_body": "Cảm biến cơ thể",
-    "android_permission_nearby_devices": "Xác định vị trí các thiết bị lân cận"
+    "android_permission_nearby_devices": "Xác định vị trí các thiết bị lân cận",
+
+    "screen_uninstall": "Gỡ cài đặt",
+    "scan_system": "Quét hệ thống",
+    "scanning": "Đang quét...",
+    "backup_registry": "Sao lưu Registry",
+    "execute_cleanup": "Thực hiện dọn dẹp",
+    "scanning_wsa_env": "Đang quét môi trường WSA một cách sâu...",
+    "click_scan_to_find_ghost_apps": "Nhấp vào 'Quét hệ thống' để tìm các ứng dụng còn sót lại hoặc bị ẩn.",
+    
+    "type_registry_only": "Registry Only",
+    "type_orphaned_shortcut": "Orphaned Shortcut",
+    "type_hidden_adb_app": "Hidden ADB App",
+
+  "cleanup_complete": "Cleanup Complete",
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
+    },
+    "auto_backup_registry": "Auto-backup before uninstall",
+    "backup_cancelled": "Backup cancelled",
+    "backup_success": "Backup successfully saved",
+
+    "btn_restart_wsa": "Restart WSA",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+  
+    "settings_theme_color": "Theme Color",
+    "settings_theme_color_system": "System (Windows)",
+    "settings_theme_color_default": "Default",
+    "settings_custom_color": "Create Custom Color:",
+    "btn_apply": "Apply",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+    "dialog_backup_dir_title": "Select a folder to save auto-backups",
+    "dialog_backup_dir_filename": "Select this folder",
+    "dialog_backup_dir_filter": "Folder|*.none"
 }

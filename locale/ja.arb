@@ -33,7 +33,7 @@
     "status_offline": "オフライン",
     "status_offline_desc": "WSA との接続を確立できませんでした: 開発者モードや USB デバッグが無効になっているか、間違ったポートが指定されている可能性があります。",
     "status_disconnected": "切断",
-    "status_disconnected_desc": "WSA との接続が不明な理由で確立できませんでした。",
+    "status_disconnected_desc": "WSA との接続が不明な理由で確立できませんでした。\nWSAの開発者モードとローカルネットワークアクセスが有効化されているか確認してください。",
     "status_connected": "接続完了",
     "status_connected_desc": "WSA との接続ができました。現在、待機中です。",
 
@@ -106,5 +106,46 @@
     "android_permission_activity_recognition": "身体活動",
     "android_permission_sensors": "デバイスセンサー",
     "android_permission_sensors_body": "ボディセンサー",
-    "android_permission_nearby_devices": "近くのデバイスを探す"
+    "android_permission_nearby_devices": "近くのデバイスを探す",
+
+    "screen_uninstall": "アンインストール",
+    "scan_system": "システムをスキャン",
+    "scanning": "スキャン中...",
+    "backup_registry": "レジストリをバックアップ",
+    "execute_cleanup": "クリーンアップ実行",
+    "scanning_wsa_env": "WSA環境を深くスキャンしています...",
+    "click_scan_to_find_ghost_apps": "「システムをスキャン」をクリックして、アプリを検出します。",
+    "type_registry_only": "レジストリのみ",
+    "type_orphaned_shortcut": "無効なショートカット",
+    "type_hidden_adb_app": "非表示のADBアプリ",
+
+    "cleanup_complete": "クリーンアップ完了",
+    "cleanup_success_desc": "{count} 件のアプリと不要なデータを完全に削除しました。",
+    "@cleanup_success_desc": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+          }
+         }
+        },
+    "auto_backup_registry": "削除前にレジストリを自動バックアップ",
+    "backup_cancelled": "バックアップがキャンセルされました",
+    "backup_success": "バックアップを保存しました",
+
+    "btn_restart_wsa": "WSAを再起動",
+    "settings_auto_backup_dir": "自動バックアップの保存先",
+    "tooltip_reset_desktop": "標準(デスクトップ)に戻す",
+    "btn_browse": "参照...",
+    
+    "settings_theme_color": "テーマカラー",
+    "settings_theme_color_system": "システム (Windows)",
+    "settings_theme_color_default": "デフォルト",
+    "settings_custom_color": "カスタム色を作成:",
+    "btn_apply": "適用",
+    "settings_auto_backup_dir": "自動バックアップの保存先",
+    "tooltip_reset_desktop": "標準(デスクトップ)に戻す",
+    "btn_browse": "参照...",
+    "dialog_backup_dir_title": "自動バックアップを保存するフォルダを選択してください",
+    "dialog_backup_dir_filename": "このフォルダを選択",
+    "dialog_backup_dir_filter": "フォルダ"
 }

@@ -1,11 +1,9 @@
 // ignore_for_file: constant_identifier_names, curly_braces_in_flow_control_structures, non_constant_identifier_names
 
-import 'dart:ui';
 import 'dart:io';
 import 'dart:developer';
 import 'dart:async';
 
-import 'package:flutter/material.dart' as material;
 import 'package:mdi/mdi.dart';
 import 'package:flutter_localizations/flutter_localizations.dart' as locale;
 import 'package:wsa_pacman/android/android_utils.dart';
@@ -23,13 +21,12 @@ import 'package:wsa_pacman/windows/wsa_status.dart';
 import 'global_state.dart';
 
 import 'package:provider/provider.dart';
-import 'package:system_theme/system_theme.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
-import 'package:url_strategy/url_strategy.dart';
 
 import 'screens/wsa.dart';
 import 'screens/settings.dart';
+import 'screens/app_manager.dart';
 import 'utils/string_utils.dart';
 
 import 'theme.dart';
@@ -60,7 +57,7 @@ class WSAStatusAlert {
 enum ConnectionStatus {
   UNSUPPORTED, MISSING, UNKNOWN, ARRESTED, STARTING, OFFLINE, DISCONNECTED, CONNECTED, UNAUTHORIZED
 }
-extension on ConnectionStatus {
+extension ConnectionStatusExt on ConnectionStatus { // ⭕ 名前を付けてパブリックにする
   static final Map<ConnectionStatus, WSAStatusAlert> _statusAlers = {
     ConnectionStatus.UNSUPPORTED: WSAStatusAlert(ConnectionStatus.UNSUPPORTED, InfoBarSeverity.error, (l)=>l.status_unsupported, 
       (l)=>l.status_unsupported_desc(WinVer.isWindows10OrGreater ? l.status_subtext_winver_10 : l.status_subtext_winver_older)),
@@ -129,20 +126,25 @@ class WSAPeriodicConnector {
 
     if (!WSAStatus.isBooted) {
       timer.setDuration(PERIODIC_CHECK_BOOT_DURATION);
+      // ★ 追加: 再起動直後（15秒以内）なら、プロセスがなくても「起動中」を維持する
+      if (shouldWaitStart) {
+        if (status != ConnectionStatus.STARTING) GState.connectionStatus.$ = (status = ConnectionStatus.STARTING).statusAlert;
+        return;
+      }
       ConnectionStatus newStatus = Env.WSA_INSTALLED ? ConnectionStatus.ARRESTED : WinVer.isWindows11OrGreater ? ConnectionStatus.MISSING : ConnectionStatus.UNSUPPORTED;
       if (status != newStatus) GState.connectionStatus.$ = (status = newStatus).statusAlert;
       return;
     }
     else if (!WSAStatus.isRunning) {
       timer.setDuration(PERIODIC_CHECK_SLEEPING_DURATION);
+      // ★ 追加: 同様に「起動中」を維持する
+      if (shouldWaitStart) {
+        if (status != ConnectionStatus.STARTING) GState.connectionStatus.$ = (status = ConnectionStatus.STARTING).statusAlert;
+        return;
+      }
       ConnectionStatus newStatus = ConnectionStatus.ARRESTED;
       if (status != newStatus) GState.connectionStatus.$ = (status = newStatus).statusAlert;
       return;
-    }
-    else {
-      timer.setDuration(PERIODIC_CHECK_CONNECT_DURATION);
-      if (status == ConnectionStatus.ARRESTED || status == ConnectionStatus.MISSING || status == ConnectionStatus.UNSUPPORTED)
-          lastStart = DateTime.now().millisecondsSinceEpoch;
     }
 
     final prevStatus = status;
@@ -254,14 +256,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isFocused = true;
+  // ★ 修正1: setStateを使わずに値を監視できる ValueNotifier に変更
+  final ValueNotifier<bool> _isFocused = ValueNotifier(true);
   Timer? _focusTimer;
 
   @override
   void initState() {
     super.initState();
     if (isDesktop) {
-      // 0.15秒間隔でOSのフォーカスを監視
       _focusTimer = Timer.periodic(const Duration(milliseconds: 150), (_) {
         _checkFocus();
       });
@@ -271,6 +273,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     _focusTimer?.cancel();
+    _isFocused.dispose(); // メモリリーク防止
     super.dispose();
   }
 
@@ -284,10 +287,9 @@ class _MyAppState extends State<MyApp> {
     free(pidPtr);
 
     final isFocused = (foregroundPid == pid);
-    if (_isFocused != isFocused) {
-      setState(() {
-        _isFocused = isFocused;
-      });
+    // ★ 修正2: setStateを削除し、valueを直接書き換えるだけにする
+    if (_isFocused.value != isFocused) {
+      _isFocused.value = isFocused;
     }
   }
 
@@ -295,8 +297,13 @@ class _MyAppState extends State<MyApp> {
     if (WinVer.isWindows11OrGreater) {
       flutter_acrylic.Window.setEffect(
         effect: micaEnabled ? flutter_acrylic.WindowEffect.mica : flutter_acrylic.WindowEffect.disabled,
-        // ライトモード時に黒ベースになるのを防ぐための指定を復活
         color: dark ? const Color(0x00000000) : const Color(0x00FFFFFF),
+        dark: dark,
+      );
+    } else {
+      flutter_acrylic.Window.setEffect(
+        effect: flutter_acrylic.WindowEffect.disabled,
+        color: dark ? const Color(0xFF202020) : const Color(0xFFF3F3F3),
         dark: dark,
       );
     }
@@ -310,14 +317,8 @@ class _MyAppState extends State<MyApp> {
     final bool isDark = theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
     setMicaEffect(mica.enabled, isDark);
 
-    // ★ 修正ポイント：Micaが有効かつOSでサポートされているか判定
     final bool isMicaActive = mica.enabled && WinVer.isWindows11OrGreater;
-
-    // 非アクティブ時、またはMicaが無効な時のベースカラー（ライトなら白系、ダークならグレー）
     final Color fallbackColor = isDark ? const Color(0xFF202020) : const Color(0xFFF3F3F3);
-
-    // ★ 修正ポイント：「フォーカスが合っている」かつ「Micaが有効」な時だけ背景を透明にする！
-    final Color bgColor = (_isFocused && isMicaActive) ? Colors.transparent : fallbackColor;
 
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -339,10 +340,16 @@ class _MyAppState extends State<MyApp> {
           routes: {'/': (_) => Constants.installMode ? const ApkInstaller() : const MyHomePage()},
           
           builder: (context, child) {
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              color: bgColor,
-              child: child,
+            // ★ 修正3: ValueListenableBuilderで包むことで「背景のコンテナだけ」を再描画する
+            return ValueListenableBuilder<bool>(
+              valueListenable: _isFocused,
+              builder: (context, isFocused, _) {
+                final Color bgColor = (isFocused && isMicaActive) ? Colors.transparent : fallbackColor;
+                return Container(
+                  color: bgColor,
+                  child: child,
+                );
+              },
             );
           },
 
@@ -507,7 +514,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Mdi.androidDebugBridge),
                   title: const Text('WSA'),
                   body: const ScreenWSA(),
-                )
+),
+                // ★ 修正：アイコンをゴミ箱に、名前をUninstallに
+                PaneItem(
+                  icon: const Icon(FluentIcons.delete),
+                  title: const Text('Uninstall'),
+                  body: const ScreenAppManager(),
+                ),
               ],
               footerItems: [
                 // ★ 消えてしまう標準のSeparatorの代わりに、自作の「棒」を強制的に描画する！

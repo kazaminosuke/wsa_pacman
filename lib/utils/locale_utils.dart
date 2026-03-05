@@ -5,13 +5,10 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:ui';
 import 'package:ffi/ffi.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart' as widgets;
 import 'package:win32/win32.dart';
 import 'package:wsa_pacman/l10n/app_localizations.dart';
 export 'package:wsa_pacman/l10n/app_localizations.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:flutter_localizations/flutter_localizations.dart' as locale;
 import 'package:wsa_pacman/windows/win_io.dart';
 import 'string_utils.dart';
 

@@ -89,7 +89,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get status_disconnected => '切断';
 
   @override
-  String get status_disconnected_desc => 'WSA との接続が不明な理由で確立できませんでした。';
+  String get status_disconnected_desc =>
+      'WSA との接続が不明な理由で確立できませんでした。\nWSAの開発者モードとローカルネットワークアクセスが有効化されているか確認してください。';
 
   @override
   String get status_connected => '接続完了';
@@ -291,4 +292,87 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get android_permission_nearby_devices => '近くのデバイスを探す';
+
+  @override
+  String get screen_uninstall => 'アンインストール';
+
+  @override
+  String get scan_system => 'システムをスキャン';
+
+  @override
+  String get scanning => 'スキャン中...';
+
+  @override
+  String get backup_registry => 'レジストリをバックアップ';
+
+  @override
+  String get execute_cleanup => 'クリーンアップ実行';
+
+  @override
+  String get scanning_wsa_env => 'WSA環境を深くスキャンしています...';
+
+  @override
+  String get click_scan_to_find_ghost_apps => '「システムをスキャン」をクリックして、アプリを検出します。';
+
+  @override
+  String get type_registry_only => 'レジストリのみ';
+
+  @override
+  String get type_orphaned_shortcut => '無効なショートカット';
+
+  @override
+  String get type_hidden_adb_app => '非表示のADBアプリ';
+
+  @override
+  String get cleanup_complete => 'クリーンアップ完了';
+
+  @override
+  String cleanup_success_desc(int count) {
+    return '$count 件のアプリと不要なデータを完全に削除しました。';
+  }
+
+  @override
+  String get auto_backup_registry => '削除前にレジストリを自動バックアップ';
+
+  @override
+  String get backup_cancelled => 'バックアップがキャンセルされました';
+
+  @override
+  String get backup_success => 'バックアップを保存しました';
+
+  @override
+  String get btn_restart_wsa => 'WSAを再起動';
+
+  @override
+  String get settings_auto_backup_dir => '自動バックアップの保存先';
+
+  @override
+  String get tooltip_reset_desktop => '標準(デスクトップ)に戻す';
+
+  @override
+  String get btn_browse => '参照...';
+
+  @override
+  String get settings_theme_color => 'テーマカラー';
+
+  @override
+  String get settings_theme_color_system => 'システム (Windows)';
+
+  @override
+  String get settings_theme_color_default => 'デフォルト';
+
+  @override
+  String get settings_custom_color => 'カスタム色を作成:';
+
+  @override
+  String get btn_apply => '適用';
+
+  @override
+  String get dialog_backup_dir_title => '自動バックアップを保存するフォルダを選択してください';
+
+  @override
+  String get dialog_backup_dir_filename => 'このフォルダを選択';
+
+  @override
+  String get dialog_backup_dir_filter => 'フォルダ';
 }

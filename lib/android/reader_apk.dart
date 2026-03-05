@@ -120,11 +120,13 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     Map<String, Future<String>>? futureGradients = isGradient ? null : {};
     var xml = utf8.decode(await _decodeXml(encoded), allowMalformed: true);
     if (!isGradient) xml = xml.replaceAllMapped(RegExp('([\\s\\n]android:pathData=[\'"])[^M]*(M\\s*-?[0-9])'), (m) => m.group(1)!+m.group(2)! )
+      // ★ 修正: m.group(6) を tryParse に変更
       .replaceAllMapped(RegExp('<(([a-zA-Z0-9]*)\\s+$REGEX_XML_NOCLOSE)(android:fillColor=[\'"])(type1/([0-9]*)[\'"])($REGEX_XML_NOCLOSE)>', multiLine: true, dotAll: true), 
-        (m) => '<${m.group(1)!}${m.group(7)!.endsWith("/") ? m.group(7)!.substring(0, m.group(7)!.length-1) : m.group(7)!}>\n${_getGradientPlaceholder(futureGradients!, "0x${int.parse(m.group(6)!).toRadixString(16).padLeft(8, '0')}")}${m.group(7)!.endsWith("/") ? "\n</${m.group(2)}>" : "\n"}')
-      .replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => '${m.group(1)!}#${int.parse(m.group(4)!).toRadixString(16).padLeft(8, '0')}' )
+        (m) => '<${m.group(1)!}${m.group(7)!.endsWith("/") ? m.group(7)!.substring(0, m.group(7)!.length-1) : m.group(7)!}>\n${_getGradientPlaceholder(futureGradients!, "0x${(int.tryParse(m.group(6)!) ?? 0).toRadixString(16).padLeft(8, '0')}")}${m.group(7)!.endsWith("/") ? "\n</${m.group(2)}>" : "\n"}')
+      // ★ 修正: m.group(4) を tryParse に変更
+      .replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => '${m.group(1)!}#${(int.tryParse(m.group(4)!) ?? 0).toRadixString(16).padLeft(8, '0')}' )
       .replaceAllMapped(RegExp('([\\s\\n]android:fillType=[\'"])([0-9]*)'), (m) => m.group(1)!+ (fillType[m.group(2)!] ?? "winding") );
-    else xml = xml.replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => '${m.group(1)!}#${int.parse(m.group(4)!).toRadixString(16).padLeft(8, '0')}' )
+    else xml = xml.replaceAllMapped(RegExp('([cC]olor=[\'"])(type([0-9])+/([0-9]*))'), (m) => '${m.group(1)!}#${(int.tryParse(m.group(4)!) ?? 0).toRadixString(16).padLeft(8, '0')}' )
       .replaceAll(RegExp("(xmlns:[^=\\s]*|android:angle)\\s*=\\s*$REGEX_XML_QUOTED"), "")
       .replaceAllMapped(RegExp('(android:type\\s*=\\s*[\'"])([0-9]*)'), (m) => m.group(1)! + (gradientType[m.group(2)!] ?? "linear"));
     
@@ -149,7 +151,8 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
       else if (resource.type == ResType.POINTER) return 
         resource.values.map((e)=>getResources('0x$e')).foldFuturesSkipNulls((e1, e2) => e1..values = [...e1.values, ...e2.values]);
       Map<int, String> strings = await _stringDump;
-      Iterable<String> files = strings.getAll(resource.values.map((e) => int.parse(e, radix: 16)));
+      // ★ 修正: 例のクラッシュ原因！ parse を tryParse に変更し、ダメなら 0 にする
+      Iterable<String> files = strings.getAll(resource.values.map((e) => (int.tryParse(e, radix: 16) ?? 0)));
       if (DEBUG) log("found RES-FILES: $files of RES-TYPE: ${resource.type} for RES-ID: $resId");
       return files.isNotEmpty ? Resource(files, resource.type) : null;
     }
@@ -197,7 +200,8 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     String foreXmlData = isForeXml ? await foreXml! : "";
     
     if (isBackColor) {
-      final color = Color(int.parse(background!.values.first, radix: 16));
+      // ★ 修正: ここも tryParse に変更
+      final color = Color((int.tryParse(background!.values.first, radix: 16) ?? 0));
       updateState(()=>GState.apkBackgroundColor, color);
     }
     else if (backWidget != null || backXml != null) updateStateWith(()=>GState.apkBackgroundIcon, isBackXml ? backXmlData : backWidget, !isBackXml ? null : (data)=>ScalableImageWidget(si: ScalableImage.fromAvdString(data as String)));
@@ -344,7 +348,7 @@ void loadInstallInfoOnUIThread(String package, int versionCode) => package.isNot
             String? background = iconData.find(r'(^|\n|\s)*E:[\s]?background\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
             String? foreground = iconData.find(r'(^|\n|\s)*E:[\s]?foreground\s[^\n]*\n\s*A:.*=@([^\s\n]*)', 2);
             if (foreground != null) iconUpdThread = _getAdaptiveIconFiles(background, foreground);
-            else iconUpdThread= _getIconFile(icon!);
+            else iconUpdThread= _getIconFile(icon);
           }); else if (icon != null && icon.isNotEmpty) {
             iconUpdThread = _getIconFile(icon);
           }

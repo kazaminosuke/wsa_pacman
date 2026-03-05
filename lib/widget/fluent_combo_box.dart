@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:wsa_pacman/utils/misc_utils.dart';
-import 'package:wsa_pacman/widget/smooth_list_view.dart';
 
 const double kPickerHeight = 32.0; // ← すべての import が終わったあとのここに書く
 
@@ -986,13 +985,19 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
 BorderSide fluentComboBoxBorderColor(bool isDark, Set<WidgetState> states) {
   if (isDark) {
     if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.05));
-    if (states.isNone || (states.isHovered && !states.isPressed)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.035));
-    else return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.07));
+    if (states.isNone || (states.isHovered && !states.isPressed)) {
+      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.035));
+    } else {
+      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.07));
+    }
   }
   else {
     if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.12));
-    if (states.isNone || (states.isHovered && !states.isDisabled && !states.isPressed)) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.22));
-    else return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.07));
+    if (states.isNone || (states.isHovered && !states.isDisabled && !states.isPressed)) {
+      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.22));
+    } else {
+      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.07));
+    }
   }
 }
 

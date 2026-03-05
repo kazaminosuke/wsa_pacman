@@ -104,5 +104,47 @@
     "android_permission_activity_recognition": "Физическая активность",
     "android_permission_sensors": "Датчики устройства",
     "android_permission_sensors_body": "Датчики на теле",
-    "android_permission_nearby_devices": "Устройства поблизости"
+    "android_permission_nearby_devices": "Устройства поблизости",
+
+    "screen_uninstall": "Удалить",
+    "scan_system": "Сканировать систему",
+    "scanning": "Сканирование...",
+    "backup_registry": "Резервная копия реестра",
+    "execute_cleanup": "Выполнить очистку",
+    "scanning_wsa_env": "Глубокое сканирование среды WSA...",
+    "click_scan_to_find_ghost_apps": "Нажмите 'Сканировать систему', чтобы найти оставшиеся или скрытые приложения.",
+    
+    "type_registry_only": "Registry Only",
+    "type_orphaned_shortcut": "Orphaned Shortcut",
+    "type_hidden_adb_app": "Hidden ADB App",
+
+    "cleanup_complete": "Cleanup Complete",
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
+    },
+    "auto_backup_registry": "Auto-backup before uninstall",
+    "backup_cancelled": "Backup cancelled",
+    "backup_success": "Backup successfully saved",
+
+    "btn_restart_wsa": "Restart WSA",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+  
+    "settings_theme_color": "Theme Color",
+    "settings_theme_color_system": "System (Windows)",
+    "settings_theme_color_default": "Default",
+    "settings_custom_color": "Create Custom Color:",
+    "btn_apply": "Apply",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+    "dialog_backup_dir_title": "Select a folder to save auto-backups",
+    "dialog_backup_dir_filename": "Select this folder",
+    "dialog_backup_dir_filter": "Folder|*.none"
 }

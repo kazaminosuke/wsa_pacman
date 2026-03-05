@@ -1,13 +1,10 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names, curly_braces_in_flow_control_structures, camel_case_extensions
 
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:wsa_pacman/l10n/app_localizations.dart';
 export 'package:wsa_pacman/l10n/app_localizations.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:protobuf/protobuf.dart';
 import 'package:wsa_pacman/android/android_utils.dart';
 import 'package:wsa_pacman/android/permissions.dart';
@@ -15,10 +12,8 @@ import 'package:wsa_pacman/main.dart';
 import 'package:shared_value/shared_value.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:wsa_pacman/utils/locale_utils.dart';
-import 'package:wsa_pacman/utils/misc_utils.dart';
 import 'package:wsa_pacman/windows/win_info.dart';
 import 'package:wsa_pacman/windows/win_io.dart';
-import 'package:fixnum/fixnum.dart' as $fixnum;
 
 import 'proto/options.pb.dart';
 import 'utils/string_utils.dart';
@@ -58,6 +53,14 @@ class GState {
   // Installation info
   static final errorCode = SharedValue<String>(value: "");
   static final errorDesc = SharedValue<String>(value: "");
+
+  // 追加: 自動バックアップの有効/無効状態（デフォルトは true: ON）
+  static final autoBackupRegistry = SharedValue<bool>(value: true);
+  
+  // ★ 修正: バックアップの保存先フォルダ（デフォルトはデスクトップ）
+  static final backupDirectory = SharedValue<String>(
+    value: '${Platform.environment['USERPROFILE'] ?? 'C:'}\\Desktop'
+  );
 }
 
 const String UNLOCALIZED_OPTION = "UNLOCALIZED_OPTION";

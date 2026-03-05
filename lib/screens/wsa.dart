@@ -69,10 +69,9 @@ class _ScreenWSAState extends State<ScreenWSA> {
             child: FluentInfoBar(
               title: Text(connectionStatus.title(lang)),
               content: Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
-                // ★ 1. 直接 lang から説明文を呼び出す（main.dartの処理で勝手に紐づきます）
                 Text(connectionStatus.desc(lang)),
                 
-                // ★ 2. WSABuildsボタンも、l10nからテキストを取得！
+                // 1. WSAが見つからない時 (MISSING) のボタン
                 if (connectionStatus.type == ConnectionStatus.MISSING) ...[
                   const SizedBox(width: 15.0),
                   FilledButton(
@@ -80,7 +79,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
                     onPressed: () => Process.run('explorer', ['https://github.com/MustardChef/WSABuilds'])
                   )
                 ]
-                // 3. WSA停止中の時の「オンにする」ボタン（白くてシンプルなモダンボタン）
+                // 2. WSA停止中の時 (ARRESTED) の「オンにする」ボタン
                 else if (connectionStatus.type == ConnectionStatus.ARRESTED) ...[
                   const SizedBox(width: 15.0),
                   Button(
@@ -95,25 +94,82 @@ class _ScreenWSAState extends State<ScreenWSA> {
                         final borderColor = states.contains(WidgetState.hovered) ? Colors.grey[120] : Colors.grey[80];
                         return RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0),
-                          side: BorderSide(color: borderColor ?? const Color(0xFFCCCCCC), width: 0.5),
+                          side: BorderSide(color: borderColor ?? const Color(0xFFCCCCCC), width: 1.0),
                         );
                       }),
-                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)),
                       elevation: WidgetStateProperty.resolveWith((states) => states.contains(WidgetState.hovered) ? 1.0 : 0.0),
                     ),
                     onPressed: () => WSAUtils.launch(),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(FluentIcons.power_button, size: 16),
-                        const SizedBox(width: 8),
-                        Text(lang.btn_boot, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        const Icon(FluentIcons.power_button, size: 14),
+                        const SizedBox(width: 6),
+                        Text(lang.btn_boot, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                       ],
                     ),
                   )
                 ]
-                // 4. 認証エラーなどのボタン
+                // ★ 復活: 開発者モードオフ (DISCONNECTED) または 不明なエラー (UNKNOWN) 時のボタン
+                else if (connectionStatus.type == ConnectionStatus.DISCONNECTED || connectionStatus.type == ConnectionStatus.UNKNOWN) ...[
+                  // DISCONNECTED の時だけ「設定を開く」ボタンを出す
+                  if (connectionStatus.type == ConnectionStatus.DISCONNECTED) ...[
+                    const SizedBox(width: 15.0),
+                    Button(
+                      style: ButtonStyle(
+                        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)),
+                        shape: WidgetStateProperty.resolveWith((states) => RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                          side: BorderSide(color: FluentTheme.of(context).inactiveColor.withOpacity(states.contains(WidgetState.hovered) ? 0.4 : 0.2), width: 1.0),
+                        )),
+                      ),
+                      onPressed: () => WSAUtils.launchDeveloperSettings(),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(FluentIcons.settings, size: 14),
+                          const SizedBox(width: 6),
+                          Text(lang.btn_dev_settings, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  const SizedBox(width: 15.0),
+                  
+                  // 再起動ボタン（両方で表示）
+                  Button(
+                    style: ButtonStyle(
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)),
+                      shape: WidgetStateProperty.resolveWith((states) => RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        side: BorderSide(color: FluentTheme.of(context).inactiveColor.withOpacity(states.contains(WidgetState.hovered) ? 0.4 : 0.2), width: 1.0),
+                      )),
+                    ),
+                    onPressed: () async {
+                      WSAPeriodicConnector.lastStart = DateTime.now().millisecondsSinceEpoch;
+                      WSAPeriodicConnector.status = ConnectionStatus.STARTING;
+                      GState.connectionStatus.$ = ConnectionStatus.STARTING.statusAlert;
+                      await Process.run('taskkill', ['/F', '/IM', 'WsaClient.exe'], runInShell: true);
+                      await Process.run('adb', ['kill-server'], runInShell: true);
+                      await Future.delayed(const Duration(seconds: 1));
+                      WSAUtils.launch();
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(FluentIcons.refresh, size: 14),
+                        const SizedBox(width: 6),
+                        Text(lang.btn_restart_wsa, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      ],
+                    ),
+                  )
+                ]
+                
+                // 4. 認証エラー (UNAUTHORIZED) などのボタン
                 else if (connectionStatus.type == ConnectionStatus.UNAUTHORIZED) ...[
+                  const SizedBox(width: 15.0),
                   Button(child: Text(lang.btn_auth), onPressed: () => WSAPeriodicConnector.reconnect()),
                   const SizedBox(width: 15.0),
                   Button(child: Text(lang.btn_dev_settings), onPressed: () => WSAUtils.launchDeveloperSettings())
@@ -133,10 +189,13 @@ FluentCard(
             leading: const Icon(Mdi.android , size: 23),
             content: Text(lang.wsa_manage_app),
             isButton: true,
-            // アプリ管理画面を開く（シングルクォートで確実に渡す）
-            onPressed: connectionStatus.isDisconnected ? null : () {
-              ADBUtils.shellToAddress(GState.ipAddress.of(context), GState.androidPort.of(context), 
-                r"am start -n 'com.android.settings/.Settings$ManageApplicationsActivity'");
+            // ★ 修正: Android内部のシェルが「$」を勝手に消すのを防ぐため、全体をシングルクォート(')で保護する
+            onPressed: connectionStatus.isDisconnected ? null : () async {
+              final address = '${GState.ipAddress.of(context)}:${GState.androidPort.of(context)}';
+              await Process.run('adb', [
+                '-s', address,
+                'shell', 'am', 'start', '-n', "'com.android.settings/.Settings\$ManageApplicationsActivity'"
+              ], runInShell: true);
             },
           ),
           smallSpacer,
@@ -144,10 +203,13 @@ FluentCard(
             leading: const Icon(Mdi.cogs, size: 23),
             content: Text(lang.wsa_manage_settings),
             isButton: true,
-            // 全体設定を開く
-            onPressed: connectionStatus.isDisconnected ? null : () {
-              ADBUtils.shellToAddress(GState.ipAddress.of(context), GState.androidPort.of(context), 
-                'am start -n com.android.settings/.Settings');
+            // こちらは「$」が無いのでそのままでOKです
+            onPressed: connectionStatus.isDisconnected ? null : () async {
+              final address = '${GState.ipAddress.of(context)}:${GState.androidPort.of(context)}';
+              await Process.run('adb', [
+                '-s', address,
+                'shell', 'am', 'start', '-n', 'com.android.settings/.Settings'
+              ], runInShell: true);
             },
           )
         ],

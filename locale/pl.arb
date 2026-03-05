@@ -103,5 +103,46 @@
     "android_permission_activity_recognition": "Aktywność fizyczna",
     "android_permission_sensors": "Czujniki urządzenia",
     "android_permission_sensors_body": "Czujniki na ciele",
-    "android_permission_nearby_devices": "Wykrywanie urządzeń w pobliżu"
+    "android_permission_nearby_devices": "Wykrywanie urządzeń w pobliżu",
+
+    "screen_uninstall": "Odinstaluj",
+    "scan_system": "Skanuj system",
+    "scanning": "Skanowanie...",
+    "backup_registry": "Kopia zapasowa rejestru",
+    "execute_cleanup": "Wykonaj czyszczenie",
+    "scanning_wsa_env": "Skanowanie środowiska WSA...",
+    "click_scan_to_find_ghost_apps": "Kliknij 'Skanuj system', aby znaleźć pozostałości lub ukryte aplikacje.",
+    "type_registry_only": "Registry Only",
+    "type_orphaned_shortcut": "Orphaned Shortcut",
+    "type_hidden_adb_app": "Hidden ADB App",
+
+    "cleanup_complete": "Cleanup Complete",
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+      "placeholders": {
+        "count": {
+          "type": "int"
+        }
+      }
+    },
+    "auto_backup_registry": "Auto-backup before uninstall",
+    "backup_cancelled": "Backup cancelled",
+    "backup_success": "Backup successfully saved",
+
+    "btn_restart_wsa": "Restart WSA",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+  
+    "settings_theme_color": "Theme Color",
+    "settings_theme_color_system": "System (Windows)",
+    "settings_theme_color_default": "Default",
+    "settings_custom_color": "Create Custom Color:",
+    "btn_apply": "Apply",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+    "dialog_backup_dir_title": "Select a folder to save auto-backups",
+    "dialog_backup_dir_filename": "Select this folder",
+    "dialog_backup_dir_filter": "Folder|*.none"
 }

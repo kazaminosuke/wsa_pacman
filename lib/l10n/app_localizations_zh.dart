@@ -289,6 +289,89 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get android_permission_nearby_devices => '查找附近的设备';
+
+  @override
+  String get screen_uninstall => '卸载';
+
+  @override
+  String get scan_system => '扫描系统';
+
+  @override
+  String get scanning => '正在扫描...';
+
+  @override
+  String get backup_registry => '备份注册表';
+
+  @override
+  String get execute_cleanup => '执行清理';
+
+  @override
+  String get scanning_wsa_env => '深度扫描 WSA 环境...';
+
+  @override
+  String get click_scan_to_find_ghost_apps => '点击“扫描系统”以查找残留或隐藏的应用程序。';
+
+  @override
+  String get type_registry_only => '仅注册表';
+
+  @override
+  String get type_orphaned_shortcut => '孤立快捷方式';
+
+  @override
+  String get type_hidden_adb_app => '隐藏 ADB 应用程序';
+
+  @override
+  String get cleanup_complete => 'Cleanup Complete';
+
+  @override
+  String cleanup_success_desc(int count) {
+    return 'Completely deleted $count apps and unnecessary data.';
+  }
+
+  @override
+  String get auto_backup_registry => '卸载前自动备份注册表';
+
+  @override
+  String get backup_cancelled => '备份已取消';
+
+  @override
+  String get backup_success => '备份已成功保存';
+
+  @override
+  String get btn_restart_wsa => '重启 WSA';
+
+  @override
+  String get settings_auto_backup_dir => '自动备份目录';
+
+  @override
+  String get tooltip_reset_desktop => '重置为默认桌面';
+
+  @override
+  String get btn_browse => '浏览...';
+
+  @override
+  String get settings_theme_color => '主题颜色';
+
+  @override
+  String get settings_theme_color_system => '系统 (Windows)';
+
+  @override
+  String get settings_theme_color_default => '默认';
+
+  @override
+  String get settings_custom_color => '创建自定义颜色:';
+
+  @override
+  String get btn_apply => '应用';
+
+  @override
+  String get dialog_backup_dir_title => '选择一个文件夹来保存自动备份';
+
+  @override
+  String get dialog_backup_dir_filename => 'Select this folder';
+
+  @override
+  String get dialog_backup_dir_filter => 'Folder|*.none';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -577,4 +660,87 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get android_permission_nearby_devices => '查找附近的裝置';
+
+  @override
+  String get screen_uninstall => '解除安裝';
+
+  @override
+  String get scan_system => '掃描系統';
+
+  @override
+  String get scanning => '正在掃描...';
+
+  @override
+  String get backup_registry => '備份註冊表';
+
+  @override
+  String get execute_cleanup => '執行清理';
+
+  @override
+  String get scanning_wsa_env => '深度掃描 WSA 環境...';
+
+  @override
+  String get click_scan_to_find_ghost_apps => '點擊「掃描系統」以查找殘留或隱藏的應用程式。';
+
+  @override
+  String get type_registry_only => 'Registry Only';
+
+  @override
+  String get type_orphaned_shortcut => 'Orphaned Shortcut';
+
+  @override
+  String get type_hidden_adb_app => 'Hidden ADB App';
+
+  @override
+  String get cleanup_complete => 'Cleanup Complete';
+
+  @override
+  String cleanup_success_desc(int count) {
+    return 'Completely deleted $count apps and unnecessary data.';
+  }
+
+  @override
+  String get auto_backup_registry => 'Auto-backup before uninstall';
+
+  @override
+  String get backup_cancelled => 'Backup cancelled';
+
+  @override
+  String get backup_success => 'Backup successfully saved';
+
+  @override
+  String get btn_restart_wsa => 'Restart WSA';
+
+  @override
+  String get settings_auto_backup_dir => 'Auto Backup Directory';
+
+  @override
+  String get tooltip_reset_desktop => 'Reset to Default (Desktop)';
+
+  @override
+  String get btn_browse => 'Browse...';
+
+  @override
+  String get settings_theme_color => 'Theme Color';
+
+  @override
+  String get settings_theme_color_system => 'System (Windows)';
+
+  @override
+  String get settings_theme_color_default => 'Default';
+
+  @override
+  String get settings_custom_color => 'Create Custom Color:';
+
+  @override
+  String get btn_apply => 'Apply';
+
+  @override
+  String get dialog_backup_dir_title => 'Select a folder to save auto-backups';
+
+  @override
+  String get dialog_backup_dir_filename => 'Select this folder';
+
+  @override
+  String get dialog_backup_dir_filter => 'Folder|*.none';
 }

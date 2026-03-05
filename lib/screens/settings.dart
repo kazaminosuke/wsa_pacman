@@ -1,4 +1,5 @@
-// ignore_for_file: non_constant_identifier_names, constant_identifier_names
+// lib/screens/settings.dart の一番上付近
+import 'dart:io'; // ★これを追加
 
 import 'dart:async';
 import 'dart:developer';
@@ -23,6 +24,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../theme.dart';
+
 
 const List<String> accentColorNames = [
   'System',
@@ -122,7 +124,7 @@ child: Row(
   Widget build(BuildContext context) {
     final appTheme = context.watch<AppTheme>();
     final theme = FluentTheme.of(context);
-    final locale_lang = GState.locale.of(context);
+    final localeLang = GState.locale.of(context);
     final lang = AppLocalizations.of(context)!;
     
     final tooltipThemeData = TooltipThemeData(decoration: () { 
@@ -221,6 +223,17 @@ child: Row(
             )]),
           ),
           smallSpacer,
+          // レジストリ自動バックアップの設定（カード型でおしゃれに）
+          FluentCard(
+            leading: const Icon(FluentIcons.save, size: 23),
+            content: Text(lang.auto_backup_registry),
+            trailing: ToggleSwitch(
+              checked: GState.autoBackupRegistry.of(context),
+              onChanged: (v) => GState.autoBackupRegistry.$ = v,
+            ),
+          ),
+          const SizedBox(height: 5.0), // 下の項目との隙間
+          smallSpacer,
           FluentCard(
             leading: const Icon(Mdi.timerOutline, size: 23),
             content: Text(lang.settings_timeout(installTimeout == 0 ? '∞' : '$installTimeout')),
@@ -242,9 +255,9 @@ child: Row(
             content: Text(lang.settings_language),
             trailing: SizedBox(width: 300, height: 32, child: FluentCombobox<NamedLocale>(
               allowUnknown: true,
-              onTap: (){}, placeholder: Text(locale_lang.name), 
+              onTap: (){}, placeholder: Text(localeLang.name), 
               isExpanded: true,
-              value: locale_lang,
+              value: localeLang,
               onChanged: (l){if (l != null) GState.locale..$=l..persist();},
               items: _localeItems,
             )),
@@ -262,9 +275,10 @@ child: Row(
           smallSpacer,
 
           // ★追加：最強のカラーパレット＆RGBピッカー機能！
+          // ★修正：テーマカラー設定の多言語化
           ExpanderWin11(
             leading: const Icon(Mdi.palette, size: 23),
-            header: const Text("テーマカラー"),
+            header: Text(lang.settings_theme_color), // ←変更
             initiallyExpanded: false,
             direction: ExpanderDirection.down,
             content: Column(
@@ -283,7 +297,8 @@ child: Row(
                         Colors.yellow, Colors.orange, Colors.red, Colors.magenta,
                         Colors.purple, Colors.blue, Colors.teal, Colors.green,
                       ];
-                      final colorNames = ["システム (Windows)", "デフォルト", "Yellow", "Orange", "Red", "Magenta", "Purple", "Blue", "Teal", "Green"];
+                      // ←変更（システムとデフォルトを多言語化）
+                      final colorNames = [lang.settings_theme_color_system, lang.settings_theme_color_default, "Yellow", "Orange", "Red", "Magenta", "Purple", "Blue", "Teal", "Green"];
                       final color = colors[index];
                       
                       final isSelected = appTheme.getColor(theme.brightness == Brightness.dark).value == color.value;
@@ -310,7 +325,7 @@ child: Row(
                 ),
                 const SizedBox(height: 24),
                 
-                const Text("カスタム色を作成:"),
+                Text(lang.settings_custom_color), // ←変更
                 const SizedBox(height: 12),
                 Row(
                   children: [
@@ -351,7 +366,7 @@ child: Row(
                     ),
                     const SizedBox(width: 16),
                     FilledButton(
-                      child: const Text("適用"),
+                      child: Text(lang.btn_apply), // ←変更
                       onPressed: () {
                         final customColor = Color.fromRGBO(_customR.toInt(), _customG.toInt(), _customB.toInt(), 1.0);
                         final customAccent = AccentColor('normal', {
@@ -369,6 +384,72 @@ child: Row(
                   ]
                 )
               ]
+            ),
+          ),
+          smallSpacer,
+// 自動バックアップ保存先の指定
+          FluentCard(
+            leading: const Icon(FluentIcons.folder_horizontal, size: 23),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(lang.settings_auto_backup_dir), // ←変更
+                Text(
+                  GState.backupDirectory.of(context),
+                  style: FluentTheme.of(context).typography.caption,
+                ),
+              ],
+            ),
+            trailing: Row(
+              children: [
+                if (GState.backupDirectory.of(context) != '${Platform.environment['USERPROFILE'] ?? 'C:'}\\Desktop')
+                  Tooltip(
+                    message: lang.tooltip_reset_desktop, // ←変更
+                    child: IconButton(
+                      icon: const Icon(FluentIcons.clear),
+                      onPressed: () => GState.backupDirectory.$ = '${Platform.environment['USERPROFILE'] ?? 'C:'}\\Desktop',
+                    ),
+                  ),
+                const SizedBox(width: 8),
+                // 参照ボタン
+                Button(
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)),
+                    shape: WidgetStateProperty.resolveWith((states) {
+                      return RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        side: BorderSide(
+                          color: FluentTheme.of(context).inactiveColor.withOpacity(states.contains(WidgetState.hovered) ? 0.4 : 0.2),
+                          width: 1.0,
+                        ),
+                      );
+                    }),
+                  ),
+                  child: Text(lang.btn_browse, style: const TextStyle(fontSize: 13)), // ←変更
+                  onPressed: () async {
+                    // ★修正：PowerShellのダイアログ内も多言語化！
+                    final script = '''
+                      Add-Type -AssemblyName System.Windows.Forms
+                      \$dlg = New-Object System.Windows.Forms.OpenFileDialog
+                      \$dlg.Title = "${lang.dialog_backup_dir_title}"
+                      \$dlg.FileName = "${lang.dialog_backup_dir_filename}"
+                      \$dlg.Filter = "${lang.dialog_backup_dir_filter}"
+                      \$dlg.CheckFileExists = \$false
+                      \$dlg.CheckPathExists = \$true
+                      \$dlg.ValidateNames = \$false
+                      if (\$dlg.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+                        Write-Output ([System.IO.Path]::GetDirectoryName(\$dlg.FileName))
+                      }
+                    ''';
+                    final process = await Process.run('powershell', ['-NoProfile', '-Command', script]);
+                    final path = process.stdout.toString().trim();
+                    if (path.isNotEmpty) {
+                      GState.backupDirectory.$ = path;
+                    }
+                  },
+                ),
+              ],
             ),
           ),
           smallSpacer,

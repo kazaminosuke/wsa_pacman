@@ -291,4 +291,88 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get android_permission_nearby_devices => '근처 장치 찾기';
+
+  @override
+  String get screen_uninstall => '제거';
+
+  @override
+  String get scan_system => '시스템 검색';
+
+  @override
+  String get scanning => '검색 중...';
+
+  @override
+  String get backup_registry => '레지스트리 백업';
+
+  @override
+  String get execute_cleanup => '정리 실행';
+
+  @override
+  String get scanning_wsa_env => 'WSA 환경을 깊이 검색 중...';
+
+  @override
+  String get click_scan_to_find_ghost_apps =>
+      'Click \'Scan System\' to find remnant or hidden apps.';
+
+  @override
+  String get type_registry_only => 'Registry Only';
+
+  @override
+  String get type_orphaned_shortcut => 'Orphaned Shortcut';
+
+  @override
+  String get type_hidden_adb_app => 'Hidden ADB App';
+
+  @override
+  String get cleanup_complete => 'Cleanup Complete';
+
+  @override
+  String cleanup_success_desc(int count) {
+    return 'Completely deleted $count apps and unnecessary data.';
+  }
+
+  @override
+  String get auto_backup_registry => 'Auto-backup before uninstall';
+
+  @override
+  String get backup_cancelled => 'Backup cancelled';
+
+  @override
+  String get backup_success => 'Backup successfully saved';
+
+  @override
+  String get btn_restart_wsa => 'Restart WSA';
+
+  @override
+  String get settings_auto_backup_dir => 'Auto Backup Directory';
+
+  @override
+  String get tooltip_reset_desktop => 'Reset to Default (Desktop)';
+
+  @override
+  String get btn_browse => 'Browse...';
+
+  @override
+  String get settings_theme_color => 'Theme Color';
+
+  @override
+  String get settings_theme_color_system => 'System (Windows)';
+
+  @override
+  String get settings_theme_color_default => 'Default';
+
+  @override
+  String get settings_custom_color => 'Create Custom Color:';
+
+  @override
+  String get btn_apply => 'Apply';
+
+  @override
+  String get dialog_backup_dir_title => 'Select a folder to save auto-backups';
+
+  @override
+  String get dialog_backup_dir_filename => 'Select this folder';
+
+  @override
+  String get dialog_backup_dir_filter => 'Folder|*.none';
 }

@@ -111,5 +111,46 @@
     "android_permission_activity_recognition": "신체 활동",
     "android_permission_sensors": "기기 센서",
     "android_permission_sensors_body": "신체 센서",
-    "android_permission_nearby_devices": "근처 장치 찾기"
+    "android_permission_nearby_devices": "근처 장치 찾기",
+
+    "screen_uninstall": "제거",
+    "scan_system": "시스템 검색",
+    "scanning": "검색 중...",
+    "backup_registry": "레지스트리 백업",
+    "execute_cleanup": "정리 실행",
+    "scanning_wsa_env": "WSA 환경을 깊이 검색 중...",
+    "click_scan_to_find_ghost_apps": "Click 'Scan System' to find remnant or hidden apps.",
+    "type_registry_only": "Registry Only",
+    "type_orphaned_shortcut": "Orphaned Shortcut",
+    "type_hidden_adb_app": "Hidden ADB App",
+
+    "cleanup_complete": "Cleanup Complete",
+      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+      "@cleanup_success_desc": {
+      "placeholders": {
+          "count": {
+            "type": "int"
+          }
+        }
+      },
+    "auto_backup_registry": "Auto-backup before uninstall",
+    "backup_cancelled": "Backup cancelled",
+    "backup_success": "Backup successfully saved",
+
+    "btn_restart_wsa": "Restart WSA",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+  
+    "settings_theme_color": "Theme Color",
+    "settings_theme_color_system": "System (Windows)",
+    "settings_theme_color_default": "Default",
+    "settings_custom_color": "Create Custom Color:",
+    "btn_apply": "Apply",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+    "dialog_backup_dir_title": "Select a folder to save auto-backups",
+    "dialog_backup_dir_filename": "Select this folder",
+    "dialog_backup_dir_filter": "Folder|*.none"
 }

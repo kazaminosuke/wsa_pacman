@@ -113,5 +113,46 @@
     "android_permission_activity_recognition": "体育活动",
     "android_permission_sensors": "设备传感器",
     "android_permission_sensors_body": "身体传感器",
-    "android_permission_nearby_devices": "查找附近的设备"
+    "android_permission_nearby_devices": "查找附近的设备",
+
+    "screen_uninstall": "卸载",
+    "scan_system": "扫描系统",
+    "scanning": "正在扫描...",
+    "backup_registry": "备份注册表",
+    "execute_cleanup": "执行清理",
+    "scanning_wsa_env": "深度扫描 WSA 环境...",
+    "click_scan_to_find_ghost_apps": "点击“扫描系统”以查找残留或隐藏的应用程序。",
+    "type_registry_only": "仅注册表",
+    "type_orphaned_shortcut": "孤立快捷方式",
+    "type_hidden_adb_app": "隐藏 ADB 应用程序",
+
+    "cleanup_complete": "Cleanup Complete",
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+      "placeholders": {
+        "count": {
+        "type": "int"
+        }
+      }
+    },
+    "auto_backup_registry": "卸载前自动备份注册表",
+    "backup_cancelled": "备份已取消",
+    "backup_success": "备份已成功保存",
+
+    "btn_restart_wsa": "重启 WSA",
+    "settings_auto_backup_dir": "自动备份目录",
+    "tooltip_reset_desktop": "重置为默认桌面",
+    "btn_browse": "浏览...",
+
+    "settings_theme_color": "主题颜色",
+    "settings_theme_color_system": "系统 (Windows)",
+    "settings_theme_color_default": "默认",
+    "settings_custom_color": "创建自定义颜色:",
+    "btn_apply": "应用",
+    "settings_auto_backup_dir": "自动备份目录",
+    "tooltip_reset_desktop": "重置为默认桌面",
+    "btn_browse": "浏览...",
+    "dialog_backup_dir_title": "选择一个文件夹来保存自动备份",
+    "dialog_backup_dir_filename": "Select this folder",
+    "dialog_backup_dir_filter": "Folder|*.none"
 }

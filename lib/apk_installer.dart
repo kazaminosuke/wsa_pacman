@@ -1,11 +1,9 @@
 // ignore_for_file: non_constant_identifier_names, curly_braces_in_flow_control_structures
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:wsa_pacman/android/android_utils.dart';
 import 'package:wsa_pacman/android/permissions.dart';
-import 'package:wsa_pacman/android/reader_apk.dart';
 import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/main.dart';
 import 'package:wsa_pacman/utils/wsa_utils.dart';

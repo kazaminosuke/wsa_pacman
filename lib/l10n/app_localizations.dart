@@ -653,6 +653,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Locate nearby devices'**
   String get android_permission_nearby_devices;
+
+  /// No description provided for @screen_uninstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Uninstall'**
+  String get screen_uninstall;
+
+  /// No description provided for @scan_system.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan System'**
+  String get scan_system;
+
+  /// No description provided for @scanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning...'**
+  String get scanning;
+
+  /// No description provided for @backup_registry.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup Registry'**
+  String get backup_registry;
+
+  /// No description provided for @execute_cleanup.
+  ///
+  /// In en, this message translates to:
+  /// **'Execute Cleanup'**
+  String get execute_cleanup;
+
+  /// No description provided for @scanning_wsa_env.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning WSA environment deeply...'**
+  String get scanning_wsa_env;
+
+  /// No description provided for @click_scan_to_find_ghost_apps.
+  ///
+  /// In en, this message translates to:
+  /// **'Click \'Scan System\' to find remnant or hidden apps.'**
+  String get click_scan_to_find_ghost_apps;
+
+  /// No description provided for @type_registry_only.
+  ///
+  /// In en, this message translates to:
+  /// **'Registry Only'**
+  String get type_registry_only;
+
+  /// No description provided for @type_orphaned_shortcut.
+  ///
+  /// In en, this message translates to:
+  /// **'Orphaned Shortcut'**
+  String get type_orphaned_shortcut;
+
+  /// No description provided for @type_hidden_adb_app.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden ADB App'**
+  String get type_hidden_adb_app;
+
+  /// No description provided for @cleanup_complete.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleanup Complete'**
+  String get cleanup_complete;
+
+  /// No description provided for @cleanup_success_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completely deleted {count} apps and unnecessary data.'**
+  String cleanup_success_desc(int count);
+
+  /// No description provided for @auto_backup_registry.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-backup before uninstall'**
+  String get auto_backup_registry;
+
+  /// No description provided for @backup_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup cancelled'**
+  String get backup_cancelled;
+
+  /// No description provided for @backup_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup successfully saved'**
+  String get backup_success;
+
+  /// No description provided for @btn_restart_wsa.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart WSA'**
+  String get btn_restart_wsa;
+
+  /// No description provided for @settings_auto_backup_dir.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Backup Directory'**
+  String get settings_auto_backup_dir;
+
+  /// No description provided for @tooltip_reset_desktop.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to Default (Desktop)'**
+  String get tooltip_reset_desktop;
+
+  /// No description provided for @btn_browse.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse...'**
+  String get btn_browse;
+
+  /// No description provided for @settings_theme_color.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme Color'**
+  String get settings_theme_color;
+
+  /// No description provided for @settings_theme_color_system.
+  ///
+  /// In en, this message translates to:
+  /// **'System (Windows)'**
+  String get settings_theme_color_system;
+
+  /// No description provided for @settings_theme_color_default.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get settings_theme_color_default;
+
+  /// No description provided for @settings_custom_color.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Custom Color:'**
+  String get settings_custom_color;
+
+  /// No description provided for @btn_apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get btn_apply;
+
+  /// No description provided for @dialog_backup_dir_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a folder to save auto-backups'**
+  String get dialog_backup_dir_title;
+
+  /// No description provided for @dialog_backup_dir_filename.
+  ///
+  /// In en, this message translates to:
+  /// **'Select this folder'**
+  String get dialog_backup_dir_filename;
+
+  /// No description provided for @dialog_backup_dir_filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder|*.none'**
+  String get dialog_backup_dir_filter;
 }
 
 class _AppLocalizationsDelegate

@@ -2,8 +2,8 @@ import 'dart:io'; // ★ 追加：ファイル保存用
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:system_theme/system_theme.dart';
-import 'package:wsa_pacman/windows/win_io.dart'; // ★ 追加：保存先フォルダの取得用
-import 'package:wsa_pacman/windows/win_info.dart'; // ★ これを追加！
+// ★ 追加：保存先フォルダの取得用
+// ★ これを追加！
 
 enum NavigationIndicators { sticky, end }
 
@@ -40,7 +40,7 @@ class AppTheme extends ChangeNotifier {
     if (!userProfile.endsWith('\\') && !userProfile.endsWith('/')) {
       userProfile += '\\';
     }
-    final directory = Directory("${userProfile}.wsa-pacman\\");
+    final directory = Directory("$userProfile.wsa-pacman\\");
     if (!directory.existsSync()) directory.createSync();
     return File("${directory.path}\\theme_color.txt");
   }
