@@ -2,27 +2,24 @@
     "@@README_1": "The en.arb file is a template for other files",
     "@@README_2": "For other languages, entries starting with @ and @@ are not needed, except @@locale",
     "@@README_3": "Country-specific locales (eg. 'en_GB') need a fallback locale (eg. 'en') to exist",
-
-
     "@@locale": "ku",
-    "@locale_desc": {"description": "Kurdish (Central) [ckb_IQ]"},
+    "@locale_desc": {
+        "description": "Kurdish (Central) [ckb_IQ]"
+    },
     "locale_desc": "کوردی",
-    "@locale_system": {"description": "وەسفی زمانی سیستەم دەکات"},
+    "@locale_system": {
+        "description": "وەسفی زمانی سیستەم دەکات"
+    },
     "locale_system": "سیستەم",
-
-
     "btn_boot": "کارای بکە",
     "btn_auth": "دووبارە سەلماندن",
     "btn_dev_settings": "ھەڵبژاردەکانی پەرەپێدەر",
     "btn_switch_on": "ھەڵبوو",
     "btn_switch_off": "کوژاوە",
-
     "status_subtext_winver_10": "ویندۆزی ١٠",
     "status_subtext_winver_older": "وەشانێکی ویندۆزی کۆنتر",
-
-
     "status_unsupported": "WSA دانەمەزێندراوە",
-    "status_unsupported_desc": "{windowsVersion} ناسرایەوە و WSA نەدۆزرایەوە؛ ئەم بەرنامەیە لەسەر WSA بەندە، کە بە فەرمی تەنیا لەسەر ویندۆزی ١١ پاڵپشتیی دەکرێت",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "ڕێگەپێنەدراو",
     "status_unauthorized_desc": "Debugging authorization was dismissed or revoked; press the first button, select 'always allow', then click on 'allow'; If no popup appears, open developer options and disable and re-enable 'USB debugging'",
     "status_missing": "WSA دانەبەزێندراوە",
@@ -38,39 +35,29 @@
     "status_disconnected": "ناپەیوەست",
     "status_disconnected_desc": "نەتواندرا پەیوەندییەکی WSA جێگیر بکرێت لەبەر ھۆکارێکی نەزاندراو",
     "status_connected": "پەیوەست",
-    "status_connected_desc": "بە سەرکەتوویی پەیوەست بوویت بە WSAیەوە!",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "بەڕێوەبەری پاکێجی WSA",
     "screen_settings": "ڕێکخستنەکان",
-
-
     "wsa_manage": "بەڕێوەبردنی ئەندرۆید",
-    "wsa_manage_app": "بەڕێوەبردنی بەرنامەکان",
-    "wsa_manage_settings": "بەڕێوەبرردنی ڕێکخستنەکان",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "پۆڕتی WSA",
     "settings_ip": "ناونیشانی ئای پیی WSA",
     "settings_autostart": "خۆگەڕانە WSA کارپێبکە پێش دامەزراندن",
     "settings_timeout": "کات تەواو بوو ({seconds} چرکە)",
     "settings_language": "زمان",
     "settings_option_generic_system": "سیستەم",
-    "settings_option_generic_disabled": "ناکارا",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "شێوەی ڕووکار",
     "theme_mode_dark": "تاریک",
     "theme_mode_light": "ڕووناک",
-    "theme_mica": "ڕووتەنکیی شاشە",
-    "theme_mica_full": "تەواو",
-    "theme_mica_partial": "نیمچە",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "قەبارەی ئایکۆنی گونجێنەر",
-    "theme_icon_adaptive_squircle": "چوارگۆشە و بازنە",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "بازنە",
-    "theme_icon_adaptive_rounded_square": "چوارگۆشەی خڕ",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "دەتەوێت ئەم بەرنامەیە داببەزێنیت؟",
     "installer_info_version": "وەشان: {appVersion}",
     "installer_info_version_change": "وەشان: {appVersionOld} => {appVersionNew}",
@@ -91,8 +78,6 @@
     "installer_btn_dismiss": "ڕەتکردنەوە",
     "installer_btn_open": "بەرنامەکە بکەرەوە",
     "installer_btn_checkbox_shortcut": "شۆڕتکەتی سەر دێسکتۆپ دروست بکە",
-
-
     "android_permission_none": "ھیچ ڕێپێدانێک پێویست نییە",
     "android_permission_admin": "ئامێرەکە بەڕێوە ببە وەک بەڕێوەبەر",
     "android_permission_admin_brick": "لە دوورەوە ئامێرەکە ناکارا بکە یان ڕێکیبخەرەوە",
@@ -110,7 +95,6 @@
     "android_permission_sensors": "ھەستەوەرەکانی ئامێر",
     "android_permission_sensors_body": "ھەستەوەرەکانی جەستە",
     "android_permission_nearby_devices": "ئامێرە نزیکەکان بدۆزەرەوە",
-
     "screen_uninstall": "سڕینەوە",
     "scan_system": "سکانی سیستەم",
     "scanning": "سکانی داواکاری...",
@@ -118,37 +102,30 @@
     "execute_cleanup": "دۆخی پاککردنەوە",
     "scanning_wsa_env": "سکانی داواکاری بەشی WSA...",
     "click_scan_to_find_ghost_apps": "Click 'Scan System' to find remnant or hidden apps.",
-
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
-      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
-      "@cleanup_success_desc": {
-      "placeholders": {
-          "count": {
-            "type": "int"
-          }
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      },
+    },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

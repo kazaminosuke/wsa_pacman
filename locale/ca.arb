@@ -2,27 +2,21 @@
     "@@README_1": "The en.arb file is a template for other files",
     "@@README_2": "For other languages, entries starting with @ and @@ are not needed, except @@locale",
     "@@README_3": "Country-specific locales (eg. 'en_GB') need a fallback locale (eg. 'en') to exist",
-
-
     "@@locale": "ca",
-    "@locale_desc": {"description": "Catalan [ca]"},
+    "@locale_desc": {
+        "description": "Catalan [ca]"
+    },
     "locale_desc": "Català",
     "locale_system": "Sistema",
-
-
     "btn_boot": "Engegar",
     "btn_auth": "Torna a autenticar",
     "btn_dev_settings": "Opcions de desenvolupador",
     "btn_switch_on": "Encès",
     "btn_switch_off": "Apagat",
-
-
     "status_subtext_winver_10": "Windows 10",
     "status_subtext_winver_older": "Versions de Windows més antigues",
-
-
     "status_unsupported": "WSA no està suportat",
-    "status_unsupported_desc": "Estàs executant {windowsVersion} però no s'ha trobat WSA; aquesta aplicació necessita WSA, que sols està suportada en Windows 11",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "No autoritzat",
     "status_unauthorized_desc": "S'ha denegat o revocat l'autorització de depuració; prem el primer botó, selecciona 'sempre permet', després fes clic a 'permet'; Si no apareix cap finestra emergent, obre les opcions de desenvolupador i desactiva i torna a activar 'depuració USB'",
     "status_missing": "WSA no està instal·lat",
@@ -39,39 +33,29 @@
     "status_disconnected": "Desconnectat",
     "status_disconnected_desc": "No s'ha pogut establir una connexió amb WSA per motius desconeguts",
     "status_connected": "Connectat",
-    "status_connected_desc": "S'ha connectat a WSA amb èxit, tots els serveis funcionant correctament",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "Administrador de Paquets de WSA",
     "screen_settings": "Configuració",
-
-
     "wsa_manage": "Administració d'Android",
-    "wsa_manage_app": "Administrar aplicacions",
-    "wsa_manage_settings": "Administrar configuració",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "Port WSA",
     "settings_ip": "Direcció IP de WSA",
     "settings_autostart": "Iniciar WSA abans d'instal·lar",
     "settings_timeout": "Temps de caducitat ({seconds} segons)",
     "settings_language": "Idioma",
     "settings_option_generic_system": "Sistema",
-    "settings_option_generic_disabled": "Deshabilitat",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "Mode del tema",
     "theme_mode_dark": "Obscur",
     "theme_mode_light": "Clar",
-    "theme_mica": "Transparència de la finestra",
-    "theme_mica_full": "Completa",
-    "theme_mica_partial": "Parcial",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "Forma de les icones adaptives",
-    "theme_icon_adaptive_squircle": "Squircle",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "Cercle",
-    "theme_icon_adaptive_rounded_square": "Quadrat rodonejat",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "Vols instal·lar aquesta aplicació?",
     "installer_info_version": "Versió: {appVersion}",
     "installer_info_version_change": "Versió: {appVersionOld} => {appVersionNew}",
@@ -92,8 +76,6 @@
     "installer_btn_dismiss": "Tancar",
     "installer_btn_open": "Obri app",
     "installer_btn_checkbox_shortcut": "Crea una drecera a l'escriptori",
-
-
     "android_permission_none": "No calen permisos",
     "android_permission_admin": "Administrar dispositiu com a administrador",
     "android_permission_admin_brick": "Deshabilita o reinicia dispositiu remot",
@@ -111,7 +93,6 @@
     "android_permission_sensors": "Sensors del dispositiu",
     "android_permission_sensors_body": "Sensors corporals",
     "android_permission_nearby_devices": "Localitzar dispositius propers",
-
     "screen_uninstall": "Uninstall",
     "scan_system": "Scan System",
     "scanning": "Scanning...",
@@ -122,33 +103,27 @@
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
-      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
-      "@cleanup_success_desc": {
-      "placeholders": {
-          "count": {
-            "type": "int"
-          }
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      },
+    },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

@@ -2,30 +2,30 @@
     "@@README_1": "en.arb 文件是其他文件的模板",
     "@@README_2": "对于其他语言，不需要翻译 @ 和 @@ 开头的条目，除外 @@locale",
     "@@README_3": "特定于国家/地区的语言环境（例如“en_GB”）需要一个备用语言环境（例如“en”）才能使用",
-
-
     "@@locale": "zh",
-    "@locale_desc": {"description": "Chinese (simplified) [zh_CN] < [zh_Hans]"},
+    "@locale_desc": {
+        "description": "Chinese (simplified) [zh_CN] < [zh_Hans]"
+    },
     "locale_desc": "中文 (简体)",
-    "@locale_system": {"description": "描述系统区域设置"},
+    "@locale_system": {
+        "description": "描述系统区域设置"
+    },
     "locale_system": "系统",
-
-
     "btn_boot": "启动",
     "btn_auth": "重新认证",
-    "btn_dev_settings": "开发者选项",  
+    "btn_dev_settings": "开发者选项",
     "btn_switch_on": "打开",
     "btn_switch_off": "关闭",
-
-
-    "@status_subtext_winver_10": {"description": "仅在 'status_unsupported_desc' 中使用，修改时考虑到这一点"},
+    "@status_subtext_winver_10": {
+        "description": "仅在 'status_unsupported_desc' 中使用，修改时考虑到这一点"
+    },
     "status_subtext_winver_10": "Windows 10",
-    "@status_subtext_winver_older": {"description": "仅在 'status_unsupported_desc' 中使用，修改时考虑到这一点"},
+    "@status_subtext_winver_older": {
+        "description": "仅在 'status_unsupported_desc' 中使用，修改时考虑到这一点"
+    },
     "status_subtext_winver_older": "旧 Windows 版本",
-
-
     "status_unsupported": "WSA 未安装",
-    "status_unsupported_desc": "{windowsVersion} 检测到但未找到 WSA； 此应用程序依赖于 WSA，仅在 Windows 11 上正式支持",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "未授权",
     "status_unauthorized_desc": "调试授权被拒绝或撤销；点击第一个按钮，选择“始终允许”，然后点击“允许”；如果没有弹出窗口，请打开开发者选项并禁用和重新启用“USB调试”",
     "status_missing": "WSA 未安装",
@@ -42,39 +42,29 @@
     "status_disconnected": "已断开连接",
     "status_disconnected_desc": "由于未知原因，无法建立 WSA 连接",
     "status_connected": "已连接",
-    "status_connected_desc": "成功连接到 WSA，所有系统正常运行",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "WSA 包管理器",
     "screen_settings": "设置",
-
-
     "wsa_manage": "Android 管理",
-    "wsa_manage_app": "管理应用程序",
-    "wsa_manage_settings": "管理设置",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "WSA 端口",
     "settings_ip": "WSA IP 地址",
     "settings_autostart": "在安装之前自动启动 WSA",
     "settings_timeout": "超时 ({seconds} 秒)",
     "settings_language": "语言",
     "settings_option_generic_system": "系统",
-    "settings_option_generic_disabled": "已禁用",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "主题模式",
     "theme_mode_dark": "深色模式",
     "theme_mode_light": "浅色模式",
-    "theme_mica": "窗口透明度",
-    "theme_mica_full": "完整",
-    "theme_mica_partial": "部分",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "自适应图标形状",
-    "theme_icon_adaptive_squircle": "超圆角圆形",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "圆形",
-    "theme_icon_adaptive_rounded_square": "圆角方形",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "您要安装此应用程序吗？",
     "installer_info_version": "版本：{appVersion}",
     "installer_info_version_change": "版本：{appVersionOld} => {appVersionNew}",
@@ -95,8 +85,6 @@
     "installer_btn_dismiss": "完成",
     "installer_btn_open": "打开应用程序",
     "installer_btn_checkbox_shortcut": "创建桌面快捷方式",
-
-
     "android_permission_none": "不需要任何权限",
     "android_permission_admin": "以管理员身份管理设备",
     "android_permission_admin_brick": "远程禁用或重置设备",
@@ -114,7 +102,6 @@
     "android_permission_sensors": "设备传感器",
     "android_permission_sensors_body": "身体传感器",
     "android_permission_nearby_devices": "查找附近的设备",
-
     "screen_uninstall": "卸载",
     "scan_system": "扫描系统",
     "scanning": "正在扫描...",
@@ -125,33 +112,27 @@
     "type_registry_only": "仅注册表",
     "type_orphaned_shortcut": "孤立快捷方式",
     "type_hidden_adb_app": "隐藏 ADB 应用程序",
-
     "cleanup_complete": "Cleanup Complete",
     "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
     "@cleanup_success_desc": {
-      "placeholders": {
-        "count": {
-        "type": "int"
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      }
     },
     "auto_backup_registry": "卸载前自动备份注册表",
     "backup_cancelled": "备份已取消",
     "backup_success": "备份已成功保存",
-
     "btn_restart_wsa": "重启 WSA",
     "settings_auto_backup_dir": "自动备份目录",
     "tooltip_reset_desktop": "重置为默认桌面",
     "btn_browse": "浏览...",
-
     "settings_theme_color": "主题颜色",
     "settings_theme_color_system": "系统 (Windows)",
     "settings_theme_color_default": "默认",
     "settings_custom_color": "创建自定义颜色:",
     "btn_apply": "应用",
-    "settings_auto_backup_dir": "自动备份目录",
-    "tooltip_reset_desktop": "重置为默认桌面",
-    "btn_browse": "浏览...",
     "dialog_backup_dir_title": "选择一个文件夹来保存自动备份",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

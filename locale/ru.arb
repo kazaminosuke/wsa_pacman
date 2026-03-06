@@ -1,23 +1,19 @@
 {
     "@@locale": "ru",
-    "@locale_desc": {"description": "Russian [ru_RU]"},
+    "@locale_desc": {
+        "description": "Russian [ru_RU]"
+    },
     "locale_desc": "Русский",
     "locale_system": "Как в системе",
-
-
     "btn_boot": "Запустить",
     "btn_auth": "Повторная аутентификация",
     "btn_dev_settings": "Настройки разработчика",
     "btn_switch_on": "Вкл.",
     "btn_switch_off": "Выкл.",
-
-
     "status_subtext_winver_10": "Windows 10",
     "status_subtext_winver_older": "Устаревшая версия Windows",
-
-
     "status_unsupported": "Подсистема Windows под Android не поддерживается",
-    "status_unsupported_desc": "{windowsVersion} detected and WSA not found; this application depends on WSA, which is only officially supported on Windows 11",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "Неавторизованный",
     "status_unauthorized_desc": "Авторизация для отладки была отклонена или отозвана; нажмите первую кнопку, выберите 'всегда разрешать' и нажмите 'разрешить'; если не отображается всплывающее окно, откройте настройки разработчика и отключите и снова включите 'отладку USB'",
     "status_missing": "Подсистема Windows под Android не установлена",
@@ -33,39 +29,29 @@
     "status_disconnected": "Отсоединен",
     "status_disconnected_desc": "Соединение с подсистемой Windows под Android не удалось установить по неизвестным причинам",
     "status_connected": "Подключено",
-    "status_connected_desc": "Успешно подключено к подсистеме Windows под Android, все службы запущены",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "Менеджер пакетов для подсистемы Windows под Android",
     "screen_settings": "Настройки",
-
-
     "wsa_manage": "Управление системой Android",
-    "wsa_manage_app": "Управление приложениями",
-    "wsa_manage_settings": "Управление настройками системы",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "Порт",
     "settings_ip": "IP-адрес",
     "settings_autostart": "Автоматически запускать подсистему Windows под Android перед установкой",
     "settings_timeout": "Тайм-аут ({seconds} секунд)",
     "settings_language": "Язык",
     "settings_option_generic_system": "Как в системе",
-    "settings_option_generic_disabled": "Отключено",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "Тема интерфейса",
     "theme_mode_dark": "Темная",
     "theme_mode_light": "Светлая",
-    "theme_mica": "Прозрачность окна",
-    "theme_mica_full": "Полная",
-    "theme_mica_partial": "Частичная",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "Форма адаптивных значков",
-    "theme_icon_adaptive_squircle": "Квадратокружность",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "Кружок",
-    "theme_icon_adaptive_rounded_square": "Скругленный квадрат",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "Вы хотите установить это приложение?",
     "installer_info_version": "Версия: {appVersion}",
     "installer_info_version_change": "Версия: {appVersionOld} => {appVersionNew}",
@@ -86,8 +72,6 @@
     "installer_btn_dismiss": "Отклонить",
     "installer_btn_open": "Открыть приложение",
     "installer_btn_checkbox_shortcut": "Создать ярлык на рабочем столе",
-
-
     "android_permission_none": "Разрешения не требуются",
     "android_permission_admin": "Управлять устройством как администратор",
     "android_permission_admin_brick": "Удаленно отключить или перезагрузить устройство",
@@ -105,7 +89,6 @@
     "android_permission_sensors": "Датчики устройства",
     "android_permission_sensors_body": "Датчики на теле",
     "android_permission_nearby_devices": "Устройства поблизости",
-
     "screen_uninstall": "Удалить",
     "scan_system": "Сканировать систему",
     "scanning": "Сканирование...",
@@ -113,37 +96,30 @@
     "execute_cleanup": "Выполнить очистку",
     "scanning_wsa_env": "Глубокое сканирование среды WSA...",
     "click_scan_to_find_ghost_apps": "Нажмите 'Сканировать систему', чтобы найти оставшиеся или скрытые приложения.",
-    
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
     "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
     "@cleanup_success_desc": {
-      "placeholders": {
-        "count": {
-          "type": "int"
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      }
     },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

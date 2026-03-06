@@ -2,30 +2,30 @@
     "@@README_1": "The en.arb file is a template for other files",
     "@@README_2": "For other languages, entries starting with @ and @@ are not needed, except @@locale",
     "@@README_3": "Country-specific locales (eg. 'en_GB') need a fallback locale (eg. 'en') to exist",
-
-
     "@@locale": "zh_Hant",
-    "@locale_desc": {"description": "Chinese (traditional) [zh_TW] < [zh_Hant]"},
+    "@locale_desc": {
+        "description": "Chinese (traditional) [zh_TW] < [zh_Hant]"
+    },
     "locale_desc": "中文 (繁體)",
-    "@locale_system": {"description": "描述系統區域設定"},
+    "@locale_system": {
+        "description": "描述系統區域設定"
+    },
     "locale_system": "系統",
-
-
     "btn_boot": "啟動",
     "btn_auth": "重新驗證",
     "btn_dev_settings": "開發者選項",
     "btn_switch_on": "開",
     "btn_switch_off": "關",
-
-
-    "@status_subtext_winver_10": {"description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"},
+    "@status_subtext_winver_10": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
     "status_subtext_winver_10": "Windows 10",
-    "@status_subtext_winver_older": {"description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"},
+    "@status_subtext_winver_older": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
     "status_subtext_winver_older": "舊 Windows 版本",
-
-
     "status_unsupported": "尚未安裝 WSA ",
-    "status_unsupported_desc": "檢測到 {windowsVersion} 但未找到 Android 子系統；此應用程式僅在 Windows 11 正式支援。",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "未授權",
     "status_unauthorized_desc": "調試授權被拒絕或撤銷；按一下第一個按鈕，選擇“總是允許”，然後點擊“允許”；如果沒有彈出窗口，請打開開發人員選項並禁用和重新啟用“USB調試”",
     "status_missing": "未安裝 Android 子系統",
@@ -42,39 +42,29 @@
     "status_disconnected": "已斷開連接",
     "status_disconnected_desc": "由於未知原因，無法建立 WSA 連線",
     "status_connected": "已連接",
-    "status_connected_desc": "成功連接到 WSA，所有系統正常執行",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "WSA 包管理器",
     "screen_settings": "設定",
-
-
     "wsa_manage": "Android 管理",
-    "wsa_manage_app": "管理應用程式",
-    "wsa_manage_settings": "管理設定",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "WSA 端口",
     "settings_ip": "WSA 的 IP 位址",
     "settings_autostart": "在安裝之前自動啟動 WSA",
     "settings_timeout": "逾時 ({seconds} 秒)",
     "settings_language": "語言",
     "settings_option_generic_system": "系統",
-    "settings_option_generic_disabled": "已關閉",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "主題模式",
     "theme_mode_dark": "深色模式",
     "theme_mode_light": "淺色模式",
-    "theme_mica": "視窗透明度",
-    "theme_mica_full": "完整",
-    "theme_mica_partial": "部分",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "自適應圖標形狀",
-    "theme_icon_adaptive_squircle": "方圓形",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "圓形",
-    "theme_icon_adaptive_rounded_square": "圓角方形",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "您要安裝此應用程式嗎？",
     "installer_info_version": "版本：{appVersion}",
     "installer_info_version_change": "版本：{appVersionOld} => {appVersionNew}",
@@ -95,8 +85,6 @@
     "installer_btn_dismiss": "完成",
     "installer_btn_open": "開啟應用程式",
     "installer_btn_checkbox_shortcut": "建立桌面快捷方式",
-
-
     "android_permission_none": "不需要任何權限",
     "android_permission_admin": "以管理員身份管理裝置",
     "android_permission_admin_brick": "遠程停用或重設裝置",
@@ -114,7 +102,6 @@
     "android_permission_sensors": "裝置傳感器",
     "android_permission_sensors_body": "身體傳感器",
     "android_permission_nearby_devices": "查找附近的裝置",
-
     "screen_uninstall": "解除安裝",
     "scan_system": "掃描系統",
     "scanning": "正在掃描...",
@@ -122,37 +109,30 @@
     "execute_cleanup": "執行清理",
     "scanning_wsa_env": "深度掃描 WSA 環境...",
     "click_scan_to_find_ghost_apps": "點擊「掃描系統」以查找殘留或隱藏的應用程式。",
-    
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
     "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
     "@cleanup_success_desc": {
-      "placeholders": {
-        "count": {
-          "type": "int"
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      }
     },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

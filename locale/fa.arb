@@ -1,24 +1,22 @@
 {
     "@@locale": "fa",
-    "@locale_desc": {"description": "Farsi (Persian) [fa_IR]"},
+    "@locale_desc": {
+        "description": "Farsi (Persian) [fa_IR]"
+    },
     "locale_desc": "فارسی",
-    "@locale_system": {"description": "Describes the system locale"},
+    "@locale_system": {
+        "description": "Describes the system locale"
+    },
     "locale_system": "سیستم",
-
-
     "btn_boot": "روشن کردن",
     "btn_auth": "تأیید دوباره",
     "btn_dev_settings": "گزینه‌های توسعه‌دهنده",
     "btn_switch_on": "روشن",
     "btn_switch_off": "خاموش",
-
-
     "status_subtext_winver_10": "ویندوز 10",
     "status_subtext_winver_older": "نسخه قدیمی ویندوز",
-
-
     "status_unsupported": "WSA نصب نشده",
-    "status_unsupported_desc": "{windowsVersion} شناسایی شد و یافت نشد. این برنامه به WSA وابسته است که به طور رسمی فقط  در ویندوز 11 پشتیبانی می شود",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "غیر مجاز",
     "status_unauthorized_desc": "تأیید توسعه دهنده رد شده یا لغو شده است؛ لطفا دکمه اول را کلیک کنید، «همیشه مجاز» را انتخاب کرده و روی «مجاز» کلیک کنید؛ اگر پنجره پاپ آپ نشان ندهد، گزینه های توسعه دهنده را باز کرده و غیر فعال کردن و دوباره فعال کردن 'دیباگ USB'",
     "status_missing": "WSA نصب نشده",
@@ -34,39 +32,29 @@
     "status_disconnected": "قطع شده",
     "status_disconnected_desc": "اتصال WSA به دلایل نامعلومی برقرار نشد",
     "status_connected": "وصل شده",
-    "status_connected_desc": "با موفقیت به WSA متصل شد، سیستم ها کار میکند",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "مدیریت بسته WSA",
     "screen_settings": "تنظیمان",
-
-
     "wsa_manage": "مدیریت اندروید",
-    "wsa_manage_app": "مدیریت برنامه ها",
-    "wsa_manage_settings": "مدیریت تنظیمات",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "پورت WSA",
     "settings_ip": "آدری آی پی WSA",
     "settings_autostart": "قبل از نصب WSA را به صورت خودکار راه اندازی شود",
     "settings_timeout": "زمان مجاز ({seconds} ثانیه)",
     "settings_language": "زبان",
     "settings_option_generic_system": "سیستم",
-    "settings_option_generic_disabled": "غیرفعال",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "نوع زمینه",
     "theme_mode_dark": "تاریک",
     "theme_mode_light": "روشن",
-    "theme_mica": "شفافیت پنجره ها",
-    "theme_mica_full": "کامل",
-    "theme_mica_partial": "جزئي",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "سازگارسازی آیکون",
-    "theme_icon_adaptive_squircle": "مربع",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "دایره",
-    "theme_icon_adaptive_rounded_square": "گوشه های کرد",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "آیا از نصب این برنامه اطمینان دارید؟",
     "installer_info_version": "تسخه: {appVersion}",
     "installer_info_version_change": "نسخه: {appVersionOld} => {appVersionNew}",
@@ -87,8 +75,6 @@
     "installer_btn_dismiss": "رد کردن",
     "installer_btn_open": "باز کردن",
     "installer_btn_checkbox_shortcut": "ساخت میانبر در دسکتاپ",
-
-
     "android_permission_none": "هیچ مجوزی لازم نیست",
     "android_permission_admin": "مدیریت دستگاه",
     "android_permission_admin_brick": "غیرفعال یا بازنشانی دستگاه از راه دور",
@@ -106,7 +92,6 @@
     "android_permission_sensors": "سنسور دستگاه",
     "android_permission_sensors_body": "سنسور بدن",
     "android_permission_nearby_devices": "پیدا کردن دستگاه های نزدیک",
-
     "screen_uninstall": "Uninstall",
     "scan_system": "Scan System",
     "scanning": "Scanning...",
@@ -117,33 +102,27 @@
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
-      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
-      "@cleanup_success_desc": {
-      "placeholders": {
-          "count": {
-            "type": "int"
-          }
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      },
+    },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

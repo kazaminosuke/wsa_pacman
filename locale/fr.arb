@@ -2,28 +2,24 @@
     "@@README_1": "Le fichier en.arb est un modèle pour d'autres fichiers",
     "@@README_2": "Pour les autres langues, les entrées commençant par @ et @@ ne sont pas nécessaires, sauf @@locale",
     "@@README_3": "Locales spécifiques à un pays (ex. 'en_GB') ont besoin d'un locale de secours existant (ex. 'en')",
-
-
     "@@locale": "fr",
-    "@locale_desc": {"description": "French [fr_FR]"},
+    "@locale_desc": {
+        "description": "French [fr_FR]"
+    },
     "locale_desc": "Français",
-    "@locale_system": {"description": "Définit la langue du système"},
+    "@locale_system": {
+        "description": "Définit la langue du système"
+    },
     "locale_system": "Système",
-
-
     "btn_boot": "Démarrer",
     "btn_auth": "Réauthentifier",
     "btn_dev_settings": "Options de développeur",
     "btn_switch_on": "On",
     "btn_switch_off": "Off",
-
-
     "status_subtext_winver_10": "Windows 10",
     "status_subtext_winver_older": "Version antérieure de Windows",
-
-
     "status_unsupported": "WSA pas installé",
-    "status_unsupported_desc": "{windowsVersion} détectée et WSA non trouvé; cette application dépend de WSA, qui n'est officiellement pris en charge que sur Windows 11",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "Non autorisé",
     "status_unauthorized_desc": "L'autorisation de débogage a été refusée ou révoquée; appuyez sur le premier bouton, sélectionnez 'toujours autoriser' et cliquez sur 'autoriser'; Si aucune fenêtre contextuelle n'apparaît, ouvrez les options de développeur et désactivez et réactivez le débogage USB",
     "status_missing": "WSA pas installé",
@@ -40,39 +36,29 @@
     "status_disconnected": "Déconnecté",
     "status_disconnected_desc": "Une connexion au WSA n'a pas pu être établie pour des raisons inconnues",
     "status_connected": "Connecté",
-    "status_connected_desc": "Connecté avec succès à WSA, tout est prêt",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "Gestionnaire de paquets WSA",
     "screen_settings": "Paramètres",
-
-
     "wsa_manage": "Gestion Android",
-    "wsa_manage_app": "Gérer des applications",
-    "wsa_manage_settings": "Gestion des paramètres",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "Port WSA",
     "settings_ip": "Adresse IP WSA",
     "settings_autostart": "Démarrage automatique de WSA avant l'installation",
     "settings_timeout": "Délai ({seconds} secondes)",
     "settings_language": "Langue",
     "settings_option_generic_system": "Système",
-    "settings_option_generic_disabled": "Désactivée",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "Mode thème",
     "theme_mode_dark": "Sombre",
     "theme_mode_light": "Clair",
-    "theme_mica": "Transparence de la fenêtre",
-    "theme_mica_full": "Totale",
-    "theme_mica_partial": "Partielle",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "Forme adaptative des icones",
-    "theme_icon_adaptive_squircle": "Supercercle",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "Cercle",
-    "theme_icon_adaptive_rounded_square": "Carré arrondi",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "Voulez-vous installer cette application ?",
     "installer_info_version": "Version: {appVersion}",
     "installer_info_version_change": "Version: {appVersionOld} => {appVersionNew}",
@@ -93,8 +79,6 @@
     "installer_btn_dismiss": "Ignorer",
     "installer_btn_open": "Ouvrir l'app",
     "installer_btn_checkbox_shortcut": "Créer un raccourci sur le bureau",
-
-
     "android_permission_none": "Aucune autorisation requise",
     "android_permission_admin": "Gérer appareil en tant qu'administrateur",
     "android_permission_admin_brick": "Désactiver ou réinitialiser l'appareil",
@@ -112,7 +96,6 @@
     "android_permission_sensors": "Capteurs de l'appareil",
     "android_permission_sensors_body": "Capteurs corporels",
     "android_permission_nearby_devices": "Localiser appareils à proximité",
-
     "screen_uninstall": "Uninstall",
     "scan_system": "Scan System",
     "scanning": "Scanning...",
@@ -123,33 +106,27 @@
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
-      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
-      "@cleanup_success_desc": {
-      "placeholders": {
-          "count": {
-            "type": "int"
-          }
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      },
+    },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

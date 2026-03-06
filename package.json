@@ -1,0 +1,29 @@
+{
+  "name": "wsa_pacman",
+  "version": "1.0.0",
+  "description": "**⚠️ Important Notice:** Microsoft has officially ended support for the Windows Subsystem for Android (WSA). It is highly recommended to transition to the community-driven [WSABuilds](https://github.com/MustardChef/WSABuilds) project. WSA PacMan fully supports and integrates with WSABuilds.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazaminosuke/wsa_pacman.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kazaminosuke/wsa_pacman/issues"
+  },
+  "homepage": "https://github.com/kazaminosuke/wsa_pacman#readme",
+  "dependencies": {
+    "@google/genai": "^1.44.0",
+    "@google/generative-ai": "^0.24.1"
+  }
+}

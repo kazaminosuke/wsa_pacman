@@ -1,24 +1,22 @@
 {
     "@@locale": "ar",
-    "@locale_desc": {"description": "Arabic [ar_EG]"},
+    "@locale_desc": {
+        "description": "Arabic [ar_EG]"
+    },
     "locale_desc": "العربية",
-    "@locale_system": {"description": "Describes the system locale"},
+    "@locale_system": {
+        "description": "Describes the system locale"
+    },
     "locale_system": "النظام",
-
-
     "btn_boot": "تشغيل",
     "btn_auth": "إعادة المصادقة",
     "btn_dev_settings": "خيارات المطور",
     "btn_switch_on": "مفعل",
     "btn_switch_off": "مغلق",
-
-
     "status_subtext_winver_10": "ويندوز 10",
     "status_subtext_winver_older": "إصدار ويندوز أقدم",
-
-
     "status_unsupported": "حزمة WSA غير مثبتة",
-    "status_unsupported_desc": "تم العثور على إصدار {windowsVersion} و لم يثبت WSA ; و هذا التطبيق يعتمد على WSA, و التي تثبت على ويندوز 11 فقط",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "غير مصرح به",
     "status_unauthorized_desc": "تم رفض التصريح الإصداري أو الغاءه؛ اضغط على الزر الأول، اختر 'دائما السماح'، ثم اضغط على 'السماح'؛ إذا لم يظهر مربع حوار، فتح خيارات المطور وعطل وإعادة تمكين 'تصحيح USB'",
     "status_missing": "حزمة WSA غير مثبتة",
@@ -35,39 +33,29 @@
     "status_disconnected": "لا يمكن الاتصال",
     "status_disconnected_desc": "لا يمكن عمل اتصال لWSA لاسباب غير معلومه",
     "status_connected": "متصل",
-    "status_connected_desc": "تم الاتصال بنجاح",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "مدير حزم الWSA",
     "screen_settings": "الضبط",
-
-
     "wsa_manage": "إدارة الاندرويد",
-    "wsa_manage_app": "إدارة التطبيقات",
-    "wsa_manage_settings": "إدارة الضبط",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "مدخل الWSA",
     "settings_ip": "عنوان الIP الخاص بWSA",
     "settings_autostart": "تفعبل تلقائي لWSA قبل التثبيت",
     "settings_timeout": "مهلة ({seconds} ثواني)",
     "settings_language": "اللغة",
     "settings_option_generic_system": "النظام",
-    "settings_option_generic_disabled": "غير مفعل",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "وضع السمات",
     "theme_mode_dark": "داكن",
     "theme_mode_light": "ساطع",
-    "theme_mica": "شفافية النافذة",
-    "theme_mica_full": "كامل",
-    "theme_mica_partial": "جزئي",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "ايقونات متكيفة",
-    "theme_icon_adaptive_squircle": "مربع منحني",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "دائري",
-    "theme_icon_adaptive_rounded_square": "مربع مستدير",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "هل تريد تثبيت هذا التطبيق؟",
     "installer_info_version": "الإصدار: {appVersion}",
     "installer_info_version_change": "الإصدار: {appVersionOld} => {appVersionNew}",
@@ -88,8 +76,6 @@
     "installer_btn_dismiss": "تم",
     "installer_btn_open": "فتح التطبيق",
     "installer_btn_checkbox_shortcut": "عمل اختصار على سطح المكتب",
-
-
     "android_permission_none": "لا يطلب اي اذونات",
     "android_permission_admin": "يدير الجهاز كمشرف",
     "android_permission_admin_brick": "يلغي تفعيل الجهاز او يعيد ضبطه عن بعد",
@@ -107,7 +93,6 @@
     "android_permission_sensors": "مستشعرات الجهاز",
     "android_permission_sensors_body": "مستشعرات البدن",
     "android_permission_nearby_devices": "تحديد الاجهزة القريبة",
-
     "screen_uninstall": "Uninstall",
     "scan_system": "Scan System",
     "scanning": "Scanning...",
@@ -118,33 +103,27 @@
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
-      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
-      "@cleanup_success_desc": {
-      "placeholders": {
-          "count": {
-            "type": "int"
-          }
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      },
+    },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

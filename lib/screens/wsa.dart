@@ -81,9 +81,13 @@ class _ScreenWSAState extends State<ScreenWSA> {
                           ConnectionStatus.MISSING) ...[
                         const SizedBox(width: 15.0),
                         FilledButton(
-                            child: Text(lang.btn_wsabuilds,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 2.0),
+                              child: Text(lang.btn_wsabuilds,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                            ),
                             onPressed: () => Process.run('explorer',
                                 ['https://github.com/MustardChef/WSABuilds']))
                       ]
@@ -255,7 +259,6 @@ class _ScreenWSAState extends State<ScreenWSA> {
             leading: const Icon(Mdi.android, size: 23),
             content: Text(lang.wsa_manage_app),
             isButton: true,
-            // ★ 修正: Android内部のシェルが「$」を勝手に消すのを防ぐため、全体をシングルクォート(')で保護する
             onPressed: connectionStatus.isDisconnected
                 ? null
                 : () async {

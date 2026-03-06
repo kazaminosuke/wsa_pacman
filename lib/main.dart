@@ -435,8 +435,9 @@ class _MyAppState extends State<MyApp> {
     setMicaEffect(mica.enabled, isDark);
 
     final bool isMicaActive = mica.enabled && WinVer.isWindows11OrGreater;
+    // Updated fallback colors for better contrast and modern feel
     final Color fallbackColor =
-        isDark ? const Color(0xFF202020) : const Color(0xFFF3F3F3);
+        isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF9F9F9);
 
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),

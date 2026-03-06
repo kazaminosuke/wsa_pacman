@@ -70,7 +70,7 @@ class ApkReader extends IsolateRunner<String, APK_READER_FLAGS> {
     // This fixes issues when loading huge files (I'm allowing sync reads on SSDs only, and setting a 320MB limit)
     return file.isInSSD() && file.lengthSync() < 335544321
         ? ZipDecoder().decodeBytes(file.readAsBytesSync())
-        : ZipDecoder().decodeBuffer(InputFileStream(file.absolute.path));
+        : ZipDecoder().decodeStream(InputFileStream(file.absolute.path));
   }
 
   static void _initArchive() {

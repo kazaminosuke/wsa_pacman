@@ -45,7 +45,7 @@ class LateUpdater<E> {
   Function(E value) callback;
 
   LateUpdater(this.initialValue, this.callback);
-  update(E newValue) {
+  void update(E newValue) {
     initialValue = newValue;
     timer?.cancel();
     timer = Timer(SETTINGS_UPDATE_TIMER, () {
@@ -53,9 +53,9 @@ class LateUpdater<E> {
     });
   }
 
-  cancel() => timer?.cancel();
+  void cancel() => timer?.cancel();
 
-  instant(E newValue) {
+  void instant(E newValue) {
     timer?.cancel();
     callback(newValue);
   }
@@ -210,8 +210,12 @@ class ScreenSettingsState extends State<ScreenSettings> {
         children: [
           spacer,
           FluentCard(
-            leading: const Icon(Mdi.networkOutline, size: 23),
-            content: Text(lang.settings_port),
+            leading: const Icon(Mdi.networkOutline, size: 24),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(lang.settings_port,
+                  style: const TextStyle(fontSize: 15)),
+            ),
             trailing: SizedBox(
                 width: 300,
                 height: 32,
@@ -265,8 +269,12 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(Mdi.powerStandby, size: 23),
-            content: Text(lang.settings_autostart),
+            leading: const Icon(Mdi.powerStandby, size: 24),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(lang.settings_autostart,
+                  style: const TextStyle(fontSize: 15)),
+            ),
             trailing: Row(children: [
               ConstrainedBox(
                   constraints: const BoxConstraints(minWidth: 28.5),
@@ -281,8 +289,12 @@ class ScreenSettingsState extends State<ScreenSettings> {
           smallSpacer,
           // レジストリ自動バックアップの設定（カード型でおしゃれに）
           FluentCard(
-            leading: const Icon(FluentIcons.save, size: 23),
-            content: Text(lang.auto_backup_registry),
+            leading: const Icon(FluentIcons.save, size: 24),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(lang.auto_backup_registry,
+                  style: const TextStyle(fontSize: 15)),
+            ),
             trailing: ToggleSwitch(
               checked: GState.autoBackupRegistry.of(context),
               onChanged: (v) => GState.autoBackupRegistry.$ = v,
@@ -291,9 +303,14 @@ class ScreenSettingsState extends State<ScreenSettings> {
           const SizedBox(height: 5.0), // 下の項目との隙間
           smallSpacer,
           FluentCard(
-            leading: const Icon(Mdi.timerOutline, size: 23),
-            content: Text(lang.settings_timeout(
-                installTimeout == 0 ? '∞' : '$installTimeout')),
+            leading: const Icon(Mdi.timerOutline, size: 24),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(
+                  lang.settings_timeout(
+                      installTimeout == 0 ? '∞' : '$installTimeout'),
+                  style: const TextStyle(fontSize: 15)),
+            ),
             trailing: SizedBox(
                 width: 300,
                 height: 32,
@@ -330,8 +347,12 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(Mdi.translate, size: 23),
-            content: Text(lang.settings_language),
+            leading: const Icon(Mdi.translate, size: 24),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(lang.settings_language,
+                  style: const TextStyle(fontSize: 15)),
+            ),
             trailing: SizedBox(
                 width: 300,
                 height: 32,
@@ -606,7 +627,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
                 Button(
                   style: ButtonStyle(
                     padding: WidgetStateProperty.all(const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 6.0)),
+                        horizontal: 16.0, vertical: 8.0)), // 少し大きく
                     shape: WidgetStateProperty.resolveWith((states) {
                       return RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),
@@ -622,7 +643,8 @@ class ScreenSettingsState extends State<ScreenSettings> {
                     }),
                   ),
                   child: Text(lang.btn_browse,
-                      style: const TextStyle(fontSize: 13)), // ←変更
+                      style: const TextStyle(
+                          fontSize: 13, fontWeight: FontWeight.bold)),
                   onPressed: () async {
                     // ★修正：PowerShellのダイアログ内も多言語化！
                     final script = '''

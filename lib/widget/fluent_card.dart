@@ -26,19 +26,19 @@ class FluentCard extends StatefulWidget {
     if (style.brightness == Brightness.light) {
       if (!states.isDisabled && isClickable) {
         if (states.isPressed)
-          return const ColorConst.withOpacity(0xf9f9f9, 0.2);
-        if (states.isHovered)
           return const ColorConst.withOpacity(0xf9f9f9, 0.4);
+        if (states.isHovered)
+          return const ColorConst.withOpacity(0xf9f9f9, 0.65);
       }
       return const ColorConst.withOpacity(0xFFFFFF, 0.7);
     } else {
       if (!states.isDisabled && isClickable) {
         if (states.isPressed)
-          return const ColorConst.withOpacity(0xFFFFFF, 0.03);
+          return const ColorConst.withOpacity(0xFFFFFF, 0.05);
         if (states.isHovered)
-          return const ColorConst.withOpacity(0xFFFFFF, 0.082);
+          return const ColorConst.withOpacity(0xFFFFFF, 0.12);
       }
-      return const ColorConst.withOpacity(0xFFFFFF, 0.05);
+      return const ColorConst.withOpacity(0xFFFFFF, 0.06);
     }
   }
 
@@ -46,16 +46,16 @@ class FluentCard extends StatefulWidget {
       [bool isInner = false, bool isClickable = true]) {
     if (style.brightness == Brightness.light) {
       if (isClickable && states.isHovered && !states.isPressed)
-        return const Color(0xFF212121).withOpacity(0.22);
-      return const Color(0xFF212121).withOpacity(isInner ? 0.25 : 0.17);
+        return const Color(0xFF212121).withOpacity(0.18);
+      return const Color(0xFF212121).withOpacity(isInner ? 0.20 : 0.12);
     } else {
       if (isClickable && states.isPressed)
-        return Colors.white.withOpacity(0.062);
+        return Colors.white.withOpacity(0.08);
       if (isClickable && states.isHovered)
-        return Colors.white.withOpacity(0.02);
+        return Colors.white.withOpacity(0.04);
       return isInner
-          ? Colors.white.withOpacity(0.02)
-          : Colors.black.withOpacity(0.52);
+          ? Colors.white.withOpacity(0.03)
+          : Colors.black.withOpacity(0.40);
     }
   }
 
@@ -178,7 +178,7 @@ class FluentCardState extends State<FluentCard>
             ),
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
           ),
-          padding: const EdgeInsetsDirectional.only(start: 16.0),
+          padding: const EdgeInsetsDirectional.only(start: 20.0),
           alignment: Alignment.centerLeft,
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             if (widget.leading != null)

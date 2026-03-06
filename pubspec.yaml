@@ -19,19 +19,18 @@ dependencies:
   fluent_ui: ^4.0.0
   win32: ^3.1.4
   provider: ^6.1.1
-  shared_value: ^2.1.2
+  shared_value: ^3.0.0
   synchronized: ^3.1.0
-  system_theme: ^2.1.1
+  system_theme: ^3.2.0
   flutter_acrylic: ^1.1.1
-  url_strategy: ^0.2.0
   yaml: ^3.1.2
   protobuf: ^2.1.0
   mdi: ^5.0.0-nullsafety.0
   base32: ^2.1.1
-  charset: ^0.1.1
+  charset: ^2.0.1
 
   # 公式パッケージでの動作検証
-  archive: ^3.4.0
+  archive: ^4.0.9
   jovial_svg: ^1.1.16
 
   # カスタム修正が含まれている可能性が高いものはGitフォークを維持
@@ -52,7 +51,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   generate: true

@@ -1,23 +1,19 @@
 {
     "@@locale": "pl",
-    "@locale_desc": {"description": "Polish (PL) [pl_PL]"},
+    "@locale_desc": {
+        "description": "Polish (PL) [pl_PL]"
+    },
     "locale_desc": "Polski",
     "locale_system": "Systemowy",
-
-
     "btn_boot": "Włącz",
     "btn_auth": "Ponownie uwierzytelnij",
     "btn_dev_settings": "Opcje dla programistów",
     "btn_switch_on": "Wł.",
     "btn_switch_off": "Wył.",
-
-    
     "status_subtext_winver_10": "Windows 10",
     "status_subtext_winver_older": "Starsza wersja systemu Windows",
-
-
     "status_unsupported": "WSA nie jest zainstalowany",
-    "status_unsupported_desc": "Wykryto {windowsVersion} i nie znaleziono WSA; ta aplikacja jest zależna od WSA, który jest oficjalnie wspierany tylko w systemie Windows 11",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "Nieupoważniony",
     "status_unauthorized_desc": "Autoryzacja debugowania została odrzucona lub cofnięta; naciśnij pierwszy przycisk, wybierz 'zawsze zezwalaj' i kliknij 'zezwól'; jeśli nie pojawi się okno dialogowe, otwórz opcje dla programistów i wyłącz i włącz ponownie 'debugowanie USB'",
     "status_missing": "WSA nie jest zainstalowany",
@@ -32,39 +28,29 @@
     "status_disconnected": "Odłączony",
     "status_disconnected_desc": "Z nieznanych przyczyn nie udało się nawiązać połączenia z WSA",
     "status_connected": "Połączony",
-    "status_connected_desc": "Pomyślnie połączono z WSA, wszystkie systemy działają",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "Menedżer pakietów WSA",
     "screen_settings": "Ustawienia",
-
-
     "wsa_manage": "Zarządzanie Androidem",
-    "wsa_manage_app": "Aplikacje",
-    "wsa_manage_settings": "Ustawienia",
-
-    
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "Port WSA",
     "settings_ip": "Adres IP WSA",
     "settings_autostart": "Autostart WSA przed instalacją",
     "settings_timeout": "Limit czasowy ({seconds} sekund)",
     "settings_language": "Język",
     "settings_option_generic_system": "Systemowy",
-    "settings_option_generic_disabled": "Wyłączone",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "Motyw",
     "theme_mode_dark": "Ciemny",
     "theme_mode_light": "Jasny",
-    "theme_mica": "Przezroczystość okna",
-    "theme_mica_full": "Pełna",
-    "theme_mica_partial": "Częściowa",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "Adaptacyjny kształt ikon",
-    "theme_icon_adaptive_squircle": "Domyślny",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "Okrągły",
-    "theme_icon_adaptive_rounded_square": "Zaokrąglony kwadrat",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "Czy chcesz zainstalować tą aplikację?",
     "installer_info_version": "Wersja: {appVersion}",
     "installer_info_version_change": "Wersja: {appVersionOld} => {appVersionNew}",
@@ -85,8 +71,6 @@
     "installer_btn_dismiss": "Gotowe",
     "installer_btn_open": "Otwórz",
     "installer_btn_checkbox_shortcut": "Utwórz skrót na pulpicie",
-
-
     "android_permission_none": "Nie wymaga żadnych uprawnień",
     "android_permission_admin": "Zarządzanie urządzeniem jako administrator",
     "android_permission_admin_brick": "Zdalne wyłączenie lub reset urządzenia",
@@ -104,7 +88,6 @@
     "android_permission_sensors": "Czujniki urządzenia",
     "android_permission_sensors_body": "Czujniki na ciele",
     "android_permission_nearby_devices": "Wykrywanie urządzeń w pobliżu",
-
     "screen_uninstall": "Odinstaluj",
     "scan_system": "Skanuj system",
     "scanning": "Skanowanie...",
@@ -115,33 +98,27 @@
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
     "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
     "@cleanup_success_desc": {
-      "placeholders": {
-        "count": {
-          "type": "int"
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      }
     },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

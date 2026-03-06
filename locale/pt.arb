@@ -1,23 +1,19 @@
 {
     "@@locale": "pt",
-    "@locale_desc": {"description": "Portuguese (Brasil) [pt_BR]"},
+    "@locale_desc": {
+        "description": "Portuguese (Brasil) [pt_BR]"
+    },
     "locale_desc": "Português (Brasil)",
     "locale_system": "Sistema",
-
-
     "btn_boot": "Ativar",
     "btn_auth": "Reautenticar",
     "btn_dev_settings": "Opções de desenvolvedor",
     "btn_switch_on": "Lig",
     "btn_switch_off": "Desl",
-
-
     "status_subtext_winver_10": "Windows 10",
     "status_subtext_winver_older": "Versão antiga do Windows",
-
-
     "status_unsupported": "WSA não instalado",
-    "status_unsupported_desc": "{windowsVersion} detectado e WSA não encontrado. Este aplicativo depende do WSA, que é suportado oficialmente no Windows 11",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "Não autorizado",
     "status_unauthorized_desc": "A autorização de depuração foi negada ou revogada; pressione o primeiro botão, selecione 'permitir sempre' e clique em 'permitir'; se nenhuma janela pop-up aparecer, abra as opções de desenvolvedor e desabilite e reabilite o 'depuração USB'",
     "status_missing": "WSA não instalado",
@@ -33,39 +29,29 @@
     "status_disconnected": "Desconectado",
     "status_disconnected_desc": "Uma conexão WSA não pôde ser estabelecido por razões desconhecidas",
     "status_connected": "Conectado",
-    "status_connected_desc": "Conectado com sucesso no WSA, todos os sistemas ativos",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "Gerenciador de pacotes WSA ",
     "screen_settings": "Configurações",
-
-
     "wsa_manage": "Gerenciamento do Android",
-    "wsa_manage_app": "Gerenciar aplicativos",
-    "wsa_manage_settings": "Gerenciar configurações",
-
-
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "Porta da WSA",
     "settings_ip": "Endereço IP do WSA",
     "settings_autostart": "Iniciar WSA antes da instalação",
     "settings_timeout": "Tempo limite ({seconds} segundos)",
     "settings_language": "Idioma",
     "settings_option_generic_system": "Sistema",
-    "settings_option_generic_disabled": "Desativado",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "Tema",
     "theme_mode_dark": "Escuro",
     "theme_mode_light": "Claro",
-    "theme_mica": "Transparência da janela",
-    "theme_mica_full": "Cheia",
-    "theme_mica_partial": "Parcial",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "Forma de ícones adaptáveis",
-    "theme_icon_adaptive_squircle": "Quadrado-círculo",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "Círculo",
-    "theme_icon_adaptive_rounded_square": "Quadrado arredondado",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "Deseja instalar este aplicativo?",
     "installer_info_version": "Versão: {appVersion}",
     "installer_info_version_change": "Versão: {appVersionOld} => {appVersionNew}",
@@ -86,8 +72,6 @@
     "installer_btn_dismiss": "Dispensar",
     "installer_btn_open": "Abrir aplicativo",
     "installer_btn_checkbox_shortcut": "Criar ícone na Área de Trabalho",
-
-
     "android_permission_none": "Nenhuma permissão necessária",
     "android_permission_admin": "Gerenciar dispositivo como administrador",
     "android_permission_admin_brick": "Desativar ou redefinir dispositivo remotamente",
@@ -105,7 +89,6 @@
     "android_permission_sensors": "Sensores do dispositivo",
     "android_permission_sensors_body": "Sensores corporais",
     "android_permission_nearby_devices": "Localizar dispositivos próximos",
-
     "screen_uninstall": "Desinstalar",
     "scan_system": "Escanear sistema",
     "scanning": "Escaneando...",
@@ -113,37 +96,30 @@
     "execute_cleanup": "Executar limpeza",
     "scanning_wsa_env": "Escaneando ambiente WSA profundamente...",
     "click_scan_to_find_ghost_apps": "Clique em 'Escanear sistema' para encontrar aplicativos remanescentes ou ocultos.",
-
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
     "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
     "@cleanup_success_desc": {
-      "placeholders": {
-        "count": {
-          "type": "int"
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      }
     },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

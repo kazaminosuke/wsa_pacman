@@ -2,31 +2,37 @@
     "@@README_1": "The en.arb file is a template for other files",
     "@@README_2": "For other languages, entries starting with @ and @@ are not needed, except @@locale",
     "@@README_3": "Country-specific locales (eg. 'en_GB') need a fallback locale (eg. 'en') to exist",
-
-
     "@@locale": "en",
-    "@locale_desc": {"description": "English (US) [en_US]"},
+    "@locale_desc": {
+        "description": "English (US) [en_US]"
+    },
     "locale_desc": "English",
-    "@locale_system": {"description": "Describes the system locale"},
+    "@locale_system": {
+        "description": "Describes the system locale"
+    },
     "locale_system": "System",
-
-
     "btn_boot": "Turn on",
     "btn_auth": "Reauthenticate",
     "btn_dev_settings": "Developer options",
     "btn_switch_on": "On",
     "btn_switch_off": "Off",
-
-
-    "@status_subtext_winver_10": {"description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"},
+    "@status_subtext_winver_10": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
     "status_subtext_winver_10": "Windows 10",
-    "@status_subtext_winver_older": {"description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"},
+    "@status_subtext_winver_older": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
     "status_subtext_winver_older": "Older Windows Version",
-
-
     "status_unsupported": "WSA not installed",
-    "status_unsupported_desc": "{windowsVersion} detected and WSA not found; this application depends on WSA, which is only officially supported on Windows 11",
-    "@status_unsupported_desc" : {"placeholders": {"windowsVersion": {"type": "String"}}},
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
+    "@status_unsupported_desc": {
+        "placeholders": {
+            "windowsVersion": {
+                "type": "String"
+            }
+        }
+    },
     "status_unauthorized": "Unauthorized",
     "status_unauthorized_desc": "Debugging authorization was dismissed or revoked; press the first button, select 'always allow', then click on 'allow'; If no popup appears, open developer options and disable and re-enable 'USB debugging'",
     "status_missing": "WSA not installed",
@@ -43,56 +49,97 @@
     "status_disconnected": "Disconnected",
     "status_disconnected_desc": "A WSA connection could not be enstablished for unknown reasons",
     "status_connected": "Connected",
-    "status_connected_desc": "Successfully connected to WSA, all systems go",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "WSA Package Manager",
     "screen_settings": "Settings",
-
-
     "wsa_manage": "Android Management",
     "wsa_manage_app": "Manage Applications",
     "wsa_manage_settings": "Manage Settings",
-
-    
     "settings_port": "WSA Port",
     "settings_ip": "WSA IP address",
     "settings_autostart": "Autostart WSA before installation",
-    "@settings_timeout" : {"placeholders": {"seconds": {"type": "String"}}},
+    "@settings_timeout": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
     "settings_timeout": "Timeout ({seconds} seconds)",
     "settings_language": "Language",
     "settings_option_generic_system": "System",
     "settings_option_generic_disabled": "Disabled",
-
-
     "theme_mode": "Theme mode",
     "theme_mode_dark": "Dark",
     "theme_mode_light": "Light",
-    "theme_mica": "Window transparency",
+    "theme_mica": "Mica Effect (Window Transparency)",
     "theme_mica_full": "Full",
     "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "Adaptive icons Shape",
-    "theme_icon_adaptive_squircle": "Squircle",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "Circle",
     "theme_icon_adaptive_rounded_square": "Rounded Square",
-
-
     "installer_message": "Do you want to install this application?",
     "installer_info_version": "Version: {appVersion}",
-    "@installer_info_version" : {"placeholders": {"appVersion": {"type": "String"}}},
+    "@installer_info_version": {
+        "placeholders": {
+            "appVersion": {
+                "type": "String"
+            }
+        }
+    },
     "installer_info_version_change": "Version: {appVersionOld} => {appVersionNew}",
-    "@installer_info_version_change" : {"placeholders": {"appVersionOld": {"type": "String"}, "appVersionNew": {"type": "String"}}},
+    "@installer_info_version_change": {
+        "placeholders": {
+            "appVersionOld": {
+                "type": "String"
+            },
+            "appVersionNew": {
+                "type": "String"
+            }
+        }
+    },
     "installer_info_package": "Package: {appPackage}",
-    "@installer_info_package" : {"placeholders": {"appPackage": {"type": "String"}}},
+    "@installer_info_package": {
+        "placeholders": {
+            "appPackage": {
+                "type": "String"
+            }
+        }
+    },
     "installer_installing": "Installing application {appTitle}...",
-    "@installer_installing" : {"placeholders": {"appTitle": {"type": "String"}}},
+    "@installer_installing": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
     "installer_installed": "The application {appTitle} was successfully installed",
-    "@installer_installed" : {"placeholders": {"appTitle": {"type": "String"}}},
+    "@installer_installed": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
     "installer_fail": "The application {appTitle} was not installed",
-    "@installer_fail" : {"placeholders": {"appTitle": {"type": "String"}}},
+    "@installer_fail": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
     "installer_error_nomsg": "The installation has failed, but no error was thrown",
     "installer_error_timeout": "Installation timed out, client has stopped waiting, but it may still be in progress in the background...",
-    "@installer_warning_dirty" : {"placeholders": {"tempDir": {"type": "String"}}},
+    "@installer_warning_dirty": {
+        "placeholders": {
+            "tempDir": {
+                "type": "String"
+            }
+        }
+    },
     "installer_warning_dirty": "A manual file cleanup is needed in directory “{tempDir}”",
     "installer_btn_starting": "Starting...",
     "installer_btn_loading": "Loading...",
@@ -104,8 +151,6 @@
     "installer_btn_dismiss": "Dismiss",
     "installer_btn_open": "Open app",
     "installer_btn_checkbox_shortcut": "Create desktop shortcut",
-
-
     "android_permission_none": "No permissions required",
     "android_permission_admin": "Manage device as administrator",
     "android_permission_admin_brick": "Remotely disable or reset device",
@@ -123,7 +168,6 @@
     "android_permission_sensors": "Device sensors",
     "android_permission_sensors_body": "Body sensors",
     "android_permission_nearby_devices": "Locate nearby devices",
-
     "screen_uninstall": "Uninstall",
     "scan_system": "Scan System",
     "scanning": "Scanning...",
@@ -134,33 +178,27 @@
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-
     "cleanup_complete": "Cleanup Complete",
-      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
-      "@cleanup_success_desc": {
-      "placeholders": {
-          "count": {
-            "type": "int"
-          }
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      },
+    },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

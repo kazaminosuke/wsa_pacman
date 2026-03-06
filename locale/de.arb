@@ -2,27 +2,21 @@
     "@@README_1": "The en.arb file is a template for other files",
     "@@README_2": "For other languages, entries starting with @ and @@ are not needed, except @@locale",
     "@@README_3": "Country-specific locales (eg. 'en_GB') need a fallback locale (eg. 'en') to exist",
-
-
     "@@locale": "de",
-    "@locale_desc": {"description": "German [de-DE]"},
+    "@locale_desc": {
+        "description": "German [de-DE]"
+    },
     "locale_desc": "Deutsch",
     "locale_system": "System",
-
-
     "btn_boot": "Starten",
     "btn_auth": "Erneut authentifizieren",
     "btn_dev_settings": "Entwickleroptionen",
     "btn_switch_on": "An",
     "btn_switch_off": "Aus",
-
-
     "status_subtext_winver_10": "Windows 10",
     "status_subtext_winver_older": "Frühere Windows Version",
-
-
     "status_unsupported": "WSA ist nicht installiert.",
-    "status_unsupported_desc": "{windowsVersion} wurde erkannt und WSA nicht gefunden; diese Anwendung benötigt WSA welche nur auf Windows 11 offiziell verfügbar ist.",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
     "status_unauthorized": "Nicht autorisiert",
     "status_unauthorized_desc": "Die Debugging-Autorisierung wurde abgelehnt oder widerrufen; drücken Sie die erste Schaltfläche, wählen Sie 'Immer zulassen' und klicken Sie dann auf 'Zulassen'; Wenn kein Popup angezeigt wird, öffnen Sie die Entwickleroptionen und deaktivieren und reaktivieren Sie die 'USB-Debugging'",
     "status_missing": "WSA ist nicht installiert.",
@@ -38,44 +32,34 @@
     "status_disconnected": "Getrennt",
     "status_disconnected_desc": "Es konnte aus unbekannten Gründen keine Verbindung zu WSA hergestellt werden.",
     "status_connected": "Verbunden",
-    "status_connected_desc": "Erfolgreich verbunden.",
-
-
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
     "screen_wsa": "WSA Paketmanager",
     "screen_settings": "Einstellungen",
-
-
     "wsa_manage": "Android Einstellungen",
-    "wsa_manage_app": "Apps",
-    "wsa_manage_settings": "System",
-
-
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
     "settings_port": "WSA-Debugging Port",
     "settings_ip": "WSA IP Adresse",
     "settings_autostart": "Starte WSA automatisch",
     "settings_timeout": "Zeitüberschreitung ({seconds} Sekunden)",
     "settings_language": "Sprache",
     "settings_option_generic_system": "System",
-    "settings_option_generic_disabled": "Deaktiviert",
-
-
+    "settings_option_generic_disabled": "Disabled",
     "theme_mode": "Design",
     "theme_mode_dark": "Dunkel",
     "theme_mode_light": "Hell",
-	"theme_mica": "Transparenz",
-    "theme_mica_full": "Vollständig",
-    "theme_mica_partial": "Teilweise",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
     "theme_icon_adaptive": "Angepasste Icons",
-	"theme_icon_adaptive_squircle": "Superkreis",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
     "theme_icon_adaptive_circle": "Kreis",
-    "theme_icon_adaptive_rounded_square": "Runde Ecken",
-
-
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
     "installer_message": "Soll diese App installiert werden?",
     "installer_info_version": "Version: {appVersion}",
     "installer_info_version_change": "Version: {appVersionOld} => {appVersionNew}",
     "installer_info_package": "Paketname: {appPackage}",
-	"installer_installing": "Installiere {appTitle}...",
+    "installer_installing": "Installiere {appTitle}...",
     "installer_installed": "{appTitle} wurde erfolgreich installiert.",
     "installer_fail": "{appTitle} wurde nicht installiert.",
     "installer_error_nomsg": "Installation ohne Angabe von Gründen fehlgeschlagen.",
@@ -91,8 +75,6 @@
     "installer_btn_dismiss": "Schließen",
     "installer_btn_open": "Öffnen",
     "installer_btn_checkbox_shortcut": "Erstelle eine Desktop Verknüpfung",
-
-
     "android_permission_none": "Keine Berechtigungen erforderlich",
     "android_permission_admin": "Gerät als Administrator verwalten",
     "android_permission_admin_brick": "Gerät aus der Ferne sperren oder zurücksetzen",
@@ -110,7 +92,6 @@
     "android_permission_sensors": "Gerätesensoren",
     "android_permission_sensors_body": "Körpersensoren",
     "android_permission_nearby_devices": "Geräte in der Nähe",
-
     "screen_uninstall": "Uninstall",
     "scan_system": "Scan System",
     "scanning": "Scanning...",
@@ -121,33 +102,27 @@
     "type_registry_only": "Registry Only",
     "type_orphaned_shortcut": "Orphaned Shortcut",
     "type_hidden_adb_app": "Hidden ADB App",
-    
     "cleanup_complete": "Cleanup Complete",
-      "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
-      "@cleanup_success_desc": {
-      "placeholders": {
-          "count": {
-            "type": "int"
-          }
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
         }
-      },
+    },
     "auto_backup_registry": "Auto-backup before uninstall",
     "backup_cancelled": "Backup cancelled",
     "backup_success": "Backup successfully saved",
-
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
     "btn_browse": "Browse...",
-  
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
     "settings_custom_color": "Create Custom Color:",
     "btn_apply": "Apply",
-    "settings_auto_backup_dir": "Auto Backup Directory",
-    "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse...",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
     "dialog_backup_dir_filter": "Folder|*.none"

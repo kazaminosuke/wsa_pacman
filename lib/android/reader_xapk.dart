@@ -29,7 +29,7 @@ extension Architectures on Architecture {
     for (final arch in Architecture.values)
       for (final label in arch.labels) label
   ].join('|')})';
-  get regex => '(${[for (final label in labels) label].join('|')})';
+  String get regex => '(${[for (final label in labels) label].join('|')})';
   List<String> get labels => () {
         switch (this) {
           case Architecture.i386:
@@ -55,7 +55,7 @@ class XapkReader extends IsolateRunner<String, APK_READER_FLAGS> {
       Directory(WinPath.tempSubdir).createTempSync("XAPK-Extracted@$pid@");
 
   Future<Archive> _initArchiveFile(File file) async =>
-      ZipDecoder().decodeBuffer(InputFileStream(file.path));
+      ZipDecoder().decodeStream(InputFileStream(file.path));
   void _initArchive() {
     //Maintain a lock on the file
     File file = File(data)..open();
