@@ -41,7 +41,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion y WSA no encontrado; esta aplicación depende de WSA, que solo es oficialmente compatible con Windows 11';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -100,7 +100,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get status_connected_desc =>
-      'Conectado con éxito a WSA, todo está bien';
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'Gestor de paquetes WSA';
@@ -112,10 +112,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get wsa_manage => 'Gestión de Android';
 
   @override
-  String get wsa_manage_app => 'Administrar aplicaciones';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => 'Administrar configuraciones';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'Puerto WSA';
@@ -139,7 +139,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settings_option_generic_system => 'Sistema';
 
   @override
-  String get settings_option_generic_disabled => 'Deshabilitado';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => 'Modo de tema';
@@ -151,25 +151,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get theme_mode_light => 'Claro';
 
   @override
-  String get theme_mica => 'Transparencia de ventana';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => 'Total';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => 'Parcial';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => 'Forma de iconos adaptativos';
 
   @override
-  String get theme_icon_adaptive_squircle => 'Super círculo';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'Circulo';
 
   @override
-  String get theme_icon_adaptive_rounded_square => 'Cuadrado redondeado';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => '¿Quieres instalar esta aplicación?';

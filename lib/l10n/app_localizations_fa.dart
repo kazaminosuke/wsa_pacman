@@ -40,7 +40,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion شناسایی شد و یافت نشد. این برنامه به WSA وابسته است که به طور رسمی فقط  در ویندوز 11 پشتیبانی می شود';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -98,7 +98,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get status_connected_desc =>
-      'با موفقیت به WSA متصل شد، سیستم ها کار میکند';
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'مدیریت بسته WSA';
@@ -110,10 +110,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get wsa_manage => 'مدیریت اندروید';
 
   @override
-  String get wsa_manage_app => 'مدیریت برنامه ها';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => 'مدیریت تنظیمات';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'پورت WSA';
@@ -137,7 +137,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get settings_option_generic_system => 'سیستم';
 
   @override
-  String get settings_option_generic_disabled => 'غیرفعال';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => 'نوع زمینه';
@@ -149,25 +149,25 @@ class AppLocalizationsFa extends AppLocalizations {
   String get theme_mode_light => 'روشن';
 
   @override
-  String get theme_mica => 'شفافیت پنجره ها';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => 'کامل';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => 'جزئي';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => 'سازگارسازی آیکون';
 
   @override
-  String get theme_icon_adaptive_squircle => 'مربع';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'دایره';
 
   @override
-  String get theme_icon_adaptive_rounded_square => 'گوشه های کرد';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => 'آیا از نصب این برنامه اطمینان دارید؟';

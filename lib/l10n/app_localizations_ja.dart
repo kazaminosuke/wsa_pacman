@@ -40,7 +40,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion を使用しています。Windows にWSA がインストールされていません。このアプリケーションを使用するには WSA が必要で、Windows 11 のみ正式にサポートされています。';
+    return '$windowsVersion が検出されましたが、WSAが見つかりませんでした。このアプリケーションはWSAに依存していますが、WSAは公式には Windows 11 のみサポートされています。';
   }
 
   @override
@@ -96,7 +96,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get status_connected => '接続完了';
 
   @override
-  String get status_connected_desc => 'WSA との接続ができました。現在、待機中です。';
+  String get status_connected_desc => 'WSA に正常に接続されました。すべてのシステムが利用可能です。';
 
   @override
   String get screen_wsa => 'WSA Package Manager';
@@ -108,10 +108,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get wsa_manage => 'Android の管理';
 
   @override
-  String get wsa_manage_app => 'WSA のアプリケーション設定を開く';
+  String get wsa_manage_app => 'アプリケーションの管理';
 
   @override
-  String get wsa_manage_settings => 'WSA の設定を開く';
+  String get wsa_manage_settings => '設定の管理';
 
   @override
   String get settings_port => 'WSA ポート';
@@ -134,7 +134,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings_option_generic_system => 'システム';
 
   @override
-  String get settings_option_generic_disabled => '非アクティブ';
+  String get settings_option_generic_disabled => '無効';
 
   @override
   String get theme_mode => 'テーマモード';
@@ -146,25 +146,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String get theme_mode_light => 'ライト';
 
   @override
-  String get theme_mica => 'ウィンドウの透明度';
+  String get theme_mica => 'Mica 効果 (ウィンドウの透明度)';
 
   @override
-  String get theme_mica_full => '全体';
+  String get theme_mica_full => 'フル';
 
   @override
-  String get theme_mica_partial => '一部';
+  String get theme_mica_partial => '部分的';
 
   @override
   String get theme_icon_adaptive => 'アダプティブアイコンのスタイル';
 
   @override
-  String get theme_icon_adaptive_squircle => '半円';
+  String get theme_icon_adaptive_squircle => 'スワークル (角丸)';
 
   @override
   String get theme_icon_adaptive_circle => '円';
 
   @override
-  String get theme_icon_adaptive_rounded_square => '丸み正方形';
+  String get theme_icon_adaptive_rounded_square => '角丸正方形';
 
   @override
   String get installer_message => 'このアプリケーションをインストールしますか?';

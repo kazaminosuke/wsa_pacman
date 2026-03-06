@@ -194,7 +194,7 @@ abstract class AppLocalizations {
   /// No description provided for @status_unsupported_desc.
   ///
   /// In en, this message translates to:
-  /// **'{windowsVersion} detected and WSA not found; this application depends on WSA, which is only officially supported on Windows 11'**
+  /// **'{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.'**
   String status_unsupported_desc(String windowsVersion);
 
   /// No description provided for @status_unauthorized.
@@ -296,7 +296,7 @@ abstract class AppLocalizations {
   /// No description provided for @status_connected_desc.
   ///
   /// In en, this message translates to:
-  /// **'Successfully connected to WSA, all systems go'**
+  /// **'Successfully connected to WSA. All systems are operational and ready.'**
   String get status_connected_desc;
 
   /// No description provided for @screen_wsa.
@@ -392,7 +392,7 @@ abstract class AppLocalizations {
   /// No description provided for @theme_mica.
   ///
   /// In en, this message translates to:
-  /// **'Window transparency'**
+  /// **'Mica Effect (Window Transparency)'**
   String get theme_mica;
 
   /// No description provided for @theme_mica_full.
@@ -416,7 +416,7 @@ abstract class AppLocalizations {
   /// No description provided for @theme_icon_adaptive_squircle.
   ///
   /// In en, this message translates to:
-  /// **'Squircle'**
+  /// **'Squircle (Rounded Corner)'**
   String get theme_icon_adaptive_squircle;
 
   /// No description provided for @theme_icon_adaptive_circle.

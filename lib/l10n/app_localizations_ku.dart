@@ -40,7 +40,7 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion ناسرایەوە و WSA نەدۆزرایەوە؛ ئەم بەرنامەیە لەسەر WSA بەندە، کە بە فەرمی تەنیا لەسەر ویندۆزی ١١ پاڵپشتیی دەکرێت';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -97,7 +97,8 @@ class AppLocalizationsKu extends AppLocalizations {
   String get status_connected => 'پەیوەست';
 
   @override
-  String get status_connected_desc => 'بە سەرکەتوویی پەیوەست بوویت بە WSAیەوە!';
+  String get status_connected_desc =>
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'بەڕێوەبەری پاکێجی WSA';
@@ -109,10 +110,10 @@ class AppLocalizationsKu extends AppLocalizations {
   String get wsa_manage => 'بەڕێوەبردنی ئەندرۆید';
 
   @override
-  String get wsa_manage_app => 'بەڕێوەبردنی بەرنامەکان';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => 'بەڕێوەبرردنی ڕێکخستنەکان';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'پۆڕتی WSA';
@@ -135,7 +136,7 @@ class AppLocalizationsKu extends AppLocalizations {
   String get settings_option_generic_system => 'سیستەم';
 
   @override
-  String get settings_option_generic_disabled => 'ناکارا';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => 'شێوەی ڕووکار';
@@ -147,25 +148,25 @@ class AppLocalizationsKu extends AppLocalizations {
   String get theme_mode_light => 'ڕووناک';
 
   @override
-  String get theme_mica => 'ڕووتەنکیی شاشە';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => 'تەواو';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => 'نیمچە';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => 'قەبارەی ئایکۆنی گونجێنەر';
 
   @override
-  String get theme_icon_adaptive_squircle => 'چوارگۆشە و بازنە';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'بازنە';
 
   @override
-  String get theme_icon_adaptive_rounded_square => 'چوارگۆشەی خڕ';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => 'دەتەوێت ئەم بەرنامەیە داببەزێنیت؟';

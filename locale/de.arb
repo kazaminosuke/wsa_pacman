@@ -1,7 +1,4 @@
 {
-    "@@README_1": "The en.arb file is a template for other files",
-    "@@README_2": "For other languages, entries starting with @ and @@ are not needed, except @@locale",
-    "@@README_3": "Country-specific locales (eg. 'en_GB') need a fallback locale (eg. 'en') to exist",
     "@@locale": "de",
     "@locale_desc": {
         "description": "German [de-DE]"
@@ -125,5 +122,78 @@
     "btn_apply": "Apply",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",
-    "dialog_backup_dir_filter": "Folder|*.none"
+    "dialog_backup_dir_filter": "Folder|*.none",
+    "@status_subtext_winver_10": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
+    "@status_subtext_winver_older": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
+    "@status_unsupported_desc": {
+        "placeholders": {
+            "windowsVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "status_unknown": "Connecting",
+    "@settings_timeout": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version": {
+        "placeholders": {
+            "appVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version_change": {
+        "placeholders": {
+            "appVersionOld": {
+                "type": "String"
+            },
+            "appVersionNew": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_package": {
+        "placeholders": {
+            "appPackage": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installing": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installed": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_fail": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_warning_dirty": {
+        "placeholders": {
+            "tempDir": {
+                "type": "String"
+            }
+        }
+    }
 }

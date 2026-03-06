@@ -40,7 +40,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion 检测到但未找到 WSA； 此应用程序依赖于 WSA，仅在 Windows 11 上正式支持';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -94,7 +94,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get status_connected => '已连接';
 
   @override
-  String get status_connected_desc => '成功连接到 WSA，所有系统正常运行';
+  String get status_connected_desc =>
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'WSA 包管理器';
@@ -106,10 +107,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get wsa_manage => 'Android 管理';
 
   @override
-  String get wsa_manage_app => '管理应用程序';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => '管理设置';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'WSA 端口';
@@ -132,7 +133,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_option_generic_system => '系统';
 
   @override
-  String get settings_option_generic_disabled => '已禁用';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => '主题模式';
@@ -144,25 +145,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get theme_mode_light => '浅色模式';
 
   @override
-  String get theme_mica => '窗口透明度';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => '完整';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => '部分';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => '自适应图标形状';
 
   @override
-  String get theme_icon_adaptive_squircle => '超圆角圆形';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => '圆形';
 
   @override
-  String get theme_icon_adaptive_rounded_square => '圆角方形';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => '您要安装此应用程序吗？';
@@ -410,7 +411,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '檢測到 $windowsVersion 但未找到 Android 子系統；此應用程式僅在 Windows 11 正式支援。';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -465,7 +466,8 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get status_connected => '已連接';
 
   @override
-  String get status_connected_desc => '成功連接到 WSA，所有系統正常執行';
+  String get status_connected_desc =>
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'WSA 包管理器';
@@ -477,10 +479,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get wsa_manage => 'Android 管理';
 
   @override
-  String get wsa_manage_app => '管理應用程式';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => '管理設定';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'WSA 端口';
@@ -503,7 +505,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settings_option_generic_system => '系統';
 
   @override
-  String get settings_option_generic_disabled => '已關閉';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => '主題模式';
@@ -515,25 +517,25 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get theme_mode_light => '淺色模式';
 
   @override
-  String get theme_mica => '視窗透明度';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => '完整';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => '部分';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => '自適應圖標形狀';
 
   @override
-  String get theme_icon_adaptive_squircle => '方圓形';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => '圓形';
 
   @override
-  String get theme_icon_adaptive_rounded_square => '圓角方形';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => '您要安裝此應用程式嗎？';

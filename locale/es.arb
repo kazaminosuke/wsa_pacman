@@ -1,7 +1,4 @@
 {
-    "@@README_1": "El archivo en.arb es una plantilla para otros archivos",
-    "@@README_2": "Para otros idiomas, no se necesitan entradas que comiencen con @ y @@, excepto @@locale",
-    "@@README_3": "Los idiomas específicos de un país (ej. 'en_GB') necesitan un idioma de respaldo existente (ej. 'en')",
     "@@locale": "es",
     "@locale_desc": {
         "description": "Spanish (Spain) [es_ES]"
@@ -118,5 +115,85 @@
     "btn_restart_wsa": "Restart WSA",
     "settings_auto_backup_dir": "Auto Backup Directory",
     "tooltip_reset_desktop": "Reset to Default (Desktop)",
-    "btn_browse": "Browse..."
+    "btn_browse": "Browse...",
+    "@status_subtext_winver_10": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
+    "@status_subtext_winver_older": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
+    "@status_unsupported_desc": {
+        "placeholders": {
+            "windowsVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "@settings_timeout": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version": {
+        "placeholders": {
+            "appVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version_change": {
+        "placeholders": {
+            "appVersionOld": {
+                "type": "String"
+            },
+            "appVersionNew": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_package": {
+        "placeholders": {
+            "appPackage": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installing": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installed": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_fail": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_warning_dirty": {
+        "placeholders": {
+            "tempDir": {
+                "type": "String"
+            }
+        }
+    },
+    "settings_theme_color": "Theme Color",
+    "settings_theme_color_system": "System (Windows)",
+    "settings_theme_color_default": "Default",
+    "settings_custom_color": "Create Custom Color:",
+    "btn_apply": "Apply",
+    "dialog_backup_dir_title": "Select a folder to save auto-backups",
+    "dialog_backup_dir_filename": "Select this folder",
+    "dialog_backup_dir_filter": "Folder|*.none"
 }

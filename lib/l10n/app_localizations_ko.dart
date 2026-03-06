@@ -40,7 +40,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '운영 체제가 $windowsVersion인 것으로 보이며 WSA를 찾을 수 없습니다. 본 프로그램은 WSA에 종속되어 있으며, Windows 11에서만 이용할 수 있습니다.';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -95,7 +95,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get status_connected => '연결됨';
 
   @override
-  String get status_connected_desc => 'WSA에 성공적으로 연결했으며, 모든 시스템이 구동되고 있습니다';
+  String get status_connected_desc =>
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'WSA 패키지 관리자';
@@ -107,10 +108,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get wsa_manage => 'Android 관리';
 
   @override
-  String get wsa_manage_app => '애플리케이션 관리';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => '설정 관리';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'WSA 포트';
@@ -133,7 +134,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settings_option_generic_system => '시스템';
 
   @override
-  String get settings_option_generic_disabled => '꺼짐';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => '테마';
@@ -145,25 +146,25 @@ class AppLocalizationsKo extends AppLocalizations {
   String get theme_mode_light => '밝게';
 
   @override
-  String get theme_mica => '투명 창';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => '전체';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => '일부';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => '적응형 아이콘 모양';
 
   @override
-  String get theme_icon_adaptive_squircle => '스퀘어클';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => '원형';
 
   @override
-  String get theme_icon_adaptive_rounded_square => '모서리가 둥근 사각형';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => '이 애플리케이션을 설치하시겠습니까?';

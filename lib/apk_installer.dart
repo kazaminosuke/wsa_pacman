@@ -255,8 +255,12 @@ class _ApkInstallerState extends State<ApkInstaller> {
                         },
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 8.0),
                           alignment: Alignment.center,
-                          child: Text(lang.installer_btn_cancel),
+                          child: Text(lang.installer_btn_cancel,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
                         ),
                       )),
                       const SizedBox(width: 15),
@@ -292,11 +296,16 @@ class _ApkInstallerState extends State<ApkInstaller> {
                                   },
                             child: Container(
                               constraints: const BoxConstraints(minWidth: 80),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 8.0),
                               alignment: Alignment.center,
-                              child: Text(startingWSA
-                                  ? lang.installer_btn_starting
-                                  : installType?.buttonText(lang) ??
-                                      lang.installer_btn_loading),
+                              child: Text(
+                                  startingWSA
+                                      ? lang.installer_btn_starting
+                                      : installType?.buttonText(lang) ??
+                                          lang.installer_btn_loading,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
                             ),
                           ),
                         ),
@@ -431,8 +440,12 @@ class _ApkInstallerState extends State<ApkInstaller> {
                         },
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 8.0),
                           alignment: Alignment.center,
-                          child: Text(lang.installer_btn_dismiss),
+                          child: Text(lang.installer_btn_dismiss,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
                         ),
                       )),
                       if (package.isNotEmpty) const SizedBox(width: 15),
@@ -451,8 +464,12 @@ class _ApkInstallerState extends State<ApkInstaller> {
                           },
                           child: Container(
                             constraints: const BoxConstraints(minWidth: 80),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4.0, horizontal: 8.0),
                             alignment: Alignment.center,
-                            child: Text(lang.installer_btn_open),
+                            child: Text(lang.installer_btn_open,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600)),
                           ),
                         ))
                     ])
@@ -487,8 +504,12 @@ class _ApkInstallerState extends State<ApkInstaller> {
                         },
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 8.0),
                           alignment: Alignment.center,
-                          child: Text(lang.installer_btn_dismiss),
+                          child: Text(lang.installer_btn_dismiss,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
                         ),
                       ))
                     ])
@@ -562,7 +583,8 @@ class PermissionListItem extends StatelessWidget {
                   permission.description(lang),
                   style: TextStyle(
                     color: theme.resources.textFillColorPrimary,
-                    fontSize: 13.0,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

@@ -40,7 +40,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return 'تم العثور على إصدار $windowsVersion و لم يثبت WSA ; و هذا التطبيق يعتمد على WSA, و التي تثبت على ويندوز 11 فقط';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -96,7 +96,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get status_connected => 'متصل';
 
   @override
-  String get status_connected_desc => 'تم الاتصال بنجاح';
+  String get status_connected_desc =>
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'مدير حزم الWSA';
@@ -108,10 +109,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wsa_manage => 'إدارة الاندرويد';
 
   @override
-  String get wsa_manage_app => 'إدارة التطبيقات';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => 'إدارة الضبط';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'مدخل الWSA';
@@ -134,7 +135,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings_option_generic_system => 'النظام';
 
   @override
-  String get settings_option_generic_disabled => 'غير مفعل';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => 'وضع السمات';
@@ -146,25 +147,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get theme_mode_light => 'ساطع';
 
   @override
-  String get theme_mica => 'شفافية النافذة';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => 'كامل';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => 'جزئي';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => 'ايقونات متكيفة';
 
   @override
-  String get theme_icon_adaptive_squircle => 'مربع منحني';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'دائري';
 
   @override
-  String get theme_icon_adaptive_rounded_square => 'مربع مستدير';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => 'هل تريد تثبيت هذا التطبيق؟';

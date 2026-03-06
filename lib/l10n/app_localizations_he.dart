@@ -40,7 +40,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return 'זוהתה מערכת הפעלה $windowsVersion WSA ולא נמצא; תוכנה זו תלויה ב WSA, אשר נתמך רשמית רק ב-Windows 11.';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -96,7 +96,8 @@ class AppLocalizationsHe extends AppLocalizations {
   String get status_connected => 'מחובר';
 
   @override
-  String get status_connected_desc => 'מחובר בהצלחה ל-WSA, כל המערכות עוברות.';
+  String get status_connected_desc =>
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'WSA PacMan - מנהל חבילות ל-WSA';
@@ -108,10 +109,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get wsa_manage => 'ניהול הגדרות האנדרואיד';
 
   @override
-  String get wsa_manage_app => 'נהל אפליקציות';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => 'נהל הגדרות';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'WSA Port';
@@ -134,7 +135,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get settings_option_generic_system => 'מערכת';
 
   @override
-  String get settings_option_generic_disabled => 'כבוי';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => 'ערכת נושא';
@@ -146,25 +147,25 @@ class AppLocalizationsHe extends AppLocalizations {
   String get theme_mode_light => 'בהיר';
 
   @override
-  String get theme_mica => 'שקיפות חלון';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => 'מלא';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => 'חלקי';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => 'צורת אייקונים מותאמת';
 
   @override
-  String get theme_icon_adaptive_squircle => 'Squircle (צורה בין ריבוע לעיגול)';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'עגול';
 
   @override
-  String get theme_icon_adaptive_rounded_square => 'ריבוע עם פינות מעוגלות';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => 'האם ברצונך להתקין את היישום הזה?';

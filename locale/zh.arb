@@ -1,7 +1,4 @@
 {
-    "@@README_1": "en.arb 文件是其他文件的模板",
-    "@@README_2": "对于其他语言，不需要翻译 @ 和 @@ 开头的条目，除外 @@locale",
-    "@@README_3": "特定于国家/地区的语言环境（例如“en_GB”）需要一个备用语言环境（例如“en”）才能使用",
     "@@locale": "zh",
     "@locale_desc": {
         "description": "Chinese (simplified) [zh_CN] < [zh_Hans]"
@@ -135,5 +132,71 @@
     "btn_apply": "应用",
     "dialog_backup_dir_title": "选择一个文件夹来保存自动备份",
     "dialog_backup_dir_filename": "Select this folder",
-    "dialog_backup_dir_filter": "Folder|*.none"
+    "dialog_backup_dir_filter": "Folder|*.none",
+    "@status_unsupported_desc": {
+        "placeholders": {
+            "windowsVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "@settings_timeout": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version": {
+        "placeholders": {
+            "appVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version_change": {
+        "placeholders": {
+            "appVersionOld": {
+                "type": "String"
+            },
+            "appVersionNew": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_package": {
+        "placeholders": {
+            "appPackage": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installing": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installed": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_fail": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_warning_dirty": {
+        "placeholders": {
+            "tempDir": {
+                "type": "String"
+            }
+        }
+    }
 }

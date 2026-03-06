@@ -1,7 +1,4 @@
 {
-    "@@README_1": "The en.arb file is a template for other files",
-    "@@README_2": "For other languages, entries starting with @ and @@ are not needed, except @@locale",
-    "@@README_3": "Country-specific locales (eg. 'en_GB') need a fallback locale (eg. 'en') to exist",
     "@@locale": "en",
     "@locale_desc": {
         "description": "English (US) [en_US]"

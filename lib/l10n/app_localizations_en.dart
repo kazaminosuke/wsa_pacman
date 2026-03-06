@@ -40,7 +40,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion detected and WSA not found; this application depends on WSA, which is only officially supported on Windows 11';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -98,7 +98,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get status_connected_desc =>
-      'Successfully connected to WSA, all systems go';
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'WSA Package Manager';
@@ -148,7 +148,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theme_mode_light => 'Light';
 
   @override
-  String get theme_mica => 'Window transparency';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
   String get theme_mica_full => 'Full';
@@ -160,7 +160,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get theme_icon_adaptive => 'Adaptive icons Shape';
 
   @override
-  String get theme_icon_adaptive_squircle => 'Squircle';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'Circle';

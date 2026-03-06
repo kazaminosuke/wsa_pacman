@@ -40,7 +40,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion terdeteksi dan WSA tidak ditemukan; aplikasi ini tergantung pada WSA, yang hanya didukung secara resmi di Windows 11';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -97,7 +97,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get status_connected_desc =>
-      'Berhasil terhubung ke WSA, semua sistem berjalan';
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'Manajer Paket WSA';
@@ -109,10 +109,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get wsa_manage => 'Manajemen Android';
 
   @override
-  String get wsa_manage_app => 'Kelola Aplikasi';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => 'Kelola Pengaturan';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'Port WSA';
@@ -135,7 +135,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get settings_option_generic_system => 'Sistem';
 
   @override
-  String get settings_option_generic_disabled => 'Dimatikan';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => 'Mode tema';
@@ -147,25 +147,25 @@ class AppLocalizationsId extends AppLocalizations {
   String get theme_mode_light => 'Terang';
 
   @override
-  String get theme_mica => 'Transparan Windows';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => 'Penuh';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => 'Sebagian';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => 'Ikon adaptif Bentuk';
 
   @override
-  String get theme_icon_adaptive_squircle => 'Kerucut';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'Lingkaran';
 
   @override
-  String get theme_icon_adaptive_rounded_square => 'Persegi Bulat';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => 'Apakah Anda ingin menginstal aplikasi ini?';

@@ -40,7 +40,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String status_unsupported_desc(String windowsVersion) {
-    return '$windowsVersion phát hiện và không tìm thấy WSA; ứng dụng này phụ thuộc vào WSA, chỉ được hỗ trợ chính thức trên Windows 11';
+    return '$windowsVersion detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.';
   }
 
   @override
@@ -97,7 +97,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get status_connected_desc =>
-      'Kết nối thành công với WSA, tất cả các hệ thống đều hoạt động';
+      'Successfully connected to WSA. All systems are operational and ready.';
 
   @override
   String get screen_wsa => 'Trình Quản Lý Cài Đặt - WSA';
@@ -109,10 +109,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get wsa_manage => 'Quản Lý Android';
 
   @override
-  String get wsa_manage_app => 'Quản lý ứng dụng';
+  String get wsa_manage_app => 'Manage Applications';
 
   @override
-  String get wsa_manage_settings => 'Quản lý cài đặt';
+  String get wsa_manage_settings => 'Manage Settings';
 
   @override
   String get settings_port => 'Cổng WSA (Port)';
@@ -135,7 +135,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settings_option_generic_system => 'Hệ thống';
 
   @override
-  String get settings_option_generic_disabled => 'Vô hiệu hóa';
+  String get settings_option_generic_disabled => 'Disabled';
 
   @override
   String get theme_mode => 'Giao diện';
@@ -147,25 +147,25 @@ class AppLocalizationsVi extends AppLocalizations {
   String get theme_mode_light => 'Sáng';
 
   @override
-  String get theme_mica => 'Độ trong suốt của cửa sổ';
+  String get theme_mica => 'Mica Effect (Window Transparency)';
 
   @override
-  String get theme_mica_full => 'Tất cả';
+  String get theme_mica_full => 'Full';
 
   @override
-  String get theme_mica_partial => 'Một phần nào đó';
+  String get theme_mica_partial => 'Partial';
 
   @override
   String get theme_icon_adaptive => 'Biểu tượng icon';
 
   @override
-  String get theme_icon_adaptive_squircle => 'Hình vuông';
+  String get theme_icon_adaptive_squircle => 'Squircle (Rounded Corner)';
 
   @override
   String get theme_icon_adaptive_circle => 'Vòng tròn';
 
   @override
-  String get theme_icon_adaptive_rounded_square => 'Hình vuông (góc tròn)';
+  String get theme_icon_adaptive_rounded_square => 'Rounded Square';
 
   @override
   String get installer_message => 'Bạn có muốn cài đặt ứng dụng này không?';
