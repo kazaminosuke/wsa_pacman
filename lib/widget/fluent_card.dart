@@ -1,3 +1,4 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, deprecated_member_use, unused_field
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:wsa_pacman/utils/misc_utils.dart';
 
@@ -20,30 +21,41 @@ class FluentCard extends StatefulWidget {
     this.contentBackgroundColor,
   });
 
-  static Color backgroundColor(FluentThemeData style, Set<WidgetState> states, [bool isClickable = true]) {
+  static Color backgroundColor(FluentThemeData style, Set<WidgetState> states,
+      [bool isClickable = true]) {
     if (style.brightness == Brightness.light) {
       if (!states.isDisabled && isClickable) {
-        if (states.isPressed) return const ColorConst.withOpacity(0xf9f9f9, 0.2);
-        if (states.isHovered) return const ColorConst.withOpacity(0xf9f9f9, 0.4);
+        if (states.isPressed)
+          return const ColorConst.withOpacity(0xf9f9f9, 0.2);
+        if (states.isHovered)
+          return const ColorConst.withOpacity(0xf9f9f9, 0.4);
       }
       return const ColorConst.withOpacity(0xFFFFFF, 0.7);
     } else {
       if (!states.isDisabled && isClickable) {
-        if (states.isPressed) return const ColorConst.withOpacity(0xFFFFFF, 0.03);
-        if (states.isHovered) return const ColorConst.withOpacity(0xFFFFFF, 0.082);
+        if (states.isPressed)
+          return const ColorConst.withOpacity(0xFFFFFF, 0.03);
+        if (states.isHovered)
+          return const ColorConst.withOpacity(0xFFFFFF, 0.082);
       }
       return const ColorConst.withOpacity(0xFFFFFF, 0.05);
     }
   }
 
-  static Color borderColor(FluentThemeData style, Set<WidgetState> states, [bool isInner = false, bool isClickable = true]) {
+  static Color borderColor(FluentThemeData style, Set<WidgetState> states,
+      [bool isInner = false, bool isClickable = true]) {
     if (style.brightness == Brightness.light) {
-      if (isClickable && states.isHovered && !states.isPressed) return const Color(0xFF212121).withOpacity(0.22);
+      if (isClickable && states.isHovered && !states.isPressed)
+        return const Color(0xFF212121).withOpacity(0.22);
       return const Color(0xFF212121).withOpacity(isInner ? 0.25 : 0.17);
     } else {
-      if (isClickable && states.isPressed) return Colors.white.withOpacity(0.062);
-      if (isClickable && states.isHovered) return Colors.white.withOpacity(0.02);
-      return isInner ? Colors.white.withOpacity(0.02) : Colors.black.withOpacity(0.52);
+      if (isClickable && states.isPressed)
+        return Colors.white.withOpacity(0.062);
+      if (isClickable && states.isHovered)
+        return Colors.white.withOpacity(0.02);
+      return isInner
+          ? Colors.white.withOpacity(0.02)
+          : Colors.black.withOpacity(0.52);
     }
   }
 
@@ -95,14 +107,14 @@ class FluentCard extends StatefulWidget {
   final ValueChanged<bool>? onStateChanged;
 
   /// The height of the header.
-  /// 
+  ///
   /// Defaults to 48.0
   final double headerHeight;
 
   /// The background color of the header. If null, [ThemeData.scaffoldBackgroundColor]
   /// is used
   final Color? headerBackgroundColor;
-  
+
   /// The content color of the header. If null, [ThemeData.acrylicBackgroundColor]
   /// is used
   final Color? contentBackgroundColor;
@@ -133,10 +145,14 @@ class FluentCardState extends State<FluentCard>
   static const Duration expanderAnimationDuration = Duration(milliseconds: 70);
 
   /// If this widget acts as a button and is disabled, gray out all text and icons
-  Widget buttonStyled(Widget child) => !widget.isButton || widget.onPressed != null ? child : IconTheme.merge(
-    data: IconThemeData(color: theme.resources.textFillColorDisabled), 
-    child: DefaultTextStyle.merge(style: TextStyle(color: theme.resources.textFillColorDisabled), child: child)
-  );
+  Widget buttonStyled(Widget child) => !widget.isButton ||
+          widget.onPressed != null
+      ? child
+      : IconTheme.merge(
+          data: IconThemeData(color: theme.resources.textFillColorDisabled),
+          child: DefaultTextStyle.merge(
+              style: TextStyle(color: theme.resources.textFillColorDisabled),
+              child: child));
 
   @override
   Widget build(BuildContext context) {
@@ -146,46 +162,64 @@ class FluentCardState extends State<FluentCard>
     bool isDark = theme.brightness == Brightness.dark;
 
     return buttonStyled(HoverButton(
-      onPressed: widget.onPressed ?? (widget.isButton ? null : emptyPressMethod),
+      onPressed:
+          widget.onPressed ?? (widget.isButton ? null : emptyPressMethod),
       builder: (context, states) {
         return AnimatedContainer(
           duration: expanderAnimationDuration,
           height: widget.headerHeight,
           decoration: BoxDecoration(
-            color: FluentCard.backgroundColor(theme, states, widget.onPressed != null),
+            color: FluentCard.backgroundColor(
+                theme, states, widget.onPressed != null),
             border: Border.all(
               width: borderSize,
-              color: FluentCard.borderColor(theme, states, widget.isInner, widget.onPressed != null),
+              color: FluentCard.borderColor(
+                  theme, states, widget.isInner, widget.onPressed != null),
             ),
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
           ),
           padding: const EdgeInsetsDirectional.only(start: 16.0),
           alignment: Alignment.centerLeft,
           child: Row(mainAxisSize: MainAxisSize.min, children: [
-            if (widget.leading != null) Padding(
-              padding: const EdgeInsetsDirectional.only(end: 17.0),
-              child: widget.leading!,
-            ),
-            Expanded(child: (widget.trailing == null && !widget.isButton) ? Padding(
-              padding: const EdgeInsetsDirectional.only(end: 17),
-              child: widget.content,
-            ): widget.content),
-            if (widget.trailing != null) Padding(
-              padding: const EdgeInsetsDirectional.only(start: 20.0, end: 13.5),
-              child: widget.trailing!,
-            ),
-            if (widget.icon != null || widget.isButton) Container(
-              margin: EdgeInsetsDirectional.only(
-                start: widget.trailing != null ? 8.0 : 20.0,
-                end: 8.0,
-                top: 8.0,
-                bottom: 8.0,
+            if (widget.leading != null)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: 17.0),
+                child: widget.leading!,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              alignment: Alignment.center,
-              child: widget.icon ?? Icon(isLtr ? isDark ? FluentIcons.chevron_right : FluentIcons.chevron_right_med :
-                  isDark ? FluentIcons.chevron_left : FluentIcons.chevron_left_med, size: 11),
-            ),
+            Expanded(
+                child: (widget.trailing == null && !widget.isButton)
+                    ? Padding(
+                        padding: const EdgeInsetsDirectional.only(end: 17),
+                        child: widget.content,
+                      )
+                    : widget.content),
+            if (widget.trailing != null)
+              Padding(
+                padding:
+                    const EdgeInsetsDirectional.only(start: 20.0, end: 13.5),
+                child: widget.trailing!,
+              ),
+            if (widget.icon != null || widget.isButton)
+              Container(
+                margin: EdgeInsetsDirectional.only(
+                  start: widget.trailing != null ? 8.0 : 20.0,
+                  end: 8.0,
+                  top: 8.0,
+                  bottom: 8.0,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                alignment: Alignment.center,
+                child: widget.icon ??
+                    Icon(
+                        isLtr
+                            ? isDark
+                                ? FluentIcons.chevron_right
+                                : FluentIcons.chevron_right_med
+                            : isDark
+                                ? FluentIcons.chevron_left
+                                : FluentIcons.chevron_left_med,
+                        size: 11),
+              ),
           ]),
         );
       },

@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names, curly_braces_in_flow_control_structures, non_constant_identifier_names
+// ignore_for_file: constant_identifier_names, curly_braces_in_flow_control_structures, non_constant_identifier_names, deprecated_member_use, library_private_types_in_public_api
 
 import 'dart:io';
 import 'dart:developer';
@@ -50,29 +50,85 @@ class WSAStatusAlert {
 
   bool get isConnected => type == ConnectionStatus.CONNECTED;
   bool get isDisconnected => type != ConnectionStatus.CONNECTED;
-  bool get isPoweredOn => isConnected || type == ConnectionStatus.DISCONNECTED 
-    || type == ConnectionStatus.OFFLINE || type == ConnectionStatus.UNAUTHORIZED;
+  bool get isPoweredOn =>
+      isConnected ||
+      type == ConnectionStatus.DISCONNECTED ||
+      type == ConnectionStatus.OFFLINE ||
+      type == ConnectionStatus.UNAUTHORIZED;
 }
 
 enum ConnectionStatus {
-  UNSUPPORTED, MISSING, UNKNOWN, ARRESTED, STARTING, OFFLINE, DISCONNECTED, CONNECTED, UNAUTHORIZED
+  UNSUPPORTED,
+  MISSING,
+  UNKNOWN,
+  ARRESTED,
+  STARTING,
+  OFFLINE,
+  DISCONNECTED,
+  CONNECTED,
+  UNAUTHORIZED
 }
-extension ConnectionStatusExt on ConnectionStatus { // ⭕ 名前を付けてパブリックにする
+
+extension ConnectionStatusExt on ConnectionStatus {
+  // ⭕ 名前を付けてパブリックにする
   static final Map<ConnectionStatus, WSAStatusAlert> _statusAlers = {
-    ConnectionStatus.UNSUPPORTED: WSAStatusAlert(ConnectionStatus.UNSUPPORTED, InfoBarSeverity.error, (l)=>l.status_unsupported, 
-      (l)=>l.status_unsupported_desc(WinVer.isWindows10OrGreater ? l.status_subtext_winver_10 : l.status_subtext_winver_older)),
-    ConnectionStatus.MISSING: WSAStatusAlert(ConnectionStatus.MISSING, InfoBarSeverity.error, (l)=>l.status_missing, (l)=>l.status_missing_desc),
-    ConnectionStatus.UNKNOWN: WSAStatusAlert(ConnectionStatus.UNKNOWN, InfoBarSeverity.info, (l)=>l.status_unknown, (l)=>l.status_unknown_desc),
-    ConnectionStatus.STARTING: WSAStatusAlert(ConnectionStatus.STARTING, InfoBarSeverity.info, (l)=>l.status_starting, (l)=>l.status_starting_desc),
-    ConnectionStatus.ARRESTED: WSAStatusAlert(ConnectionStatus.ARRESTED, InfoBarSeverity.warning, (l)=>l.status_arrested, (l)=>l.status_arrested_desc),
-    ConnectionStatus.OFFLINE: WSAStatusAlert(ConnectionStatus.OFFLINE, InfoBarSeverity.warning, (l)=>l.status_offline, (l)=>l.status_offline_desc),
-    ConnectionStatus.DISCONNECTED: WSAStatusAlert(ConnectionStatus.DISCONNECTED, InfoBarSeverity.error, (l)=>l.status_disconnected, (l)=>l.status_disconnected_desc),
-    ConnectionStatus.CONNECTED: WSAStatusAlert(ConnectionStatus.CONNECTED, InfoBarSeverity.success, (l)=>l.status_connected, (l)=>l.status_connected_desc),
-    ConnectionStatus.UNAUTHORIZED: WSAStatusAlert(ConnectionStatus.UNAUTHORIZED, InfoBarSeverity.warning, (l)=>l.status_unauthorized, (l)=>'${l.status_unauthorized_desc}\n'),
+    ConnectionStatus.UNSUPPORTED: WSAStatusAlert(
+        ConnectionStatus.UNSUPPORTED,
+        InfoBarSeverity.error,
+        (l) => l.status_unsupported,
+        (l) => l.status_unsupported_desc(WinVer.isWindows10OrGreater
+            ? l.status_subtext_winver_10
+            : l.status_subtext_winver_older)),
+    ConnectionStatus.MISSING: WSAStatusAlert(
+        ConnectionStatus.MISSING,
+        InfoBarSeverity.error,
+        (l) => l.status_missing,
+        (l) => l.status_missing_desc),
+    ConnectionStatus.UNKNOWN: WSAStatusAlert(
+        ConnectionStatus.UNKNOWN,
+        InfoBarSeverity.info,
+        (l) => l.status_unknown,
+        (l) => l.status_unknown_desc),
+    ConnectionStatus.STARTING: WSAStatusAlert(
+        ConnectionStatus.STARTING,
+        InfoBarSeverity.info,
+        (l) => l.status_starting,
+        (l) => l.status_starting_desc),
+    ConnectionStatus.ARRESTED: WSAStatusAlert(
+        ConnectionStatus.ARRESTED,
+        InfoBarSeverity.warning,
+        (l) => l.status_arrested,
+        (l) => l.status_arrested_desc),
+    ConnectionStatus.OFFLINE: WSAStatusAlert(
+        ConnectionStatus.OFFLINE,
+        InfoBarSeverity.warning,
+        (l) => l.status_offline,
+        (l) => l.status_offline_desc),
+    ConnectionStatus.DISCONNECTED: WSAStatusAlert(
+        ConnectionStatus.DISCONNECTED,
+        InfoBarSeverity.error,
+        (l) => l.status_disconnected,
+        (l) => l.status_disconnected_desc),
+    ConnectionStatus.CONNECTED: WSAStatusAlert(
+        ConnectionStatus.CONNECTED,
+        InfoBarSeverity.success,
+        (l) => l.status_connected,
+        (l) => l.status_connected_desc),
+    ConnectionStatus.UNAUTHORIZED: WSAStatusAlert(
+        ConnectionStatus.UNAUTHORIZED,
+        InfoBarSeverity.warning,
+        (l) => l.status_unauthorized,
+        (l) => '${l.status_unauthorized_desc}\n'),
   };
 
-  WSAStatusAlert get statusAlert => _statusAlers[this] ?? WSAStatusAlert(this, InfoBarSeverity.error, (l)=>"Unmapped status",
-    (l)=>"Encountered WSA connection status $this, the status is missing an alert message");
+  WSAStatusAlert get statusAlert =>
+      _statusAlers[this] ??
+      WSAStatusAlert(
+          this,
+          InfoBarSeverity.error,
+          (l) => "Unmapped status",
+          (l) =>
+              "Encountered WSA connection status $this, the status is missing an alert message");
 }
 
 extension __EnumExtension on Enum {
@@ -84,22 +140,41 @@ extension __EnumExtension on Enum {
 class Env {
   static final String SYSTEM_ROOT = Platform.environment["SystemRoot"] ?? "";
   static final String USER_PROFILE = Platform.environment["UserProfile"] ?? "";
-  
+
   // 実行ファイル（.exe）があるディレクトリを取得
   static String get EXEC_DIR => File(Platform.resolvedExecutable).parent.path;
 
   // 絶対パスでツールフォルダを指定（末尾の \\ を削除）
   static String get TOOLS_DIR => "$EXEC_DIR\\embedded-tools";
-      
-  static final String POWERSHELL = WinReg.getString(RegHKey.HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell', 'Path')?.value ?? '$SYSTEM_ROOT\\System32\\WindowsPowerShell\\v1.0\\powershell.exe';
-  
-  static final String WSA_SYSTEM_PATH = RegExp(r'^(.*)[\\/]+[^\\/]*[\\/]+[^\\/]*$').firstMatch(
-      WinReg.getString(RegHKey.HKEY_LOCAL_MACHINE, r'SYSTEM\CurrentControlSet\Services\WsaService', 'ImagePath')?.value.unquoted ??
-      WinReg.getString(RegHKey.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\App Paths\WsaClient.exe', null)?.value ?? ''
-    )?.group(1) ?? '';
 
-  static final String WSA_EXECUTABLE = '$WSA_SYSTEM_PATH\\WsaClient\\WsaClient.exe';
-  static final bool WSA_INSTALLED = File('$WSA_SYSTEM_PATH\\AppxManifest.xml').existsSync();
+  static final String POWERSHELL = WinReg.getString(
+              RegHKey.HKEY_LOCAL_MACHINE,
+              r'SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell',
+              'Path')
+          ?.value ??
+      '$SYSTEM_ROOT\\System32\\WindowsPowerShell\\v1.0\\powershell.exe';
+
+  static final String WSA_SYSTEM_PATH = RegExp(
+              r'^(.*)[\\/]+[^\\/]*[\\/]+[^\\/]*$')
+          .firstMatch(WinReg.getString(
+                      RegHKey.HKEY_LOCAL_MACHINE,
+                      r'SYSTEM\CurrentControlSet\Services\WsaService',
+                      'ImagePath')
+                  ?.value
+                  .unquoted ??
+              WinReg.getString(
+                      RegHKey.HKEY_CURRENT_USER,
+                      r'Software\Microsoft\Windows\CurrentVersion\App Paths\WsaClient.exe',
+                      null)
+                  ?.value ??
+              '')
+          ?.group(1) ??
+      '';
+
+  static final String WSA_EXECUTABLE =
+      '$WSA_SYSTEM_PATH\\WsaClient\\WsaClient.exe';
+  static final bool WSA_INSTALLED =
+      File('$WSA_SYSTEM_PATH\\AppxManifest.xml').existsSync();
   static final WSA_INFO = WSAPkgInfo.fromSystemPath(WSA_SYSTEM_PATH);
 }
 
@@ -108,15 +183,18 @@ class WSAPeriodicConnector {
   static const PERIODIC_CHECK_SLEEPING_DURATION = Duration(milliseconds: 750);
   static const PERIODIC_CHECK_CONNECT_DURATION = Duration(seconds: 5);
   static int lastStart = 0;
-  static bool get shouldWaitStart => DateTime.now().millisecondsSinceEpoch - lastStart < 15000;
-  static final DynamicTimer timer = DynamicTimer((Timer t) => WSAPeriodicConnector._checkConnectionStatus());
+  static bool get shouldWaitStart =>
+      DateTime.now().millisecondsSinceEpoch - lastStart < 15000;
+  static final DynamicTimer timer =
+      DynamicTimer((Timer t) => WSAPeriodicConnector._checkConnectionStatus());
   static ConnectionStatus status = ConnectionStatus.UNKNOWN;
   static WSAStatusAlert alertStatus = ConnectionStatus.UNKNOWN.statusAlert;
   static bool _statusInitialized = false;
 
   static void _checkConnectionStatus() async {
     if (_statusInitialized) {
-      Process.run('${Env.SYSTEM_ROOT}\\System32\\tasklist.exe', []).then((result){
+      Process.run('${Env.SYSTEM_ROOT}\\System32\\tasklist.exe', [])
+          .then((result) {
         if (!result.stdout.toString().contains(RegExp(r'(^|\n)adb.exe\s+'))) {
           status = ConnectionStatus.UNKNOWN;
           GState.connectionStatus.update((p0) => status.statusAlert);
@@ -128,49 +206,66 @@ class WSAPeriodicConnector {
       timer.setDuration(PERIODIC_CHECK_BOOT_DURATION);
       // ★ 追加: 再起動直後（15秒以内）なら、プロセスがなくても「起動中」を維持する
       if (shouldWaitStart) {
-        if (status != ConnectionStatus.STARTING) GState.connectionStatus.$ = (status = ConnectionStatus.STARTING).statusAlert;
+        if (status != ConnectionStatus.STARTING)
+          GState.connectionStatus.$ =
+              (status = ConnectionStatus.STARTING).statusAlert;
         return;
       }
-      ConnectionStatus newStatus = Env.WSA_INSTALLED ? ConnectionStatus.ARRESTED : WinVer.isWindows11OrGreater ? ConnectionStatus.MISSING : ConnectionStatus.UNSUPPORTED;
-      if (status != newStatus) GState.connectionStatus.$ = (status = newStatus).statusAlert;
+      ConnectionStatus newStatus = Env.WSA_INSTALLED
+          ? ConnectionStatus.ARRESTED
+          : WinVer.isWindows11OrGreater
+              ? ConnectionStatus.MISSING
+              : ConnectionStatus.UNSUPPORTED;
+      if (status != newStatus)
+        GState.connectionStatus.$ = (status = newStatus).statusAlert;
       return;
-    }
-    else if (!WSAStatus.isRunning) {
+    } else if (!WSAStatus.isRunning) {
       timer.setDuration(PERIODIC_CHECK_SLEEPING_DURATION);
       // ★ 追加: 同様に「起動中」を維持する
       if (shouldWaitStart) {
-        if (status != ConnectionStatus.STARTING) GState.connectionStatus.$ = (status = ConnectionStatus.STARTING).statusAlert;
+        if (status != ConnectionStatus.STARTING)
+          GState.connectionStatus.$ =
+              (status = ConnectionStatus.STARTING).statusAlert;
         return;
       }
       ConnectionStatus newStatus = ConnectionStatus.ARRESTED;
-      if (status != newStatus) GState.connectionStatus.$ = (status = newStatus).statusAlert;
+      if (status != newStatus)
+        GState.connectionStatus.$ = (status = newStatus).statusAlert;
       return;
     }
 
     final prevStatus = status;
     final process = await ADBUtils.devices();
     final output = process.stdout.toString();
-    if (output.contains(RegExp('(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+'))) {
-      if (output.contains(RegExp('(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+offline(\$|\\n|\\s)')))
-        status = (status == ConnectionStatus.ARRESTED || status == ConnectionStatus.STARTING) && shouldWaitStart ? 
-            ConnectionStatus.STARTING : ConnectionStatus.OFFLINE;
-      else if (output.contains(RegExp('(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+host(\$|\\n|\\s)'))) {
+    if (output.contains(
+        RegExp('(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+'))) {
+      if (output.contains(RegExp(
+          '(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+offline(\$|\\n|\\s)')))
+        status = (status == ConnectionStatus.ARRESTED ||
+                    status == ConnectionStatus.STARTING) &&
+                shouldWaitStart
+            ? ConnectionStatus.STARTING
+            : ConnectionStatus.OFFLINE;
+      else if (output.contains(RegExp(
+          '(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+host(\$|\\n|\\s)'))) {
         reconnect();
-      }
-      else if (output.contains(RegExp('(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+unauthorized(\$|\\n|\\s)'))) {
+      } else if (output.contains(RegExp(
+          '(^|\\n)(localhost|127.0.0.1):${GState.androidPort.$}\\s+unauthorized(\$|\\n|\\s)'))) {
         status = ConnectionStatus.UNAUTHORIZED;
         if (prevStatus == ConnectionStatus.UNKNOWN) reconnect();
-      }
-      else {
+      } else {
         status = ConnectionStatus.CONNECTED;
-        if (output.contains(RegExp('(^|\\n)127.0.0.1:${GState.androidPort.$}\\s+'))) {
-          if (GState.ipAddress.$ != "127.0.0.1") GState.ipAddress.update((old) => "127.0.0.1");
-        }
-        else if (GState.ipAddress.$ != "localhost") GState.ipAddress.update((old) => "localhost");
+        if (output
+            .contains(RegExp('(^|\\n)127.0.0.1:${GState.androidPort.$}\\s+'))) {
+          if (GState.ipAddress.$ != "127.0.0.1")
+            GState.ipAddress.update((old) => "127.0.0.1");
+        } else if (GState.ipAddress.$ != "localhost")
+          GState.ipAddress.update((old) => "localhost");
       }
-    }
-    else await _tryConnect();
-    if (status != prevStatus) GState.connectionStatus.update((p0) => status.statusAlert);
+    } else
+      await _tryConnect();
+    if (status != prevStatus)
+      GState.connectionStatus.update((p0) => status.statusAlert);
     _statusInitialized = false;
     log("Connection status: ${status.name()}");
   }
@@ -181,13 +276,26 @@ class WSAPeriodicConnector {
   }
 
   static Future<void> _tryConnect() async {
-    ProcessResult? process = await ADBUtils.connectWSA().processTimeout(const Duration(milliseconds: 200));
-    if (process.stdout?.toString().contains(RegExp(r'(^|\n)(cannot|failed to) connect\s.*')) ?? true) 
-      status = Env.WSA_INSTALLED ? (status == ConnectionStatus.ARRESTED || status == ConnectionStatus.STARTING) && shouldWaitStart ? 
-          ConnectionStatus.STARTING : ConnectionStatus.OFFLINE : ConnectionStatus.DISCONNECTED;
-    else if (process.stdout?.toString().contains(RegExp(r'(^|\n)(cannot|failed to) authenticate\s.*')) ?? true) 
+    ProcessResult? process = await ADBUtils.connectWSA()
+        .processTimeout(const Duration(milliseconds: 200));
+    if (process.stdout
+            ?.toString()
+            .contains(RegExp(r'(^|\n)(cannot|failed to) connect\s.*')) ??
+        true)
+      status = Env.WSA_INSTALLED
+          ? (status == ConnectionStatus.ARRESTED ||
+                      status == ConnectionStatus.STARTING) &&
+                  shouldWaitStart
+              ? ConnectionStatus.STARTING
+              : ConnectionStatus.OFFLINE
+          : ConnectionStatus.DISCONNECTED;
+    else if (process.stdout
+            ?.toString()
+            .contains(RegExp(r'(^|\n)(cannot|failed to) authenticate\s.*')) ??
+        true)
       status = ConnectionStatus.UNAUTHORIZED;
-    else status = ConnectionStatus.CONNECTED;
+    else
+      status = ConnectionStatus.CONNECTED;
   }
 }
 
@@ -213,14 +321,17 @@ void main(List<String> arguments) async {
 
   const app = MyApp();
   final wrappedApp = SharedValue.wrapApp(app);
-  darkMode = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
+  darkMode = WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+      Brightness.dark;
   runApp(wrappedApp);
 
   AppOptions.init();
   Constants.installMode = arguments.isNotEmpty;
   Constants.packageFile = Constants.installMode ? arguments.first : '';
   Constants.packageType = AppPackageType.fromArguments(arguments);
-  Constants.isolate = Constants.installMode ? Constants.packageType.read(arguments.first) : null;
+  Constants.isolate = Constants.installMode
+      ? Constants.packageType.read(arguments.first)
+      : null;
 
   WSAPeriodicConnector._checkConnectionStatus();
 
@@ -233,17 +344,20 @@ void main(List<String> arguments) async {
         win.minSize = const Size(640, 500);
         win.size = const Size(740, 540);
         win.title = appTitle;
-      }
-      else {
+      } else {
         win.minSize = win.maxSize = win.size = const Size(500, 335);
       }
       win.alignment = Alignment.center;
       win.show();
-      late final SET_VISIBLE = Constants.isolate?.sendFlag(APK_READER_FLAGS.UI_LOADED, true);
-      late final Timer uiTimer; uiTimer = Timer.periodic(const Duration(milliseconds: 100), (t) {if (win.isVisible) {
-        SET_VISIBLE;
-        uiTimer.cancel();
-      }});
+      late final SET_VISIBLE =
+          Constants.isolate?.sendFlag(APK_READER_FLAGS.UI_LOADED, true);
+      late final Timer uiTimer;
+      uiTimer = Timer.periodic(const Duration(milliseconds: 100), (t) {
+        if (win.isVisible) {
+          SET_VISIBLE;
+          uiTimer.cancel();
+        }
+      });
     });
   }
 }
@@ -296,7 +410,9 @@ class _MyAppState extends State<MyApp> {
   void setMicaEffect(bool micaEnabled, [bool dark = true]) {
     if (WinVer.isWindows11OrGreater) {
       flutter_acrylic.Window.setEffect(
-        effect: micaEnabled ? flutter_acrylic.WindowEffect.mica : flutter_acrylic.WindowEffect.disabled,
+        effect: micaEnabled
+            ? flutter_acrylic.WindowEffect.mica
+            : flutter_acrylic.WindowEffect.disabled,
         color: dark ? const Color(0x00000000) : const Color(0x00FFFFFF),
         dark: dark,
       );
@@ -314,11 +430,13 @@ class _MyAppState extends State<MyApp> {
     final theme = GState.theme.of(context).mode;
     final mica = GState.mica.of(context);
 
-    final bool isDark = theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
+    final bool isDark =
+        theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
     setMicaEffect(mica.enabled, isDark);
 
     final bool isMicaActive = mica.enabled && WinVer.isWindows11OrGreater;
-    final Color fallbackColor = isDark ? const Color(0xFF202020) : const Color(0xFFF3F3F3);
+    final Color fallbackColor =
+        isDark ? const Color(0xFF202020) : const Color(0xFFF3F3F3);
 
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -332,19 +450,24 @@ class _MyAppState extends State<MyApp> {
           locale: GState.locale.of(context),
           localizationsDelegates: const [
             AppLocalizations.delegate,
-            locale.GlobalMaterialLocalizations.delegate,  
+            locale.GlobalMaterialLocalizations.delegate,
             FluentLocalizations.delegate,
           ],
           supportedLocales: LocaleUtils.supportedLocales,
           localeResolutionCallback: LocaleUtils.localeResolutionCallback,
-          routes: {'/': (_) => Constants.installMode ? const ApkInstaller() : const MyHomePage()},
-          
+          routes: {
+            '/': (_) => Constants.installMode
+                ? const ApkInstaller()
+                : const MyHomePage()
+          },
           builder: (context, child) {
             // ★ 修正3: ValueListenableBuilderで包むことで「背景のコンテナだけ」を再描画する
             return ValueListenableBuilder<bool>(
               valueListenable: _isFocused,
               builder: (context, isFocused, _) {
-                final Color bgColor = (isFocused && isMicaActive) ? Colors.transparent : fallbackColor;
+                final Color bgColor = (isFocused && isMicaActive)
+                    ? Colors.transparent
+                    : fallbackColor;
                 return Container(
                   color: bgColor,
                   child: child,
@@ -352,7 +475,6 @@ class _MyAppState extends State<MyApp> {
               },
             );
           },
-
           theme: FluentThemeData(
             fontFamily: 'Yu Gothic UI',
             scaffoldBackgroundColor: Colors.transparent,
@@ -372,26 +494,48 @@ class _MyAppState extends State<MyApp> {
                 shape: WidgetStateProperty.resolveWith((states) {
                   BorderSide side;
                   if (isDark) {
-                    if (states.contains(WidgetState.disabled)) side = const BorderSide(width: 0.5, color: Color(0x0Df0f0f0));
-                    else if (states.isEmpty || (states.contains(WidgetState.hovered) && !states.contains(WidgetState.pressed))) side = const BorderSide(width: 0.5, color: Color(0x09f0f0f0));
-                    else side = const BorderSide(width: 0.5, color: Color(0x12f0f0f0));
+                    if (states.contains(WidgetState.disabled))
+                      side = const BorderSide(
+                          width: 0.5, color: Color(0x0Df0f0f0));
+                    else if (states.isEmpty ||
+                        (states.contains(WidgetState.hovered) &&
+                            !states.contains(WidgetState.pressed)))
+                      side = const BorderSide(
+                          width: 0.5, color: Color(0x09f0f0f0));
+                    else
+                      side = const BorderSide(
+                          width: 0.5, color: Color(0x12f0f0f0));
                   } else {
-                    if (states.contains(WidgetState.disabled)) side = const BorderSide(width: 0.5, color: Color(0x1F212121));
-                    else if (states.isEmpty || (states.contains(WidgetState.hovered) && !states.contains(WidgetState.pressed))) side = const BorderSide(width: 0.5, color: Color(0x38212121));
-                    else side = const BorderSide(width: 0.5, color: Color(0x12212121));
+                    if (states.contains(WidgetState.disabled))
+                      side = const BorderSide(
+                          width: 0.5, color: Color(0x1F212121));
+                    else if (states.isEmpty ||
+                        (states.contains(WidgetState.hovered) &&
+                            !states.contains(WidgetState.pressed)))
+                      side = const BorderSide(
+                          width: 0.5, color: Color(0x38212121));
+                    else
+                      side = const BorderSide(
+                          width: 0.5, color: Color(0x12212121));
                   }
                   return RoundedRectangleBorder(side: side);
                 }),
                 backgroundColor: WidgetStateProperty.resolveWith((states) {
                   if (isDark) {
-                    if (states.contains(WidgetState.disabled)) return const Color(0x0BFFFFFF);
-                    if (states.contains(WidgetState.pressed)) return const Color(0x08FFFFFF);
-                    if (states.contains(WidgetState.hovered)) return const Color(0x14FFFFFF);
+                    if (states.contains(WidgetState.disabled))
+                      return const Color(0x0BFFFFFF);
+                    if (states.contains(WidgetState.pressed))
+                      return const Color(0x08FFFFFF);
+                    if (states.contains(WidgetState.hovered))
+                      return const Color(0x14FFFFFF);
                     return const Color(0x0EFFFFFF);
                   } else {
-                    if (states.contains(WidgetState.disabled)) return const Color(0x0Bf9f9f9);
-                    if (states.contains(WidgetState.pressed)) return const Color(0x66f0f0f0);
-                    if (states.contains(WidgetState.hovered)) return const Color(0xA6f9f9f9);
+                    if (states.contains(WidgetState.disabled))
+                      return const Color(0x0Bf9f9f9);
+                    if (states.contains(WidgetState.pressed))
+                      return const Color(0x66f0f0f0);
+                    if (states.contains(WidgetState.hovered))
+                      return const Color(0xA6f9f9f9);
                     return const Color(0xCCFFFFFF);
                   }
                 }),
@@ -429,7 +573,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     final lang = AppLocalizations.of(context)!;
     final appTheme = context.watch<AppTheme>();
@@ -459,7 +603,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Text(
                               'v$appVersion',
                               // バージョンも少し濃くして見やすく調整
-                              style: theme.typography.caption?.copyWith(color: theme.inactiveColor.withOpacity(0.6)),
+                              style: theme.typography.caption?.copyWith(
+                                  color: theme.inactiveColor.withOpacity(0.6)),
                             ),
                           ],
                         ),
@@ -491,7 +636,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       duration: const Duration(milliseconds: 750),
                       curve: Curves.fastOutSlowIn,
                       decoration: const BoxDecoration(
-                        image: DecorationImage(image: AssetImage("assets/images/logo.png")),
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/logo.png")),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -505,7 +651,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   case NavigationIndicators.end:
                     return const EndNavigationIndicator();
                   case NavigationIndicators.sticky:
-                  default:
                     return const StickyNavigationIndicator();
                 }
               }(),
@@ -514,7 +659,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Mdi.androidDebugBridge),
                   title: const Text('WSA'),
                   body: const ScreenWSA(),
-),
+                ),
                 // ★ 修正：アイコンをゴミ箱に、名前をUninstallに
                 PaneItem(
                   icon: const Icon(FluentIcons.delete),
@@ -528,8 +673,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   header: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Container(
-                      width: 1,       // 棒の太さ
-                      height: 16,     // 棒の高さ
+                      width: 1, // 棒の太さ
+                      height: 16, // 棒の高さ
                       color: theme.inactiveColor.withOpacity(0.3), // ちょうどいいグレー
                     ),
                   ),
@@ -550,15 +695,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class WindowButtons extends StatelessWidget {
   const WindowButtons({super.key});
-  
-  static Color windowButtonAlphaColor(FluentThemeData style, Set<WidgetState> states) {
+
+  static Color windowButtonAlphaColor(
+      FluentThemeData style, Set<WidgetState> states) {
     if (style.brightness == Brightness.light) {
-      if (states.contains(WidgetState.pressed)) return Colors.black.withOpacity(0.075);
-      if (states.contains(WidgetState.hovered)) return Colors.black.withOpacity(0.11);
+      if (states.contains(WidgetState.pressed))
+        return Colors.black.withOpacity(0.075);
+      if (states.contains(WidgetState.hovered))
+        return Colors.black.withOpacity(0.11);
       return Colors.transparent;
     } else {
-      if (states.contains(WidgetState.pressed)) return Colors.white.withOpacity(0.03);
-      if (states.contains(WidgetState.hovered)) return Colors.white.withOpacity(0.06);
+      if (states.contains(WidgetState.pressed))
+        return Colors.white.withOpacity(0.03);
+      if (states.contains(WidgetState.hovered))
+        return Colors.white.withOpacity(0.06);
       return Colors.transparent;
     }
   }
@@ -574,14 +724,14 @@ class WindowButtons extends StatelessWidget {
       iconNormal: theme.inactiveColor,
       iconMouseDown: theme.inactiveColor,
       iconMouseOver: theme.inactiveColor,
-      mouseOver: mica.enabled 
-          ? windowButtonAlphaColor(theme, {WidgetState.hovered}) 
-          : Colors.transparent, 
-      mouseDown: mica.enabled 
-          ? windowButtonAlphaColor(theme, {WidgetState.pressed}) 
-          : Colors.transparent, 
+      mouseOver: mica.enabled
+          ? windowButtonAlphaColor(theme, {WidgetState.hovered})
+          : Colors.transparent,
+      mouseDown: mica.enabled
+          ? windowButtonAlphaColor(theme, {WidgetState.pressed})
+          : Colors.transparent,
     );
-    
+
     final closeButtonColors = WindowButtonColors(
       mouseOver: Colors.red,
       mouseDown: Colors.red.dark,
@@ -589,7 +739,7 @@ class WindowButtons extends StatelessWidget {
       iconMouseOver: Colors.red.basedOnLuminance(),
       iconMouseDown: Colors.red.dark.basedOnLuminance(),
     );
-    
+
     return Row(children: [
       Tooltip(
         message: FluentLocalizations.of(context).minimizeWindowTooltip,

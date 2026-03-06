@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, unused_field, avoid_print
 
 import 'dart:async';
 import 'dart:isolate';
@@ -18,7 +18,7 @@ class _IsolateMessage<E extends Enum> {
 class _IsolateData<O, FLAGS extends Enum> {
   O? data;
   final SendPort _isolateToUiPort; // Completerを消して、安全なSendPortだけにする
-  
+
   _IsolateData(this.data, this._isolateToUiPort);
 
   //Listener has to execute this in the main thread
@@ -35,7 +35,9 @@ class IsolateRef<O, FLAGS extends Enum> {
   IsolateRef._(this._data, this._uiToIsolatePortCompleter);
 
   void sendFlag(FLAGS flag, bool value) async {
-    (_uiToIsolatePort ?? (_uiToIsolatePort = await _uiToIsolatePortCompleter.future)).send(_IsolateMessage(flag, value));
+    (_uiToIsolatePort ??
+            (_uiToIsolatePort = await _uiToIsolatePortCompleter.future))
+        .send(_IsolateMessage(flag, value));
   }
 }
 
@@ -50,23 +52,38 @@ abstract class IsolateRunner<O, FLAGS extends Enum> {
   static late final _IsolateData _pData;
 
   /// Data passed to the start method
-  @nonVirtual O get data => _data;
+  @nonVirtual
+  O get data => _data;
+
   /// Main runner, must be overridden
-  @visibleForOverriding FutureOr<void> run();
+  @visibleForOverriding
+  FutureOr<void> run();
+
   /// Executed in the UI thread after starting the isolate
   FutureOr<void> postStartCallback(IsolateRef<O, FLAGS> isolate) {}
+
   /// Waits for a flag from the UI thread, may stay locked indefinitely
-  @nonVirtual Future<bool> waitFlag(FLAGS flag) async => await (await _flagsLock.synchronized(()=>_flags.putIfAbsent(flag, ()=>Completer()))).future;
+  @nonVirtual
+  Future<bool> waitFlag(FLAGS flag) async => await (await _flagsLock
+          .synchronized(() => _flags.putIfAbsent(flag, () => Completer())))
+      .future;
+
   /// Executes a callback in the UI thread
   /// Will load all local variables in the current scope if one is referenced, therefore use carefully
-  @nonVirtual void executeInUi(VoidCallback callback) => _pData._executeInUi(callback);
+  @nonVirtual
+  void executeInUi(VoidCallback callback) => _pData._executeInUi(callback);
 
   void _runInitIsolate(_IsolateData<O, FLAGS> pData) async {
-    (_pData = pData)._isolateToUiPort.send((ReceivePort()..listen((message) {
-      if (message is _IsolateMessage<FLAGS>) _flagsLock.synchronized(() {
-        _flags.putIfAbsent(message.flag, ()=>Completer()).complete(message.value);
-      });
-    })).sendPort);
+    (_pData = pData)._isolateToUiPort.send((ReceivePort()
+          ..listen((message) {
+            if (message is _IsolateMessage<FLAGS>)
+              _flagsLock.synchronized(() {
+                _flags
+                    .putIfAbsent(message.flag, () => Completer())
+                    .complete(message.value);
+              });
+          }))
+        .sendPort);
     _data = pData.data;
     // Should prevent this data from beins sent when launching executeInUi
     pData.data = null;
@@ -76,7 +93,8 @@ abstract class IsolateRunner<O, FLAGS extends Enum> {
   @nonVirtual
   IsolateRef<O, FLAGS> start(O data) => IsolateRunner._start(this, data);
 
-static IsolateRef<O, FLAGS> _start<O, FLAGS extends Enum>(IsolateRunner<O, FLAGS> runner, O data) {
+  static IsolateRef<O, FLAGS> _start<O, FLAGS extends Enum>(
+      IsolateRunner<O, FLAGS> runner, O data) {
     final receivePort = ReceivePort();
     final portCompleter = Completer<SendPort>();
 
@@ -96,7 +114,7 @@ static IsolateRef<O, FLAGS> _start<O, FLAGS extends Enum>(IsolateRunner<O, FLAGS
     compute(runner._runInitIsolate, minimalData).catchError((e, stack) {
       print("🚨🚨🚨 COMPUTE FATAL ERROR: $e");
       print("🚨🚨🚨 STACK TRACE:\n$stack");
-      
+
       // 画面側にもエラーを表示させる
       GState.apkTitle.$ = "Isolate 起動失敗";
       GState.apkInstallState.$ = InstallState.ERROR;
@@ -104,7 +122,7 @@ static IsolateRef<O, FLAGS> _start<O, FLAGS extends Enum>(IsolateRunner<O, FLAGS
       GState.errorDesc.$ = "Isolateの起動時にクラッシュしました:\n$e";
       GState.apkInstallType.$ = InstallType.INSTALL;
     });
-    
+
     runner.postStartCallback(isolateRef);
     return isolateRef;
   }

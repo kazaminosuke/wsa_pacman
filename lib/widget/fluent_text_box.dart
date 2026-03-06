@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use, library_private_types_in_public_api
 import 'dart:ui' as ui;
 
 import 'package:fluent_ui/fluent_ui.dart';
@@ -7,16 +8,23 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:wsa_pacman/utils/misc_utils.dart';
 
-
-class _TextBoxSelectionGestureDetectorBuilder extends TextSelectionGestureDetectorBuilder {
-  _TextBoxSelectionGestureDetectorBuilder({required _TextBoxState state})  : _state = state, super(delegate: state);
+class _TextBoxSelectionGestureDetectorBuilder
+    extends TextSelectionGestureDetectorBuilder {
+  _TextBoxSelectionGestureDetectorBuilder({required _TextBoxState state})
+      : _state = state,
+        super(delegate: state);
   final _TextBoxState _state;
 
-  @override void onDragSelectionEnd(TapDragEndDetails details) => _state._requestKeyboard();
-  @override void onSingleTapUp(TapDragUpDetails details) {
+  @override
+  void onDragSelectionEnd(TapDragEndDetails details) =>
+      _state._requestKeyboard();
+  @override
+  void onSingleTapUp(TapDragUpDetails details) {
     if (_state._clearGlobalKey.currentContext != null) {
-      final RenderBox renderBox = _state._clearGlobalKey.currentContext!.findRenderObject() as RenderBox;
-      final Offset localOffset = renderBox.globalToLocal(details.globalPosition);
+      final RenderBox renderBox = _state._clearGlobalKey.currentContext!
+          .findRenderObject() as RenderBox;
+      final Offset localOffset =
+          renderBox.globalToLocal(details.globalPosition);
       if (renderBox.hitTest(BoxHitTestResult(), position: localOffset)) return;
     }
     super.onSingleTapUp(details);
@@ -26,33 +34,95 @@ class _TextBoxSelectionGestureDetectorBuilder extends TextSelectionGestureDetect
 }
 
 class FluentTextBox extends StatefulWidget {
-  const FluentTextBox({super.key, this.controller, this.focusNode, this.padding = kTextBoxPadding, this.clipBehavior = Clip.antiAlias,
-    this.placeholder, this.placeholderStyle, this.prefix, this.outsidePrefix, this.prefixMode = OverlayVisibilityMode.always,
-    this.outsidePrefixMode = OverlayVisibilityMode.always, this.suffix, this.outsideSuffix, this.suffixMode = OverlayVisibilityMode.always,
-    this.outsideSuffixMode = OverlayVisibilityMode.always, TextInputType? keyboardType, this.textInputAction, this.style, this.strutStyle,
-    this.textAlign = TextAlign.start, this.textAlignVertical, this.readOnly = false, ToolbarOptions? toolbarOptions, this.showCursor,
-    this.autofocus = false, this.obscuringCharacter = '•', this.obscureText = false, this.autocorrect = true, SmartDashesType? smartDashesType,
-    SmartQuotesType? smartQuotesType, this.enableSuggestions = true, this.maxLines = 1, this.minLines, this.minHeight, this.expands = false,
-    this.maxLength, this.maxLengthEnforced = true, this.onChanged, this.onEditingComplete, this.onSubmitted, this.inputFormatters, this.enabled,
-    this.cursorWidth = 1.5, this.cursorHeight, this.cursorRadius = const Radius.circular(2.0), this.cursorColor,
-    this.selectionHeightStyle = ui.BoxHeightStyle.tight, this.selectionWidthStyle = ui.BoxWidthStyle.tight, this.keyboardAppearance,
-    this.scrollPadding = const EdgeInsets.all(20.0), this.dragStartBehavior = DragStartBehavior.start, this.enableInteractiveSelection = true,
-    this.onTap, this.scrollController, this.scrollPhysics, this.autofillHints, this.restorationId,
-    this.textCapitalization = TextCapitalization.none, this.header, this.headerStyle, this.iconButtonThemeData,
-  }) : assert(obscuringCharacter.length == 1),
-        smartDashesType = smartDashesType ?? (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-        smartQuotesType = smartQuotesType ?? (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
+  const FluentTextBox({
+    super.key,
+    this.controller,
+    this.focusNode,
+    this.padding = kTextBoxPadding,
+    this.clipBehavior = Clip.antiAlias,
+    this.placeholder,
+    this.placeholderStyle,
+    this.prefix,
+    this.outsidePrefix,
+    this.prefixMode = OverlayVisibilityMode.always,
+    this.outsidePrefixMode = OverlayVisibilityMode.always,
+    this.suffix,
+    this.outsideSuffix,
+    this.suffixMode = OverlayVisibilityMode.always,
+    this.outsideSuffixMode = OverlayVisibilityMode.always,
+    TextInputType? keyboardType,
+    this.textInputAction,
+    this.style,
+    this.strutStyle,
+    this.textAlign = TextAlign.start,
+    this.textAlignVertical,
+    this.readOnly = false,
+    ToolbarOptions? toolbarOptions,
+    this.showCursor,
+    this.autofocus = false,
+    this.obscuringCharacter = '•',
+    this.obscureText = false,
+    this.autocorrect = true,
+    SmartDashesType? smartDashesType,
+    SmartQuotesType? smartQuotesType,
+    this.enableSuggestions = true,
+    this.maxLines = 1,
+    this.minLines,
+    this.minHeight,
+    this.expands = false,
+    this.maxLength,
+    this.maxLengthEnforced = true,
+    this.onChanged,
+    this.onEditingComplete,
+    this.onSubmitted,
+    this.inputFormatters,
+    this.enabled,
+    this.cursorWidth = 1.5,
+    this.cursorHeight,
+    this.cursorRadius = const Radius.circular(2.0),
+    this.cursorColor,
+    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+    this.keyboardAppearance,
+    this.scrollPadding = const EdgeInsets.all(20.0),
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.enableInteractiveSelection = true,
+    this.onTap,
+    this.scrollController,
+    this.scrollPhysics,
+    this.autofillHints,
+    this.restorationId,
+    this.textCapitalization = TextCapitalization.none,
+    this.header,
+    this.headerStyle,
+    this.iconButtonThemeData,
+  })  : assert(obscuringCharacter.length == 1),
+        smartDashesType = smartDashesType ??
+            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
+        smartQuotesType = smartQuotesType ??
+            (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
         assert(maxLines == null || maxLines > 0),
         assert(minLines == null || minLines > 0),
-        assert((maxLines == null) || (minLines == null) || (maxLines >= minLines), "minLines can't be greater than maxLines"),
-        assert(!expands || (maxLines == null && minLines == null), 'minLines and maxLines must be null when expands is true.'),
-        assert(!obscureText || maxLines == 1, 'Obscured fields cannot be multiline.'),
+        assert(
+            (maxLines == null) || (minLines == null) || (maxLines >= minLines),
+            "minLines can't be greater than maxLines"),
+        assert(!expands || (maxLines == null && minLines == null),
+            'minLines and maxLines must be null when expands is true.'),
+        assert(!obscureText || maxLines == 1,
+            'Obscured fields cannot be multiline.'),
         assert(maxLength == null || maxLength > 0),
-        assert(!identical(textInputAction, TextInputAction.newline) || maxLines == 1 || !identical(keyboardType, TextInputType.text),
+        assert(
+            !identical(textInputAction, TextInputAction.newline) ||
+                maxLines == 1 ||
+                !identical(keyboardType, TextInputType.text),
             'Use keyboardType TextInputType.multiline when using TextInputAction.newline on a multiline TextField.'),
-        keyboardType = keyboardType ?? (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
-        toolbarOptions = toolbarOptions ?? (obscureText ? const ToolbarOptions(selectAll: true, paste: true)
-            : const ToolbarOptions(copy: true, cut: true, selectAll: true, paste: true));
+        keyboardType = keyboardType ??
+            (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
+        toolbarOptions = toolbarOptions ??
+            (obscureText
+                ? const ToolbarOptions(selectAll: true, paste: true)
+                : const ToolbarOptions(
+                    copy: true, cut: true, selectAll: true, paste: true));
 
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -116,8 +186,10 @@ class FluentTextBox extends StatefulWidget {
   final String? restorationId;
   final ButtonThemeData? iconButtonThemeData;
 
-  @override _TextBoxState createState() => _TextBoxState();
-  @override void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  @override
+  _TextBoxState createState() => _TextBoxState();
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty<TextEditingController>('controller', controller,
@@ -423,9 +495,13 @@ class _TextBoxState extends State<FluentTextBox>
     );
   }
 
-  static Color fluentComboBoxColor(bool isDark, bool focus) => isDark ? 
-      focus ? const ColorConst.withOpacity(0x202020, 0.4) : const ColorConst.withOpacity(0x888888, 0.1) :
-      focus ? const ColorConst.withOpacity(0xFFFFFF, 0.8) : const ColorConst.withOpacity(0xfafafa, 0.2);
+  static Color fluentComboBoxColor(bool isDark, bool focus) => isDark
+      ? focus
+          ? const ColorConst.withOpacity(0x202020, 0.4)
+          : const ColorConst.withOpacity(0x888888, 0.1)
+      : focus
+          ? const ColorConst.withOpacity(0xFFFFFF, 0.8)
+          : const ColorConst.withOpacity(0xfafafa, 0.2);
 
   @override
   Widget build(BuildContext context) {
@@ -442,22 +518,24 @@ class _TextBoxState extends State<FluentTextBox>
     }
 
     final TextStyle textStyle = TextStyle(
-      color: enabled ? theme.inactiveColor : theme.resources.textFillColorDisabled,
+      color:
+          enabled ? theme.inactiveColor : theme.resources.textFillColorDisabled,
     );
 
     final Brightness keyboardAppearance =
         widget.keyboardAppearance ?? theme.brightness;
     final Color cursorColor = theme.inactiveColor;
     final Color disabledColor = theme.resources.textFillColorDisabled;
-    final Color backgroundColor = fluentComboBoxColor(theme.brightness== Brightness.dark, _effectiveFocusNode.hasFocus);
+    final Color backgroundColor = fluentComboBoxColor(
+        theme.brightness == Brightness.dark, _effectiveFocusNode.hasFocus);
 
     final TextStyle placeholderStyle = widget.placeholderStyle ??
         textStyle.copyWith(
           color: !enabled
-              ? theme.brightness== Brightness.light
+              ? theme.brightness == Brightness.light
                   ? const Color.fromRGBO(0, 0, 0, 0.3614)
                   : const Color.fromRGBO(255, 255, 255, 0.3628)
-              : theme.brightness== Brightness.light
+              : theme.brightness == Brightness.light
                   ? const Color.fromRGBO(0, 0, 0, 0.6063)
                   : const Color.fromRGBO(255, 255, 255, 0.786),
           fontWeight: FontWeight.w400,
@@ -547,12 +625,12 @@ class _TextBoxState extends State<FluentTextBox>
             borderRadius: radius,
             border: Border.all(
                 width: 1,
-                color: theme.brightness== Brightness.light
+                color: theme.brightness == Brightness.light
                     ? const Color.fromRGBO(0, 0, 0, 0.08)
                     : const Color.fromRGBO(255, 255, 255, 0.07)),
             color: enabled
                 ? backgroundColor
-                : theme.brightness== Brightness.light
+                : theme.brightness == Brightness.light
                     ? const Color.fromRGBO(249, 249, 249, 0.3)
                     : const Color.fromRGBO(255, 255, 255, 0.04),
           ),
@@ -563,7 +641,7 @@ class _TextBoxState extends State<FluentTextBox>
                     ? theme.accentColor
                     : !enabled
                         ? Colors.transparent
-                        : theme.brightness== Brightness.light
+                        : theme.brightness == Brightness.light
                             ? const Color.fromRGBO(0, 0, 0, 0.45)
                             : const Color.fromRGBO(255, 255, 255, 0.54),
                 width: _effectiveFocusNode.hasFocus ? 2 : 0,

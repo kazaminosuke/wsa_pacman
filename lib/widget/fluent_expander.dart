@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:wsa_pacman/widget/fluent_card.dart';
 
@@ -73,14 +74,14 @@ class ExpanderWin11 extends StatefulWidget {
   final ValueChanged<bool>? onStateChanged;
 
   /// The height of the header.
-  /// 
+  ///
   /// Defaults to 48.0
   final double headerHeight;
 
   /// The background color of the header. If null, [ThemeData.scaffoldBackgroundColor]
   /// is used
   final Color? headerBackgroundColor;
-  
+
   /// The content color of the header. If null, [ThemeData.acrylicBackgroundColor]
   /// is used
   final Color? contentBackgroundColor;
@@ -195,8 +196,12 @@ class ExpanderWin11State extends State<ExpanderWin11>
                           .animate(_controller),
                       child: Icon(
                         _isDown
-                            ? isDark ? FluentIcons.chevron_down : FluentIcons.chevron_down_med
-                            : isDark ? FluentIcons.chevron_up : FluentIcons.chevron_up_med,
+                            ? isDark
+                                ? FluentIcons.chevron_down
+                                : FluentIcons.chevron_down_med
+                            : isDark
+                                ? FluentIcons.chevron_up
+                                : FluentIcons.chevron_up_med,
                         size: 11,
                       ),
                     ),
@@ -210,16 +215,23 @@ class ExpanderWin11State extends State<ExpanderWin11>
         // Eliminates double border
         // this is not possible by only setting left, right and bottom borders if borderRadius is enabled
         // see issue https://github.com/flutter/flutter/issues/12583
-        child: Transform.translate(offset: const Offset(0, -borderSize), child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            border: Border.all(width: borderSize, color: FluentCard.borderColor(theme, {WidgetState.disabled}, false, false)),
-            color: FluentCard.backgroundColor(theme, {WidgetState.disabled}, false),
-            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4.0)),
-          ),
-          child: widget.content,
-        )),
+        child: Transform.translate(
+            offset: const Offset(0, -borderSize),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    width: borderSize,
+                    color: FluentCard.borderColor(
+                        theme, {WidgetState.disabled}, false, false)),
+                color: FluentCard.backgroundColor(
+                    theme, {WidgetState.disabled}, false),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(4.0)),
+              ),
+              child: widget.content,
+            )),
       ),
     ];
     return Column(

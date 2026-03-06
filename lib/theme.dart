@@ -1,4 +1,5 @@
 import 'dart:io'; // ★ 追加：ファイル保存用
+// ignore_for_file: deprecated_member_use, empty_catches
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:system_theme/system_theme.dart';
@@ -8,7 +9,8 @@ import 'package:system_theme/system_theme.dart';
 enum NavigationIndicators { sticky, end }
 
 class AppTheme extends ChangeNotifier {
-  static final AccentColor alpineLandingDark = AccentColor('normal', const <String, Color>{
+  static final AccentColor alpineLandingDark =
+      AccentColor('normal', const <String, Color>{
     'darkest': Color(0xff126568),
     'darker': Color(0xff146D70),
     'dark': Color(0xff157477),
@@ -17,7 +19,8 @@ class AppTheme extends ChangeNotifier {
     'lighter': Color(0xff198A8E),
     'lightest': Color(0xff1B9296),
   });
-  static final AccentColor alpineLandingLight = AccentColor('normal', const <String, Color>{
+  static final AccentColor alpineLandingLight =
+      AccentColor('normal', const <String, Color>{
     'darkest': Color(0xff167C80),
     'darker': Color(0xff188387),
     'dark': Color(0xff198A8E),
@@ -52,20 +55,30 @@ class AppTheme extends ChangeNotifier {
         final colorValue = int.parse(_colorFile.readAsStringSync());
         final colors = [
           systemAccentColor,
-          alpineLandingDark, alpineLandingLight,
-          Colors.yellow, Colors.orange, Colors.red, Colors.magenta,
-          Colors.purple, Colors.blue, Colors.teal, Colors.green,
+          alpineLandingDark,
+          alpineLandingLight,
+          Colors.yellow,
+          Colors.orange,
+          Colors.red,
+          Colors.magenta,
+          Colors.purple,
+          Colors.blue,
+          Colors.teal,
+          Colors.green,
         ];
-        
+
         bool found = false;
         for (var c in colors) {
           if (c.value == colorValue) {
-            _color = (identical(c, alpineLandingDark) || identical(c, alpineLandingLight)) ? null : c;
+            _color = (identical(c, alpineLandingDark) ||
+                    identical(c, alpineLandingLight))
+                ? null
+                : c;
             found = true;
             break;
           }
         }
-        
+
         // ★ ここが重要：基本の色以外（カスタム色）だった場合、その番号から直接色を復元する
         if (!found) {
           final customColor = Color(colorValue);
@@ -85,16 +98,20 @@ class AppTheme extends ChangeNotifier {
     }
   }
 
-  AccentColor getColor(bool darkMode) => _color ?? (darkMode ? alpineLandingDark : alpineLandingLight);
+  AccentColor getColor(bool darkMode) =>
+      _color ?? (darkMode ? alpineLandingDark : alpineLandingLight);
 
   void setColor(AccentColor color) {
-    _color = (identical(color, alpineLandingDark) || identical(color, alpineLandingLight)) ? null : color;
-    
+    _color = (identical(color, alpineLandingDark) ||
+            identical(color, alpineLandingLight))
+        ? null
+        : color;
+
     // ★ 追加：色を選んだ瞬間にファイルに保存する！
     try {
       _colorFile.writeAsStringSync(color.value.toString());
     } catch (e) {}
-    
+
     notifyListeners();
   }
 

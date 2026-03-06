@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, curly_braces_in_flow_control_structures, constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, curly_braces_in_flow_control_structures, constant_identifier_names, camel_case_types, unused_field, unused_element
 
 import 'dart:ffi';
 import 'dart:io';
@@ -8,50 +8,96 @@ import 'package:path/path.dart' as lib_path;
 
 final kernel32 = DynamicLibrary.open('kernel32.dll');
 final _CreateMutex = kernel32.lookupFunction<
-      IntPtr Function(Pointer<SECURITY_ATTRIBUTES> lpMutexAttributes, Pointer<Utf16> lpName, Uint32 dwFlags, Uint32 dwDesiredAccess),
-      int Function(Pointer<SECURITY_ATTRIBUTES> lpMutexAttributes, Pointer<Utf16> lpName, int dwFlags, int dwDesiredAccess)>('CreateMutexExW');
+    IntPtr Function(Pointer<SECURITY_ATTRIBUTES> lpMutexAttributes,
+        Pointer<Utf16> lpName, Uint32 dwFlags, Uint32 dwDesiredAccess),
+    int Function(
+        Pointer<SECURITY_ATTRIBUTES> lpMutexAttributes,
+        Pointer<Utf16> lpName,
+        int dwFlags,
+        int dwDesiredAccess)>('CreateMutexExW');
 final _OpenMutex = kernel32.lookupFunction<
-      IntPtr Function(Uint32 dwDesiredAccess, Int32 bInheritHandle, Pointer<Utf16> lpName),
-      int Function(int dwDesiredAccess, int bInheritHandle, Pointer<Utf16> lpName)>('OpenMutexW');
+    IntPtr Function(
+        Uint32 dwDesiredAccess, Int32 bInheritHandle, Pointer<Utf16> lpName),
+    int Function(int dwDesiredAccess, int bInheritHandle,
+        Pointer<Utf16> lpName)>('OpenMutexW');
 final _WaitForSingleObjectEx = kernel32.lookupFunction<
-      Uint32 Function(Uint32 hHandle, Uint32 dwMilliseconds, Int32 bAlertable),
-      int Function(int hHandle, int dwMilliseconds, int bAlertable)>('WaitForSingleObjectEx');
-final _ReleaseMutex = kernel32.lookupFunction<
-      Int32 Function(Uint32 hHandle),
-      int Function(int hHandle)>('ReleaseMutex');
+    Uint32 Function(Uint32 hHandle, Uint32 dwMilliseconds, Int32 bAlertable),
+    int Function(int hHandle, int dwMilliseconds,
+        int bAlertable)>('WaitForSingleObjectEx');
+final _ReleaseMutex = kernel32.lookupFunction<Int32 Function(Uint32 hHandle),
+    int Function(int hHandle)>('ReleaseMutex');
 final _GetShortPathName = kernel32.lookupFunction<
-      Uint32 Function(Pointer<Utf16> lpszLongPath, Pointer<Utf16> lpszShortPath, Uint32 cchBuffer),
-      int Function(Pointer<Utf16> lpszLongPath, Pointer<Utf16> lpszShortPath, int cchBuffer)>('GetShortPathNameW');
+    Uint32 Function(Pointer<Utf16> lpszLongPath, Pointer<Utf16> lpszShortPath,
+        Uint32 cchBuffer),
+    int Function(Pointer<Utf16> lpszLongPath, Pointer<Utf16> lpszShortPath,
+        int cchBuffer)>('GetShortPathNameW');
 final _GetVolumeNameForVolumeMountPoint = kernel32.lookupFunction<
-      Uint32 Function(Pointer<Utf16> lpszVolumeMountPoint, Pointer<Utf16> lpszVolumeName, Uint32 cchBufferLength),
-      int Function(Pointer<Utf16> lpszVolumeMountPoint, Pointer<Utf16> lpszVolumeName, int cchBufferLength)>('GetVolumeNameForVolumeMountPointW');
+    Uint32 Function(Pointer<Utf16> lpszVolumeMountPoint,
+        Pointer<Utf16> lpszVolumeName, Uint32 cchBufferLength),
+    int Function(
+        Pointer<Utf16> lpszVolumeMountPoint,
+        Pointer<Utf16> lpszVolumeName,
+        int cchBufferLength)>('GetVolumeNameForVolumeMountPointW');
 final _SetFileInformationByHandle = kernel32.lookupFunction<
-      Uint32 Function(Uint32 hFile, Uint32 fileInformationClass,Pointer lpFileInformation, DWORD dwBufferSize),
-      int Function(int hFile, int fileInformationClass, Pointer lpFileInformation, int dwBufferSize)>('SetFileInformationByHandle');
+    Uint32 Function(Uint32 hFile, Uint32 fileInformationClass,
+        Pointer lpFileInformation, DWORD dwBufferSize),
+    int Function(int hFile, int fileInformationClass, Pointer lpFileInformation,
+        int dwBufferSize)>('SetFileInformationByHandle');
 
 enum _FILE_INFO_BY_HANDLE_CLASS {
-  FileBasicInfo, FileStandardInfo, FileNameInfo, FileRenameInfo, FileDispositionInfo, FileAllocationInfo,
-  FileEndOfFileInfo, FileStreamInfo, FileCompressionInfo, FileAttributeTagInfo, FileIdBothDirectoryInfo,
-  FileIdBothDirectoryRestartInfo, FileIoPriorityHintInfo, FileRemoteProtocolInfo, FileFullDirectoryInfo,
-  FileFullDirectoryRestartInfo, FileStorageInfo, FileAlignmentInfo, FileIdInfo, FileIdExtdDirectoryInfo,
-  FileIdExtdDirectoryRestartInfo, FileDispositionInfoEx, FileRenameInfoEx, FileCaseSensitiveInfo,
-  FileNormalizedNameInfo, MaximumFileInfoByHandleClass
+  FileBasicInfo,
+  FileStandardInfo,
+  FileNameInfo,
+  FileRenameInfo,
+  FileDispositionInfo,
+  FileAllocationInfo,
+  FileEndOfFileInfo,
+  FileStreamInfo,
+  FileCompressionInfo,
+  FileAttributeTagInfo,
+  FileIdBothDirectoryInfo,
+  FileIdBothDirectoryRestartInfo,
+  FileIoPriorityHintInfo,
+  FileRemoteProtocolInfo,
+  FileFullDirectoryInfo,
+  FileFullDirectoryRestartInfo,
+  FileStorageInfo,
+  FileAlignmentInfo,
+  FileIdInfo,
+  FileIdExtdDirectoryInfo,
+  FileIdExtdDirectoryRestartInfo,
+  FileDispositionInfoEx,
+  FileRenameInfoEx,
+  FileCaseSensitiveInfo,
+  FileNormalizedNameInfo,
+  MaximumFileInfoByHandleClass
 }
 
 base class _STORAGE_PROPERTY_QUERY extends Struct {
-  @ULONG() external int propertyId;
-  @ULONG() external int queryType;
+  @ULONG()
+  external int propertyId;
+  @ULONG()
+  external int queryType;
   external Pointer<BYTE> additionalParameters;
 }
 
 base class _DEVICE_SEEK_PENALTY_DESCRIPTOR extends Struct {
-  @DWORD() external int version;
-  @DWORD() external int size;
-  @BOOLEAN() external int incursSeekPenalty;
+  @DWORD()
+  external int version;
+  @DWORD()
+  external int size;
+  @BOOLEAN()
+  external int incursSeekPenalty;
 }
 
 enum DRIVE_TYPE {
-    DRIVE_UNKNOWN, DRIVE_NO_ROOT_DIR, DRIVE_REMOVABLE, DRIVE_FIXED, DRIVE_REMOTE, DRIVE_CDROM, DRIVE_RAMDISK
+  DRIVE_UNKNOWN,
+  DRIVE_NO_ROOT_DIR,
+  DRIVE_REMOVABLE,
+  DRIVE_FIXED,
+  DRIVE_REMOTE,
+  DRIVE_CDROM,
+  DRIVE_RAMDISK
 }
 
 /// Locks files and marks them for deletion
@@ -73,8 +119,10 @@ class FileDisposeQueue {
   bool clear() {
     final failed = <int>[];
     for (int handle in _handles) {
-      if (_setLock(handle, false)) CloseHandle(handle);
-      else failed.add(handle);
+      if (_setLock(handle, false))
+        CloseHandle(handle);
+      else
+        failed.add(handle);
     }
     failed.isEmpty ? _handles.clear() : _handles.retainAll(failed);
     return failed.isEmpty;
@@ -89,11 +137,18 @@ class FileDisposeQueue {
   bool _setLock(int handle, bool lock) {
     Pointer<BOOL> lpBool = malloc<BOOL>()..value = lock ? TRUE : FALSE;
     try {
-      int res1 = _SetFileInformationByHandle(handle, _FILE_INFO_BY_HANDLE_CLASS.FileDispositionInfo.index, lpBool, sizeOf<BOOL>());
-      int res2 = _SetFileInformationByHandle(handle, _FILE_INFO_BY_HANDLE_CLASS.FileDispositionInfoEx.index, lpBool, sizeOf<BOOL>());
+      int res1 = _SetFileInformationByHandle(
+          handle,
+          _FILE_INFO_BY_HANDLE_CLASS.FileDispositionInfo.index,
+          lpBool,
+          sizeOf<BOOL>());
+      int res2 = _SetFileInformationByHandle(
+          handle,
+          _FILE_INFO_BY_HANDLE_CLASS.FileDispositionInfoEx.index,
+          lpBool,
+          sizeOf<BOOL>());
       return res1 != 0 || res2 != 0;
-    }
-    finally {
+    } finally {
       free(lpBool);
     }
   }
@@ -101,15 +156,20 @@ class FileDisposeQueue {
   int? _lockFile(File file) {
     final lpToken = malloc<HANDLE>();
     final pszPath = file.absolute.path.toNativeUtf16();
-    
+
     try {
-      int handle = CreateFile(pszPath, DELETE, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, 
-          OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+      int handle = CreateFile(
+          pszPath,
+          DELETE,
+          FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+          nullptr,
+          OPEN_EXISTING,
+          FILE_ATTRIBUTE_NORMAL,
+          0);
       bool locked = _setLock(handle, true);
       if (!locked) CloseHandle(handle);
       return handle != INVALID_HANDLE_VALUE && locked ? handle : null;
-    }
-    finally {
+    } finally {
       free(lpToken);
       free(pszPath);
     }
@@ -125,11 +185,11 @@ extension WinFile on File {
     try {
       int result = _GetShortPathName(lpFilePath, nullptr, 0);
       if (result == 0) return null;
-      result = _GetShortPathName(lpFilePath, lpShortFilePath = malloc<WCHAR>(result).cast<Utf16>(), result);
+      result = _GetShortPathName(lpFilePath,
+          lpShortFilePath = malloc<WCHAR>(result).cast<Utf16>(), result);
       if (result == 0) return null;
       return lpShortFilePath.toDartString();
-    }
-    finally {
+    } finally {
       free(lpFilePath);
       if (lpShortFilePath != null) free(lpShortFilePath);
     }
@@ -138,19 +198,28 @@ extension WinFile on File {
   static int? _getVolumeHandle(LPWSTR lpVolumePath) {
     Pointer<WCHAR>? lpVolumeName16;
     LPWSTR? lpVolumeName;
-    int result = _GetVolumeNameForVolumeMountPoint(lpVolumePath, lpVolumeName = (lpVolumeName16 = malloc<WCHAR>(MAX_PATH)).cast<Utf16>(), MAX_PATH);
+    int result = _GetVolumeNameForVolumeMountPoint(
+        lpVolumePath,
+        lpVolumeName = (lpVolumeName16 = malloc<WCHAR>(MAX_PATH)).cast<Utf16>(),
+        MAX_PATH);
     if (result == 0) return null;
 
     int wcsVolumeLen = lpVolumeName.length;
-    Pointer<WCHAR> lastCharacter = lpVolumeName16.elementAt(wcsVolumeLen - 1);
+    Pointer<WCHAR> lastCharacter = lpVolumeName16 + (wcsVolumeLen - 1);
     // Remove ending backslash
     if (wcsVolumeLen > 0 && lastCharacter.value == 92) lastCharacter.value = 0;
 
     try {
-      int handle = CreateFile(lpVolumeName, 0 /*GENERIC_READ*/, FILE_SHARE_READ /* | FILE_SHARE_WRITE | FILE_SHARE_DELETE*/, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
+      int handle = CreateFile(
+          lpVolumeName,
+          0 /*GENERIC_READ*/,
+          FILE_SHARE_READ /* | FILE_SHARE_WRITE | FILE_SHARE_DELETE*/,
+          nullptr,
+          OPEN_EXISTING,
+          FILE_FLAG_BACKUP_SEMANTICS,
+          0);
       return handle == INVALID_HANDLE_VALUE ? null : handle;
-    }
-    finally {
+    } finally {
       free(lpVolumeName);
     }
   }
@@ -160,8 +229,7 @@ extension WinFile on File {
     try {
       lpVolumePath = _getVolumePath();
       return lpVolumePath == null ? null : _getVolumeHandle(lpVolumePath);
-    }
-    finally {
+    } finally {
       if (lpVolumePath != null) free(lpVolumePath);
     }
   }
@@ -170,11 +238,11 @@ extension WinFile on File {
     LPWSTR lpFilePath = absolute.path.toNativeUtf16();
     LPWSTR? lpVolumePath;
     try {
-      int result = GetVolumePathName(lpFilePath, lpVolumePath = malloc<WCHAR>(MAX_PATH).cast<Utf16>(), MAX_PATH);
+      int result = GetVolumePathName(lpFilePath,
+          lpVolumePath = malloc<WCHAR>(MAX_PATH).cast<Utf16>(), MAX_PATH);
       if (result == 0) return null;
       return lpVolumePath;
-    }
-    finally {
+    } finally {
       free(lpFilePath);
     }
   }
@@ -191,7 +259,9 @@ extension WinFile on File {
   static DRIVE_TYPE _getDriveType(LPWSTR? lpVolumePath) {
     if (lpVolumePath == null) return DRIVE_TYPE.DRIVE_UNKNOWN;
     int type = GetDriveType(lpVolumePath);
-    return (type >= DRIVE_TYPE.values.length) ? DRIVE_TYPE.DRIVE_UNKNOWN : DRIVE_TYPE.values[type];
+    return (type >= DRIVE_TYPE.values.length)
+        ? DRIVE_TYPE.DRIVE_UNKNOWN
+        : DRIVE_TYPE.values[type];
   }
 
   DRIVE_TYPE getDriveType() {
@@ -227,13 +297,20 @@ extension WinFile on File {
 
       lpPenaltyDescriptor = calloc<_DEVICE_SEEK_PENALTY_DESCRIPTOR>();
       lpPenaltyDescLen = calloc<Uint32>();
-      final int penaltyResult = DeviceIoControl(volumeHandle, IOCTL_STORAGE_QUERY_PROPERTY, lpSeekPenaltyQuery, sizeOf<_STORAGE_PROPERTY_QUERY>(),
-          lpPenaltyDescriptor, sizeOf<_DEVICE_SEEK_PENALTY_DESCRIPTOR>(), lpPenaltyDescLen, nullptr);
+      final int penaltyResult = DeviceIoControl(
+          volumeHandle,
+          IOCTL_STORAGE_QUERY_PROPERTY,
+          lpSeekPenaltyQuery,
+          sizeOf<_STORAGE_PROPERTY_QUERY>(),
+          lpPenaltyDescriptor,
+          sizeOf<_DEVICE_SEEK_PENALTY_DESCRIPTOR>(),
+          lpPenaltyDescLen,
+          nullptr);
       if (penaltyResult == 0) return false;
-      _DEVICE_SEEK_PENALTY_DESCRIPTOR penaltyDescriptor = lpPenaltyDescriptor.ref;
+      _DEVICE_SEEK_PENALTY_DESCRIPTOR penaltyDescriptor =
+          lpPenaltyDescriptor.ref;
       return penaltyDescriptor.incursSeekPenalty == 0;
-    }
-    finally {
+    } finally {
       if (lpVolumePath != null) free(lpVolumePath);
       if (lpSeekPenaltyQuery != null) free(lpSeekPenaltyQuery);
       if (lpPenaltyDescriptor != null) free(lpPenaltyDescriptor);
@@ -246,20 +323,25 @@ extension WinFile on File {
     String? shortName = getShortName(path);
     return (shortName != null) ? lib_path.basename(shortName) : null;
   }
-  
+
   String? get shortName => getShortName(absolute.path);
   String? get shortBaseName => getShortBaseName(absolute.path);
-  
+
   /// Converts Flutter file to native file handle;
   /// Must call [CloseHandle] to release it
   int? toNativeFile() {
     final lpPath = absolute.path.toNativeUtf16();
     try {
-      final handle = CreateFile(lpPath, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, 
-          nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+      final handle = CreateFile(
+          lpPath,
+          GENERIC_READ,
+          FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+          nullptr,
+          OPEN_EXISTING,
+          FILE_ATTRIBUTE_NORMAL,
+          NULL);
       return handle != INVALID_HANDLE_VALUE ? handle : null;
-    }
-    finally {
+    } finally {
       free(lpPath);
     }
   }
@@ -273,10 +355,11 @@ extension WinFile on File {
         int code = GetFileInformationByHandle(handle, info);
         if (code == 0) return null;
         FILETIME lastWrite = info.ref.ftLastWriteTime;
-        int microseconds = (lastWrite.dwHighDateTime << 32 | lastWrite.dwLowDateTime) ~/ 10 - _EPOCH_NT_DELTA_MICROSECONDS;
+        int microseconds =
+            (lastWrite.dwHighDateTime << 32 | lastWrite.dwLowDateTime) ~/ 10 -
+                _EPOCH_NT_DELTA_MICROSECONDS;
         return DateTime.fromMicrosecondsSinceEpoch(microseconds);
-      }
-      finally {
+      } finally {
         CloseHandle(handle);
         free(info);
       }
@@ -285,20 +368,27 @@ extension WinFile on File {
   }
 }
 
-enum ShellOp {
-  EDIT, EXPLORE, FIND, OPEN, PRINT, PROPERTIES, RUNAS
-}
+enum ShellOp { EDIT, EXPLORE, FIND, OPEN, PRINT, PROPERTIES, RUNAS }
 
 extension on ShellOp {
-  LPWSTR getOperation() {switch (this) {
-    case ShellOp.EDIT: return "edit".toNativeUtf16();
-    case ShellOp.EXPLORE: return "explore".toNativeUtf16();
-    case ShellOp.FIND: return "find".toNativeUtf16();
-    case ShellOp.OPEN: return "open".toNativeUtf16();
-    case ShellOp.PRINT: return "print".toNativeUtf16();
-    case ShellOp.PROPERTIES: return "properties".toNativeUtf16();
-    case ShellOp.RUNAS: return "runas".toNativeUtf16();
-  }}
+  LPWSTR getOperation() {
+    switch (this) {
+      case ShellOp.EDIT:
+        return "edit".toNativeUtf16();
+      case ShellOp.EXPLORE:
+        return "explore".toNativeUtf16();
+      case ShellOp.FIND:
+        return "find".toNativeUtf16();
+      case ShellOp.OPEN:
+        return "open".toNativeUtf16();
+      case ShellOp.PRINT:
+        return "print".toNativeUtf16();
+      case ShellOp.PROPERTIES:
+        return "properties".toNativeUtf16();
+      case ShellOp.RUNAS:
+        return "runas".toNativeUtf16();
+    }
+  }
 }
 
 class WinIO {
@@ -306,11 +396,13 @@ class WinIO {
     if (file.isEmpty) return false;
     LPWSTR lpOperation = operation.getOperation();
     LPWSTR lpFile = file.toNativeUtf16();
-    LPWSTR lpParameters = param != null && param.isNotEmpty ? param.toNativeUtf16() : nullptr;
+    LPWSTR lpParameters =
+        param != null && param.isNotEmpty ? param.toNativeUtf16() : nullptr;
     try {
-      return ShellExecute(0, lpOperation, lpFile, lpParameters, nullptr, SW_SHOWDEFAULT) > 32;
-    } 
-    finally {
+      return ShellExecute(
+              0, lpOperation, lpFile, lpParameters, nullptr, SW_SHOWDEFAULT) >
+          32;
+    } finally {
       free(lpOperation);
       free(lpFile);
       free(lpParameters);
@@ -319,19 +411,26 @@ class WinIO {
 
   static bool findMutexWstr(LPWSTR lpMutexName) {
     int mutexHandle = _OpenMutex(0x00100000, 0, lpMutexName);
-    if (mutexHandle != 0) {CloseHandle(mutexHandle); return true;}
-    else return false;
+    if (mutexHandle != 0) {
+      CloseHandle(mutexHandle);
+      return true;
+    } else
+      return false;
   }
 
   static bool findMutex(String mutexName) {
     final lpMutexName = TEXT(mutexName);
     //int mutexHandle = _CreateMutex(nullptr, TEXT(r"{42CEB0DF-325A-4FBE-BBB6-C259A6C3F0BB}"), 0, 0x001F0001);
-    try {return findMutexWstr(lpMutexName);}
-    finally {free(lpMutexName);}
+    try {
+      return findMutexWstr(lpMutexName);
+    } finally {
+      free(lpMutexName);
+    }
   }
 
   /// Creates a Windows shortcut (.lnk);
-  static void createShortcut(String filePath, String linkPath, {String? description, String? args, String? icon}) {
+  static void createShortcut(String filePath, String linkPath,
+      {String? description, String? args, String? icon}) {
     final shellLink = ShellLink.createInstance();
     final lpPath = filePath.toNativeUtf16();
     final lpArgs = args?.toNativeUtf16();

@@ -1,3 +1,4 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, deprecated_member_use, unused_element, override_on_non_overriding_member, unused_local_variable, library_private_types_in_public_api
 import 'dart:math' as math;
 import 'dart:ui' show window;
 
@@ -32,7 +33,8 @@ class _ComboboxMenuPainter extends CustomPainter {
     required this.getSelectedItemOffset,
   })  : _painter = BoxDecoration(
           borderRadius: BorderRadius.circular(6.0),
-          border: Border.all(width: 0.5, color: const ColorConst.withOpacity(0x000000, 0.5)),
+          border: Border.all(
+              width: 0.5, color: const ColorConst.withOpacity(0x000000, 0.5)),
         ).createBoxPainter(),
         super(repaint: resize);
 
@@ -192,7 +194,7 @@ class _ComboBoxItemButtonState<T> extends State<_ComboBoxItemButton<T>> {
                   curve: theme.animationCurve,
                   top: states.isPressed ? 10.0 : 8.0,
                   bottom: states.isPressed ? 10.0 : 8.0,
-                child: Container(
+                  child: Container(
                     width: 3.0,
                     decoration: BoxDecoration(
                       color: theme.accentColor, // ← ここをシンプルにしました
@@ -273,7 +275,8 @@ class _ComboboxMenuState<T> extends State<_ComboboxMenu<T>> {
     return FadeTransition(
       opacity: _fadeOpacity,
       child: Acrylic(
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(6.0))),
         elevation: route.elevation.toDouble(),
         child: CustomPaint(
           painter: _ComboboxMenuPainter(
@@ -290,25 +293,29 @@ class _ComboboxMenuState<T> extends State<_ComboboxMenu<T>> {
               style: route.style,
               child: ScrollConfiguration(
                 behavior: const FluentScrollBehavior(),
-                child: DynMouseScroll(builder: (context, controller, physics) => PrimaryScrollController(
-                  controller: widget.route.scrollController = controller,
-                  child: LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
-                      return Scrollbar(
-                        timeToFade: const Duration(milliseconds: 600),
-                        controller: controller,
-                        //sAlwaysShown: isScrollable,
-                        child: ListView(
-                          padding: _kListPadding,
-                          shrinkWrap: true,
-                          controller: controller,
-                          physics: physics,
-                          children: children,
-                        ),
-                      );
-                    },
-                  ),
-                )),
+                child: DynMouseScroll(
+                    builder: (context, controller, physics) =>
+                        PrimaryScrollController(
+                          controller: widget.route.scrollController =
+                              controller,
+                          child: LayoutBuilder(
+                            builder: (BuildContext context,
+                                BoxConstraints constraints) {
+                              return Scrollbar(
+                                timeToFade: const Duration(milliseconds: 600),
+                                controller: controller,
+                                //sAlwaysShown: isScrollable,
+                                child: ListView(
+                                  padding: _kListPadding,
+                                  shrinkWrap: true,
+                                  controller: controller,
+                                  physics: physics,
+                                  children: children,
+                                ),
+                              );
+                            },
+                          ),
+                        )),
               ),
             ),
           ),
@@ -400,9 +407,20 @@ class _MenuLimits {
 }
 
 class _ComboboxRoute<T> extends PopupRoute<_ComboboxRouteResult<T>> {
-  _ComboboxRoute({required this.items, required this.padding, required this.buttonRect, required this.selectedIndex, this.elevation = 16,
-    required this.capturedThemes, required this.style, required this.acrylicEnabled, this.barrierLabel, this.itemHeight, this.comboboxColor}) 
-      : itemHeights = List<double>.filled(items.length, itemHeight ?? kMinInteractiveDimension);
+  _ComboboxRoute(
+      {required this.items,
+      required this.padding,
+      required this.buttonRect,
+      required this.selectedIndex,
+      this.elevation = 16,
+      required this.capturedThemes,
+      required this.style,
+      required this.acrylicEnabled,
+      this.barrierLabel,
+      this.itemHeight,
+      this.comboboxColor})
+      : itemHeights = List<double>.filled(
+            items.length, itemHeight ?? kMinInteractiveDimension);
 
   final List<_MenuItem<T>> items;
   final EdgeInsetsGeometry padding;
@@ -418,16 +436,29 @@ class _ComboboxRoute<T> extends PopupRoute<_ComboboxRouteResult<T>> {
   final List<double> itemHeights;
   ScrollController? scrollController;
 
-  @override Duration get transitionDuration => _kComboboxMenuDuration;
-  @override bool get barrierDismissible => true;
-  @override Color? get barrierColor => null;
-  @override final String? barrierLabel;
+  @override
+  Duration get transitionDuration => _kComboboxMenuDuration;
+  @override
+  bool get barrierDismissible => true;
+  @override
+  Color? get barrierColor => null;
+  @override
+  final String? barrierLabel;
 
   @override
   Widget buildPage(context, animation, secondaryAnimation) {
     return LayoutBuilder(builder: (context, constraints) {
-      final page = _ComboboxRoutePage<T>(route: this, constraints: constraints, items: items, padding: padding, buttonRect: buttonRect,
-        selectedIndex: selectedIndex, elevation: elevation, capturedThemes: capturedThemes, style: style, comboboxColor: comboboxColor);
+      final page = _ComboboxRoutePage<T>(
+          route: this,
+          constraints: constraints,
+          items: items,
+          padding: padding,
+          buttonRect: buttonRect,
+          selectedIndex: selectedIndex,
+          elevation: elevation,
+          capturedThemes: capturedThemes,
+          style: style,
+          comboboxColor: comboboxColor);
       if (acrylicEnabled) return page;
       return DisableAcrylic(child: page);
     });
@@ -449,7 +480,7 @@ class _ComboboxRoute<T> extends PopupRoute<_ComboboxRouteResult<T>> {
     }
     return offset;
   }
-  
+
   _MenuLimits getMenuLimits(
       Rect buttonRect, double availableHeight, int index) {
     final double maxMenuHeight = availableHeight - 2.0 * _kMenuItemHeight;
@@ -640,9 +671,14 @@ class FluentCombobox<T> extends StatefulWidget {
     this.focusNode,
     this.autofocus = false,
     this.comboboxColor,
-  }) : assert(allowUnknown || items == null || items.isEmpty || value == null || items.where((item) => item.value == value).length == 1,
-          "There should be exactly one item with [Combobox]'s value: $value. \n"
-          'Either zero or 2 or more [ComboBoxItem]s were detected with the same value'),
+  })  : assert(
+            allowUnknown ||
+                items == null ||
+                items.isEmpty ||
+                value == null ||
+                items.where((item) => item.value == value).length == 1,
+            "There should be exactly one item with [Combobox]'s value: $value. \n"
+            'Either zero or 2 or more [ComboBoxItem]s were detected with the same value'),
         assert(itemHeight == null || itemHeight >= kMinInteractiveDimension);
 
   final bool allowUnknown;
@@ -670,7 +706,8 @@ class FluentCombobox<T> extends StatefulWidget {
   _FluentComboboxState<T> createState() => _FluentComboboxState<T>();
 }
 
-class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindingObserver {
+class _FluentComboboxState<T> extends State<FluentCombobox<T>>
+    with WidgetsBindingObserver {
   int? _selectedIndex;
   _ComboboxRoute<T>? _comboboxRoute;
   Orientation? _lastOrientation;
@@ -759,7 +796,7 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
       _selectedIndex = null;
       return;
     }
-    
+
     for (int itemIndex = 0; itemIndex < widget.items!.length; itemIndex++) {
       if (widget.items![itemIndex].value == widget.value) {
         _selectedIndex = itemIndex;
@@ -881,7 +918,7 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
       _removeComboboxRoute();
       _lastOrientation = newOrientation;
     }
-    
+
     final List<Widget> items = widget.selectedItemBuilder == null
         ? (widget.items != null ? List<Widget>.from(widget.items!) : <Widget>[])
         : List<Widget>.from(widget.selectedItemBuilder!(context));
@@ -898,8 +935,8 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
 
       placeholderIndex = items.length;
       items.add(DefaultTextStyle(
-        style:
-            _textStyle!.copyWith(color: FluentTheme.of(context).resources.textFillColorDisabled),
+        style: _textStyle!.copyWith(
+            color: FluentTheme.of(context).resources.textFillColorDisabled),
         child: IgnorePointer(
           ignoringSemantics: false,
           child: displayedHint,
@@ -934,7 +971,8 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
     Widget result = DefaultTextStyle(
       style: _enabled
           ? _textStyle!
-          : _textStyle!.copyWith(color: FluentTheme.of(context).resources.textFillColorDisabled),
+          : _textStyle!.copyWith(
+              color: FluentTheme.of(context).resources.textFillColorDisabled),
       child: Container(
         padding: padding.resolve(Directionality.of(context)),
         height: kPickerHeight,
@@ -984,19 +1022,27 @@ class _FluentComboboxState<T> extends State<FluentCombobox<T>> with WidgetsBindi
 
 BorderSide fluentComboBoxBorderColor(bool isDark, Set<WidgetState> states) {
   if (isDark) {
-    if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.05));
+    if (states.isDisabled)
+      return const BorderSide(
+          width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.05));
     if (states.isNone || (states.isHovered && !states.isPressed)) {
-      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.035));
+      return const BorderSide(
+          width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.035));
     } else {
-      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.07));
+      return const BorderSide(
+          width: 0.5, color: ColorConst.withOpacity(0xf0f0f0, 0.07));
     }
-  }
-  else {
-    if (states.isDisabled) return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.12));
-    if (states.isNone || (states.isHovered && !states.isDisabled && !states.isPressed)) {
-      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.22));
+  } else {
+    if (states.isDisabled)
+      return const BorderSide(
+          width: 0.5, color: ColorConst.withOpacity(0x212121, 0.12));
+    if (states.isNone ||
+        (states.isHovered && !states.isDisabled && !states.isPressed)) {
+      return const BorderSide(
+          width: 0.5, color: ColorConst.withOpacity(0x212121, 0.22));
     } else {
-      return const BorderSide(width: 0.5, color: ColorConst.withOpacity(0x212121, 0.07));
+      return const BorderSide(
+          width: 0.5, color: ColorConst.withOpacity(0x212121, 0.07));
     }
   }
 }
@@ -1007,8 +1053,7 @@ Color fluentComboBoxColor(bool isDark, Set<WidgetState> states) {
     if (states.isPressed) return const ColorConst.withOpacity(0xFFFFFF, 0.03);
     if (states.isHovered) return const ColorConst.withOpacity(0xFFFFFF, 0.08);
     return const ColorConst.withOpacity(0xFFFFFF, 0.055);
-  }
-  else {
+  } else {
     if (states.isDisabled) return const ColorConst.withOpacity(0xf9f9f9, 0.045);
     if (states.isPressed) return const ColorConst.withOpacity(0xf0f0f0, 0.4);
     if (states.isHovered) return const ColorConst.withOpacity(0xf9f9f9, 0.65);
@@ -1022,7 +1067,8 @@ Decoration fluentComboBoxDecorationBuilder(
   final theme = FluentTheme.of(context);
   return BoxDecoration(
     borderRadius: BorderRadius.circular(4.0),
-    border: Border.fromBorderSide(fluentComboBoxBorderColor(theme.brightness== Brightness.dark, states)),
-    color: fluentComboBoxColor(theme.brightness== Brightness.dark, states),
+    border: Border.fromBorderSide(
+        fluentComboBoxBorderColor(theme.brightness == Brightness.dark, states)),
+    color: fluentComboBoxColor(theme.brightness == Brightness.dark, states),
   );
 }
