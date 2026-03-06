@@ -107,6 +107,9 @@ Source: ".\redist\VC_redist.x64.exe"; DestDir: {tmp}; Flags: dontcopy
 Filename: "{tmp}\VC_redist.x64.exe"; StatusMsg: "Installing Visual C++ Redistributable..."; \
   Parameters: "/quiet /norestart /install"; Check: ShouldInstallVCRedist; Flags: waituntilterminated
 
+; ★ 追加: PACMANインストール完了後にバックグラウンドで既存WSAアプリの同期を実行する
+Filename: "{app}\{#executable}"; Parameters: "--sync"; Flags: runhidden nowait;
+
 [Icons]
 ; {group} を {autoprograms} に変更することで、スタートメニュー直下に配置されます！
 Name: "{autoprograms}\WSA PacMan"; Filename: "{app}\{#executable}"

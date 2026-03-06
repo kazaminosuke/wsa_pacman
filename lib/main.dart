@@ -29,6 +29,7 @@ import 'screens/settings.dart';
 import 'screens/app_manager.dart';
 import 'screens/apk_uninstaller.dart'; // Add the uninstaller screen
 import 'utils/string_utils.dart';
+import 'sync_apps.dart';
 
 import 'theme.dart';
 // 衝突を避けるために hide を追加します
@@ -329,6 +330,13 @@ void main(List<String> arguments) async {
   runApp(wrappedApp);
 
   AppOptions.init();
+
+  final bool isSyncMode = arguments.contains('--sync');
+  if (isSyncMode) {
+    await runSyncApps();
+    exit(0);
+  }
+
   Constants.uninstallMode =
       arguments.length >= 2 && arguments.first == '--uninstall';
   Constants.uninstallPackage = Constants.uninstallMode ? arguments[1] : '';

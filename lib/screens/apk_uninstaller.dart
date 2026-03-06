@@ -72,6 +72,25 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
 
     final package = Constants.uninstallPackage;
     try {
+      // 0. registry backup
+      String savedDir = GState.backupDirectory.$;
+      if (!Directory(savedDir).existsSync()) {
+        savedDir = '${Platform.environment['USERPROFILE'] ?? 'C:'}\\Desktop';
+      }
+      final now = DateTime.now();
+      final ts =
+          "${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}_${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}${now.second.toString().padLeft(2, '0')}";
+      final backupPath = '$savedDir\\wsa_pacman_${package}_backup_$ts.reg';
+      await Process.run(
+          'reg',
+          [
+            'export',
+            'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
+            backupPath,
+            '/y'
+          ],
+          runInShell: true);
+
       // 1. adb uninstall
       final adbProc =
           await Process.run('adb', ['uninstall', package], runInShell: true);
