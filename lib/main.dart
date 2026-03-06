@@ -27,6 +27,7 @@ import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'screens/wsa.dart';
 import 'screens/settings.dart';
 import 'screens/app_manager.dart';
+import 'screens/apk_uninstaller.dart'; // Add the uninstaller screen
 import 'utils/string_utils.dart';
 
 import 'theme.dart';
@@ -312,6 +313,8 @@ class Constants {
   static late final String packageFile;
   static late final AppPackage packageType;
   static late final bool installMode;
+  static late final bool uninstallMode;
+  static late final String uninstallPackage;
   static late final IsolateRef<dynamic, APK_READER_FLAGS>? isolate;
 }
 
@@ -326,7 +329,10 @@ void main(List<String> arguments) async {
   runApp(wrappedApp);
 
   AppOptions.init();
-  Constants.installMode = arguments.isNotEmpty;
+  Constants.uninstallMode =
+      arguments.length >= 2 && arguments.first == '--uninstall';
+  Constants.uninstallPackage = Constants.uninstallMode ? arguments[1] : '';
+  Constants.installMode = !Constants.uninstallMode && arguments.isNotEmpty;
   Constants.packageFile = Constants.installMode ? arguments.first : '';
   Constants.packageType = AppPackageType.fromArguments(arguments);
   Constants.isolate = Constants.installMode
@@ -340,7 +346,7 @@ void main(List<String> arguments) async {
   if (isDesktop) {
     doWhenWindowReady(() {
       final win = appWindow;
-      if (!Constants.installMode) {
+      if (!Constants.installMode && !Constants.uninstallMode) {
         win.minSize = const Size(640, 500);
         win.size = const Size(740, 540);
         win.title = appTitle;
@@ -457,9 +463,11 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: LocaleUtils.supportedLocales,
           localeResolutionCallback: LocaleUtils.localeResolutionCallback,
           routes: {
-            '/': (_) => Constants.installMode
-                ? const ApkInstaller()
-                : const MyHomePage()
+            '/': (_) => Constants.uninstallMode
+                ? const ApkUninstaller()
+                : Constants.installMode
+                    ? const ApkInstaller()
+                    : const MyHomePage()
           },
           builder: (context, child) {
             // ★ 修正3: ValueListenableBuilderで包むことで「背景のコンテナだけ」を再描画する

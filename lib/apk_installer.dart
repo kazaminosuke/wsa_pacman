@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, curly_braces_in_flow_control_structures, library_private_types_in_public_api
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:wsa_pacman/android/android_utils.dart';
 import 'package:wsa_pacman/android/permissions.dart';
@@ -83,6 +84,49 @@ class ApkInstaller extends StatefulWidget {
 
     if (result.exitCode == 0) {
       GState.apkInstallState.update((_) => InstallState.SUCCESS);
+
+      final package = GState.package.$;
+      final appTitle = GState.apkTitle.$;
+      final execPath = Platform.resolvedExecutable;
+
+      if (package.isNotEmpty) {
+        try {
+          // Uninstall info registry registration
+          Process.run(
+            'reg',
+            [
+              'add',
+              'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
+              '/v',
+              'DisplayName',
+              '/t',
+              'REG_SZ',
+              '/d',
+              appTitle,
+              '/f'
+            ],
+            runInShell: true,
+          ).then((_) {
+            Process.run(
+              'reg',
+              [
+                'add',
+                'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
+                '/v',
+                'UninstallString',
+                '/t',
+                'REG_SZ',
+                '/d',
+                '"$execPath" --uninstall $package',
+                '/f'
+              ],
+              runInShell: true,
+            );
+          });
+        } catch (e) {
+          log("Failed to register uninstaller: $e");
+        }
+      }
     } else if (result.isTimeout) {
       GState.apkInstallState.update((_) => InstallState.TIMEOUT);
       GState.errorCode.update((_) => "TIMEOUT");
