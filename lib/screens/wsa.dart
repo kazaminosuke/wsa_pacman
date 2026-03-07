@@ -51,6 +51,55 @@ class _ScreenWSAState extends State<ScreenWSA> {
 
   DateTime date = DateTime.now();
 
+  String? _loadingAction;
+
+  Future<void> _executeWsaAction(
+      String actionName, Future<void> Function(String address) action) async {
+    if (_loadingAction != null) return;
+
+    setState(() {
+      _loadingAction = actionName;
+    });
+
+    try {
+      final connectionStatus = GState.connectionStatus.of(context);
+      if (connectionStatus.isDisconnected ||
+          connectionStatus.type == ConnectionStatus.ARRESTED) {
+        WSAUtils.launch();
+      }
+
+      final ip = GState.ipAddress.of(context);
+      final port = GState.androidPort.of(context);
+      final address = '$ip:$port';
+
+      bool isReady = false;
+      const int timeoutSeconds = 15;
+
+      for (int i = 0; i < timeoutSeconds; i++) {
+        try {
+          final res = await ADBUtils.shellToAddress(ip, port, 'echo 1');
+          if (res.exitCode == 0) {
+            isReady = true;
+            break;
+          }
+        } catch (e) {
+          // ignore
+        }
+        await Future.delayed(const Duration(seconds: 1));
+      }
+
+      if (isReady) {
+        await action(address);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _loadingAction = null;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var connectionStatus = GState.connectionStatus.of(context);
@@ -257,51 +306,50 @@ class _ScreenWSAState extends State<ScreenWSA> {
           const SizedBox(height: 20),
           FluentCard(
             leading: const Icon(Mdi.android, size: 23),
-            content: Text(lang.wsa_manage_app),
+            content: Text(_loadingAction == 'app'
+                ? lang.status_starting
+                : lang.wsa_manage_app),
             isButton: true,
-            onPressed: connectionStatus.isDisconnected
+            onPressed: _loadingAction != null
                 ? null
-                : () async {
-                    final address =
-                        '${GState.ipAddress.of(context)}:${GState.androidPort.of(context)}';
-                    await Process.run(
-                        'adb',
-                        [
-                          '-s',
-                          address,
-                          'shell',
-                          'am',
-                          'start',
-                          '-n',
-                          "'com.android.settings/.Settings\$ManageApplicationsActivity'"
-                        ],
-                        runInShell: true);
-                  },
+                : () => _executeWsaAction('app', (address) async {
+                      await Process.run(
+                          'adb',
+                          [
+                            '-s',
+                            address,
+                            'shell',
+                            'am',
+                            'start',
+                            '-n',
+                            "'com.android.settings/.Settings\$ManageApplicationsActivity'"
+                          ],
+                          runInShell: true);
+                    }),
           ),
           smallSpacer,
           FluentCard(
             leading: const Icon(Mdi.cogs, size: 23),
-            content: Text(lang.wsa_manage_settings),
+            content: Text(_loadingAction == 'settings'
+                ? lang.status_starting
+                : lang.wsa_manage_settings),
             isButton: true,
-            // こちらは「$」が無いのでそのままでOKです
-            onPressed: connectionStatus.isDisconnected
+            onPressed: _loadingAction != null
                 ? null
-                : () async {
-                    final address =
-                        '${GState.ipAddress.of(context)}:${GState.androidPort.of(context)}';
-                    await Process.run(
-                        'adb',
-                        [
-                          '-s',
-                          address,
-                          'shell',
-                          'am',
-                          'start',
-                          '-n',
-                          'com.android.settings/.Settings'
-                        ],
-                        runInShell: true);
-                  },
+                : () => _executeWsaAction('settings', (address) async {
+                      await Process.run(
+                          'adb',
+                          [
+                            '-s',
+                            address,
+                            'shell',
+                            'am',
+                            'start',
+                            '-n',
+                            'com.android.settings/.Settings'
+                          ],
+                          runInShell: true);
+                    }),
           )
         ],
       ),

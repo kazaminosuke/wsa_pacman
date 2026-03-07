@@ -87,7 +87,8 @@ class ApkInstaller extends StatefulWidget {
 
       final package = GState.package.$;
       final appTitle = GState.apkTitle.$;
-      final execPath = Platform.resolvedExecutable;
+      final execDir = File(Platform.resolvedExecutable).parent.path;
+      final execPath = '$execDir\\WSA-pacman.exe';
 
       if (package.isNotEmpty) {
         try {
@@ -117,7 +118,7 @@ class ApkInstaller extends StatefulWidget {
                 '/t',
                 'REG_SZ',
                 '/d',
-                '"$execPath" --uninstall $package',
+                '"$execPath" --uninstall "$package"',
                 '/f'
               ],
               runInShell: true,
@@ -132,7 +133,7 @@ class ApkInstaller extends StatefulWidget {
                   '/t',
                   'REG_SZ',
                   '/d',
-                  '"$execPath" --uninstall $package',
+                  '"$execPath" --uninstall "$package"',
                   '/f'
                 ],
                 runInShell: true,

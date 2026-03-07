@@ -5,6 +5,7 @@ import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/main.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:wsa_pacman/widget/move_window_nomax.dart';
+import 'package:wsa_pacman/utils/wsa_utils.dart';
 
 class ApkUninstaller extends StatefulWidget {
   const ApkUninstaller({super.key});
@@ -91,11 +92,56 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
           ],
           runInShell: true);
 
-      // 1. adb uninstall
-      final adbProc =
-          await Process.run('adb', ['uninstall', package], runInShell: true);
+      // 1. WSA起動状態の確認（超重要）
+      setState(() {
+        _statusMessage = "Starting Windows Subsystem for Android...";
+      });
 
-      // 2. registry delete
+      // WSAが起きているか確認し、寝ていれば叩き起こして sys.boot_completed を待機
+      final connectionStatus = GState.connectionStatus.$;
+      if (connectionStatus.isDisconnected ||
+          connectionStatus.type == ConnectionStatus.ARRESTED) {
+        WSAUtils.launch();
+      }
+
+      final ip = GState.ipAddress.$;
+      final port = GState.androidPort.$;
+
+      bool isBootCompleted = false;
+      for (int i = 0; i < 15; i++) {
+        // 最大30秒待機
+        try {
+          // pm path android を叩いてパッケージマネージャーが応答すれば完全に起動完了している
+          final res = await ADBUtils.shellToAddress(ip, port, 'pm path android')
+              .processTimeout(const Duration(seconds: 4));
+          if (!res.isTimeout &&
+              res.exitCode == 0 &&
+              res.stdout.toString().contains('package:')) {
+            isBootCompleted = true;
+            break;
+          }
+        } catch (e) {
+          // ignore
+        }
+        await Future.delayed(const Duration(seconds: 2));
+      }
+
+      if (!isBootCompleted) {
+        throw Exception(
+            "WSAの起動完了を待機しましたが、タイムアウト（30秒）しました。WSAPacManから一度WSAを起動してください。");
+      }
+
+      setState(() {
+        _statusMessage = "Uninstalling ${_appName}...";
+      });
+
+      // 2. adb uninstall (タイムアウトを追加してフリーズ防止)
+      final adbProc =
+          await Process.run('adb', ['uninstall', package], runInShell: true)
+              .timeout(const Duration(seconds: 30),
+                  onTimeout: () => ProcessResult(-1, -1, '', 'TIMEOUT'));
+
+      // 3. registry delete
       await Process.run(
           'reg',
           [
@@ -105,7 +151,7 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
           ],
           runInShell: true);
 
-      // 3. remove shortcuts
+      // 4. remove shortcuts
       await Process.run(
           'powershell',
           [
