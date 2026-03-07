@@ -121,7 +121,23 @@ class ApkInstaller extends StatefulWidget {
                 '/f'
               ],
               runInShell: true,
-            );
+            ).then((_) {
+              Process.run(
+                'reg',
+                [
+                  'add',
+                  'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
+                  '/v',
+                  'QuietUninstallString',
+                  '/t',
+                  'REG_SZ',
+                  '/d',
+                  '"$execPath" --uninstall $package',
+                  '/f'
+                ],
+                runInShell: true,
+              );
+            });
           });
         } catch (e) {
           log("Failed to register uninstaller: $e");

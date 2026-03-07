@@ -7,6 +7,7 @@ Future<void> runSyncApps() async {
 \$apps = Get-ItemProperty "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*" -ErrorAction SilentlyContinue |
         Where-Object { 
           (\$_.UninstallString -match "MicrosoftCorporationII\\.WindowsSubsystemForAndroid_8wekyb3d8bbwe\\\\WsaClient\\.exe") -or 
+          (\$_.QuietUninstallString -match "MicrosoftCorporationII\\.WindowsSubsystemForAndroid_8wekyb3d8bbwe\\\\WsaClient\\.exe") -or 
           (\$_.ModifyPath -match "MicrosoftCorporationII\\.WindowsSubsystemForAndroid_8wekyb3d8bbwe\\\\WsaClient\\.exe") -or
           (\$_.DisplayIcon -match "MicrosoftCorporationII\\.WindowsSubsystemForAndroid_8wekyb3d8bbwe\\\\LocalState")
         } |
@@ -36,6 +37,22 @@ if (\$apps) {
               'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
               '/v',
               'UninstallString',
+              '/t',
+              'REG_SZ',
+              '/d',
+              '"$execPath" --uninstall $package',
+              '/f'
+            ],
+            runInShell: true,
+          );
+
+          await Process.run(
+            'reg',
+            [
+              'add',
+              'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
+              '/v',
+              'QuietUninstallString',
               '/t',
               'REG_SZ',
               '/d',
