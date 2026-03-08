@@ -375,4 +375,32 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get dialog_backup_dir_filter => 'フォルダ';
+
+  @override
+  String uninstaller_status_uninstalling(String appName) {
+    return '$appName をアンインストールしています...';
+  }
+
+  @override
+  String get uninstaller_status_starting_wsa =>
+      'Windows Subsystem for Android を起動しています...';
+
+  @override
+  String get uninstaller_status_success => '正常にアンインストールされました。';
+
+  @override
+  String get uninstaller_status_errors => 'アンインストール中にいくつかエラーが発生しました。';
+
+  @override
+  String uninstaller_status_error_msg(String error) {
+    return 'アンインストール中にエラーが発生しました: $error';
+  }
+
+  @override
+  String uninstaller_confirm(String appName) {
+    return '$appName をアンインストールしますか？';
+  }
+
+  @override
+  String get uninstaller_btn_yes => 'はい';
 }

@@ -198,5 +198,33 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "uninstaller_status_uninstalling": "Uninstalling {appName}...",
+    "@uninstaller_status_uninstalling": {
+        "placeholders": {
+            "appName": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_status_starting_wsa": "Starting Windows Subsystem for Android...",
+    "uninstaller_status_success": "Successfully uninstalled.",
+    "uninstaller_status_errors": "Uninstalled with some errors.",
+    "uninstaller_status_error_msg": "Error during uninstall: {error}",
+    "@uninstaller_status_error_msg": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_confirm": "Are you sure you want to uninstall {appName}?",
+    "@uninstaller_confirm": {
+        "placeholders": {
+            "appName": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_btn_yes": "Yes"
 }

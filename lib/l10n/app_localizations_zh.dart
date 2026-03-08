@@ -373,6 +373,34 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get dialog_backup_dir_filter => 'Folder|*.none';
+
+  @override
+  String uninstaller_status_uninstalling(String appName) {
+    return 'Uninstalling $appName...';
+  }
+
+  @override
+  String get uninstaller_status_starting_wsa =>
+      'Starting Windows Subsystem for Android...';
+
+  @override
+  String get uninstaller_status_success => 'Successfully uninstalled.';
+
+  @override
+  String get uninstaller_status_errors => 'Uninstalled with some errors.';
+
+  @override
+  String uninstaller_status_error_msg(String error) {
+    return 'Error during uninstall: $error';
+  }
+
+  @override
+  String uninstaller_confirm(String appName) {
+    return 'Are you sure you want to uninstall $appName?';
+  }
+
+  @override
+  String get uninstaller_btn_yes => 'Yes';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -745,4 +773,32 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get dialog_backup_dir_filter => 'Folder|*.none';
+
+  @override
+  String uninstaller_status_uninstalling(String appName) {
+    return 'Uninstalling $appName...';
+  }
+
+  @override
+  String get uninstaller_status_starting_wsa =>
+      'Starting Windows Subsystem for Android...';
+
+  @override
+  String get uninstaller_status_success => 'Successfully uninstalled.';
+
+  @override
+  String get uninstaller_status_errors => 'Uninstalled with some errors.';
+
+  @override
+  String uninstaller_status_error_msg(String error) {
+    return 'Error during uninstall: $error';
+  }
+
+  @override
+  String uninstaller_confirm(String appName) {
+    return 'Are you sure you want to uninstall $appName?';
+  }
+
+  @override
+  String get uninstaller_btn_yes => 'Yes';
 }

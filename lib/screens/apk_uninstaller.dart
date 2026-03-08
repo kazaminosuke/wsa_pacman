@@ -11,7 +11,7 @@ class ApkUninstaller extends StatefulWidget {
   const ApkUninstaller({super.key});
 
   @override
-  _ApkUninstallerState createState() => _ApkUninstallerState();
+  State<ApkUninstaller> createState() => _ApkUninstallerState();
 }
 
 class _ApkUninstallerState extends State<ApkUninstaller> {
@@ -65,10 +65,10 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
     }
   }
 
-  Future<void> _uninstallApp() async {
+  Future<void> _uninstallApp(AppLocalizations lang) async {
     setState(() {
       _isProcessing = true;
-      _statusMessage = "Uninstalling ${_appName}...";
+      _statusMessage = lang.uninstaller_status_uninstalling(_appName);
     });
 
     final package = Constants.uninstallPackage;
@@ -92,54 +92,61 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
           ],
           runInShell: true);
 
-      // 1. WSA起動状態の確認（超重要）
+      // 1. WSA起動 + 接続待機（apk_installer.dartと完全に同一のロジック）
       setState(() {
-        _statusMessage = "Starting Windows Subsystem for Android...";
+        _statusMessage = lang.uninstaller_status_starting_wsa;
       });
 
-      // WSAが起きているか確認し、寝ていれば叩き起こして sys.boot_completed を待機
-      final connectionStatus = GState.connectionStatus.$;
-      if (connectionStatus.isDisconnected ||
-          connectionStatus.type == ConnectionStatus.ARRESTED) {
-        WSAUtils.launch();
-      }
+      // WSAを起動する（すでに起動中でも問題ない）
+      WSAUtils.launch();
 
-      final ip = GState.ipAddress.$;
-      final port = GState.androidPort.$;
+      // 設定ファイルのロードを待機してIPとポートを取得
+      final ip = await GState.ipAddress.whenReady();
+      final port = await GState.androidPort.whenReady();
+      final adbPath = ADBUtils.adbPath;
 
+      // ★修正：WSAのパッケージマネージャー（pm）が応答するまで待機する
       bool isBootCompleted = false;
-      for (int i = 0; i < 15; i++) {
-        // 最大30秒待機
+      String lastError = "";
+      for (int i = 0; i < 60; i++) {
+        // 最大120秒間（2秒 × 60回）待機
         try {
-          // pm path android を叩いてパッケージマネージャーが応答すれば完全に起動完了している
-          final res = await ADBUtils.shellToAddress(ip, port, 'pm path android')
-              .processTimeout(const Duration(seconds: 4));
-          if (!res.isTimeout &&
-              res.exitCode == 0 &&
-              res.stdout.toString().contains('package:')) {
+          // Androidシステムに「androidパッケージはどこにある？」と聞いて生存確認をする
+          var pmResult =
+              await ADBUtils.shellToAddress(ip, port, "pm path android")
+                  .processTimeout(const Duration(seconds: 5)) // 毎回最大5秒でタイムアウト
+                  .defaultError(); // 例外が起きても -1 を返すようにする
+
+          // エラーなく応答が返ってきて、中に「package:」という文字が含まれていれば完全に起動済み！
+          if (!pmResult.isTimeout &&
+              pmResult.exitCode == 0 &&
+              pmResult.stdout.toString().contains('package:')) {
             isBootCompleted = true;
             break;
           }
         } catch (e) {
-          // ignore
+          lastError = e.toString();
         }
+        // まだ起動中の場合は2秒待ってから再チェック
         await Future.delayed(const Duration(seconds: 2));
       }
 
+      // 120秒待機しても応答がなかった場合のタイムアウト処理
       if (!isBootCompleted) {
         throw Exception(
-            "WSAの起動完了を待機しましたが、タイムアウト（30秒）しました。WSAPacManから一度WSAを起動してください。");
+            "WSAの起動完了を待機しましたが、タイムアウトしました。\n内部エラー: $lastError\nWSAが正常に動作していないか、ADBが見つかりません。");
       }
 
       setState(() {
-        _statusMessage = "Uninstalling ${_appName}...";
+        _statusMessage = lang.uninstaller_status_uninstalling(_appName);
       });
 
-      // 2. adb uninstall (タイムアウトを追加してフリーズ防止)
-      final adbProc =
-          await Process.run('adb', ['uninstall', package], runInShell: true)
-              .timeout(const Duration(seconds: 30),
-                  onTimeout: () => ProcessResult(-1, -1, '', 'TIMEOUT'));
+      // 2. adb uninstall
+      final adbProc = await Process.run(
+              adbPath, ['-s', '$ip:$port', 'uninstall', package],
+              runInShell: false)
+          .timeout(const Duration(seconds: 30),
+              onTimeout: () => ProcessResult(-1, -1, '', 'TIMEOUT'));
 
       // 3. registry delete
       await Process.run(
@@ -164,8 +171,8 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
       if (mounted) {
         setState(() {
           _statusMessage = adbProc.exitCode == 0
-              ? "Successfully uninstalled."
-              : "Uninstalled with some errors.";
+              ? lang.uninstaller_status_success
+              : lang.uninstaller_status_errors;
           _success = true;
         });
       }
@@ -175,7 +182,7 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _statusMessage = "Error during uninstall: $e";
+          _statusMessage = lang.uninstaller_status_error_msg(e.toString());
           _isProcessing = false;
         });
       }
@@ -252,7 +259,7 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("$_appName をアンインストールしますか？",
+                      Text(lang.uninstaller_confirm(_appName),
                           style: theme.typography.bodyLarge),
                       const SizedBox(height: 8),
                       Text("Package: $package",
@@ -280,18 +287,20 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
                         style: ButtonStyle(
                           backgroundColor:
                               WidgetStateProperty.resolveWith((states) {
-                            if (states.contains(WidgetState.hovered))
+                            if (states.contains(WidgetState.hovered)) {
                               return Colors.red.light;
-                            if (states.contains(WidgetState.pressed))
+                            }
+                            if (states.contains(WidgetState.pressed)) {
                               return Colors.red.dark;
+                            }
                             return Colors.red;
                           }),
                         ),
-                        onPressed: _uninstallApp,
+                        onPressed: () => _uninstallApp(lang),
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),
                           alignment: Alignment.center,
-                          child: const Text("はい"),
+                          child: Text(lang.uninstaller_btn_yes),
                         ),
                       ),
                     ),

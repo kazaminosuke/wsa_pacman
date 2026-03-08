@@ -198,5 +198,33 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "uninstaller_status_uninstalling": "{appName} をアンインストールしています...",
+    "@uninstaller_status_uninstalling": {
+        "placeholders": {
+            "appName": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_status_starting_wsa": "Windows Subsystem for Android を起動しています...",
+    "uninstaller_status_success": "正常にアンインストールされました。",
+    "uninstaller_status_errors": "アンインストール中にいくつかエラーが発生しました。",
+    "uninstaller_status_error_msg": "アンインストール中にエラーが発生しました: {error}",
+    "@uninstaller_status_error_msg": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_confirm": "{appName} をアンインストールしますか？",
+    "@uninstaller_confirm": {
+        "placeholders": {
+            "appName": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_btn_yes": "はい"
 }

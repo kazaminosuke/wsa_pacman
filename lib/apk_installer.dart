@@ -41,20 +41,41 @@ class ApkInstaller extends StatefulWidget {
     // UIを「インストール中（ぐるぐる）」に変えて操作をブロックする
     GState.apkInstallState.update((_) => InstallState.INSTALLING);
 
-    // ★修正：WSAのパッケージマネージャー（pm）が応答するまで待機する
+    // ★修正：WSAを起動し、起動完了（または応答）まで待機する
+    if (!GState.connectionStatus.$.isConnected) {
+      WSAUtils.launch();
+    }
+
+    // IPとポートが取得できるまで待つ
+    ipAddress = await GState.ipAddress.whenReady();
+    port = await GState.androidPort.whenReady();
+
     bool isBootCompleted = false;
     for (int i = 0; i < 60; i++) {
       // 最大120秒間（2秒 × 60回）待機
-      // Androidシステムに「androidパッケージはどこにある？」と聞いて生存確認をする
-      var pmResult =
-          await ADBUtils.shellToAddress(ipAddress, port, "pm path android");
 
-      // エラーなく応答が返ってきて、中に「package:」という文字が含まれていれば完全に起動済み！
-      if (pmResult.exitCode == 0 &&
-          pmResult.stdout.toString().contains('package:')) {
-        isBootCompleted = true;
-        break;
+      // STEP 1: システムのブートフラグが立っているか確認する
+      var bootCompleteResult = await ADBUtils.shellToAddress(
+              ipAddress, port, "getprop sys.boot_completed")
+          .processTimeout(const Duration(seconds: 5))
+          .defaultError();
+
+      if (bootCompleteResult.exitCode == 0 &&
+          bootCompleteResult.stdout.toString().trim() == "1") {
+        // STEP 2: Androidシステム自身(パッケージマネージャなど)が応答可能か生存確認をする
+        var pmResult =
+            await ADBUtils.shellToAddress(ipAddress, port, "pm path android")
+                .processTimeout(const Duration(seconds: 5))
+                .defaultError();
+
+        // エラーなく応答が返ってきて、中に「package:」という文字が含まれていれば完全に起動済み！
+        if (pmResult.exitCode == 0 &&
+            pmResult.stdout.toString().contains('package:')) {
+          isBootCompleted = true;
+          break;
+        }
       }
+
       // まだ起動中の場合は2秒待ってから再チェック
       await Future.delayed(const Duration(seconds: 2));
     }
@@ -191,9 +212,8 @@ class _ApkInstallerState extends State<ApkInstaller> {
     WSAStatusAlert connectionStatus = GState.connectionStatus.of(context);
     bool isConnected = connectionStatus.isConnected;
     InstallType? installType = GState.apkInstallType.of(context);
-    bool canInstall = isConnected &&
-        installType != null &&
-        installType != InstallType.UNKNOWN;
+    // WSA接続状態に関係なくインストールボタンを押せるようにする
+    bool canInstall = installType != null && installType != InstallType.UNKNOWN;
     InstallState installState = GState.apkInstallState.of(context);
     final theme = FluentTheme.of(context);
     if (startingWSA && isConnected) startingWSA = false;
@@ -361,10 +381,8 @@ class _ApkInstallerState extends State<ApkInstaller> {
                                   vertical: 4.0, horizontal: 8.0),
                               alignment: Alignment.center,
                               child: Text(
-                                  startingWSA
-                                      ? lang.installer_btn_starting
-                                      : installType?.buttonText(lang) ??
-                                          lang.installer_btn_loading,
+                                  installType?.buttonText(lang) ??
+                                      lang.installer_btn_loading,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w600)),
                             ),

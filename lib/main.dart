@@ -263,17 +263,6 @@ class WSAPeriodicConnector {
             GState.ipAddress.update((old) => "127.0.0.1");
         } else if (GState.ipAddress.$ != "localhost")
           GState.ipAddress.update((old) => "localhost");
-
-        // ★ 追加: CONNECTED にする前に、sys.boot_completed をチェックする
-        try {
-          final res = await ADBUtils.shellToAddress(GState.ipAddress.$,
-              GState.androidPort.$, 'getprop sys.boot_completed');
-          if (res.exitCode != 0 || res.stdout.toString().trim() != '1') {
-            status = ConnectionStatus.STARTING; // まだ起動中なら STARTING を維持
-          }
-        } catch (e) {
-          status = ConnectionStatus.STARTING;
-        }
       }
     } else
       await _tryConnect();

@@ -815,6 +815,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Folder|*.none'**
   String get dialog_backup_dir_filter;
+
+  /// No description provided for @uninstaller_status_uninstalling.
+  ///
+  /// In en, this message translates to:
+  /// **'Uninstalling {appName}...'**
+  String uninstaller_status_uninstalling(String appName);
+
+  /// No description provided for @uninstaller_status_starting_wsa.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting Windows Subsystem for Android...'**
+  String get uninstaller_status_starting_wsa;
+
+  /// No description provided for @uninstaller_status_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully uninstalled.'**
+  String get uninstaller_status_success;
+
+  /// No description provided for @uninstaller_status_errors.
+  ///
+  /// In en, this message translates to:
+  /// **'Uninstalled with some errors.'**
+  String get uninstaller_status_errors;
+
+  /// No description provided for @uninstaller_status_error_msg.
+  ///
+  /// In en, this message translates to:
+  /// **'Error during uninstall: {error}'**
+  String uninstaller_status_error_msg(String error);
+
+  /// No description provided for @uninstaller_confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to uninstall {appName}?'**
+  String uninstaller_confirm(String appName);
+
+  /// No description provided for @uninstaller_btn_yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get uninstaller_btn_yes;
 }
 
 class _AppLocalizationsDelegate
