@@ -449,9 +449,9 @@ class _MyAppState extends State<MyApp> {
     setMicaEffect(mica.enabled, isDark);
 
     final bool isMicaActive = mica.enabled && WinVer.isWindows11OrGreater;
-    // Updated fallback colors for better contrast and modern feel
+    // Explorer-like extreme transparency: almost clear to let Mica completely shine through
     final Color fallbackColor =
-        isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF9F9F9);
+        isDark ? const Color(0x111E1E1E) : const Color(0x33F9F9F9);
 
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -494,7 +494,8 @@ class _MyAppState extends State<MyApp> {
           },
           theme: FluentThemeData(
             fontFamily: 'Yu Gothic UI',
-            scaffoldBackgroundColor: Colors.transparent,
+            scaffoldBackgroundColor:
+                mica.full ? Colors.transparent : fallbackColor,
             micaBackgroundColor: Colors.transparent,
             navigationPaneTheme: const NavigationPaneThemeData(
               backgroundColor: Colors.transparent,
@@ -535,25 +536,26 @@ class _MyAppState extends State<MyApp> {
                       side = const BorderSide(
                           width: 0.5, color: Color(0x12212121));
                   }
-                  return RoundedRectangleBorder(side: side);
+                  return RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0), side: side);
                 }),
                 backgroundColor: WidgetStateProperty.resolveWith((states) {
                   if (isDark) {
                     if (states.contains(WidgetState.disabled))
-                      return const Color(0x0BFFFFFF);
-                    if (states.contains(WidgetState.pressed))
                       return const Color(0x08FFFFFF);
+                    if (states.contains(WidgetState.pressed))
+                      return const Color(0x04FFFFFF);
                     if (states.contains(WidgetState.hovered))
-                      return const Color(0x14FFFFFF);
-                    return const Color(0x0EFFFFFF);
+                      return const Color(0x0AFFFFFF);
+                    return const Color(0x06FFFFFF);
                   } else {
                     if (states.contains(WidgetState.disabled))
-                      return const Color(0x0Bf9f9f9);
+                      return const Color(0x08f9f9f9);
                     if (states.contains(WidgetState.pressed))
-                      return const Color(0x66f0f0f0);
+                      return const Color(0x33f0f0f0);
                     if (states.contains(WidgetState.hovered))
-                      return const Color(0xA6f9f9f9);
-                    return const Color(0xCCFFFFFF);
+                      return const Color(0x66f9f9f9);
+                    return const Color(0x4DFFFFFF);
                   }
                 }),
               ),

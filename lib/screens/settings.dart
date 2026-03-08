@@ -176,8 +176,8 @@ class ScreenSettingsState extends State<ScreenSettings> {
     }());
 
     const empty = SizedBox.shrink();
-    const smallSpacer = SizedBox(height: 5.0);
-    const spacer = SizedBox(height: 10.0);
+    const smallSpacer = SizedBox(height: 8.0);
+    const spacer = SizedBox(height: 16.0);
 
     final themeMode = GState.theme.of(context).mode;
     final iconShape = GState.iconShape.of(context);

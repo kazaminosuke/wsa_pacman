@@ -26,19 +26,22 @@ class FluentCard extends StatefulWidget {
     if (style.brightness == Brightness.light) {
       if (!states.isDisabled && isClickable) {
         if (states.isPressed)
-          return const ColorConst.withOpacity(0xf9f9f9, 0.4);
+          return const ColorConst.withOpacity(0xf9f9f9, 0.05);
         if (states.isHovered)
-          return const ColorConst.withOpacity(0xf9f9f9, 0.65);
+          return const ColorConst.withOpacity(
+              0xf9f9f9, 0.15); // Extreme translucent hover
       }
-      return const ColorConst.withOpacity(0xFFFFFF, 0.7);
+      return const ColorConst.withOpacity(0xFFFFFF, 0.1); // Explorer level idle
     } else {
       if (!states.isDisabled && isClickable) {
         if (states.isPressed)
-          return const ColorConst.withOpacity(0xFFFFFF, 0.05);
+          return const ColorConst.withOpacity(0xFFFFFF, 0.01);
         if (states.isHovered)
-          return const ColorConst.withOpacity(0xFFFFFF, 0.12);
+          return const ColorConst.withOpacity(
+              0xFFFFFF, 0.03); // Extreme translucent hover
       }
-      return const ColorConst.withOpacity(0xFFFFFF, 0.06);
+      return const ColorConst.withOpacity(
+          0xFFFFFF, 0.005); // Explorer level idle
     }
   }
 
@@ -50,12 +53,12 @@ class FluentCard extends StatefulWidget {
       return const Color(0xFF212121).withOpacity(isInner ? 0.20 : 0.12);
     } else {
       if (isClickable && states.isPressed)
-        return Colors.white.withOpacity(0.08);
+        return Colors.white.withOpacity(0.06);
       if (isClickable && states.isHovered)
-        return Colors.white.withOpacity(0.04);
+        return Colors.white.withOpacity(0.03);
       return isInner
-          ? Colors.white.withOpacity(0.03)
-          : Colors.black.withOpacity(0.40);
+          ? Colors.white.withOpacity(0.02)
+          : Colors.black.withOpacity(0.20);
     }
   }
 
@@ -176,7 +179,7 @@ class FluentCardState extends State<FluentCard>
               color: FluentCard.borderColor(
                   theme, states, widget.isInner, widget.onPressed != null),
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
           ),
           padding: const EdgeInsetsDirectional.only(start: 20.0),
           alignment: Alignment.centerLeft,

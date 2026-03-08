@@ -105,7 +105,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
     var connectionStatus = GState.connectionStatus.of(context);
     final lang = AppLocalizations.of(context)!;
 
-    const smallSpacer = SizedBox(height: 5.0);
+    const smallSpacer = SizedBox(height: 8.0);
 
     return ScaffoldPage(
       header: PageHeader(title: Text(lang.screen_wsa)),

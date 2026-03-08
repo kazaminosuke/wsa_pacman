@@ -301,8 +301,8 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Card(
-            child: Row(
+          FluentCard(
+            content: Row(
               children: [
                 FilledButton(
                   onPressed: _isScanning ? null : () => _startScan(lang),
@@ -373,7 +373,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                       final packageId = app['package'] as String;
 
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
+                        padding: const EdgeInsets.only(bottom: 12.0),
                         child: FluentCard(
                           onPressed: () {
                             setState(() {
