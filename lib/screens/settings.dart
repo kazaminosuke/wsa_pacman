@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:jovial_svg/jovial_svg.dart';
-import 'package:mdi/mdi.dart';
+
 import 'package:protobuf/protobuf.dart';
 import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/proto/options.pb.dart';
@@ -210,7 +210,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
         children: [
           spacer,
           FluentCard(
-            leading: const Icon(Mdi.networkOutline, size: 24),
+            leading: const Icon(FluentIcons.network_tower, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(lang.settings_port,
@@ -269,7 +269,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(Mdi.powerStandby, size: 24),
+            leading: const Icon(FluentIcons.power_standby, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(lang.settings_autostart,
@@ -303,7 +303,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           const SizedBox(height: 5.0), // 下の項目との隙間
           smallSpacer,
           FluentCard(
-            leading: const Icon(Mdi.timerOutline, size: 24),
+            leading: const Icon(FluentIcons.timer, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(
@@ -347,7 +347,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(Mdi.translate, size: 24),
+            leading: const Icon(FluentIcons.translate, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(lang.settings_language,
@@ -373,7 +373,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           ExpanderWin11(
-            leading: const Icon(Mdi.themeLightDark, size: 23),
+            leading: const Icon(FluentIcons.color_solid, size: 23),
             header: Text(lang.theme_mode),
             content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -393,7 +393,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           // ★追加：最強のカラーパレット＆RGBピッカー機能！
           // ★修正：テーマカラー設定の多言語化
           ExpanderWin11(
-            leading: const Icon(Mdi.palette, size: 23),
+            leading: const Icon(FluentIcons.color, size: 23),
             header: Text(lang.settings_theme_color), // ←変更
             initiallyExpanded: false,
             direction: ExpanderDirection.down,
@@ -675,7 +675,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
 
           if (WinVer.isWindows11OrGreater)
             ExpanderWin11(
-              leading: const Icon(Mdi.blur, size: 23),
+              leading: const Icon(FluentIcons.blur, size: 23),
               header: Text(lang.theme_mica),
               content: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

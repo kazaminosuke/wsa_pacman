@@ -3,7 +3,7 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:mdi/mdi.dart';
+
 import 'package:wsa_pacman/utils/wsa_utils.dart';
 import 'package:wsa_pacman/widget/fluent_card.dart';
 import 'package:wsa_pacman/widget/fluent_info_bar.dart';
@@ -321,7 +321,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
               style: FluentTheme.of(context).typography.bodyLarge),
           const SizedBox(height: 20),
           FluentCard(
-            leading: const Icon(Mdi.android, size: 23),
+            leading: const Icon(FluentIcons.device_run, size: 23),
             content: Text(_loadingAction == 'app'
                 ? lang.status_starting
                 : lang.wsa_manage_app),
@@ -345,7 +345,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(Mdi.cogs, size: 23),
+            leading: const Icon(FluentIcons.settings, size: 23),
             content: Text(_loadingAction == 'settings'
                 ? lang.status_starting
                 : lang.wsa_manage_settings),

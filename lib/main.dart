@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:developer';
 import 'dart:async';
 
-import 'package:mdi/mdi.dart';
 import 'package:flutter_localizations/flutter_localizations.dart' as locale;
 import 'package:wsa_pacman/android/android_utils.dart';
 import 'package:wsa_pacman/apk_installer.dart';
@@ -690,13 +689,13 @@ class _MyHomePageState extends State<MyHomePage> {
               }(),
               items: [
                 PaneItem(
-                  icon: const Icon(Mdi.androidDebugBridge),
+                  icon: const Icon(FluentIcons.plug_connected, size: 18),
                   title: const Text('WSA'),
                   body: const ScreenWSA(),
                 ),
                 // ★ 修正：アイコンをゴミ箱に、名前をUninstallに
                 PaneItem(
-                  icon: const Icon(FluentIcons.delete),
+                  icon: const Icon(FluentIcons.delete, size: 18),
                   title: const Text('Uninstall'),
                   body: const ScreenAppManager(),
                 ),
@@ -714,7 +713,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 PaneItem(
-                  icon: const Icon(FluentIcons.settings),
+                  icon: const Icon(FluentIcons.settings, size: 18),
                   title: Text(lang.screen_settings),
                   body: ScreenSettings(controller: settingsController),
                 ),

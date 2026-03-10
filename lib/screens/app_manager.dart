@@ -2,7 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:mdi/mdi.dart';
+
 // lib/screens/app_manager.dart の一番上付近
 import '../global_state.dart'; // ★これを追加
 import 'dart:async'; // ★ これを追加
@@ -258,7 +258,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
 
   Widget _buildAppIcon(String? iconPath, String type) {
     Widget defaultIcon = type == 'adb'
-        ? Icon(Mdi.android, color: Colors.green, size: 28)
+        ? Icon(FluentIcons.cell_phone, color: Colors.green, size: 28)
         : Icon(FluentIcons.registry_editor, color: Colors.orange, size: 28);
 
     if (iconPath != null && iconPath.isNotEmpty) {
