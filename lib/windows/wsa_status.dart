@@ -35,6 +35,11 @@ class WSAStatus {
     return _cachedStatus;
   }
 
+  /// Clears the result cache so the next [getStatus] call performs fresh checks.
+  static void invalidateCache() {
+    _lastCheckMs = 0;
+  }
+
   // ── Back-compat helpers (used by legacy callers if any still exist) ────────
 
   /// `true` when WSA is installed and at least one WSA process is running.

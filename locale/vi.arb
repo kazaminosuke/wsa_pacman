@@ -224,4 +224,7 @@
         }
     },
     "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "Làm mới trạng thái",
+    "tooltip_refresh_status": "Kiểm tra lại trạng thái WSA ngay bây giờ"
 }

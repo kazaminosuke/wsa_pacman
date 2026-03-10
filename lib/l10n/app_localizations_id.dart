@@ -408,4 +408,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => 'Perbarui Status';
+
+  @override
+  String get tooltip_refresh_status => 'Periksa ulang status WSA sekarang';
 }

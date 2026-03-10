@@ -227,4 +227,7 @@
         }
     },
     "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "刷新状态",
+    "tooltip_refresh_status": "立即重新检查 WSA 状态"
 }

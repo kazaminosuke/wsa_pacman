@@ -403,4 +403,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'はい';
+
+  @override
+  String get btn_refresh_status => 'ステータスを更新';
+
+  @override
+  String get tooltip_refresh_status => 'WSA のステータスを今すぐ再確認';
 }

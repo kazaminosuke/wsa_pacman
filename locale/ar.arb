@@ -227,4 +227,7 @@
         }
     },
     "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "تحديث الحالة",
+    "tooltip_refresh_status": "إعادة التحقق من حالة WSA الآن"
 }

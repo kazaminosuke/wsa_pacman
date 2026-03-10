@@ -226,5 +226,7 @@
             }
         }
     },
-    "uninstaller_btn_yes": "はい"
+    "uninstaller_btn_yes": "はい",
+    "btn_refresh_status": "ステータスを更新",
+    "tooltip_refresh_status": "WSA のステータスを今すぐ再確認"
 }

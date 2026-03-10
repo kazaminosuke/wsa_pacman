@@ -10,6 +10,7 @@ import 'package:wsa_pacman/widget/fluent_info_bar.dart';
 import 'package:wsa_pacman/widget/smooth_list_view.dart';
 import '../main.dart';
 import '../global_state.dart';
+import 'package:wsa_pacman/windows/wsa_status.dart';
 
 class ScreenWSA extends StatefulWidget {
   const ScreenWSA({super.key});
@@ -52,6 +53,21 @@ class _ScreenWSAState extends State<ScreenWSA> {
   DateTime date = DateTime.now();
 
   String? _loadingAction;
+  bool _isRefreshing = false;
+
+  /// Forces WSAStatus to re-detect and triggers a periodic connector cycle.
+  Future<void> _refreshStatus() async {
+    if (_isRefreshing) return;
+    setState(() => _isRefreshing = true);
+    try {
+      // Invalidate the WSAStatus cache so getStatus() runs fresh checks.
+      WSAStatus.invalidateCache();
+      // Drive a connector cycle so GState.connectionStatus is updated.
+      await WSAPeriodicConnector.checkNow();
+    } finally {
+      if (mounted) setState(() => _isRefreshing = false);
+    }
+  }
 
   Future<void> _executeWsaAction(
       String actionName, Future<void> Function(String address) action) async {
@@ -293,6 +309,38 @@ class _ScreenWSAState extends State<ScreenWSA> {
                             child: Text(lang.btn_dev_settings),
                             onPressed: () => WSAUtils.launchDeveloperSettings())
                       ],
+
+                      // ── Refresh Status button (always shown) ──────────
+                      const SizedBox(width: 15.0),
+                      Tooltip(
+                        message: lang.tooltip_refresh_status,
+                        child: Button(
+                          style: ButtonStyle(
+                            padding: WidgetStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 6.0)),
+                          ),
+                          onPressed: _isRefreshing ? null : _refreshStatus,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (_isRefreshing)
+                                const SizedBox(
+                                  width: 14,
+                                  height: 14,
+                                  child: ProgressRing(strokeWidth: 2),
+                                )
+                              else
+                                const Icon(FluentIcons.refresh, size: 14),
+                              const SizedBox(width: 6),
+                              Text(lang.btn_refresh_status,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13)),
+                            ],
+                          ),
+                        ),
+                      ),
                     ]),
                 isLong: true,
                 severity: connectionStatus.severity,

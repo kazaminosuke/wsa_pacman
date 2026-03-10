@@ -404,4 +404,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => '상태 새로 고침';
+
+  @override
+  String get tooltip_refresh_status => 'WSA 상태를 지금 다시 확인';
 }

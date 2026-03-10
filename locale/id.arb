@@ -227,4 +227,7 @@
         }
     },
     "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "Perbarui Status",
+    "tooltip_refresh_status": "Periksa ulang status WSA sekarang"
 }

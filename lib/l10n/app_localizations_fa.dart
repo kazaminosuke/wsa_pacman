@@ -408,4 +408,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => 'به‌روزرسانی وضعیت';
+
+  @override
+  String get tooltip_refresh_status => 'بررسی مجدد وضعیت WSA اکنون';
 }

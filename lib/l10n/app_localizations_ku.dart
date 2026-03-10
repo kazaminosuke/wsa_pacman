@@ -409,4 +409,10 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => 'Rewşa nûve bike';
+
+  @override
+  String get tooltip_refresh_status => 'Rewşa WSA niha ji nû ve kontrol bike';
 }

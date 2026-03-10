@@ -224,4 +224,7 @@
         }
     },
     "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "רענון סטטוס",
+    "tooltip_refresh_status": "בדוק מחדש את סטטוס WSA עכשיו"
 }

@@ -224,4 +224,7 @@
         }
     },
     "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "Обновить статус",
+    "tooltip_refresh_status": "Проверить статус WSA сейчас"
 }

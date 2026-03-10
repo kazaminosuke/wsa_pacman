@@ -415,4 +415,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => 'Actualizar estado';
+
+  @override
+  String get tooltip_refresh_status =>
+      'Volver a verificar el estado de WSA ahora';
 }

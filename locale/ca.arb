@@ -224,4 +224,7 @@
         }
     },
     "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "Actualitzar l'estat",
+    "tooltip_refresh_status": "Torna a comprovar l'estat de WSA ara"
 }

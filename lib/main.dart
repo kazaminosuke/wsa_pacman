@@ -193,6 +193,10 @@ class WSAPeriodicConnector {
   static WSAStatusAlert alertStatus = ConnectionStatus.UNKNOWN.statusAlert;
   static bool _statusInitialized = false;
 
+  /// Immediately triggers a connection status check and waits for it to finish.
+  /// Useful for UI-driven "Refresh" actions.
+  static Future<void> checkNow() async => _checkConnectionStatus();
+
   static void _checkConnectionStatus() async {
     if (_statusInitialized) {
       Process.run('${Env.SYSTEM_ROOT}\\System32\\tasklist.exe', [])

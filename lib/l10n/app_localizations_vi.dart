@@ -409,4 +409,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => 'Làm mới trạng thái';
+
+  @override
+  String get tooltip_refresh_status =>
+      'Kiểm tra lại trạng thái WSA ngay bây giờ';
 }

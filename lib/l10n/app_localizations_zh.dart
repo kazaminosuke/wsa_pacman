@@ -401,6 +401,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => '刷新状态';
+
+  @override
+  String get tooltip_refresh_status => '立即重新检查 WSA 状态';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -801,4 +807,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get uninstaller_btn_yes => 'Yes';
+
+  @override
+  String get btn_refresh_status => '重新整理狀態';
+
+  @override
+  String get tooltip_refresh_status => '立即重新檢查 WSA 狀態';
 }

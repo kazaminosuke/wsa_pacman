@@ -857,6 +857,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yes'**
   String get uninstaller_btn_yes;
+
+  /// No description provided for @btn_refresh_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh Status'**
+  String get btn_refresh_status;
+
+  /// No description provided for @tooltip_refresh_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-check WSA status now'**
+  String get tooltip_refresh_status;
 }
 
 class _AppLocalizationsDelegate
