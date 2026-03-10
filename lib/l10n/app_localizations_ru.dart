@@ -15,9 +15,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get locale_system => 'Как в системе';
 
   @override
-  String get btn_boot => 'Запустить';
-
-  @override
   String get btn_auth => 'Повторная аутентификация';
 
   @override
@@ -420,4 +417,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get tooltip_refresh_status => 'Проверить статус WSA сейчас';
+
+  @override
+  String get btn_launch_wsa => 'Запустить WSA';
 }

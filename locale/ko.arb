@@ -8,7 +8,6 @@
         "description": "시스템 언어를 지칭합니다"
     },
     "locale_system": "시스템",
-    "btn_boot": "켜기",
     "btn_auth": "다시 인증",
     "btn_dev_settings": "개발자 옵션",
     "btn_switch_on": "켬",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "상태 새로 고침",
     "tooltip_refresh_status": "WSA 상태를 지금 다시 확인"
+,
+    "btn_launch_wsa": "WSA 시작"
 }

@@ -15,9 +15,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get locale_system => 'Hệ thống';
 
   @override
-  String get btn_boot => 'Chế độ';
-
-  @override
   String get btn_auth => 'Đăng nhập lại';
 
   @override
@@ -416,4 +413,7 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get tooltip_refresh_status =>
       'Kiểm tra lại trạng thái WSA ngay bây giờ';
+
+  @override
+  String get btn_launch_wsa => 'Khởi động WSA';
 }

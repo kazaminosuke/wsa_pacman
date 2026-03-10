@@ -8,7 +8,6 @@
         "description": "Menjelaskan lokal sistem"
     },
     "locale_system": "Sistem",
-    "btn_boot": "Nyalakan",
     "btn_auth": "Otentikasi ulang",
     "btn_dev_settings": "Opsi pengembang",
     "btn_switch_on": "Nyala",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "Perbarui Status",
     "tooltip_refresh_status": "Periksa ulang status WSA sekarang"
+,
+    "btn_launch_wsa": "Jalankan WSA"
 }

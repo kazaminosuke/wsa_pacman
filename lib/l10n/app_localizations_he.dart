@@ -15,9 +15,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get locale_system => 'מערכת';
 
   @override
-  String get btn_boot => 'הפעל';
-
-  @override
   String get btn_auth => 'אימות מחדש';
 
   @override
@@ -411,4 +408,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get tooltip_refresh_status => 'בדוק מחדש את סטטוס WSA עכשיו';
+
+  @override
+  String get btn_launch_wsa => 'הפעל WSA';
 }

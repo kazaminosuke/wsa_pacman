@@ -15,9 +15,6 @@ class AppLocalizationsKu extends AppLocalizations {
   String get locale_system => 'سیستەم';
 
   @override
-  String get btn_boot => 'کارای بکە';
-
-  @override
   String get btn_auth => 'دووبارە سەلماندن';
 
   @override
@@ -415,4 +412,7 @@ class AppLocalizationsKu extends AppLocalizations {
 
   @override
   String get tooltip_refresh_status => 'Rewşa WSA niha ji nû ve kontrol bike';
+
+  @override
+  String get btn_launch_wsa => 'WSA bixe';
 }

@@ -15,9 +15,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get locale_system => 'Sistem';
 
   @override
-  String get btn_boot => 'Nyalakan';
-
-  @override
   String get btn_auth => 'Otentikasi ulang';
 
   @override
@@ -414,4 +411,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tooltip_refresh_status => 'Periksa ulang status WSA sekarang';
+
+  @override
+  String get btn_launch_wsa => 'Jalankan WSA';
 }

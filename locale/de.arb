@@ -5,7 +5,6 @@
     },
     "locale_desc": "Deutsch",
     "locale_system": "System",
-    "btn_boot": "Starten",
     "btn_auth": "Erneut authentifizieren",
     "btn_dev_settings": "Entwickleroptionen",
     "btn_switch_on": "An",
@@ -227,4 +226,6 @@
 ,
     "btn_refresh_status": "Status aktualisieren",
     "tooltip_refresh_status": "WSA-Status jetzt neu prüfen"
+,
+    "btn_launch_wsa": "WSA starten"
 }

@@ -5,7 +5,7 @@
     },
     "locale_desc": "Polski",
     "locale_system": "Systemowy",
-    "btn_boot": "Włącz",
+    "": "Włącz",
     "btn_auth": "Ponownie uwierzytelnij",
     "btn_dev_settings": "Opcje dla programistów",
     "btn_switch_on": "Wł.",
@@ -223,8 +223,8 @@
             }
         }
     },
-    "uninstaller_btn_yes": "Yes"
-,
+    "uninstaller_btn_yes": "Yes",
     "btn_refresh_status": "Odśwież status",
-    "tooltip_refresh_status": "Sprawdź ponownie status WSA teraz"
+    "tooltip_refresh_status": "Sprawdź ponownie status WSA teraz",
+    "btn_launch_wsa": "Uruchom WSA"
 }

@@ -15,9 +15,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get locale_system => '시스템';
 
   @override
-  String get btn_boot => '켜기';
-
-  @override
   String get btn_auth => '다시 인증';
 
   @override
@@ -410,4 +407,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get tooltip_refresh_status => 'WSA 상태를 지금 다시 확인';
+
+  @override
+  String get btn_launch_wsa => 'WSA 시작';
 }

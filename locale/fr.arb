@@ -8,7 +8,6 @@
         "description": "Définit la langue du système"
     },
     "locale_system": "Système",
-    "btn_boot": "Démarrer",
     "btn_auth": "Réauthentifier",
     "btn_dev_settings": "Options de développeur",
     "btn_switch_on": "On",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "Actualiser le statut",
     "tooltip_refresh_status": "Revérifier le statut WSA maintenant"
+,
+    "btn_launch_wsa": "Lancer WSA"
 }

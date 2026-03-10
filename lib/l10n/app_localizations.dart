@@ -143,12 +143,6 @@ abstract class AppLocalizations {
   /// **'System'**
   String get locale_system;
 
-  /// No description provided for @btn_boot.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on'**
-  String get btn_boot;
-
   /// No description provided for @btn_auth.
   ///
   /// In en, this message translates to:
@@ -869,6 +863,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Re-check WSA status now'**
   String get tooltip_refresh_status;
+
+  /// No description provided for @btn_launch_wsa.
+  ///
+  /// In en, this message translates to:
+  /// **'Launch WSA'**
+  String get btn_launch_wsa;
 }
 
 class _AppLocalizationsDelegate

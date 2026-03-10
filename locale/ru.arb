@@ -5,7 +5,6 @@
     },
     "locale_desc": "Русский",
     "locale_system": "Как в системе",
-    "btn_boot": "Запустить",
     "btn_auth": "Повторная аутентификация",
     "btn_dev_settings": "Настройки разработчика",
     "btn_switch_on": "Вкл.",
@@ -227,4 +226,6 @@
 ,
     "btn_refresh_status": "Обновить статус",
     "tooltip_refresh_status": "Проверить статус WSA сейчас"
+,
+    "btn_launch_wsa": "Запустить WSA"
 }

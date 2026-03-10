@@ -5,7 +5,6 @@
     },
     "locale_desc": "Tiếng Việt",
     "locale_system": "Hệ thống",
-    "btn_boot": "Chế độ",
     "btn_auth": "Đăng nhập lại",
     "btn_dev_settings": "Tùy chọn nhà phát triển",
     "btn_switch_on": "Bật",
@@ -227,4 +226,6 @@
 ,
     "btn_refresh_status": "Làm mới trạng thái",
     "tooltip_refresh_status": "Kiểm tra lại trạng thái WSA ngay bây giờ"
+,
+    "btn_launch_wsa": "Khởi động WSA"
 }

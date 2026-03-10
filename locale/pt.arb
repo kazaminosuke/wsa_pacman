@@ -5,7 +5,6 @@
     },
     "locale_desc": "Português (Brasil)",
     "locale_system": "Sistema",
-    "btn_boot": "Ativar",
     "btn_auth": "Reautenticar",
     "btn_dev_settings": "Opções de desenvolvedor",
     "btn_switch_on": "Lig",
@@ -227,4 +226,6 @@
 ,
     "btn_refresh_status": "Atualizar status",
     "tooltip_refresh_status": "Verificar novamente o status do WSA agora"
+,
+    "btn_launch_wsa": "Iniciar WSA"
 }

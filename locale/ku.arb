@@ -8,7 +8,6 @@
         "description": "وەسفی زمانی سیستەم دەکات"
     },
     "locale_system": "سیستەم",
-    "btn_boot": "کارای بکە",
     "btn_auth": "دووبارە سەلماندن",
     "btn_dev_settings": "ھەڵبژاردەکانی پەرەپێدەر",
     "btn_switch_on": "ھەڵبوو",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "Rewşa nûve bike",
     "tooltip_refresh_status": "Rewşa WSA niha ji nû ve kontrol bike"
+,
+    "btn_launch_wsa": "WSA bixe"
 }

@@ -8,7 +8,6 @@
         "description": "描述系統區域設定"
     },
     "locale_system": "系統",
-    "btn_boot": "啟動",
     "btn_auth": "重新驗證",
     "btn_dev_settings": "開發者選項",
     "btn_switch_on": "開",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "重新整理狀態",
     "tooltip_refresh_status": "立即重新檢查 WSA 狀態"
+,
+    "btn_launch_wsa": "啟動 WSA"
 }

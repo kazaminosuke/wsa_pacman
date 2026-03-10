@@ -306,6 +306,10 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
               children: [
                 FilledButton(
                   onPressed: _isScanning ? null : () => _startScan(lang),
+                  style: ButtonStyle(
+                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0))),
+                  ),
                   child: Row(
                     children: [
                       const Icon(FluentIcons.search, size: 16),
@@ -317,6 +321,23 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                 const SizedBox(width: 12),
                 Button(
                   onPressed: () => _backupRegistry(lang),
+                  style: ButtonStyle(
+                    shape: WidgetStateProperty.resolveWith(
+                        (states) => RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(
+                                color: FluentTheme.of(context)
+                                    .resources
+                                    .dividerStrokeColorDefault
+                                    .withValues(
+                                        alpha:
+                                            states.contains(WidgetState.hovered)
+                                                ? 0.9
+                                                : 0.5),
+                                width: 0.5,
+                              ),
+                            )),
+                  ),
                   child: Row(
                     children: [
                       const Icon(FluentIcons.save),
@@ -332,6 +353,19 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                       : () => _executeCleanup(lang),
                   style: const ButtonStyle().copyWith(
                     foregroundColor: WidgetStatePropertyAll(Colors.red),
+                    shape: WidgetStateProperty.resolveWith(
+                        (states) => RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(
+                                color: Colors.red.withValues(
+                                    alpha: states.contains(WidgetState.disabled)
+                                        ? 0.15
+                                        : states.contains(WidgetState.hovered)
+                                            ? 0.7
+                                            : 0.4),
+                                width: 1.0,
+                              ),
+                            )),
                   ),
                   child: Row(
                     children: [
@@ -373,7 +407,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                       final packageId = app['package'] as String;
 
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
+                        padding: const EdgeInsets.only(bottom: 8.0),
                         child: FluentCard(
                           onPressed: () {
                             setState(() {

@@ -8,7 +8,6 @@
         "description": "Describes the system locale"
     },
     "locale_system": "System",
-    "btn_boot": "Turn on",
     "btn_auth": "Reauthenticate",
     "btn_dev_settings": "Developer options",
     "btn_switch_on": "On",
@@ -229,4 +228,6 @@
     "uninstaller_btn_yes": "Yes",
     "btn_refresh_status": "Refresh Status",
     "tooltip_refresh_status": "Re-check WSA status now"
+,
+    "btn_launch_wsa": "Launch WSA"
 }

@@ -8,7 +8,6 @@
         "description": "描述系统区域设置"
     },
     "locale_system": "系统",
-    "btn_boot": "启动",
     "btn_auth": "重新认证",
     "btn_dev_settings": "开发者选项",
     "btn_switch_on": "打开",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "刷新状态",
     "tooltip_refresh_status": "立即重新检查 WSA 状态"
+,
+    "btn_launch_wsa": "启动 WSA"
 }

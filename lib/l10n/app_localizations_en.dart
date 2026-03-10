@@ -15,9 +15,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locale_system => 'System';
 
   @override
-  String get btn_boot => 'Turn on';
-
-  @override
   String get btn_auth => 'Reauthenticate';
 
   @override
@@ -414,4 +411,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tooltip_refresh_status => 'Re-check WSA status now';
+
+  @override
+  String get btn_launch_wsa => 'Launch WSA';
 }

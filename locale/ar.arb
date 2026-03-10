@@ -8,7 +8,6 @@
         "description": "Describes the system locale"
     },
     "locale_system": "النظام",
-    "btn_boot": "تشغيل",
     "btn_auth": "إعادة المصادقة",
     "btn_dev_settings": "خيارات المطور",
     "btn_switch_on": "مفعل",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "تحديث الحالة",
     "tooltip_refresh_status": "إعادة التحقق من حالة WSA الآن"
+,
+    "btn_launch_wsa": "تشغيل WSA"
 }

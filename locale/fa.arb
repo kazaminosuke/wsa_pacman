@@ -8,7 +8,6 @@
         "description": "Describes the system locale"
     },
     "locale_system": "سیستم",
-    "btn_boot": "روشن کردن",
     "btn_auth": "تأیید دوباره",
     "btn_dev_settings": "گزینه‌های توسعه‌دهنده",
     "btn_switch_on": "روشن",
@@ -230,4 +229,6 @@
 ,
     "btn_refresh_status": "به‌روزرسانی وضعیت",
     "tooltip_refresh_status": "بررسی مجدد وضعیت WSA اکنون"
+,
+    "btn_launch_wsa": "راه‌اندازی WSA"
 }

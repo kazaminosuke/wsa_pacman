@@ -15,9 +15,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get locale_system => '系统';
 
   @override
-  String get btn_boot => '启动';
-
-  @override
   String get btn_auth => '重新认证';
 
   @override
@@ -407,6 +404,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tooltip_refresh_status => '立即重新检查 WSA 状态';
+
+  @override
+  String get btn_launch_wsa => '启动 WSA';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -418,9 +418,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get locale_system => '系統';
-
-  @override
-  String get btn_boot => '啟動';
 
   @override
   String get btn_auth => '重新驗證';
@@ -813,4 +810,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get tooltip_refresh_status => '立即重新檢查 WSA 狀態';
+
+  @override
+  String get btn_launch_wsa => '啟動 WSA';
 }

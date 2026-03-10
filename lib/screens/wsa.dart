@@ -60,9 +60,10 @@ class _ScreenWSAState extends State<ScreenWSA> {
     if (_isRefreshing) return;
     setState(() => _isRefreshing = true);
     try {
-      // Invalidate the WSAStatus cache so getStatus() runs fresh checks.
+      // Invalidate the cache, then await a fresh detection run.
       WSAStatus.invalidateCache();
-      // Drive a connector cycle so GState.connectionStatus is updated.
+      await WSAStatus.waitForStatus();
+      // Drive a full connector cycle so GState.connectionStatus is updated.
       await WSAPeriodicConnector.checkNow();
     } finally {
       if (mounted) setState(() => _isRefreshing = false);
@@ -121,7 +122,38 @@ class _ScreenWSAState extends State<ScreenWSA> {
     var connectionStatus = GState.connectionStatus.of(context);
     final lang = AppLocalizations.of(context)!;
 
-    const smallSpacer = SizedBox(height: 8.0);
+    const smallSpacer = SizedBox(height: 5.0);
+
+    // ── Shared button style for InfoBar action buttons ───────────────────────
+    // Provides uniform padding, uniform rounded corners (r=8), and the Fluent
+    // default shape. Colors are intentionally NOT set here so each button's
+    // semantic color (white bg, accent, etc.) is preserved.
+    ButtonStyle infoBarButtonStyle(
+        {Color? foreground, Color? Function(Set<WidgetState>)? background}) {
+      return ButtonStyle(
+        padding: WidgetStateProperty.all(
+            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0)),
+        shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
+        foregroundColor:
+            foreground != null ? WidgetStateProperty.all(foreground) : null,
+        backgroundColor: background != null
+            ? WidgetStateProperty.resolveWith(background)
+            : null,
+      );
+    }
+
+    // ── Helper: icon + text row used by all InfoBar buttons ─────────────────
+    Widget btnContent(IconData icon, String label) => Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 14),
+            const SizedBox(width: 6),
+            Text(label,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          ],
+        );
 
     return ScaffoldPage(
       header: PageHeader(title: Text(lang.screen_wsa)),
@@ -138,136 +170,84 @@ class _ScreenWSAState extends State<ScreenWSA> {
                 title: Text(connectionStatus.title(lang)),
                 content: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8.0,
+                    runSpacing: 6.0,
                     children: [
                       Text(connectionStatus.desc(lang)),
 
-                      // 1. WSAが見つからない時 (MISSING) のボタン
+                      // ── MISSING: nothing we can launch, point to WSABuilds ─
                       if (connectionStatus.type ==
                           ConnectionStatus.MISSING) ...[
-                        const SizedBox(width: 15.0),
                         FilledButton(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 2.0),
-                              child: Text(lang.btn_wsabuilds,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                            ),
+                            style: infoBarButtonStyle(),
+                            child: btnContent(FluentIcons.open_in_new_window,
+                                lang.btn_wsabuilds),
                             onPressed: () => Process.run('explorer',
-                                ['https://github.com/MustardChef/WSABuilds']))
+                                ['https://github.com/MustardChef/WSABuilds'])),
                       ]
-                      // 2. WSA停止中の時 (ARRESTED) の「オンにする」ボタン
+
+                      // ── ARRESTED: WSA installed but no process running ──────
                       else if (connectionStatus.type ==
                           ConnectionStatus.ARRESTED) ...[
-                        const SizedBox(width: 15.0),
+                        // White "Turn on" — keeps semantic color (white bg, black fg)
                         Button(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                WidgetStateProperty.resolveWith((states) {
+                          style: infoBarButtonStyle(
+                            foreground: Colors.black,
+                            background: (states) {
                               if (states.contains(WidgetState.hovered))
                                 return Colors.white.withOpacity(0.9);
                               if (states.contains(WidgetState.pressed))
                                 return Colors.grey[10];
                               return Colors.white;
-                            }),
-                            foregroundColor:
-                                WidgetStateProperty.all(Colors.black),
-                            shape: WidgetStateProperty.resolveWith((states) {
-                              final borderColor =
-                                  states.contains(WidgetState.hovered)
-                                      ? Colors.grey[120]
-                                      : Colors.grey[80];
-                              return RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4.0),
-                                side:
-                                    BorderSide(color: borderColor, width: 1.0),
-                              );
-                            }),
-                            padding: WidgetStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    horizontal: 12.0, vertical: 6.0)),
-                            elevation: WidgetStateProperty.resolveWith(
-                                (states) => states.contains(WidgetState.hovered)
-                                    ? 1.0
-                                    : 0.0),
+                            },
                           ),
-                          onPressed: () => WSAUtils.launch(),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(FluentIcons.power_button, size: 14),
-                              const SizedBox(width: 6),
-                              Text(lang.btn_boot,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13)),
-                            ],
-                          ),
-                        )
+                          onPressed: () async {
+                            WSAUtils.launch();
+                            await _refreshStatus();
+                          },
+                          child: btnContent(
+                              FluentIcons.power_button, lang.btn_launch_wsa),
+                        ),
                       ]
-                      // ★ 復活: 開発者モードオフ (DISCONNECTED) または 不明なエラー (UNKNOWN) 時のボタン
+
+                      // ── OFFLINE: process running but ADB port closed ────────
+                      else if (connectionStatus.type ==
+                          ConnectionStatus.OFFLINE) ...[
+                        // Launch WSA button (attempts re-launch / dev-mode prompt)
+                        Button(
+                          style: infoBarButtonStyle(),
+                          onPressed: () async {
+                            WSAUtils.launch();
+                            await _refreshStatus();
+                          },
+                          child:
+                              btnContent(FluentIcons.play, lang.btn_launch_wsa),
+                        ),
+                        // Developer settings shortcut
+                        Button(
+                          style: infoBarButtonStyle(),
+                          onPressed: () => WSAUtils.launchDeveloperSettings(),
+                          child: btnContent(
+                              FluentIcons.settings, lang.btn_dev_settings),
+                        ),
+                      ]
+
+                      // ── DISCONNECTED / UNKNOWN ─────────────────────────────
                       else if (connectionStatus.type ==
                               ConnectionStatus.DISCONNECTED ||
                           connectionStatus.type ==
                               ConnectionStatus.UNKNOWN) ...[
-                        // DISCONNECTED の時だけ「設定を開く」ボタンを出す
                         if (connectionStatus.type ==
-                            ConnectionStatus.DISCONNECTED) ...[
-                          const SizedBox(width: 15.0),
+                            ConnectionStatus.DISCONNECTED)
                           Button(
-                            style: ButtonStyle(
-                              padding: WidgetStateProperty.all(
-                                  const EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 6.0)),
-                              shape: WidgetStateProperty.resolveWith((states) =>
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0),
-                                    side: BorderSide(
-                                        color: FluentTheme.of(context)
-                                            .inactiveColor
-                                            .withOpacity(states.contains(
-                                                    WidgetState.hovered)
-                                                ? 0.4
-                                                : 0.2),
-                                        width: 1.0),
-                                  )),
-                            ),
+                            style: infoBarButtonStyle(),
                             onPressed: () => WSAUtils.launchDeveloperSettings(),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(FluentIcons.settings, size: 14),
-                                const SizedBox(width: 6),
-                                Text(lang.btn_dev_settings,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13)),
-                              ],
-                            ),
+                            child: btnContent(
+                                FluentIcons.settings, lang.btn_dev_settings),
                           ),
-                        ],
-
-                        const SizedBox(width: 15.0),
-
-                        // 再起動ボタン（両方で表示）
+                        // Restart WSA button
                         Button(
-                          style: ButtonStyle(
-                            padding: WidgetStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    horizontal: 12.0, vertical: 6.0)),
-                            shape: WidgetStateProperty.resolveWith(
-                                (states) => RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                      side: BorderSide(
-                                          color: FluentTheme.of(context)
-                                              .inactiveColor
-                                              .withOpacity(states.contains(
-                                                      WidgetState.hovered)
-                                                  ? 0.4
-                                                  : 0.2),
-                                          width: 1.0),
-                                    )),
-                          ),
+                          style: infoBarButtonStyle(),
                           onPressed: () async {
                             WSAPeriodicConnector.lastStart =
                                 DateTime.now().millisecondsSinceEpoch;
@@ -283,43 +263,31 @@ class _ScreenWSAState extends State<ScreenWSA> {
                             await Future.delayed(const Duration(seconds: 1));
                             WSAUtils.launch();
                           },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(FluentIcons.refresh, size: 14),
-                              const SizedBox(width: 6),
-                              Text(lang.btn_restart_wsa,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13)),
-                            ],
-                          ),
-                        )
+                          child: btnContent(
+                              FluentIcons.refresh, lang.btn_restart_wsa),
+                        ),
                       ]
 
-                      // 4. 認証エラー (UNAUTHORIZED) などのボタン
+                      // ── UNAUTHORIZED ───────────────────────────────────────
                       else if (connectionStatus.type ==
                           ConnectionStatus.UNAUTHORIZED) ...[
-                        const SizedBox(width: 15.0),
                         Button(
-                            child: Text(lang.btn_auth),
-                            onPressed: () => WSAPeriodicConnector.reconnect()),
-                        const SizedBox(width: 15.0),
+                          style: infoBarButtonStyle(),
+                          onPressed: () => WSAPeriodicConnector.reconnect(),
+                          child: Text(lang.btn_auth),
+                        ),
                         Button(
-                            child: Text(lang.btn_dev_settings),
-                            onPressed: () => WSAUtils.launchDeveloperSettings())
+                          style: infoBarButtonStyle(),
+                          onPressed: () => WSAUtils.launchDeveloperSettings(),
+                          child: Text(lang.btn_dev_settings),
+                        ),
                       ],
 
-                      // ── Refresh Status button (always shown) ──────────
-                      const SizedBox(width: 15.0),
+                      // ── Refresh Status (always shown) ──────────────────────
                       Tooltip(
                         message: lang.tooltip_refresh_status,
                         child: Button(
-                          style: ButtonStyle(
-                            padding: WidgetStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 6.0)),
-                          ),
+                          style: infoBarButtonStyle(),
                           onPressed: _isRefreshing ? null : _refreshStatus,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
