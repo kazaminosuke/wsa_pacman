@@ -204,35 +204,48 @@ class WSAPeriodicConnector {
       });
     }
 
-    if (!WSAStatus.isBooted) {
+    // ── 3-step pre-connection check ──────────────────────────────────────────
+    final wsaStatus = WSAStatus.getStatus();
+
+    // STARTING override: keep "starting" state for up to 15 s after a boot
+    // request so the UI does not flash ARRESTED during a slow WSA startup.
+    if (shouldWaitStart &&
+        (wsaStatus == ConnectionStatus.MISSING ||
+            wsaStatus == ConnectionStatus.ARRESTED ||
+            wsaStatus == ConnectionStatus.OFFLINE)) {
       timer.setDuration(PERIODIC_CHECK_BOOT_DURATION);
-      // ★ 追加: 再起動直後（15秒以内）なら、プロセスがなくても「起動中」を維持する
-      if (shouldWaitStart) {
-        if (status != ConnectionStatus.STARTING)
-          GState.connectionStatus.$ =
-              (status = ConnectionStatus.STARTING).statusAlert;
-        return;
-      }
-      ConnectionStatus newStatus = Env.WSA_INSTALLED
-          ? ConnectionStatus.ARRESTED
-          : WinVer.isWindows11OrGreater
-              ? ConnectionStatus.MISSING
-              : ConnectionStatus.UNSUPPORTED;
+      if (status != ConnectionStatus.STARTING)
+        GState.connectionStatus.$ =
+            (status = ConnectionStatus.STARTING).statusAlert;
+      return;
+    }
+
+    // Step 1 result: package not present
+    if (wsaStatus == ConnectionStatus.MISSING) {
+      timer.setDuration(PERIODIC_CHECK_BOOT_DURATION);
+      final ConnectionStatus newStatus = WinVer.isWindows11OrGreater
+          ? ConnectionStatus.MISSING
+          : ConnectionStatus.UNSUPPORTED;
       if (status != newStatus)
         GState.connectionStatus.$ = (status = newStatus).statusAlert;
       return;
-    } else if (!WSAStatus.isRunning) {
+    }
+
+    // Step 2 result: package present but no WSA process running
+    if (wsaStatus == ConnectionStatus.ARRESTED) {
       timer.setDuration(PERIODIC_CHECK_SLEEPING_DURATION);
-      // ★ 追加: 同様に「起動中」を維持する
-      if (shouldWaitStart) {
-        if (status != ConnectionStatus.STARTING)
-          GState.connectionStatus.$ =
-              (status = ConnectionStatus.STARTING).statusAlert;
-        return;
-      }
-      ConnectionStatus newStatus = ConnectionStatus.ARRESTED;
-      if (status != newStatus)
-        GState.connectionStatus.$ = (status = newStatus).statusAlert;
+      if (status != ConnectionStatus.ARRESTED)
+        GState.connectionStatus.$ =
+            (status = ConnectionStatus.ARRESTED).statusAlert;
+      return;
+    }
+
+    // Step 3 result: process running but ADB port not open
+    if (wsaStatus == ConnectionStatus.OFFLINE) {
+      timer.setDuration(PERIODIC_CHECK_SLEEPING_DURATION);
+      if (status != ConnectionStatus.OFFLINE)
+        GState.connectionStatus.$ =
+            (status = ConnectionStatus.OFFLINE).statusAlert;
       return;
     }
 

@@ -1,54 +1,97 @@
+// ignore_for_file: constant_identifier_names
 // lib/windows/wsa_status.dart
 import 'dart:io';
 
+import 'package:wsa_pacman/main.dart';
+
+/// 3-step WSA status detector.
+///
+/// Step 1: AppxPackage presence    → MISSING  if absent
+/// Step 2: WsaClient / WsaService  → ARRESTED if not running
+/// Step 3: ADB port open check     → OFFLINE  if port closed
+///                                  → CONNECTED if port open
 class WSAStatus {
-  static bool _isRunningCache = false;
-  static bool _isAdbReadyCache = false; // ★ 追加: ADBが接続可能かどうかのキャッシュ
-  static int _lastCheck = 0;
+  // ── Constants (no magic numbers) ──────────────────────────────────────────
+  static const String _wsaPackageQuery = '*WindowsSubsystemForAndroid*';
+  static const String _wsaProcessName1 = 'WsaClient.exe';
+  static const String _wsaProcessName2 = 'WsaService.exe';
+  static const int _adbPort = 58526;
+  static const int _cacheIntervalMs = 1000;
 
-  static bool get isBooted => isRunning;
+  // ── Cache ─────────────────────────────────────────────────────────────────
+  static ConnectionStatus _cachedStatus = ConnectionStatus.UNKNOWN;
+  static int _lastCheckMs = 0;
 
-  // 既存の「プロセスが起動しているか」のチェック
-  static bool get isRunning {
-    _updateStatusIfNeeded();
-    return _isRunningCache;
-  }
+  // ── Public API ────────────────────────────────────────────────────────────
 
-  // ★ 追加: 「開発者モードがオンで、ADBポートが開いているか」のチェック
-  static bool get isAdbReady {
-    _updateStatusIfNeeded();
-    return _isAdbReadyCache;
-  }
-
-  static void _updateStatusIfNeeded() {
+  /// Returns the current WSA connection status by performing up to 3 checks.
+  /// Results are cached for [_cacheIntervalMs] ms to avoid hammering the OS.
+  static ConnectionStatus getStatus() {
     final now = DateTime.now().millisecondsSinceEpoch;
-    
-    // 1秒に1回だけチェックを走らせる
-    if (now - _lastCheck > 1000) {
-      _lastCheck = now;
-      try {
-        // 1. WsaClient.exe が存在するかチェック
-        final taskResult = Process.runSync('tasklist', ['/FI', 'IMAGENAME eq WsaClient.exe']);
-        final taskOut = taskResult.stdout.toString();
-        _isRunningCache = taskOut.contains('WsaClient.exe');
+    if (now - _lastCheckMs > _cacheIntervalMs) {
+      _lastCheckMs = now;
+      _cachedStatus = _detect();
+    }
+    return _cachedStatus;
+  }
 
-        // 2. ★ 開発者モード(ADB)のチェック
-        // WSAが起動している場合のみ、ポート58526(WSAのデフォルト)が開いているか調べる
-        if (_isRunningCache) {
-          // netstat -ano | findstr LISTENING | findstr :58526
-          final netstatResult = Process.runSync('cmd', ['/c', 'netstat -ano | findstr LISTENING | findstr :58526']);
-          final netstatOut = netstatResult.stdout.toString();
-          
-          // 出力に 58526 が含まれていれば、開発者モードがONで接続待ち状態
-          _isAdbReadyCache = netstatOut.contains(':58526');
-        } else {
-          _isAdbReadyCache = false;
-        }
+  // ── Back-compat helpers (used by legacy callers if any still exist) ────────
 
-      } catch (e) {
-        _isRunningCache = false;
-        _isAdbReadyCache = false;
+  /// `true` when WSA is installed and at least one WSA process is running.
+  static bool get isBooted {
+    final s = getStatus();
+    return s != ConnectionStatus.MISSING &&
+        s != ConnectionStatus.UNSUPPORTED &&
+        s != ConnectionStatus.ARRESTED;
+  }
+
+  /// `true` when a WSA process (`WsaClient.exe` or `WsaService.exe`) is found.
+  static bool get isRunning {
+    final s = getStatus();
+    return s != ConnectionStatus.MISSING &&
+        s != ConnectionStatus.UNSUPPORTED &&
+        s != ConnectionStatus.ARRESTED;
+  }
+
+  /// `true` when the ADB port is confirmed open.
+  static bool get isAdbReady => getStatus() == ConnectionStatus.CONNECTED;
+
+  // ── Internal detection logic ──────────────────────────────────────────────
+
+  static ConnectionStatus _detect() {
+    try {
+      // ── Step 1: AppxPackage presence ──────────────────────────────────────
+      final pkgResult = Process.runSync(
+        'powershell',
+        ['-NoProfile', '-Command', 'Get-AppxPackage $_wsaPackageQuery'],
+      );
+      final pkgOut = pkgResult.stdout.toString().trim();
+      if (pkgOut.isEmpty) {
+        return ConnectionStatus.MISSING;
       }
+
+      // ── Step 2: Process running check ─────────────────────────────────────
+      final taskResult = Process.runSync('tasklist', []);
+      final taskOut = taskResult.stdout.toString();
+      final processRunning = taskOut.contains(_wsaProcessName1) ||
+          taskOut.contains(_wsaProcessName2);
+      if (!processRunning) {
+        return ConnectionStatus.ARRESTED;
+      }
+
+      // ── Step 3: ADB port open check ───────────────────────────────────────
+      final netstatResult = Process.runSync(
+        'cmd',
+        ['/c', 'netstat -ano | findstr LISTENING | findstr :$_adbPort'],
+      );
+      final netstatOut = netstatResult.stdout.toString();
+      if (!netstatOut.contains(':$_adbPort')) {
+        return ConnectionStatus.OFFLINE;
+      }
+
+      return ConnectionStatus.CONNECTED;
+    } catch (_) {
+      return ConnectionStatus.UNKNOWN;
     }
   }
 }
