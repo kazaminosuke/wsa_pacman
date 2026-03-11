@@ -211,6 +211,13 @@ class _ScreenWSAState extends State<ScreenWSA> {
                             GState.connectionStatus.$ =
                                 ConnectionStatus.STARTING.statusAlert;
                             WSAUtils.launch();
+                            Future.delayed(const Duration(minutes: 1), () {
+                              if (mounted &&
+                                  WSAPeriodicConnector.status ==
+                                      ConnectionStatus.STARTING) {
+                                _refreshStatus();
+                              }
+                            });
                           },
                           child: btnContent(fsi.FluentIcons.power_24_regular,
                               lang.btn_launch_wsa),
@@ -231,6 +238,13 @@ class _ScreenWSAState extends State<ScreenWSA> {
                             GState.connectionStatus.$ =
                                 ConnectionStatus.STARTING.statusAlert;
                             WSAUtils.launch();
+                            Future.delayed(const Duration(minutes: 1), () {
+                              if (mounted &&
+                                  WSAPeriodicConnector.status ==
+                                      ConnectionStatus.STARTING) {
+                                _refreshStatus();
+                              }
+                            });
                           },
                           child: btnContent(
                               fsi.FluentIcons.arrow_counterclockwise_24_regular,
@@ -276,6 +290,13 @@ class _ScreenWSAState extends State<ScreenWSA> {
                                 runInShell: true);
                             await Future.delayed(const Duration(seconds: 1));
                             WSAUtils.launch();
+                            Future.delayed(const Duration(minutes: 1), () {
+                              if (mounted &&
+                                  WSAPeriodicConnector.status ==
+                                      ConnectionStatus.STARTING) {
+                                _refreshStatus();
+                              }
+                            });
                           },
                           child: btnContent(
                               fsi.FluentIcons.arrow_counterclockwise_24_regular,
