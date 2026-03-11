@@ -31,6 +31,8 @@ import 'utils/string_utils.dart';
 import 'sync_apps.dart';
 
 import 'theme.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
+import 'package:flutter/material.dart' show Icons;
 // 衝突を避けるために hide を追加します
 import 'dart:ffi' hide Size;
 import 'package:ffi/ffi.dart';
@@ -689,13 +691,13 @@ class _MyHomePageState extends State<MyHomePage> {
               }(),
               items: [
                 PaneItem(
-                  icon: const Icon(FluentIcons.plug_connected, size: 18),
+                  icon: const Icon(Icons.android, size: 18),
                   title: const Text('WSA'),
                   body: const ScreenWSA(),
                 ),
                 // ★ 修正：アイコンをゴミ箱に、名前をUninstallに
                 PaneItem(
-                  icon: const Icon(FluentIcons.delete, size: 18),
+                  icon: const Icon(fsi.FluentIcons.delete_24_regular, size: 18),
                   title: const Text('Uninstall'),
                   body: const ScreenAppManager(),
                 ),
@@ -713,7 +715,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 PaneItem(
-                  icon: const Icon(FluentIcons.settings, size: 18),
+                  icon:
+                      const Icon(fsi.FluentIcons.settings_24_regular, size: 18),
                   title: Text(lang.screen_settings),
                   body: ScreenSettings(controller: settingsController),
                 ),

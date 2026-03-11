@@ -3,6 +3,8 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart' show Icons;
+import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
 
 import 'package:wsa_pacman/utils/wsa_utils.dart';
 import 'package:wsa_pacman/widget/fluent_card.dart';
@@ -180,7 +182,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
                           ConnectionStatus.MISSING) ...[
                         FilledButton(
                             style: infoBarButtonStyle(),
-                            child: btnContent(FluentIcons.open_in_new_window,
+                            child: btnContent(fsi.FluentIcons.open_24_regular,
                                 lang.btn_wsabuilds),
                             onPressed: () => Process.run('explorer',
                                 ['https://github.com/MustardChef/WSABuilds'])),
@@ -202,11 +204,16 @@ class _ScreenWSAState extends State<ScreenWSA> {
                             },
                           ),
                           onPressed: () async {
+                            WSAPeriodicConnector.lastStart =
+                                DateTime.now().millisecondsSinceEpoch;
+                            WSAPeriodicConnector.status =
+                                ConnectionStatus.STARTING;
+                            GState.connectionStatus.$ =
+                                ConnectionStatus.STARTING.statusAlert;
                             WSAUtils.launch();
-                            await _refreshStatus();
                           },
-                          child: btnContent(
-                              FluentIcons.power_button, lang.btn_launch_wsa),
+                          child: btnContent(fsi.FluentIcons.power_24_regular,
+                              lang.btn_launch_wsa),
                         ),
                       ]
 
@@ -217,18 +224,24 @@ class _ScreenWSAState extends State<ScreenWSA> {
                         Button(
                           style: infoBarButtonStyle(),
                           onPressed: () async {
+                            WSAPeriodicConnector.lastStart =
+                                DateTime.now().millisecondsSinceEpoch;
+                            WSAPeriodicConnector.status =
+                                ConnectionStatus.STARTING;
+                            GState.connectionStatus.$ =
+                                ConnectionStatus.STARTING.statusAlert;
                             WSAUtils.launch();
-                            await _refreshStatus();
                           },
-                          child:
-                              btnContent(FluentIcons.play, lang.btn_launch_wsa),
+                          child: btnContent(
+                              fsi.FluentIcons.arrow_counterclockwise_24_regular,
+                              lang.btn_restart_wsa),
                         ),
                         // Developer settings shortcut
                         Button(
                           style: infoBarButtonStyle(),
                           onPressed: () => WSAUtils.launchDeveloperSettings(),
-                          child: btnContent(
-                              FluentIcons.settings, lang.btn_dev_settings),
+                          child: btnContent(fsi.FluentIcons.settings_24_regular,
+                              lang.btn_dev_settings),
                         ),
                       ]
 
@@ -243,7 +256,8 @@ class _ScreenWSAState extends State<ScreenWSA> {
                             style: infoBarButtonStyle(),
                             onPressed: () => WSAUtils.launchDeveloperSettings(),
                             child: btnContent(
-                                FluentIcons.settings, lang.btn_dev_settings),
+                                fsi.FluentIcons.settings_24_regular,
+                                lang.btn_dev_settings),
                           ),
                         // Restart WSA button
                         Button(
@@ -264,7 +278,8 @@ class _ScreenWSAState extends State<ScreenWSA> {
                             WSAUtils.launch();
                           },
                           child: btnContent(
-                              FluentIcons.refresh, lang.btn_restart_wsa),
+                              fsi.FluentIcons.arrow_counterclockwise_24_regular,
+                              lang.btn_restart_wsa),
                         ),
                       ]
 
@@ -283,23 +298,43 @@ class _ScreenWSAState extends State<ScreenWSA> {
                         ),
                       ],
 
-                      // ── Refresh Status (always shown) ──────────────────────
+// ── Refresh Status (always shown) ──────────────────────
                       Tooltip(
                         message: lang.tooltip_refresh_status,
                         child: Button(
-                          style: infoBarButtonStyle(),
-                          onPressed: _isRefreshing ? null : _refreshStatus,
+                          style: infoBarButtonStyle(
+                            background: (states) {
+                              // 無効化時：背景を完全に消さず、半透明の白を残す
+                              if (states.contains(WidgetState.disabled)) {
+                                return Colors.white.withOpacity(0.5); 
+                              }
+                              if (states.contains(WidgetState.hovered)) {
+                                return Colors.white.withOpacity(0.9);
+                              }
+                              if (states.contains(WidgetState.pressed)) {
+                                return Colors.grey[10];
+                              }
+                              return Colors.white; 
+                            },
+                          ),
+                          // ★ポイント1: _isRefreshing に加えて、起動中(STARTING)の時も null(無効化)にする
+                          onPressed: (_isRefreshing || connectionStatus.type == ConnectionStatus.STARTING) 
+                              ? null 
+                              : _refreshStatus,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (_isRefreshing)
+                              // ★ポイント2: _isRefreshing に加えて、起動中(STARTING)の時も ProgressRing(グルグル) を表示する
+                              if (_isRefreshing || connectionStatus.type == ConnectionStatus.STARTING)
                                 const SizedBox(
                                   width: 14,
                                   height: 14,
-                                  child: ProgressRing(strokeWidth: 2),
+                                  child: ProgressRing(strokeWidth: 2.5),
                                 )
                               else
-                                const Icon(FluentIcons.refresh, size: 14),
+                                const Icon(
+                                    fsi.FluentIcons.arrow_clockwise_24_regular,
+                                    size: 14),
                               const SizedBox(width: 6),
                               Text(lang.btn_refresh_status,
                                   style: const TextStyle(
@@ -321,7 +356,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
               style: FluentTheme.of(context).typography.bodyLarge),
           const SizedBox(height: 20),
           FluentCard(
-            leading: const Icon(FluentIcons.device_run, size: 23),
+            leading: const Icon(Icons.android, size: 24),
             content: Text(_loadingAction == 'app'
                 ? lang.status_starting
                 : lang.wsa_manage_app),
@@ -345,7 +380,7 @@ class _ScreenWSAState extends State<ScreenWSA> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(FluentIcons.settings, size: 23),
+            leading: const Icon(fsi.FluentIcons.settings_24_regular, size: 24),
             content: Text(_loadingAction == 'settings'
                 ? lang.status_starting
                 : lang.wsa_manage_settings),

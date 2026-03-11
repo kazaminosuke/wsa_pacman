@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
 
 // lib/screens/app_manager.dart の一番上付近
 import '../global_state.dart'; // ★これを追加
@@ -258,8 +259,8 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
 
   Widget _buildAppIcon(String? iconPath, String type) {
     Widget defaultIcon = type == 'adb'
-        ? Icon(FluentIcons.cell_phone, color: Colors.green, size: 28)
-        : Icon(FluentIcons.registry_editor, color: Colors.orange, size: 28);
+        ? Icon(fsi.FluentIcons.phone_24_regular, color: Colors.green, size: 28)
+        : Icon(fsi.FluentIcons.apps_24_regular, color: Colors.orange, size: 28);
 
     if (iconPath != null && iconPath.isNotEmpty) {
       String cleanPath = iconPath.split(',').first.replaceAll('"', '').trim();
@@ -312,7 +313,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(FluentIcons.search, size: 16),
+                      const Icon(fsi.FluentIcons.search_24_regular, size: 16),
                       const SizedBox(width: 8),
                       Text(_isScanning ? lang.scanning : lang.scan_system),
                     ],
@@ -340,7 +341,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(FluentIcons.save),
+                      const Icon(fsi.FluentIcons.save_24_regular, size: 18),
                       const SizedBox(width: 8),
                       Text(lang.backup_registry),
                     ],
@@ -369,7 +370,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(FluentIcons.delete),
+                      const Icon(fsi.FluentIcons.delete_24_regular, size: 18),
                       const SizedBox(width: 8),
                       Text(lang.execute_cleanup),
                     ],

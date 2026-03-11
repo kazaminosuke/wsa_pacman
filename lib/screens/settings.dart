@@ -6,7 +6,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:jovial_svg/jovial_svg.dart';
-
+import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
 import 'package:protobuf/protobuf.dart';
 import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/proto/options.pb.dart';
@@ -210,7 +210,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
         children: [
           spacer,
           FluentCard(
-            leading: const Icon(FluentIcons.network_tower, size: 24),
+            leading: const Icon(fsi.FluentIcons.wifi_1_24_regular, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(lang.settings_port,
@@ -269,7 +269,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(FluentIcons.power_standby, size: 24),
+            leading: const Icon(fsi.FluentIcons.power_24_regular, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(lang.settings_autostart,
@@ -289,7 +289,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           smallSpacer,
           // レジストリ自動バックアップの設定（カード型でおしゃれに）
           FluentCard(
-            leading: const Icon(FluentIcons.save, size: 24),
+            leading: const Icon(fsi.FluentIcons.save_24_regular, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(lang.auto_backup_registry,
@@ -303,7 +303,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           const SizedBox(height: 5.0), // 下の項目との隙間
           smallSpacer,
           FluentCard(
-            leading: const Icon(FluentIcons.timer, size: 24),
+            leading: const Icon(fsi.FluentIcons.timer_24_regular, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(
@@ -347,7 +347,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           FluentCard(
-            leading: const Icon(FluentIcons.translate, size: 24),
+            leading: const Icon(fsi.FluentIcons.translate_24_regular, size: 24),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(lang.settings_language,
@@ -373,7 +373,8 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
           ExpanderWin11(
-            leading: const Icon(FluentIcons.color_solid, size: 23),
+            leading:
+                const Icon(fsi.FluentIcons.weather_moon_24_regular, size: 23),
             header: Text(lang.theme_mode),
             content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -393,7 +394,8 @@ class ScreenSettingsState extends State<ScreenSettings> {
           // ★追加：最強のカラーパレット＆RGBピッカー機能！
           // ★修正：テーマカラー設定の多言語化
           ExpanderWin11(
-            leading: const Icon(FluentIcons.color, size: 23),
+            leading:
+                const Icon(fsi.FluentIcons.paint_brush_24_regular, size: 23),
             header: Text(lang.settings_theme_color), // ←変更
             initiallyExpanded: false,
             direction: ExpanderDirection.down,
@@ -598,7 +600,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
           smallSpacer,
 // 自動バックアップ保存先の指定
           FluentCard(
-            leading: const Icon(FluentIcons.folder_horizontal, size: 23),
+            leading: const Icon(fsi.FluentIcons.folder_24_regular, size: 23),
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -675,7 +677,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
 
           if (WinVer.isWindows11OrGreater)
             ExpanderWin11(
-              leading: const Icon(FluentIcons.blur, size: 23),
+              leading: const Icon(fsi.FluentIcons.blur_24_regular, size: 23),
               header: Text(lang.theme_mica),
               content: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
