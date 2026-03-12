@@ -1,9 +1,0 @@
-Analyzing wsa_pacman...                                         
-
-  error - The method 'decodeBuffer' isn't defined for the type 'ZipDecoder' - lib\android\reader_apk.dart:73:24 - undefined_method
-   info - Missing type annotation - lib\android\reader_xapk.dart:32:7 - strict_top_level_inference
-  error - The method 'decodeBuffer' isn't defined for the type 'ZipDecoder' - lib\android\reader_xapk.dart:58:20 - undefined_method
-   info - Missing type annotation - lib\screens\settings.dart:48:3 - strict_top_level_inference
-   info - Missing type annotation - lib\screens\settings.dart:56:3 - strict_top_level_inference
-   info - Missing type annotation - lib\screens\settings.dart:58:3 - strict_top_level_inference
-
