@@ -1,6 +1,0 @@
-Analyzing wsa_pacman...                                         
-
-   info - Invalid use of a private type in a public API - lib\screens\apk_uninstaller.dart:14:3 - library_private_types_in_public_api
-   info - Statements in an if should be enclosed in a block - lib\screens\apk_uninstaller.dart:291:31 - curly_braces_in_flow_control_structures
-   info - Statements in an if should be enclosed in a block - lib\screens\apk_uninstaller.dart:293:31 - curly_braces_in_flow_control_structures
-
