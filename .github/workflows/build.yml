@@ -1,0 +1,41 @@
+name: Build Windows Installer
+
+on:
+  workflow_dispatch: # 手動でActionの画面から「Run workflow」ボタンを押して実行できるようにする
+  push:
+    tags:
+      - 'v*' # 「v1.6.0」などのタグをPushした時だけ自動で走るようにする（毎回Pushで走ると時間がかかるため）
+
+jobs:
+  build:
+    name: Build & Create Installer
+    runs-on: windows-latest
+
+    steps:
+      - name: 📥 コードをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: 💙 Flutterのセットアップ
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.41.x' # 必要に応じて現在のプロジェクトのバージョンに合わせてください
+
+      - name: 📦 パッケージのインストール
+        run: flutter pub get
+
+      - name: 🛠️ Windowsアプリのビルド (Release)
+        run: flutter build windows --release
+
+      - name: 📦 Inno Setupでインストーラーを作成
+        # iscc コマンドで .iss ファイルをコンパイルします。
+        # ※ installer.iss の場所がプロジェクト直下でない場合は、フォルダ名を足してください (例: my_folder/installer.iss)
+        run: iscc installer.iss
+
+      - name: 📤 完成したインストーラーをアップロード
+        uses: actions/upload-artifact@v4
+        with:
+          name: WSA-PacMan-Installer
+          # .iss 内で `instbuilddir` として指定した出力先のパスを指定します
+          # ※ .iss の場所によっては `build/installer/*.exe` などに調整が必要です
+          path: build/installer/*.exe
