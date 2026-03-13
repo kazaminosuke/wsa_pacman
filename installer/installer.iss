@@ -114,6 +114,14 @@ Filename: "{app}\{#executable}"; Parameters: "--sync"; Flags: runhidden nowait;
 ; {group} を {autoprograms} に変更することで、スタートメニュー直下に配置されます！
 Name: "{autoprograms}\WSA PacMan"; Filename: "{app}\{#executable}"
 
+[UninstallDelete]
+Type: filesandordirs; Name: "{app}\*"
+Type: dirifempty; Name: "{app}"
+
+[UninstallRun]
+; ※PACMAN本体にレジストリを元に戻す処理（例: --unsync）が実装されている場合
+Filename: "{app}\{#executable}"; Parameters: "--unsync"; Flags: runhidden waituntilterminated;
+
 [Code]
 function ShouldInstallVCRedist: Boolean;
 var 
