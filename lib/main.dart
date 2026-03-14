@@ -17,11 +17,11 @@ import 'package:wsa_pacman/utils/locale_utils.dart';
 import 'package:wsa_pacman/windows/win_info.dart';
 import 'package:wsa_pacman/windows/win_reg.dart';
 import 'package:wsa_pacman/windows/wsa_status.dart';
+import 'package:wsa_pacman/utils/env.dart';
 import 'global_state.dart';
 
 import 'package:provider/provider.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
+import 'package:window_manager/window_manager.dart';
 
 import 'screens/wsa.dart';
 import 'screens/settings.dart';
@@ -138,47 +138,6 @@ extension __EnumExtension on Enum {
   String name() {
     return toString().split('.').last.toLowerCase();
   }
-}
-
-class Env {
-  static final String SYSTEM_ROOT = Platform.environment["SystemRoot"] ?? "";
-  static final String USER_PROFILE = Platform.environment["UserProfile"] ?? "";
-
-  // 実行ファイル（.exe）があるディレクトリを取得
-  static String get EXEC_DIR => File(Platform.resolvedExecutable).parent.path;
-
-  // 絶対パスでツールフォルダを指定（末尾の \\ を削除）
-  static String get TOOLS_DIR => "$EXEC_DIR\\embedded-tools";
-
-  static final String POWERSHELL = WinReg.getString(
-              RegHKey.HKEY_LOCAL_MACHINE,
-              r'SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell',
-              'Path')
-          ?.value ??
-      '$SYSTEM_ROOT\\System32\\WindowsPowerShell\\v1.0\\powershell.exe';
-
-  static final String WSA_SYSTEM_PATH = RegExp(
-              r'^(.*)[\\/]+[^\\/]*[\\/]+[^\\/]*$')
-          .firstMatch(WinReg.getString(
-                      RegHKey.HKEY_LOCAL_MACHINE,
-                      r'SYSTEM\CurrentControlSet\Services\WsaService',
-                      'ImagePath')
-                  ?.value
-                  .unquoted ??
-              WinReg.getString(
-                      RegHKey.HKEY_CURRENT_USER,
-                      r'Software\Microsoft\Windows\CurrentVersion\App Paths\WsaClient.exe',
-                      null)
-                  ?.value ??
-              '')
-          ?.group(1) ??
-      '';
-
-  static final String WSA_EXECUTABLE =
-      '$WSA_SYSTEM_PATH\\WsaClient\\WsaClient.exe';
-  static final bool WSA_INSTALLED =
-      File('$WSA_SYSTEM_PATH\\AppxManifest.xml').existsSync();
-  static final WSA_INFO = WSAPkgInfo.fromSystemPath(WSA_SYSTEM_PATH);
 }
 
 class WSAPeriodicConnector {
@@ -339,13 +298,10 @@ class Constants {
 
 void main(List<String> arguments) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await flutter_acrylic.Window.initialize();
-
-  const app = MyApp();
-  final wrappedApp = SharedValue.wrapApp(app);
-  darkMode = WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-      Brightness.dark;
-  runApp(wrappedApp);
+  
+  if (isDesktop) {
+    await windowManager.ensureInitialized();
+  }
 
   AppOptions.init();
 
@@ -367,109 +323,39 @@ void main(List<String> arguments) async {
 
   WSAPeriodicConnector._checkConnectionStatus();
 
-  flutter_acrylic.Window.hideWindowControls();
+  darkMode = WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+      Brightness.dark;
 
   if (isDesktop) {
-    doWhenWindowReady(() {
-      final win = appWindow;
-      if (!Constants.installMode && !Constants.uninstallMode) {
-        win.minSize = const Size(640, 500);
-        win.size = const Size(740, 540);
-        win.title = appTitle;
-      } else {
-        win.minSize = win.maxSize = win.size = const Size(500, 335);
+    windowManager.waitUntilReadyToShow(const WindowOptions(
+      size: Size(740, 540),
+      minimumSize: Size(640, 500),
+      center: true,
+      title: appTitle,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+    ), () async {
+      if (Constants.installMode || Constants.uninstallMode) {
+        await windowManager.setSize(const Size(500, 335));
+        await windowManager.setMinimumSize(const Size(500, 335));
+        await windowManager.setMaximumSize(const Size(500, 335));
       }
-      win.alignment = Alignment.center;
-      win.show();
-      late final SET_VISIBLE =
-          Constants.isolate?.sendFlag(APK_READER_FLAGS.UI_LOADED, true);
-      late final Timer uiTimer;
-      uiTimer = Timer.periodic(const Duration(milliseconds: 100), (t) {
-        if (win.isVisible) {
-          SET_VISIBLE;
-          uiTimer.cancel();
-        }
-      });
+      await windowManager.show();
+      await windowManager.focus();
     });
   }
+
+  runApp(SharedValue.wrapApp(const MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  // ★ 修正1: setStateを使わずに値を監視できる ValueNotifier に変更
-  final ValueNotifier<bool> _isFocused = ValueNotifier(true);
-  Timer? _focusTimer;
-
-  @override
-  void initState() {
-    super.initState();
-    if (isDesktop) {
-      _focusTimer = Timer.periodic(const Duration(milliseconds: 150), (_) {
-        _checkFocus();
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _focusTimer?.cancel();
-    _isFocused.dispose(); // メモリリーク防止
-    super.dispose();
-  }
-
-  void _checkFocus() {
-    final foregroundHwnd = GetForegroundWindow();
-    if (foregroundHwnd == 0) return;
-
-    final pidPtr = calloc<Uint32>();
-    GetWindowThreadProcessId(foregroundHwnd, pidPtr);
-    final foregroundPid = pidPtr.value;
-    free(pidPtr);
-
-    final isFocused = (foregroundPid == pid);
-    // ★ 修正2: setStateを削除し、valueを直接書き換えるだけにする
-    if (_isFocused.value != isFocused) {
-      _isFocused.value = isFocused;
-    }
-  }
-
-  void setMicaEffect(bool micaEnabled, [bool dark = true]) {
-    if (WinVer.isWindows11OrGreater) {
-      flutter_acrylic.Window.setEffect(
-        effect: micaEnabled
-            ? flutter_acrylic.WindowEffect.mica
-            : flutter_acrylic.WindowEffect.disabled,
-        color: dark ? const Color(0x00000000) : const Color(0x00FFFFFF),
-        dark: dark,
-      );
-    } else {
-      flutter_acrylic.Window.setEffect(
-        effect: flutter_acrylic.WindowEffect.disabled,
-        color: dark ? const Color(0xFF202020) : const Color(0xFFF3F3F3),
-        dark: dark,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final theme = GState.theme.of(context).mode;
-    final mica = GState.mica.of(context);
-
     final bool isDark =
         theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
-    setMicaEffect(mica.enabled, isDark);
-
-    final bool isMicaActive = mica.enabled && WinVer.isWindows11OrGreater;
-    // Updated fallback colors for better contrast and modern feel
-    final Color fallbackColor =
-        isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF9F9F9);
 
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -495,86 +381,13 @@ class _MyAppState extends State<MyApp> {
                     ? const ApkInstaller()
                     : const MyHomePage()
           },
-          builder: (context, child) {
-            // ★ 修正3: ValueListenableBuilderで包むことで「背景のコンテナだけ」を再描画する
-            return ValueListenableBuilder<bool>(
-              valueListenable: _isFocused,
-              builder: (context, isFocused, _) {
-                final Color bgColor = (isFocused && isMicaActive)
-                    ? Colors.transparent
-                    : fallbackColor;
-                return Container(
-                  color: bgColor,
-                  child: child,
-                );
-              },
-            );
-          },
           theme: FluentThemeData(
             fontFamily: 'Yu Gothic UI',
-            scaffoldBackgroundColor: Colors.transparent,
-            micaBackgroundColor: Colors.transparent,
-            navigationPaneTheme: const NavigationPaneThemeData(
-              backgroundColor: Colors.transparent,
-            ),
             accentColor: appTheme.getColor(isDark),
             brightness: isDark ? Brightness.dark : Brightness.light,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
               glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-            ),
-            buttonTheme: ButtonThemeData(
-              defaultButtonStyle: ButtonStyle(
-                shadowColor: const WidgetStatePropertyAll(Colors.transparent),
-                shape: WidgetStateProperty.resolveWith((states) {
-                  BorderSide side;
-                  if (isDark) {
-                    if (states.contains(WidgetState.disabled))
-                      side = const BorderSide(
-                          width: 0.5, color: Color(0x0Df0f0f0));
-                    else if (states.isEmpty ||
-                        (states.contains(WidgetState.hovered) &&
-                            !states.contains(WidgetState.pressed)))
-                      side = const BorderSide(
-                          width: 0.5, color: Color(0x09f0f0f0));
-                    else
-                      side = const BorderSide(
-                          width: 0.5, color: Color(0x12f0f0f0));
-                  } else {
-                    if (states.contains(WidgetState.disabled))
-                      side = const BorderSide(
-                          width: 0.5, color: Color(0x1F212121));
-                    else if (states.isEmpty ||
-                        (states.contains(WidgetState.hovered) &&
-                            !states.contains(WidgetState.pressed)))
-                      side = const BorderSide(
-                          width: 0.5, color: Color(0x38212121));
-                    else
-                      side = const BorderSide(
-                          width: 0.5, color: Color(0x12212121));
-                  }
-                  return RoundedRectangleBorder(side: side);
-                }),
-                backgroundColor: WidgetStateProperty.resolveWith((states) {
-                  if (isDark) {
-                    if (states.contains(WidgetState.disabled))
-                      return const Color(0x0BFFFFFF);
-                    if (states.contains(WidgetState.pressed))
-                      return const Color(0x08FFFFFF);
-                    if (states.contains(WidgetState.hovered))
-                      return const Color(0x14FFFFFF);
-                    return const Color(0x0EFFFFFF);
-                  } else {
-                    if (states.contains(WidgetState.disabled))
-                      return const Color(0x0Bf9f9f9);
-                    if (states.contains(WidgetState.pressed))
-                      return const Color(0x66f0f0f0);
-                    if (states.contains(WidgetState.hovered))
-                      return const Color(0xA6f9f9f9);
-                    return const Color(0xCCFFFFFF);
-                  }
-                }),
-              ),
             ),
           ),
         );
@@ -616,50 +429,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Column(
       children: [
-        // 1段目：ウィンドウのタイトルバー（薄い文字の正式アプリ名と、右端のバツボタン等）
-        if (!kIsWeb)
-          WindowTitleBarBox(
-            child: Row(
-              children: [
-                Expanded(
-                  child: MoveWindow(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            Text(
-                              appTitle,
-                              // captionからbodyに変更し、薄さを解除してクッキリさせました！
-                              style: theme.typography.body,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'v$appVersion',
-                              // バージョンも少し濃くして見やすく調整
-                              style: theme.typography.caption?.copyWith(
-                                  color: theme.inactiveColor.withOpacity(0.6)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const WindowButtons(),
-              ],
-            ),
-          ),
-
-        // 2段目：ナビゲーションバー（ロゴ、WSAタブ、右端に区切り線と設定ボタン）
         Expanded(
           child: NavigationView(
             pane: NavigationPane(
               selected: index,
               onChanged: (i) => setState(() => index = i),
               displayMode: PaneDisplayMode.top,
-              // 左側のヘッダー部分にロゴと「WSA PacMan」を配置
               header: Padding(
                 padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                 child: Row(
@@ -677,7 +452,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(width: 10),
                     Text("WSA PacMan", style: theme.typography.bodyLarge),
-                    const SizedBox(width: 20), // タブとの少しの隙間
+                    const SizedBox(width: 20),
                   ],
                 ),
               ),
@@ -695,7 +470,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: const Text('WSA'),
                   body: const ScreenWSA(),
                 ),
-                // ★ 修正：アイコンをゴミ箱に、名前をUninstallに
                 PaneItem(
                   icon: const Icon(fsi.FluentIcons.delete_24_regular, size: 18),
                   title: const Text('Uninstall'),
@@ -703,14 +477,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
               footerItems: [
-                // ★ 消えてしまう標準のSeparatorの代わりに、自作の「棒」を強制的に描画する！
                 PaneItemHeader(
                   header: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Container(
-                      width: 1, // 棒の太さ
-                      height: 16, // 棒の高さ
-                      color: theme.inactiveColor.withOpacity(0.3), // ちょうどいいグレー
+                      width: 1,
+                      height: 16,
+                      color: theme.inactiveColor.withOpacity(0.3),
                     ),
                   ),
                 ),
@@ -726,78 +499,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
     );
-  }
-}
-
-class WindowButtons extends StatelessWidget {
-  const WindowButtons({super.key});
-
-  static Color windowButtonAlphaColor(
-      FluentThemeData style, Set<WidgetState> states) {
-    if (style.brightness == Brightness.light) {
-      if (states.contains(WidgetState.pressed))
-        return Colors.black.withOpacity(0.075);
-      if (states.contains(WidgetState.hovered))
-        return Colors.black.withOpacity(0.11);
-      return Colors.transparent;
-    } else {
-      if (states.contains(WidgetState.pressed))
-        return Colors.white.withOpacity(0.03);
-      if (states.contains(WidgetState.hovered))
-        return Colors.white.withOpacity(0.06);
-      return Colors.transparent;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    assert(debugCheckHasFluentTheme(context));
-    assert(debugCheckHasFluentLocalizations(context));
-    final FluentThemeData theme = FluentTheme.of(context);
-    final mica = GState.mica.of(context);
-
-    final buttonColors = WindowButtonColors(
-      iconNormal: theme.inactiveColor,
-      iconMouseDown: theme.inactiveColor,
-      iconMouseOver: theme.inactiveColor,
-      mouseOver: mica.enabled
-          ? windowButtonAlphaColor(theme, {WidgetState.hovered})
-          : Colors.transparent,
-      mouseDown: mica.enabled
-          ? windowButtonAlphaColor(theme, {WidgetState.pressed})
-          : Colors.transparent,
-    );
-
-    final closeButtonColors = WindowButtonColors(
-      mouseOver: Colors.red,
-      mouseDown: Colors.red.dark,
-      iconNormal: theme.inactiveColor,
-      iconMouseOver: Colors.red.basedOnLuminance(),
-      iconMouseDown: Colors.red.dark.basedOnLuminance(),
-    );
-
-    return Row(children: [
-      Tooltip(
-        message: FluentLocalizations.of(context).minimizeWindowTooltip,
-        child: MinimizeWindowButton(colors: buttonColors),
-      ),
-      Tooltip(
-        message: FluentLocalizations.of(context).restoreWindowTooltip,
-        child: WindowButton(
-          colors: buttonColors,
-          iconBuilder: (context) {
-            if (appWindow.isMaximized) {
-              return RestoreIcon(color: context.iconColor);
-            }
-            return MaximizeIcon(color: context.iconColor);
-          },
-          onPressed: appWindow.maximizeOrRestore,
-        ),
-      ),
-      Tooltip(
-        message: FluentLocalizations.of(context).closeWindowTooltip,
-        child: CloseWindowButton(colors: closeButtonColors),
-      ),
-    ]);
   }
 }

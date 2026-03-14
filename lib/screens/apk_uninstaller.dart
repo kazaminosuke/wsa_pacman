@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/main.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:wsa_pacman/widget/move_window_nomax.dart';
 import 'package:wsa_pacman/utils/wsa_utils.dart';
 
@@ -178,7 +178,7 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
       }
 
       await Future.delayed(const Duration(seconds: 2));
-      appWindow.close();
+      windowManager.close();
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -273,7 +273,7 @@ class _ApkUninstallerState extends State<ApkUninstaller> {
                   children: [
                     noMoveWindow(
                       Button(
-                        onPressed: () => appWindow.close(),
+                        onPressed: () => windowManager.close(),
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),
                           alignment: Alignment.center,

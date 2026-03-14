@@ -1,6 +1,6 @@
 // ignore_for_file: camel_case_types
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:flutter/widgets.dart';
 
 ///The double click gesture detector adds a time overhead on any widget's click actions, this class only implements window dragging
@@ -11,7 +11,7 @@ class _MoveWindowNoMaximize extends StatelessWidget {
   @override
   Widget build(BuildContext context) => GestureDetector(
     behavior: dragBlocker ? HitTestBehavior.opaque : HitTestBehavior.translucent, 
-    onPanStart: dragBlocker ? (_){} : (_){appWindow.startDragging();},
+    onPanStart: dragBlocker ? (_){} : (_){windowManager.startDragging();},
     child: child
   );
 }

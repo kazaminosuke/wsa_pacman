@@ -17,7 +17,7 @@ dependencies:
     
   # UIとシステム関連のメジャーアップデート
   fluent_ui: ^4.0.0
-  win32: ^3.1.4
+  win32: ^5.5.4
   provider: ^6.1.1
   shared_value: ^3.0.0
   synchronized: ^3.1.0
@@ -35,11 +35,7 @@ dependencies:
   jovial_svg: ^1.1.16
 
   # カスタム修正が含まれている可能性が高いものはGitフォークを維持
-  bitsdojo_window:
-    git:
-      url: https://github.com/alesimula/bitsdojo_window.git
-      path: bitsdojo_window
-      ref: master
+  window_manager: ^0.4.3
   smooth_scroll_multiplatform:
     git: https://github.com/alesimula/dyn_mouse_scroll.git
   ffi: ^2.2.0
@@ -49,6 +45,10 @@ dependencies:
   intl: ^0.20.2
 
   fixnum: any
+
+dependency_overrides:
+  win32: ^5.5.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

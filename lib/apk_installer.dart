@@ -16,7 +16,8 @@ import 'package:wsa_pacman/widget/move_window_nomax.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:window_manager/window_manager.dart';
+import 'package:wsa_pacman/utils/env.dart';
 import 'package:wsa_pacman/windows/win_path.dart';
 
 import 'dart:developer';
@@ -332,7 +333,7 @@ class _ApkInstallerState extends State<ApkInstaller> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0)))),
                         onPressed: () {
-                          appWindow.close();
+                          windowManager.close();
                         },
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),
@@ -515,7 +516,7 @@ class _ApkInstallerState extends State<ApkInstaller> {
                         onPressed: () {
                           if (createShortcut)
                             ApkInstaller.createLaunchIcon(package, appTitle);
-                          appWindow.close();
+                          windowManager.close();
                         },
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),
@@ -539,7 +540,7 @@ class _ApkInstallerState extends State<ApkInstaller> {
                             if (createShortcut)
                               ApkInstaller.createLaunchIcon(package, appTitle);
                             WSAUtils.launchApp(package);
-                            appWindow.close();
+                            windowManager.close();
                           },
                           child: Container(
                             constraints: const BoxConstraints(minWidth: 80),
@@ -579,7 +580,7 @@ class _ApkInstallerState extends State<ApkInstaller> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0)))),
                         onPressed: () {
-                          appWindow.close();
+                          windowManager.close();
                         },
                         child: Container(
                           constraints: const BoxConstraints(minWidth: 80),

@@ -13,6 +13,7 @@ import 'package:wsa_pacman/android/permissions.dart';
 import 'package:wsa_pacman/android/reader_apk.dart';
 import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/io/isolate_runner.dart';
+import 'package:wsa_pacman/utils/env.dart';
 import 'package:wsa_pacman/main.dart';
 import 'package:wsa_pacman/utils/misc_utils.dart';
 import 'package:wsa_pacman/proto/manifest_xapk.pb.dart';

@@ -4,6 +4,7 @@ import 'package:wsa_pacman/global_state.dart';
 import 'package:wsa_pacman/main.dart';
 import 'package:wsa_pacman/windows/win_io.dart';
 import 'package:wsa_pacman/windows/win_pkg.dart';
+import 'package:wsa_pacman/utils/env.dart';
 import '../utils/string_utils.dart';
 import '../utils/regexp_utils.dart';
 

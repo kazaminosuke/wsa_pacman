@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:developer';
 
 export 'package:wsa_pacman/l10n/app_localizations.dart';
 import 'package:protobuf/protobuf.dart';
@@ -14,6 +15,9 @@ import 'package:synchronized/synchronized.dart';
 import 'package:wsa_pacman/utils/locale_utils.dart';
 import 'package:wsa_pacman/windows/win_info.dart';
 import 'package:wsa_pacman/windows/win_io.dart';
+import 'package:wsa_pacman/windows/win_pkg.dart';
+import 'package:wsa_pacman/windows/win_reg.dart';
+import 'package:wsa_pacman/utils/env.dart';
 
 import 'proto/options.pb.dart';
 import 'utils/string_utils.dart';
@@ -87,7 +91,7 @@ class GState {
 
   // ★ 修正: バックアップの保存先フォルダ（デフォルトはデスクトップ）
   static final backupDirectory = SharedValue<String>(
-      value: '${Platform.environment['USERPROFILE'] ?? 'C:'}\\Desktop');
+      value: '${Env.USER_PROFILE}\\Desktop');
 }
 
 const String UNLOCALIZED_OPTION = "UNLOCALIZED_OPTION";

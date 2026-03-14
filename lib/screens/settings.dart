@@ -9,6 +9,7 @@ import 'package:jovial_svg/jovial_svg.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
 import 'package:protobuf/protobuf.dart';
 import 'package:wsa_pacman/global_state.dart';
+import 'package:wsa_pacman/utils/env.dart';
 import 'package:wsa_pacman/proto/options.pb.dart';
 import 'package:wsa_pacman/utils/locale_utils.dart';
 import 'package:wsa_pacman/widget/adaptive_icon.dart';
@@ -69,15 +70,15 @@ class ScreenSettings extends StatefulWidget {
   State<StatefulWidget> createState() => ScreenSettingsState();
 }
 
-final androidPortUpdater = LateUpdater<int>(GState.androidPort.$, (value) {
-  GState.androidPort
-    ..update((p0) => value)
-    ..persist();
-  log("AGGIORNATO: ${GState.androidPort.$}");
-});
-
 class ScreenSettingsState extends State<ScreenSettings> {
   static const SETTINGS_UPDATE_TIMER = Duration(seconds: 3);
+
+  late final androidPortUpdater = LateUpdater<int>(GState.androidPort.$, (value) {
+    GState.androidPort
+      ..update((p0) => value)
+      ..persist();
+    log("AGGIORNATO: ${GState.androidPort.$}");
+  });
 
   // ★ 追加：カスタムカラーピッカー用のRGB変数（初期値はきれいなブルー）
   double _customR = 0;
@@ -85,15 +86,27 @@ class ScreenSettingsState extends State<ScreenSettings> {
   double _customB = 215;
 
   ScreenSettingsState();
-  static final _exBackground =
-      _loadIcon("assets/icons/missing_icon_background.si");
-  static final _exForeground =
-      _loadIcon("assets/icons/missing_icon_foreground.si");
-  static final _exLegacyIcon = _loadIcon("assets/icons/missing_icon_legacy.si");
+  late Future<ScalableImageWidget> _exBackground;
+  late Future<ScalableImageWidget> _exForeground;
+  late Future<ScalableImageWidget> _exLegacyIcon;
 
   static Future<ScalableImageWidget> _loadIcon(String asset) async {
     var scalable = ScalableImage.fromSIAsset(rootBundle, asset);
     return ScalableImageWidget(si: await scalable);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _exBackground = _loadIcon("assets/icons/missing_icon_background.si");
+    _exForeground = _loadIcon("assets/icons/missing_icon_foreground.si");
+    _exLegacyIcon = _loadIcon("assets/icons/missing_icon_legacy.si");
+  }
+
+  @override
+  void dispose() {
+    androidPortUpdater.cancel();
+    super.dispose();
   }
 
   static List<Widget> optionsListDeferred<E extends ProtobufEnum, V>(
@@ -409,7 +422,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     final colors = [
-                      systemAccentColor,
+                      Colors.blue, // Fallback for system
                       AppTheme.alpineLandingDark,
                       Colors.yellow,
                       Colors.orange,
@@ -615,13 +628,13 @@ class ScreenSettingsState extends State<ScreenSettings> {
             trailing: Row(
               children: [
                 if (GState.backupDirectory.of(context) !=
-                    '${Platform.environment['USERPROFILE'] ?? 'C:'}\\Desktop')
+                    '${Env.USER_PROFILE}\\Desktop')
                   Tooltip(
                     message: lang.tooltip_reset_desktop, // ←変更
                     child: IconButton(
                       icon: const Icon(FluentIcons.clear),
                       onPressed: () => GState.backupDirectory.$ =
-                          '${Platform.environment['USERPROFILE'] ?? 'C:'}\\Desktop',
+                          '${Env.USER_PROFILE}\\Desktop',
                     ),
                   ),
                 const SizedBox(width: 8),

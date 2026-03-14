@@ -17,6 +17,7 @@ import 'package:wsa_pacman/windows/win_path.dart';
 import 'android_utils.dart';
 import 'permissions.dart';
 import 'package:wsa_pacman/global_state.dart';
+import 'package:wsa_pacman/utils/env.dart';
 import 'package:wsa_pacman/main.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
