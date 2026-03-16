@@ -38,6 +38,59 @@ import 'dart:ffi' hide Size;
 import 'package:ffi/ffi.dart';
 import 'package:win32/win32.dart' hide MoveWindow;
 
+/// ★修正版：手動の free() を全廃止し、Arenaによる完全自動・安全なメモリ管理に変更
+Future<void> setMicaEffectNative(bool micaEnabled, bool isDark) async {
+  try {
+    // using(arena) ブロックを使うことで、このブロックを抜ける時に
+    // 万が一エラーが起きても「絶対に」「安全に」メモリが自動解放されます
+    using((arena) {
+      // 1. タイトルからウィンドウのハンドル(HWND)を検索
+      final titlePtr = appTitle.toNativeUtf16(allocator: arena);
+      int hwnd = FindWindow(nullptr, titlePtr);
+      
+      // 見つからなければ最前面のウィンドウを取得
+      if (hwnd == 0) {
+        hwnd = GetForegroundWindow();
+      }
+      if (hwnd == 0) return;
+
+      // 2. タイトルバー等にダークモードを適用
+      final pDarkMode = arena<Int32>()..value = isDark ? 1 : 0;
+      DwmSetWindowAttribute(
+        hwnd,
+        20,
+        pDarkMode.cast(),
+        sizeOf<Int32>(),
+      );
+
+      // 3. Windows 11 の Mica エフェクト設定
+      if (WinVer.isWindows11OrGreater) {
+        final pBackdrop = arena<Int32>()..value = micaEnabled ? 2 : 1;
+        DwmSetWindowAttribute(
+          hwnd,
+          38,
+          pBackdrop.cast(),
+          sizeOf<Int32>(),
+        );
+      }
+    });
+  } catch (e) {
+    // もしネイティブ側でエラーが起きてもアプリは落とさずログだけ残す
+    log("Mica API Error: $e");
+  }
+}
+
+// ★ 追加：前回の状態を記憶して、変化した時だけAPIを叩く（これがないとクラッシュします）
+bool? _appliedMica;
+bool? _appliedDark;
+
+void applyMicaIfNeeded(bool micaEnabled, bool isDark) {
+  if (_appliedMica == micaEnabled && _appliedDark == isDark) return;
+  _appliedMica = micaEnabled;
+  _appliedDark = isDark;
+  setMicaEffectNative(micaEnabled, isDark);
+}
+
 const String appTitle = 'WSA Package Manager';
 const String appVersion = '1.6.0';
 
@@ -333,7 +386,7 @@ void main(List<String> arguments) async {
       center: true,
       title: appTitle,
       skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.normal,
+      titleBarStyle: TitleBarStyle.normal, // ←ここが normal になっている
     ), () async {
       if (Constants.installMode || Constants.uninstallMode) {
         await windowManager.setSize(const Size(500, 335));
@@ -354,8 +407,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = GState.theme.of(context).mode;
+    
     final bool isDark =
         theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
+
+    // ★ 抹消：applyMicaIfNeeded(...) や setMicaEffectNative(...) の呼び出しを完全に削除！
+
+    // Micaがない場合の標準の背景色
+    final Color fallbackColor = isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF9F9F9);
 
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -381,8 +440,20 @@ class MyApp extends StatelessWidget {
                     ? const ApkInstaller()
                     : const MyHomePage()
           },
+          // ★ 修正：透明にするのをやめて、標準の背景色をしっかり敷く
+          builder: (context, child) {
+            return Container(
+              color: fallbackColor,
+              child: child,
+            );
+          },
           theme: FluentThemeData(
             fontFamily: 'Yu Gothic UI',
+            // ★ 修正：ここも透明化を解除して標準に戻す
+            scaffoldBackgroundColor: fallbackColor,
+            navigationPaneTheme: NavigationPaneThemeData(
+              backgroundColor: fallbackColor,
+            ),
             accentColor: appTheme.getColor(isDark),
             brightness: isDark ? Brightness.dark : Brightness.light,
             visualDensity: VisualDensity.standard,
@@ -466,7 +537,7 @@ class _MyHomePageState extends State<MyHomePage> {
               }(),
               items: [
                 PaneItem(
-                  icon: const Icon(Icons.android, size: 18),
+                  icon: Icon(Icons.android, size: 18),
                   title: const Text('WSA'),
                   body: const ScreenWSA(),
                 ),

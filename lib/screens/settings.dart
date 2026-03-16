@@ -19,6 +19,8 @@ import 'package:wsa_pacman/widget/fluent_expander.dart';
 import 'package:wsa_pacman/widget/fluent_text_box.dart';
 import 'package:wsa_pacman/widget/smooth_list_view.dart';
 import 'package:wsa_pacman/windows/win_info.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart' as fcp;
+import 'package:flutter/material.dart' as mat;
 
 import '/utils/string_utils.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -81,9 +83,8 @@ class ScreenSettingsState extends State<ScreenSettings> {
   });
 
   // ★ 追加：カスタムカラーピッカー用のRGB変数（初期値はきれいなブルー）
-  double _customR = 0;
-  double _customG = 120;
-  double _customB = 215;
+// ★ 追加：カスタムカラーピッカー用の変数（初期値はきれいなブルー）
+  Color _customColor = const Color.fromRGBO(0, 120, 215, 1.0);
 
   ScreenSettingsState();
   late Future<ScalableImageWidget> _exBackground;
@@ -404,12 +405,12 @@ class ScreenSettingsState extends State<ScreenSettings> {
           ),
           smallSpacer,
 
-          // ★追加：最強のカラーパレット＆RGBピッカー機能！
+// ★追加：最強のカラーパレット＆RGBピッカー機能！
           // ★修正：テーマカラー設定の多言語化
           ExpanderWin11(
             leading:
                 const Icon(fsi.FluentIcons.paint_brush_24_regular, size: 23),
-            header: Text(lang.settings_theme_color), // ←変更
+            header: Text(lang.settings_theme_color),
             initiallyExpanded: false,
             direction: ExpanderDirection.down,
             content:
@@ -433,7 +434,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
                       Colors.teal,
                       Colors.green,
                     ];
-                    // ←変更（システムとデフォルトを多言語化）
+                    // システムとデフォルトを多言語化
                     final colorNames = [
                       lang.settings_theme_color_system,
                       lang.settings_theme_color_default,
@@ -452,7 +453,6 @@ class ScreenSettingsState extends State<ScreenSettings> {
                             .getColor(theme.brightness == Brightness.dark)
                             .value ==
                         color.value;
-
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Tooltip(
@@ -477,137 +477,201 @@ class ScreenSettingsState extends State<ScreenSettings> {
               ),
               const SizedBox(height: 24),
 
-              Text(lang.settings_custom_color), // ←変更
+              Text(lang.settings_custom_color), // カスタムカラー
               const SizedBox(height: 12),
-              Row(children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(_customR.toInt(), _customG.toInt(),
-                        _customB.toInt(), 1.0),
-                    shape: BoxShape.circle,
-                    border:
-                        Border.all(color: theme.inactiveColor.withOpacity(0.2)),
+              
+              // ★変更：直接表示をやめて、「色プレビュー」＋「ピッカーを開くボタン」にする
+              Row(
+                children: [
+                  // 現在選択されているカスタムカラーのプレビュー（丸い円）
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: _customColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: theme.inactiveColor.withOpacity(0.2)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Row(children: [
-                        SizedBox(
-                            width: 16,
-                            child: Text("R",
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold))),
-                        Expanded(
-                            child: Slider(
-                                min: 0,
-                                max: 255,
-                                value: _customR,
-                                style: SliderThemeData(
-                                    labelBackgroundColor: Colors.red,
-                                    activeColor: WidgetStateProperty.all<Color>(
-                                        Colors.red)),
-                                onChanged: (v) =>
-                                    setState(() => _customR = v))),
-                        const SizedBox(width: 8),
-                        SizedBox(
-                            width: 64,
-                            height: 32,
-                            child: NumberBox<int>(
-                                value: _customR.toInt(),
-                                min: 0,
-                                max: 255,
-                                mode: SpinButtonPlacementMode.none,
-                                onChanged: (v) => setState(() => _customR =
-                                    (v ?? _customR.toInt()).toDouble()))),
-                      ]),
-                      const SizedBox(height: 8),
-                      Row(children: [
-                        SizedBox(
-                            width: 16,
-                            child: Text("G",
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold))),
-                        Expanded(
-                            child: Slider(
-                                min: 0,
-                                max: 255,
-                                value: _customG,
-                                style: SliderThemeData(
-                                    labelBackgroundColor: Colors.green,
-                                    activeColor: WidgetStateProperty.all<Color>(
-                                        Colors.green)),
-                                onChanged: (v) =>
-                                    setState(() => _customG = v))),
-                        const SizedBox(width: 8),
-                        SizedBox(
-                            width: 64,
-                            height: 32,
-                            child: NumberBox<int>(
-                                value: _customG.toInt(),
-                                min: 0,
-                                max: 255,
-                                mode: SpinButtonPlacementMode.none,
-                                onChanged: (v) => setState(() => _customG =
-                                    (v ?? _customG.toInt()).toDouble()))),
-                      ]),
-                      const SizedBox(height: 8),
-                      Row(children: [
-                        SizedBox(
-                            width: 16,
-                            child: Text("B",
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold))),
-                        Expanded(
-                            child: Slider(
-                                min: 0,
-                                max: 255,
-                                value: _customB,
-                                style: SliderThemeData(
-                                    labelBackgroundColor: Colors.blue,
-                                    activeColor: WidgetStateProperty.all<Color>(
-                                        Colors.blue)),
-                                onChanged: (v) =>
-                                    setState(() => _customB = v))),
-                        const SizedBox(width: 8),
-                        SizedBox(
-                            width: 64,
-                            height: 32,
-                            child: NumberBox<int>(
-                                value: _customB.toInt(),
-                                min: 0,
-                                max: 255,
-                                mode: SpinButtonPlacementMode.none,
-                                onChanged: (v) => setState(() => _customB =
-                                    (v ?? _customB.toInt()).toDouble()))),
-                      ]),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16),
-                FilledButton(
-                    child: Text(lang.btn_apply), // ←変更
+                  const SizedBox(width: 16),
+                  
+                  // ポップアップを開くボタン
+                  Button(
+                    child: const Text('カラーピッカーを開く'), 
                     onPressed: () {
-                      final customColor = Color.fromRGBO(_customR.toInt(),
-                          _customG.toInt(), _customB.toInt(), 1.0);
-                      final customAccent = AccentColor('normal', {
-                        'darkest': customColor.withOpacity(0.8),
-                        'darker': customColor.withOpacity(0.9),
-                        'dark': customColor,
-                        'normal': customColor,
-                        'light': customColor,
-                        'lighter': customColor.withOpacity(0.9),
-                        'lightest': customColor.withOpacity(0.8),
-                      });
-                      appTheme.setColor(customAccent);
-                    })
-              ])
+                      // ダイアログ内での一時保存用の変数
+                      Color tempColor = _customColor; 
+                      
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          Color tempColor = _customColor; 
+                          String inputMode = 'RGB'; 
+                          
+                          // ★追加：HEX入力欄のための専用コントローラー
+                          TextEditingController hexController = TextEditingController(
+                            text: tempColor.value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()
+                          );
+                          
+                          return StatefulBuilder(
+                            builder: (context, setDialogState) {
+                              HSVColor hsv = HSVColor.fromColor(tempColor);
+
+                              // ★追加：色を更新しつつ、裏でHEXのテキストも同期させる便利関数
+                              void updateColor(Color newColor) {
+                                setDialogState(() {
+                                  tempColor = newColor;
+                                  String hex = newColor.value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase();
+                                  // 入力中のカーソル飛びを防ぐためのチェック
+                                  if (hexController.text.toUpperCase() != hex) {
+                                    hexController.text = hex;
+                                  }
+                                });
+                              }
+
+                              return ContentDialog(
+                                content: Center(
+                                  heightFactor: 1.0, 
+                                  child: mat.Material(
+                                    type: mat.MaterialType.transparency,
+                                    child: SizedBox(
+                                      width: 280, 
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          // ★変更：全体を左寄せ（左寄り）にする
+                                          crossAxisAlignment: CrossAxisAlignment.start, 
+                                          children: [
+                                            Center( // ピッカーの丸いリング自体は中央のまま維持
+                                              child: fcp.ColorPicker(
+                                                pickerColor: tempColor,
+                                                onColorChanged: updateColor, // まとめて更新
+                                                enableAlpha: false,
+                                                displayThumbColor: true,
+                                                showLabel: false, 
+                                                portraitOnly: true,
+                                                // ★変更：キモかった上に出るHEX入力欄を完全にオフ！
+                                                hexInputBar: false, 
+                                                colorPickerWidth: 240, 
+                                                pickerAreaHeightPercent: 0.6, 
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4), 
+                                            
+                                            // プルダウン（親が左寄せになったので自動的に左に寄ります）
+                                            ComboBox<String>(
+                                              value: inputMode,
+                                              items: const [
+                                                ComboBoxItem(value: 'RGB', child: Text('RGB')),
+                                                ComboBoxItem(value: 'HSV', child: Text('HSV')),
+                                                ComboBoxItem(value: 'HEX', child: Text('HEX')), 
+                                              ],
+                                              onChanged: (v) {
+                                                if (v != null) setDialogState(() => inputMode = v);
+                                              },
+                                            ),
+                                            const SizedBox(height: 8),
+
+                                            if (inputMode == 'RGB') ...[
+                                              Row(
+                                                children: [
+                                                  const Text('R:'),
+                                                  Expanded(child: NumberBox<int>(value: tempColor.red, min: 0, max: 255, mode: SpinButtonPlacementMode.none, onChanged: (v) { if (v != null) updateColor(tempColor.withRed(v)); })),
+                                                  const SizedBox(width: 6),
+                                                  const Text('G:'),
+                                                  Expanded(child: NumberBox<int>(value: tempColor.green, min: 0, max: 255, mode: SpinButtonPlacementMode.none, onChanged: (v) { if (v != null) updateColor(tempColor.withGreen(v)); })),
+                                                  const SizedBox(width: 6),
+                                                  const Text('B:'),
+                                                  Expanded(child: NumberBox<int>(value: tempColor.blue, min: 0, max: 255, mode: SpinButtonPlacementMode.none, onChanged: (v) { if (v != null) updateColor(tempColor.withBlue(v)); })),
+                                                ],
+                                              ),
+                                            ] else if (inputMode == 'HSV') ...[
+                                              Row(
+                                                children: [
+                                                  const Text('H:'),
+                                                  Expanded(child: NumberBox<int>(value: hsv.hue.toInt(), min: 0, max: 360, mode: SpinButtonPlacementMode.none, onChanged: (v) { if (v != null) updateColor(hsv.withHue(v.toDouble()).toColor()); })),
+                                                  const SizedBox(width: 6),
+                                                  const Text('S:'),
+                                                  Expanded(child: NumberBox<int>(value: (hsv.saturation * 100).toInt(), min: 0, max: 100, mode: SpinButtonPlacementMode.none, onChanged: (v) { if (v != null) updateColor(hsv.withSaturation(v / 100.0).toColor()); })),
+                                                  const SizedBox(width: 6),
+                                                  const Text('V:'),
+                                                  Expanded(child: NumberBox<int>(value: (hsv.value * 100).toInt(), min: 0, max: 100, mode: SpinButtonPlacementMode.none, onChanged: (v) { if (v != null) updateColor(hsv.withValue(v / 100.0).toColor()); })),
+                                                ],
+                                              ),
+                                            ] else if (inputMode == 'HEX') ...[
+                                              // ★追加：プルダウンの下に配置される自作の美しいHEX入力欄
+                                              Row(
+                                                children: [
+                                                  const Text('#', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: TextBox(
+                                                      controller: hexController,
+                                                      // 6文字制限 ＆ 16進数（0~9, A~F）の文字しか入力できないように制限
+                                                      inputFormatters: [
+                                                        LengthLimitingTextInputFormatter(6),
+                                                        FilteringTextInputFormatter.allow(RegExp(r'[0-9a-fA-F]')),
+                                                      ],
+                                                      onChanged: (v) {
+                                                        // 6文字入力された瞬間に色を反映する
+                                                        if (v.length == 6) {
+                                                          int? parsed = int.tryParse(v, radix: 16);
+                                                          if (parsed != null) {
+                                                            setDialogState(() {
+                                                              tempColor = Color(0xFF000000 | parsed);
+                                                            });
+                                                          }
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ]
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  Button(
+                                    child: const Text('キャンセル'),
+                                    onPressed: () => Navigator.of(context).pop(), 
+                                  ),
+                                  FilledButton(
+                                    child: const Text('決定'),
+                                    onPressed: () {
+                                      setState(() => _customColor = tempColor);
+                                      Navigator.of(context).pop(); 
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // 適用ボタン（ここは元のまま）
+              FilledButton(
+                  child: Text(lang.btn_apply), 
+                  onPressed: () {
+                    final customAccent = AccentColor('normal', {
+                      'darkest': _customColor.withOpacity(0.8),
+                      'darker': _customColor.withOpacity(0.9),
+                      'dark': _customColor,
+                      'normal': _customColor,
+                      'light': _customColor,
+                      'lighter': _customColor.withOpacity(0.9),
+                      'lightest': _customColor.withOpacity(0.8),
+                    });
+                    appTheme.setColor(customAccent);
+                  })
             ]),
           ),
           smallSpacer,

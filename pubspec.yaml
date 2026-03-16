@@ -22,13 +22,13 @@ dependencies:
   shared_value: ^3.0.0
   synchronized: ^3.1.0
   system_theme: ^3.2.0
-  flutter_acrylic: ^1.1.1
   yaml: ^3.1.2
   protobuf: ^2.1.0
   mdi: ^5.0.0-nullsafety.0
   fluentui_system_icons: ^1.1.261
   base32: ^2.1.1
   charset: ^2.0.1
+  flutter_colorpicker: ^1.1.0
 
   # 公式パッケージでの動作検証
   archive: ^4.0.9
