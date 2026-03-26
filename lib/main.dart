@@ -388,12 +388,12 @@ void main(List<String> arguments) async {
 
   if (isDesktop) {
     windowManager.waitUntilReadyToShow(const WindowOptions(
-      size: Size(740, 540),
+      size: Size(800, 600),
       minimumSize: Size(640, 500),
       center: true,
       title: appTitle,
       skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.normal, // ←ここが normal になっている
+      titleBarStyle: TitleBarStyle.hidden,
     ), () async {
       if (Constants.installMode || Constants.uninstallMode) {
         await windowManager.setSize(const Size(500, 335));
@@ -448,9 +448,26 @@ class MyApp extends StatelessWidget {
                       : const MyHomePage()
             },
             builder: (context, child) {
-              return Container(
-                color: fallbackColor,
-                child: child,
+              return Column(
+                children: [
+                  if (isDesktop)
+                    SizedBox(
+                      height: 32.0,
+                      child: DragToMoveArea(
+                        child: WindowCaption(
+                          brightness: FluentTheme.of(context).brightness,
+                          title: const Text('$appTitle v$appVersion'),
+                          backgroundColor: FluentTheme.of(context).scaffoldBackgroundColor,
+                        ),
+                      ),
+                    ),
+                  Expanded(
+                    child: Container(
+                      color: fallbackColor,
+                      child: child,
+                    ),
+                  ),
+                ],
               );
             },
             theme: FluentThemeData(
