@@ -93,6 +93,22 @@ void applyMicaIfNeeded(bool micaEnabled, bool isDark) {
 const String appTitle = 'WSA Package Manager';
 const String appVersion = '1.6.0';
 
+final ValueNotifier<int> _dialogCount = ValueNotifier<int>(0);
+
+class _DialogObserver extends NavigatorObserver {
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    if (route is PopupRoute) _dialogCount.value++;
+    super.didPush(route, previousRoute);
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    if (route is PopupRoute) _dialogCount.value--;
+    super.didPop(route, previousRoute);
+  }
+}
+
 late bool darkMode;
 
 class WSAStatusAlert {
@@ -386,7 +402,7 @@ void main(List<String> arguments) async {
 
   if (isDesktop) {
     windowManager.waitUntilReadyToShow(const WindowOptions(
-      size: Size(800, 600),
+      size: Size(740, 540),
       minimumSize: Size(640, 500),
       center: true,
       title: appTitle,
@@ -399,7 +415,8 @@ void main(List<String> arguments) async {
         await windowManager.setMinimumSize(const Size(500, 335));
         await windowManager.setMaximumSize(const Size(500, 335));
       } else {
-        await windowManager.setSize(const Size(800, 600));
+        await windowManager.setSize(const Size(740, 540));
+        await windowManager.setMinimumSize(const Size(640, 500));
       }
 
       // 2. 画面中央へ配置
@@ -437,6 +454,7 @@ class MyApp extends StatelessWidget {
           title: appTitle,
           themeMode: theme,
           debugShowCheckedModeBanner: false,
+          navigatorObservers: [_DialogObserver()],
           initialRoute: '/',
           locale: GState.locale.of(context),
           localizationsDelegates: const [
@@ -447,33 +465,88 @@ class MyApp extends StatelessWidget {
           supportedLocales: LocaleUtils.supportedLocales,
           localeResolutionCallback: LocaleUtils.localeResolutionCallback,
           routes: {
-            '/': (_) => Constants.uninstallMode
-                ? const ApkUninstaller()
-                : Constants.installMode
-                    ? const ApkInstaller()
-                    : const MyHomePage()
+            '/': (context) => Padding(
+                  padding: EdgeInsets.only(top: isDesktop ? 32.0 : 0),
+                  child: Constants.uninstallMode
+                      ? const ApkUninstaller()
+                      : Constants.installMode
+                          ? const ApkInstaller()
+                          : const MyHomePage(),
+                )
           },
           builder: (context, child) {
-            return Column(
-              children: [
-                if (isDesktop)
-                  SizedBox(
-                    height: 32.0,
-                    child: DragToMoveArea(
-                      child: WindowCaption(
-                        brightness: FluentTheme.of(context).brightness,
-                        title: const Text('$appTitle v$appVersion'),
-                        backgroundColor: FluentTheme.of(context).scaffoldBackgroundColor,
+            return Container(
+              color: fallbackColor,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: child!,
+                  ),
+                  if (isDesktop)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 32.0,
+                      child: DragToMoveArea(
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: _dialogCount,
+                          builder: (context, count, _) {
+                            return Stack(
+                              children: [
+                                WindowCaption(
+                                  brightness: FluentTheme.of(context).brightness,
+                                  title: GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => ContentDialog(
+                                          title: const Text('About WSA PacMan'),
+                                          content: const Text(
+                                            'WSA Package Manager (WSA PacMan) is a GUI package manager and package installer for Windows Subsystem for Android (WSA).\n\n'
+                                            'This tool makes it easy to install, uninstall, and manage Android apps on your Windows 11 device.',
+                                          ),
+                                          actions: [
+                                            Button(
+                                              child: const Text('Close'),
+                                              onPressed: () => Navigator.pop(context),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          const TextSpan(text: '$appTitle '),
+                                          TextSpan(
+                                            text: 'v$appVersion',
+                                            style: TextStyle(
+                                              color: Colors.grey[100],
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  backgroundColor: fallbackColor,
+                                ),
+                                // ダイアログ表示時のみ影を重ねる（操作は透過）
+                                if (count > 0)
+                                  IgnorePointer(
+                                    child: Container(
+                                      color: Colors.black.withOpacity(0.4),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                Expanded(
-                  child: Container(
-                    color: fallbackColor,
-                    child: child,
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
           },
           theme: FluentThemeData(

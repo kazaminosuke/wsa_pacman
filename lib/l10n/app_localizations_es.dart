@@ -371,7 +371,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settings_theme_color_default => 'Default';
 
   @override
-  String get settings_custom_color => 'Create Custom Color:';
+  String get settings_custom_color => 'Create Custom Color';
 
   @override
   String get btn_apply => 'Apply';

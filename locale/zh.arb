@@ -127,7 +127,7 @@
     "settings_theme_color": "主题颜色",
     "settings_theme_color_system": "系统 (Windows)",
     "settings_theme_color_default": "默认",
-    "settings_custom_color": "创建自定义颜色:",
+    "settings_custom_color": "创建自定义颜色",
     "btn_apply": "应用",
     "dialog_backup_dir_title": "选择一个文件夹来保存自动备份",
     "dialog_backup_dir_filename": "Select this folder",

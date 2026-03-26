@@ -121,7 +121,7 @@
     "settings_theme_color": "テーマカラー",
     "settings_theme_color_system": "システム (Windows)",
     "settings_theme_color_default": "デフォルト",
-    "settings_custom_color": "カスタム色を作成:",
+    "settings_custom_color": "カスタム色を作成",
     "btn_apply": "適用",
     "dialog_backup_dir_title": "自動バックアップを保存するフォルダを選択してください",
     "dialog_backup_dir_filename": "このフォルダを選択",

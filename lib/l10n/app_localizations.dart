@@ -783,7 +783,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_custom_color.
   ///
   /// In en, this message translates to:
-  /// **'Create Custom Color:'**
+  /// **'Create Custom Color'**
   String get settings_custom_color;
 
   /// No description provided for @btn_apply.

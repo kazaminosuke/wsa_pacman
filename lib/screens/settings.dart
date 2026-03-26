@@ -465,7 +465,7 @@ class ScreenSettingsState extends State<ScreenSettings> {
                             onPressed: () => appTheme.setColor(color),
                             icon: isSelected
                                 ? Icon(FluentIcons.check_mark,
-                                    size: 14, color: color.basedOnLuminance())
+                                    size: 14, color: color.appBasedOnLuminance())
                                 : const SizedBox(width: 14, height: 14),
                           ),
                         ),
@@ -475,55 +475,135 @@ class ScreenSettingsState extends State<ScreenSettings> {
                 ),
                 const SizedBox(height: 24),
 
-                // ★ flex.ColorPicker による Windows 11 風の高度な色選択
-                flex.ColorPicker(
-                  color: _customColor,
-                  onColorChanged: (Color color) => setState(() => _customColor = color),
-                  width: 44,
-                  height: 44,
-                  borderRadius: 4,
-                  spacing: 5,
-                  runSpacing: 5,
-                  wheelDiameter: 165,
-                  heading: Text(
-                    lang.settings_custom_color,
-                    style: theme.typography.bodyLarge,
-                  ),
-                  subheading: Text(
-                    'Select color shade',
-                    style: theme.typography.body,
-                  ),
-                  showMaterialName: false,
-                  showColorName: false,
-                  showColorCode: true,
-                  colorCodeHasColor: true,
-                  pickersEnabled: const <flex.ColorPickerType, bool>{
-                    flex.ColorPickerType.both: true,
-                    flex.ColorPickerType.primary: false,
-                    flex.ColorPickerType.accent: false,
-                    flex.ColorPickerType.bw: false,
-                    flex.ColorPickerType.custom: false,
-                    flex.ColorPickerType.wheel: true,
-                  },
-                  copyPasteBehavior: const flex.ColorPickerCopyPasteBehavior(
-                    longPressMenu: true,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    // 適用ボタン（リアルタイムプレビュー＆公式の最強メソッド）
-                    FilledButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(_customColor),
-                        foregroundColor: WidgetStateProperty.all(_customColor.basedOnLuminance()),
-                      ),
-                      child: Text(lang.btn_apply),
-                      onPressed: () {
-                        appTheme.setColor(_customColor.toAccentColor());
+                // ★ ボタン押下時にダイアログを表示する形式に変更
+                Button(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        // ダイアログ内での色管理用
+                        Color dialogColor = _customColor;
+                        return StatefulBuilder(
+                          builder: (context, setDialogState) {
+                            return ContentDialog(
+                              constraints: const BoxConstraints(maxWidth: 450),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    mat.Material(
+                                      color: Colors.transparent,
+                                      child: flex.ColorPicker(
+                                        color: dialogColor,
+                                        onColorChanged: (Color color) => setDialogState(() => dialogColor = color),
+                                        width: 40,
+                                        height: 40,
+                                        borderRadius: 4,
+                                        padding: const EdgeInsets.all(0), // パディングをゼロに
+                                        spacing: 5,
+                                        runSpacing: 5,
+                                        wheelDiameter: 155,
+                                        showMaterialName: false,
+                                        showColorName: false,
+                                        showColorCode: true,
+                                        colorCodeHasColor: true,
+                                        pickersEnabled: const <flex.ColorPickerType, bool>{
+                                          flex.ColorPickerType.both: true,
+                                          flex.ColorPickerType.primary: false,
+                                          flex.ColorPickerType.accent: false,
+                                          flex.ColorPickerType.bw: false,
+                                          flex.ColorPickerType.custom: false,
+                                          flex.ColorPickerType.wheel: true,
+                                        },
+                                        copyPasteBehavior: const flex.ColorPickerCopyPasteBehavior(
+                                          longPressMenu: true,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8), // 20から8へ縮小
+                                    // RGB 手入力フィールド
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: InfoLabel(
+                                            label: 'R',
+                                            child: NumberBox(
+                                              value: dialogColor.red,
+                                              min: 0,
+                                              max: 255,
+                                              onChanged: (v) => setDialogState(() => dialogColor = dialogColor.withRed(v ?? 0)),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: InfoLabel(
+                                            label: 'G',
+                                            child: NumberBox(
+                                              value: dialogColor.green,
+                                              min: 0,
+                                              max: 255,
+                                              onChanged: (v) => setDialogState(() => dialogColor = dialogColor.withGreen(v ?? 0)),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: InfoLabel(
+                                            label: 'B',
+                                            child: NumberBox(
+                                              value: dialogColor.blue,
+                                              min: 0,
+                                              max: 255,
+                                              onChanged: (v) => setDialogState(() => dialogColor = dialogColor.withBlue(v ?? 0)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                Button(
+                                  child: const Text('Cancel'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                FilledButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(dialogColor),
+                                    foregroundColor: WidgetStateProperty.all(dialogColor.appBasedOnLuminance()),
+                                  ),
+                                  child: Text(lang.btn_apply),
+                                  onPressed: () {
+                                    setState(() => _customColor = dialogColor);
+                                    appTheme.setColor(dialogColor.appToAccentColor());
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
-                    ),
-                  ],
+                    );
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: appTheme.getColor(theme.brightness == Brightness.dark),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: theme.resources.textFillColorPrimary, width: 1),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(lang.settings_custom_color), // 「カスタムカラー」に変更
+                    ],
+                  ),
                 ),
               ], // ★ココ！ Columnの要素を閉じる
             ), // ★ココ！ Column本体を閉じる

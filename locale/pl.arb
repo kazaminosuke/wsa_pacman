@@ -117,7 +117,7 @@
     "settings_theme_color": "Theme Color",
     "settings_theme_color_system": "System (Windows)",
     "settings_theme_color_default": "Default",
-    "settings_custom_color": "Create Custom Color:",
+    "settings_custom_color": "Create Custom Color",
     "btn_apply": "Apply",
     "dialog_backup_dir_title": "Select a folder to save auto-backups",
     "dialog_backup_dir_filename": "Select this folder",

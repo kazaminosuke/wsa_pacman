@@ -359,7 +359,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings_theme_color_default => 'デフォルト';
 
   @override
-  String get settings_custom_color => 'カスタム色を作成:';
+  String get settings_custom_color => 'カスタム色を作成';
 
   @override
   String get btn_apply => '適用';

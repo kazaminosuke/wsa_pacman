@@ -8,6 +8,30 @@ import 'package:system_theme/system_theme.dart';
 
 enum NavigationIndicators { sticky, end }
 
+// ★ 追加：Colorクラスへの拡張機能
+extension ColorExtensions on Color {
+  // 背景色の明るさに応じて、黒か白の読みやすい文字色を返す
+  Color appBasedOnLuminance() {
+    return computeLuminance() > 0.5 ? Colors.black : Colors.white;
+  }
+
+  // 単一の色から、適切なグラデーションを持つ AccentColor を生成する
+  AccentColor appToAccentColor() {
+    final hsv = HSVColor.fromColor(this);
+    
+    // 透過(Opacity)を使わず、明度(Value)を調整することで「くすみ」を解消
+    return AccentColor('normal', {
+      'darkest': hsv.withValue((hsv.value - 0.3).clamp(0.0, 1.0)).toColor(),
+      'darker': hsv.withValue((hsv.value - 0.2).clamp(0.0, 1.0)).toColor(),
+      'dark': hsv.withValue((hsv.value - 0.1).clamp(0.0, 1.0)).toColor(),
+      'normal': this,
+      'light': hsv.withValue((hsv.value + 0.1).clamp(0.0, 1.0)).toColor(),
+      'lighter': hsv.withValue((hsv.value + 0.2).clamp(0.0, 1.0)).toColor(),
+      'lightest': hsv.withValue((hsv.value + 0.3).clamp(0.0, 1.0)).toColor(),
+    });
+  }
+}
+
 class AppTheme extends ChangeNotifier {
   static final AccentColor alpineLandingDark =
       AccentColor('normal', const <String, Color>{
@@ -82,15 +106,7 @@ class AppTheme extends ChangeNotifier {
         // ★ ここが重要：基本の色以外（カスタム色）だった場合、その番号から直接色を復元する
         if (!found) {
           final customColor = Color(colorValue);
-          _color = AccentColor('normal', {
-            'darkest': customColor.withOpacity(0.8),
-            'darker': customColor.withOpacity(0.9),
-            'dark': customColor,
-            'normal': customColor,
-            'light': customColor,
-            'lighter': customColor.withOpacity(0.9),
-            'lightest': customColor.withOpacity(0.8),
-          });
+          _color = customColor.appToAccentColor();
         }
       }
     } catch (e) {

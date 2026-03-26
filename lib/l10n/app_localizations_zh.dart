@@ -357,7 +357,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_theme_color_default => '默认';
 
   @override
-  String get settings_custom_color => '创建自定义颜色:';
+  String get settings_custom_color => '创建自定义颜色';
 
   @override
   String get btn_apply => '应用';
@@ -763,7 +763,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get settings_theme_color_default => 'Default';
 
   @override
-  String get settings_custom_color => 'Create Custom Color:';
+  String get settings_custom_color => 'Create Custom Color';
 
   @override
   String get btn_apply => 'Apply';
