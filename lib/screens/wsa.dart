@@ -126,6 +126,8 @@ class _ScreenWSAState extends State<ScreenWSA> {
 
     const smallSpacer = SizedBox(height: 5.0);
 
+    final isDark = FluentTheme.of(context).brightness == Brightness.dark;
+
     // ── Shared button style for InfoBar action buttons ───────────────────────
     // Provides uniform padding, uniform rounded corners (r=8), and the Fluent
     // default shape. Colors are intentionally NOT set here so each button's
@@ -191,19 +193,10 @@ class _ScreenWSAState extends State<ScreenWSA> {
                       // ── ARRESTED: WSA installed but no process running ──────
                       else if (connectionStatus.type ==
                           ConnectionStatus.ARRESTED) ...[
-                        // White "Turn on" — keeps semantic color (white bg, black fg)
-                        Button(
-                          style: infoBarButtonStyle(
-                            foreground: Colors.black,
-                            background: (states) {
-                              if (states.contains(WidgetState.hovered))
-                                return Colors.white.withOpacity(0.9);
-                              if (states.contains(WidgetState.pressed))
-                                return Colors.grey[10];
-                              return Colors.white;
-                            },
-                          ),
-                          onPressed: () async {
+                        // ★ 色の強制指定（呪い）をすべて削除！
+                          Button(
+                            style: infoBarButtonStyle(), // ← これだけでOK！
+                            onPressed: () async {
                             WSAPeriodicConnector.lastStart =
                                 DateTime.now().millisecondsSinceEpoch;
                             WSAPeriodicConnector.status =
@@ -323,23 +316,8 @@ class _ScreenWSAState extends State<ScreenWSA> {
                       Tooltip(
                         message: lang.tooltip_refresh_status,
                         child: Button(
-                          style: infoBarButtonStyle(
-                            background: (states) {
-                              // 無効化時：背景を完全に消さず、半透明の白を残す
-                              if (states.contains(WidgetState.disabled)) {
-                                return Colors.white.withOpacity(0.5); 
-                              }
-                              if (states.contains(WidgetState.hovered)) {
-                                return Colors.white.withOpacity(0.9);
-                              }
-                              if (states.contains(WidgetState.pressed)) {
-                                return Colors.grey[10];
-                              }
-                              return Colors.white; 
-                            },
-                          ),
-                          // ★ポイント1: _isRefreshing に加えて、起動中(STARTING)の時も null(無効化)にする
-                          onPressed: (_isRefreshing || connectionStatus.type == ConnectionStatus.STARTING) 
+                          style: infoBarButtonStyle(), // ★ 私の書いたポンコツコードを全削除！
+                          onPressed: (_isRefreshing || connectionStatus.type == ConnectionStatus.STARTING)
                               ? null 
                               : _refreshStatus,
                           child: Row(

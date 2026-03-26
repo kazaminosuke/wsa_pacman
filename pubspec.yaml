@@ -28,7 +28,6 @@ dependencies:
   fluentui_system_icons: ^1.1.261
   base32: ^2.1.1
   charset: ^2.0.1
-  flutter_colorpicker: ^1.1.0
 
   # 公式パッケージでの動作検証
   archive: ^4.0.9
@@ -45,6 +44,7 @@ dependencies:
   intl: ^0.20.2
 
   fixnum: any
+  cyclop: ^0.7.0
 
 dependency_overrides:
   win32: ^5.5.4

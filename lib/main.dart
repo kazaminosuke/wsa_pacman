@@ -19,6 +19,7 @@ import 'package:wsa_pacman/windows/win_reg.dart';
 import 'package:wsa_pacman/windows/wsa_status.dart';
 import 'package:wsa_pacman/utils/env.dart';
 import 'global_state.dart';
+import 'package:cyclop/cyclop.dart';
 
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -364,6 +365,12 @@ void main(List<String> arguments) async {
     exit(0);
   }
 
+  final bool isUnsyncMode = arguments.contains('--unsync');
+  if (isUnsyncMode) {
+    await runUnsyncApps();
+    exit(0);
+  }
+
   Constants.uninstallMode =
       arguments.length >= 2 && arguments.first == '--uninstall';
   Constants.uninstallPackage = Constants.uninstallMode ? arguments[1] : '';
@@ -411,8 +418,6 @@ class MyApp extends StatelessWidget {
     final bool isDark =
         theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
 
-    // ★ 抹消：applyMicaIfNeeded(...) や setMicaEffectNative(...) の呼び出しを完全に削除！
-
     // Micaがない場合の標準の背景色
     final Color fallbackColor = isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF9F9F9);
 
@@ -420,50 +425,51 @@ class MyApp extends StatelessWidget {
       create: (_) => AppTheme(),
       builder: (context, _) {
         final appTheme = context.watch<AppTheme>();
-        return FluentApp(
-          title: appTitle,
-          themeMode: theme,
-          debugShowCheckedModeBanner: false,
-          initialRoute: '/',
-          locale: GState.locale.of(context),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            locale.GlobalMaterialLocalizations.delegate,
-            FluentLocalizations.delegate,
-          ],
-          supportedLocales: LocaleUtils.supportedLocales,
-          localeResolutionCallback: LocaleUtils.localeResolutionCallback,
-          routes: {
-            '/': (_) => Constants.uninstallMode
-                ? const ApkUninstaller()
-                : Constants.installMode
-                    ? const ApkInstaller()
-                    : const MyHomePage()
-          },
-          // ★ 修正：透明にするのをやめて、標準の背景色をしっかり敷く
-          builder: (context, child) {
-            return Container(
-              color: fallbackColor,
-              child: child,
-            );
-          },
-          theme: FluentThemeData(
-            fontFamily: 'Yu Gothic UI',
-            // ★ 修正：ここも透明化を解除して標準に戻す
-            scaffoldBackgroundColor: fallbackColor,
-            navigationPaneTheme: NavigationPaneThemeData(
-              backgroundColor: fallbackColor,
+        // ★ ここ！ FluentApp 全体を EyeDrop で包む
+        return EyeDrop(
+          child: FluentApp(
+            title: appTitle,
+            themeMode: theme,
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            locale: GState.locale.of(context),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              locale.GlobalMaterialLocalizations.delegate,
+              FluentLocalizations.delegate,
+            ],
+            supportedLocales: LocaleUtils.supportedLocales,
+            localeResolutionCallback: LocaleUtils.localeResolutionCallback,
+            routes: {
+              '/': (_) => Constants.uninstallMode
+                  ? const ApkUninstaller()
+                  : Constants.installMode
+                      ? const ApkInstaller()
+                      : const MyHomePage()
+            },
+            builder: (context, child) {
+              return Container(
+                color: fallbackColor,
+                child: child,
+              );
+            },
+            theme: FluentThemeData(
+              fontFamily: 'Yu Gothic UI',
+              scaffoldBackgroundColor: fallbackColor,
+              navigationPaneTheme: NavigationPaneThemeData(
+                backgroundColor: fallbackColor,
+              ),
+              accentColor: appTheme.getColor(isDark),
+              brightness: isDark ? Brightness.dark : Brightness.light,
+              visualDensity: VisualDensity.standard,
+              focusTheme: FocusThemeData(
+                glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+              ),
             ),
-            accentColor: appTheme.getColor(isDark),
-            brightness: isDark ? Brightness.dark : Brightness.light,
-            visualDensity: VisualDensity.standard,
-            focusTheme: FocusThemeData(
-              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-            ),
-          ),
-        );
-      },
-    );
+          ), // ← FluentApp を閉じる
+        ); // ← EyeDrop を閉じる
+      }, // ← builder を閉じる
+    ); // ← ChangeNotifierProvider を閉じる
   }
 }
 

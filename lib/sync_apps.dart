@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:wsa_pacman/utils/env.dart';
 
 Future<void> runSyncApps() async {
   // WsaClient.exe のパスが含まれるか、LocalState フォルダのアプリアイコンを持つレジストリエントリを検索
@@ -66,5 +67,72 @@ if (\$apps) {
     }
   } catch (e) {
     // Ignore error silently in sync mode
+  }
+}
+
+Future<void> runUnsyncApps() async {
+  const script = '''
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;
+\$apps = Get-ItemProperty "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*" -ErrorAction SilentlyContinue |
+        Where-Object { 
+          (\$_.UninstallString -match "WSA-pacman\\.exe") -or 
+          (\$_.QuietUninstallString -match "WSA-pacman\\.exe")
+        } |
+        Select-Object PSChildName
+
+if (\$apps) {
+    @(\$apps) | ForEach-Object { \$_.PSChildName }
+}
+''';
+
+  try {
+    final process =
+        await Process.run('powershell', ['-NoProfile', '-Command', script]);
+    if (process.exitCode == 0 && process.stdout.toString().trim().isNotEmpty) {
+      final lines = process.stdout.toString().split('\n');
+      
+      final wsaClientPath = '${Env.USER_PROFILE}\\AppData\\Local\\Microsoft\\WindowsApps\\MicrosoftCorporationII.WindowsSubsystemForAndroid_8wekyb3d8bbwe\\WsaClient.exe';
+
+      for (String line in lines) {
+        final package = line.trim();
+        if (package.isNotEmpty) {
+          final originalCmd = '"$wsaClientPath" /uninstall $package';
+
+          await Process.run(
+            'reg',
+            [
+              'add',
+              'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
+              '/v',
+              'UninstallString',
+              '/t',
+              'REG_SZ',
+              '/d',
+              originalCmd,
+              '/f'
+            ],
+            runInShell: true,
+          );
+
+          await Process.run(
+            'reg',
+            [
+              'add',
+              'HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$package',
+              '/v',
+              'QuietUninstallString',
+              '/t',
+              'REG_SZ',
+              '/d',
+              originalCmd,
+              '/f'
+            ],
+            runInShell: true,
+          );
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore error silently
   }
 }
