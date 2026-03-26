@@ -19,8 +19,6 @@ import 'package:wsa_pacman/windows/win_reg.dart';
 import 'package:wsa_pacman/windows/wsa_status.dart';
 import 'package:wsa_pacman/utils/env.dart';
 import 'global_state.dart';
-import 'package:cyclop/cyclop.dart';
-
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -395,12 +393,22 @@ void main(List<String> arguments) async {
       skipTaskbar: false,
       titleBarStyle: TitleBarStyle.hidden,
     ), () async {
+      // 1. サイズの設定
       if (Constants.installMode || Constants.uninstallMode) {
         await windowManager.setSize(const Size(500, 335));
         await windowManager.setMinimumSize(const Size(500, 335));
         await windowManager.setMaximumSize(const Size(500, 335));
+      } else {
+        await windowManager.setSize(const Size(800, 600));
       }
+
+      // 2. 画面中央へ配置
+      await windowManager.center();
+
+      // 3. 準備が整ってから表示（ここで初めて表示される）
       await windowManager.show();
+
+      // 4. フォーカスを当てる
       await windowManager.focus();
     });
   }
@@ -425,66 +433,63 @@ class MyApp extends StatelessWidget {
       create: (_) => AppTheme(),
       builder: (context, _) {
         final appTheme = context.watch<AppTheme>();
-        // ★ ここ！ FluentApp 全体を EyeDrop で包む
-        return EyeDrop(
-          child: FluentApp(
-            title: appTitle,
-            themeMode: theme,
-            debugShowCheckedModeBanner: false,
-            initialRoute: '/',
-            locale: GState.locale.of(context),
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              locale.GlobalMaterialLocalizations.delegate,
-              FluentLocalizations.delegate,
-            ],
-            supportedLocales: LocaleUtils.supportedLocales,
-            localeResolutionCallback: LocaleUtils.localeResolutionCallback,
-            routes: {
-              '/': (_) => Constants.uninstallMode
-                  ? const ApkUninstaller()
-                  : Constants.installMode
-                      ? const ApkInstaller()
-                      : const MyHomePage()
-            },
-            builder: (context, child) {
-              return Column(
-                children: [
-                  if (isDesktop)
-                    SizedBox(
-                      height: 32.0,
-                      child: DragToMoveArea(
-                        child: WindowCaption(
-                          brightness: FluentTheme.of(context).brightness,
-                          title: const Text('$appTitle v$appVersion'),
-                          backgroundColor: FluentTheme.of(context).scaffoldBackgroundColor,
-                        ),
+        return FluentApp(
+          title: appTitle,
+          themeMode: theme,
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          locale: GState.locale.of(context),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            locale.GlobalMaterialLocalizations.delegate,
+            FluentLocalizations.delegate,
+          ],
+          supportedLocales: LocaleUtils.supportedLocales,
+          localeResolutionCallback: LocaleUtils.localeResolutionCallback,
+          routes: {
+            '/': (_) => Constants.uninstallMode
+                ? const ApkUninstaller()
+                : Constants.installMode
+                    ? const ApkInstaller()
+                    : const MyHomePage()
+          },
+          builder: (context, child) {
+            return Column(
+              children: [
+                if (isDesktop)
+                  SizedBox(
+                    height: 32.0,
+                    child: DragToMoveArea(
+                      child: WindowCaption(
+                        brightness: FluentTheme.of(context).brightness,
+                        title: const Text('$appTitle v$appVersion'),
+                        backgroundColor: FluentTheme.of(context).scaffoldBackgroundColor,
                       ),
                     ),
-                  Expanded(
-                    child: Container(
-                      color: fallbackColor,
-                      child: child,
-                    ),
                   ),
-                ],
-              );
-            },
-            theme: FluentThemeData(
-              fontFamily: 'Yu Gothic UI',
-              scaffoldBackgroundColor: fallbackColor,
-              navigationPaneTheme: NavigationPaneThemeData(
-                backgroundColor: fallbackColor,
-              ),
-              accentColor: appTheme.getColor(isDark),
-              brightness: isDark ? Brightness.dark : Brightness.light,
-              visualDensity: VisualDensity.standard,
-              focusTheme: FocusThemeData(
-                glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-              ),
+                Expanded(
+                  child: Container(
+                    color: fallbackColor,
+                    child: child,
+                  ),
+                ),
+              ],
+            );
+          },
+          theme: FluentThemeData(
+            fontFamily: 'Yu Gothic UI',
+            scaffoldBackgroundColor: fallbackColor,
+            navigationPaneTheme: NavigationPaneThemeData(
+              backgroundColor: fallbackColor,
             ),
-          ), // ← FluentApp を閉じる
-        ); // ← EyeDrop を閉じる
+            accentColor: appTheme.getColor(isDark),
+            brightness: isDark ? Brightness.dark : Brightness.light,
+            visualDensity: VisualDensity.standard,
+            focusTheme: FocusThemeData(
+              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+            ),
+          ),
+        );
       }, // ← builder を閉じる
     ); // ← ChangeNotifierProvider を閉じる
   }

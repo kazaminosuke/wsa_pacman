@@ -19,7 +19,7 @@ import 'package:wsa_pacman/widget/fluent_expander.dart';
 import 'package:wsa_pacman/widget/fluent_text_box.dart';
 import 'package:wsa_pacman/widget/smooth_list_view.dart';
 import 'package:wsa_pacman/windows/win_info.dart';
-import 'package:cyclop/cyclop.dart';
+import 'package:flex_color_picker/flex_color_picker.dart' as flex;
 import 'package:flutter/material.dart' as mat;
 
 import '/utils/string_utils.dart';
@@ -475,45 +475,56 @@ class ScreenSettingsState extends State<ScreenSettings> {
                 ),
                 const SizedBox(height: 24),
 
-                Text(lang.settings_custom_color), // カスタムカラー
-                const SizedBox(height: 12),
-                
-                // ★ 横並びにする Row！
+                // ★ flex.ColorPicker による Windows 11 風の高度な色選択
+                flex.ColorPicker(
+                  color: _customColor,
+                  onColorChanged: (Color color) => setState(() => _customColor = color),
+                  width: 44,
+                  height: 44,
+                  borderRadius: 4,
+                  spacing: 5,
+                  runSpacing: 5,
+                  wheelDiameter: 165,
+                  heading: Text(
+                    lang.settings_custom_color,
+                    style: theme.typography.bodyLarge,
+                  ),
+                  subheading: Text(
+                    'Select color shade',
+                    style: theme.typography.body,
+                  ),
+                  showMaterialName: false,
+                  showColorName: false,
+                  showColorCode: true,
+                  colorCodeHasColor: true,
+                  pickersEnabled: const <flex.ColorPickerType, bool>{
+                    flex.ColorPickerType.both: true,
+                    flex.ColorPickerType.primary: false,
+                    flex.ColorPickerType.accent: false,
+                    flex.ColorPickerType.bw: false,
+                    flex.ColorPickerType.custom: false,
+                    flex.ColorPickerType.wheel: true,
+                  },
+                  copyPasteBehavior: const flex.ColorPickerCopyPasteBehavior(
+                    longPressMenu: true,
+                  ),
+                ),
+                const SizedBox(height: 16),
                 Row(
                   children: [
-                    ColorButton(
-                      key: const Key('custom_color_button'),
-                      color: _customColor,
-                      config: const ColorPickerConfig(
-                        enableEyePicker: false,
-                      ),
-                      size: 48, 
-                      boxShape: BoxShape.circle, 
-                      onColorChanged: (Color color) {
-                        setState(() => _customColor = color);
-                      },
-                    ),
-                    
-                    const SizedBox(width: 16),
-                    
                     // 適用ボタン（リアルタイムプレビュー＆公式の最強メソッド）
                     FilledButton(
                       style: ButtonStyle(
-                        // 1. ピッカーで選んだ色をリアルタイムにボタン背景にプレビュー！
                         backgroundColor: WidgetStateProperty.all(_customColor),
-                        // 2. 彩度が低い（明るい）色なら自動で「黒文字」に反転！
                         foregroundColor: WidgetStateProperty.all(_customColor.basedOnLuminance()),
                       ),
                       child: Text(lang.btn_apply),
                       onPressed: () {
-                        // 3. 私のポンコツ自作コードは捨てて、Fluent UI公式のメソッドを使います！
-                        // これを使うだけで、アプリ全体（アンインストール画面など）の
-                        // すべてのFilledButtonが「背景の明るさに合わせて文字色を自動反転」するようになります。
                         appTheme.setColor(_customColor.toAccentColor());
                       },
                     ),
-                  ], // ★ココ！ Rowの要素を閉じる
-                ), // ★ココ！ Row本体を閉じる
+                  ],
+                ),
               ], // ★ココ！ Columnの要素を閉じる
             ), // ★ココ！ Column本体を閉じる
           ), // ★ココ！ ExpanderWin11を閉じる

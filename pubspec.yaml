@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
   flutter_gen: any
     
-  # UIとシステム関連のメジャーアップデート
+  # UIとシステム関連
   fluent_ui: ^4.0.0
   win32: ^5.5.4
   provider: ^6.1.1
@@ -29,11 +29,12 @@ dependencies:
   base32: ^2.1.1
   charset: ^2.0.1
 
-  # 公式パッケージでの動作検証
-  archive: ^4.0.9
+  # カラーピッカーと画像関連
+  flex_color_picker: ^3.5.0
   jovial_svg: ^1.1.16
+  archive: ^4.0.9
 
-  # カスタム修正が含まれている可能性が高いものはGitフォークを維持
+  # ウィンドウ管理とユーティリティ
   window_manager: ^0.4.3
   smooth_scroll_multiplatform:
     git: https://github.com/alesimula/dyn_mouse_scroll.git
@@ -42,9 +43,7 @@ dependencies:
   collection: ^1.19.1
   crypto: ^3.0.7
   intl: ^0.20.2
-
   fixnum: any
-  cyclop: ^0.7.0
 
 dependency_overrides:
   win32: ^5.5.4
