@@ -32,63 +32,7 @@ import 'sync_apps.dart';
 import 'theme.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
 import 'package:flutter/material.dart' show Icons;
-// 衝突を避けるために hide を追加します
-import 'dart:ffi' hide Size;
-import 'package:ffi/ffi.dart';
-import 'package:win32/win32.dart' hide MoveWindow;
-
-/// ★修正版：手動の free() を全廃止し、Arenaによる完全自動・安全なメモリ管理に変更
-Future<void> setMicaEffectNative(bool micaEnabled, bool isDark) async {
-  try {
-    // using(arena) ブロックを使うことで、このブロックを抜ける時に
-    // 万が一エラーが起きても「絶対に」「安全に」メモリが自動解放されます
-    using((arena) {
-      // 1. タイトルからウィンドウのハンドル(HWND)を検索
-      final titlePtr = appTitle.toNativeUtf16(allocator: arena);
-      int hwnd = FindWindow(nullptr, titlePtr);
-      
-      // 見つからなければ最前面のウィンドウを取得
-      if (hwnd == 0) {
-        hwnd = GetForegroundWindow();
-      }
-      if (hwnd == 0) return;
-
-      // 2. タイトルバー等にダークモードを適用
-      final pDarkMode = arena<Int32>()..value = isDark ? 1 : 0;
-      DwmSetWindowAttribute(
-        hwnd,
-        20,
-        pDarkMode.cast(),
-        sizeOf<Int32>(),
-      );
-
-      // 3. Windows 11 の Mica エフェクト設定
-      if (WinVer.isWindows11OrGreater) {
-        final pBackdrop = arena<Int32>()..value = micaEnabled ? 2 : 1;
-        DwmSetWindowAttribute(
-          hwnd,
-          38,
-          pBackdrop.cast(),
-          sizeOf<Int32>(),
-        );
-      }
-    });
-  } catch (e) {
-    // もしネイティブ側でエラーが起きてもアプリは落とさずログだけ残す
-    log("Mica API Error: $e");
-  }
-}
-
-// ★ 追加：前回の状態を記憶して、変化した時だけAPIを叩く（これがないとクラッシュします）
-bool? _appliedMica;
-bool? _appliedDark;
-
-void applyMicaIfNeeded(bool micaEnabled, bool isDark) {
-  if (_appliedMica == micaEnabled && _appliedDark == isDark) return;
-  _appliedMica = micaEnabled;
-  _appliedDark = isDark;
-  setMicaEffectNative(micaEnabled, isDark);
-}
+import 'package:wsa_pacman/windows/mica_helper.dart';
 
 const String appTitle = 'WSA Package Manager';
 const String appVersion = '1.6.0';
@@ -427,6 +371,14 @@ void main(List<String> arguments) async {
 
       // 4. フォーカスを当てる
       await windowManager.focus();
+
+      // 5. Mica エフェクト初回適用
+      //    show() / focus() でウィンドウが確定してから HWND を操作する
+      MicaHelper.apply(
+        micaEnabled: GState.mica.$.enabled,
+        isDark: darkMode,
+        windowTitle: appTitle,
+      );
     });
   }
 
@@ -439,12 +391,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = GState.theme.of(context).mode;
-    
+    final mica  = GState.mica.of(context);
+
     final bool isDark =
         theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
+    final bool micaEnabled = mica.enabled;
 
-    // Micaがない場合の標準の背景色
+    // テーマまたは Mica 設定が変わったとき、次フレームで DWM に反映する。
+    // build() 内でのサイドエフェクトを避けるため addPostFrameCallback を使用。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      MicaHelper.applyIfNeeded(
+        micaEnabled: micaEnabled,
+        isDark: isDark,
+        windowTitle: appTitle,
+      );
+    });
+
+    // Mica 有効時は Flutter ウィジェットツリーを透明にして DWM バックドロップを透過させる。
+    // 無効時はフォールバックのソリッドカラーを使用。
     final Color fallbackColor = isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF9F9F9);
+    final Color bgColor = micaEnabled ? const Color(0x00000000) : fallbackColor;
 
     return ChangeNotifierProvider(
       create: (_) => AppTheme(),
@@ -476,7 +442,7 @@ class MyApp extends StatelessWidget {
           },
           builder: (context, child) {
             return Container(
-              color: fallbackColor,
+              color: bgColor,
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -530,7 +496,7 @@ class MyApp extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  backgroundColor: fallbackColor,
+                                  backgroundColor: bgColor,
                                 ),
                                 // ダイアログ表示時のみ影を重ねる（操作は透過）
                                 if (count > 0)
@@ -551,9 +517,9 @@ class MyApp extends StatelessWidget {
           },
           theme: FluentThemeData(
             fontFamily: 'Yu Gothic UI',
-            scaffoldBackgroundColor: fallbackColor,
+            scaffoldBackgroundColor: bgColor,
             navigationPaneTheme: NavigationPaneThemeData(
-              backgroundColor: fallbackColor,
+              backgroundColor: bgColor,
             ),
             accentColor: appTheme.getColor(isDark),
             brightness: isDark ? Brightness.dark : Brightness.light,
