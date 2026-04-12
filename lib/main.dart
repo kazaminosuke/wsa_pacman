@@ -448,66 +448,96 @@ class MyApp extends StatelessWidget {
                   Positioned.fill(
                     child: child!,
                   ),
+                  // ── タイトルバー ──────────────────────────────────────
+                  // [Layer 1] WindowCaption: フル幅で背景・タイトル・システムボタンを描画。
+                  //   DragToMoveArea の外側に出すことで、ボタン上にジェスチャー競合が
+                  //   生じなくなり、クリックラグが解消される。
                   if (isDesktop)
                     Positioned(
                       top: 0,
                       left: 0,
                       right: 0,
                       height: 32.0,
-                      child: DragToMoveArea(
-                        child: ValueListenableBuilder<int>(
-                          valueListenable: _dialogCount,
-                          builder: (context, count, _) {
-                            return Stack(
-                              children: [
-                                WindowCaption(
-                                  brightness: FluentTheme.of(context).brightness,
-                                  title: GestureDetector(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => ContentDialog(
-                                          title: const Text('About WSA PacMan'),
-                                          content: const Text(
-                                            'WSA Package Manager (WSA PacMan) is a GUI package manager and package installer for Windows Subsystem for Android (WSA).\n\n'
-                                            'This tool makes it easy to install, uninstall, and manage Android apps on your Windows 11 device.',
-                                          ),
-                                          actions: [
-                                            Button(
-                                              child: const Text('Close'),
-                                              onPressed: () => Navigator.pop(context),
-                                            ),
-                                          ],
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: _dialogCount,
+                        builder: (context, count, _) {
+                          return Stack(
+                            children: [
+                              WindowCaption(
+                                brightness: FluentTheme.of(context).brightness,
+                                title: GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => ContentDialog(
+                                        title: const Text('About WSA PacMan'),
+                                        content: const Text(
+                                          'WSA Package Manager (WSA PacMan) is a GUI package manager and package installer for Windows Subsystem for Android (WSA).\n\n'
+                                          'This tool makes it easy to install, uninstall, and manage Android apps on your Windows 11 device.',
                                         ),
-                                      );
-                                    },
-                                    child: Text.rich(
-                                      TextSpan(
-                                        children: [
-                                          const TextSpan(text: '$appTitle '),
-                                          TextSpan(
-                                            text: 'v$appVersion',
-                                            style: TextStyle(
-                                              color: Colors.grey[100],
-                                              fontSize: 12,
-                                            ),
+                                        actions: [
+                                          Button(
+                                            child: const Text('Close'),
+                                            onPressed: () =>
+                                                Navigator.pop(context),
                                           ),
                                         ],
                                       ),
+                                    );
+                                  },
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        const TextSpan(text: '$appTitle '),
+                                        TextSpan(
+                                          text: 'v$appVersion',
+                                          style: TextStyle(
+                                            color: Colors.grey[100],
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  backgroundColor: bgColor,
                                 ),
-                                // ダイアログ表示時のみ影を重ねる（操作は透過）
-                                if (count > 0)
-                                  IgnorePointer(
-                                    child: Container(
-                                      color: Colors.black.withOpacity(0.4),
-                                    ),
+                                backgroundColor: bgColor,
+                              ),
+                              // ダイアログ表示時のみ影を重ねる（操作は透過）
+                              if (count > 0)
+                                IgnorePointer(
+                                  child: Container(
+                                    color: Colors.black.withOpacity(0.4),
                                   ),
-                              ],
-                            );
-                          },
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  // [Layer 2] DragToMoveArea: ボタンエリア(右140px)を除いた範囲のみ。
+                  //   WindowCaption より前面に置くが、右端のボタンには一切被らない。
+                  if (isDesktop)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 140,
+                      height: 32.0,
+                      child: DragToMoveArea(child: const SizedBox.expand()),
+                    ),
+                  // [Layer 3] 上端リサイズハンドル: 最前面・右140px除外（Win32不使用）。
+                  if (isDesktop)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 140,
+                      height: 8,
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.resizeUpDown,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onPanStart: (_) =>
+                              windowManager.startResizing(ResizeEdge.top),
                         ),
                       ),
                     ),
