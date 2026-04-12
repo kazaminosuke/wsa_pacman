@@ -378,6 +378,7 @@ void main(List<String> arguments) async {
         micaEnabled: GState.mica.$.enabled,
         isDark: darkMode,
         windowTitle: appTitle,
+        micaAlt: GState.mica.$.alt,
       );
     });
   }
@@ -404,6 +405,7 @@ class MyApp extends StatelessWidget {
         micaEnabled: micaEnabled,
         isDark: isDark,
         windowTitle: appTitle,
+        micaAlt: mica.alt,
       );
     });
 

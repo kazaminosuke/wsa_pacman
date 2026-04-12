@@ -32,8 +32,11 @@ class MicaHelper {
   /// DWMSBT_NONE: バックドロップなし (= 既定の不透明ウィンドウに戻す)
   static const int _DWMSBT_NONE = 1;
 
-  /// DWMSBT_MAINWINDOW: Mica エフェクト
+  /// DWMSBT_MAINWINDOW: Mica エフェクト (タスクバー・デスクトップ色に馴染む)
   static const int _DWMSBT_MAINWINDOW = 2;
+
+  /// DWMSBT_TABBEDWINDOW: Mica Alt エフェクト (タブ付きウィンドウ向け・より均一な色)
+  static const int _DWMSBT_TABBEDWINDOW = 4;
 
   // ── ウィンドウ拡張スタイル ────────────────────────────────────
   /// WS_EX_NOREDIRECTIONBITMAP: DWM がリダイレクションビットマップを作らないようにする。
@@ -43,6 +46,7 @@ class MicaHelper {
   // ── キャッシュ（連続した同一設定での余計な API 呼び出しを防ぐ）────
   static bool? _lastMica;
   static bool? _lastDark;
+  static bool? _lastMicaAlt;
 
   // ────────────────────────────────────────────────────────────
   // 公開 API
@@ -51,17 +55,27 @@ class MicaHelper {
   /// キャッシュと比較して変化があったときのみ Mica 設定を適用する。
   ///
   /// [windowTitle] でウィンドウを検索する。見つからない場合はフォアグラウンドウィンドウを使用。
+  /// [micaAlt] を `true` にすると DWMSBT_TABBEDWINDOW (MicaAlt) を使用する。
   /// [force] を `true` にするとキャッシュを無視して必ず適用する（初回呼び出し時に推奨）。
   static void applyIfNeeded({
     required bool micaEnabled,
     required bool isDark,
     required String windowTitle,
+    bool micaAlt = false,
     bool force = false,
   }) {
-    if (!force && _lastMica == micaEnabled && _lastDark == isDark) return;
+    if (!force &&
+        _lastMica == micaEnabled &&
+        _lastDark == isDark &&
+        _lastMicaAlt == micaAlt) return;
     _lastMica = micaEnabled;
     _lastDark = isDark;
-    _apply(micaEnabled: micaEnabled, isDark: isDark, windowTitle: windowTitle);
+    _lastMicaAlt = micaAlt;
+    _apply(
+        micaEnabled: micaEnabled,
+        isDark: isDark,
+        windowTitle: windowTitle,
+        micaAlt: micaAlt);
   }
 
   /// キャッシュを更新しつつ強制適用する。
@@ -70,10 +84,16 @@ class MicaHelper {
     required bool micaEnabled,
     required bool isDark,
     required String windowTitle,
+    bool micaAlt = false,
   }) {
     _lastMica = micaEnabled;
     _lastDark = isDark;
-    _apply(micaEnabled: micaEnabled, isDark: isDark, windowTitle: windowTitle);
+    _lastMicaAlt = micaAlt;
+    _apply(
+        micaEnabled: micaEnabled,
+        isDark: isDark,
+        windowTitle: windowTitle,
+        micaAlt: micaAlt);
   }
 
   // ────────────────────────────────────────────────────────────
@@ -84,6 +104,7 @@ class MicaHelper {
     required bool micaEnabled,
     required bool isDark,
     required String windowTitle,
+    bool micaAlt = false,
   }) {
     try {
       using((arena) {
@@ -144,8 +165,18 @@ class MicaHelper {
         }
 
         // ── 3. DWMWA_SYSTEMBACKDROP_TYPE を設定 ──────────────
-        final pBackdrop = arena<Int32>()
-          ..value = micaEnabled ? _DWMSBT_MAINWINDOW : _DWMSBT_NONE;
+        // micaAlt=true → DWMSBT_TABBEDWINDOW (4) = MicaAlt
+        // micaAlt=false → DWMSBT_MAINWINDOW   (2) = Mica (通常)
+        // 無効時       → DWMSBT_NONE          (1) = エフェクトなし
+        final int backdropType;
+        if (!micaEnabled) {
+          backdropType = _DWMSBT_NONE;
+        } else if (micaAlt) {
+          backdropType = _DWMSBT_TABBEDWINDOW;
+        } else {
+          backdropType = _DWMSBT_MAINWINDOW;
+        }
+        final pBackdrop = arena<Int32>()..value = backdropType;
         DwmSetWindowAttribute(
           hwnd,
           _DWMWA_SYSTEMBACKDROP_TYPE,
@@ -154,7 +185,7 @@ class MicaHelper {
         );
 
         log('[MicaHelper] 適用完了: '
-            'mica=$micaEnabled, dark=$isDark, '
+            'mica=$micaEnabled, alt=$micaAlt, dark=$isDark, '
             'hwnd=0x${hwnd.toRadixString(16).toUpperCase()}');
       });
     } catch (e, st) {

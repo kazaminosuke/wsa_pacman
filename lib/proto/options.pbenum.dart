@@ -47,11 +47,13 @@ class Options_Mica extends $pb.ProtobufEnum {
   static const Options_Mica FULL = Options_Mica._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'FULL');
   static const Options_Mica PARTIAL = Options_Mica._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'PARTIAL');
   static const Options_Mica DISABLED = Options_Mica._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'DISABLED');
+  static const Options_Mica ALT = Options_Mica._(3, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ALT');
 
   static const $core.List<Options_Mica> values = <Options_Mica> [
     FULL,
     PARTIAL,
     DISABLED,
+    ALT,
   ];
 
   static final $core.Map<$core.int, Options_Mica> _byValue = $pb.ProtobufEnum.initByValue(values);

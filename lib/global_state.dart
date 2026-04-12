@@ -103,6 +103,8 @@ extension Options_Micas_Ext on Options_Mica {
   bool get enabled => this != Options_Mica.DISABLED && isSupported;
   bool get full => this == Options_Mica.FULL && isSupported;
   bool get partial => this == Options_Mica.PARTIAL && isSupported;
+  /// MicaAlt (DWMSBT_TABBEDWINDOW) を使用するかどうか
+  bool get alt => this == Options_Mica.ALT && isSupported;
 
   String description(AppLocalizations lang) {
     switch (this) {
@@ -110,6 +112,8 @@ extension Options_Micas_Ext on Options_Mica {
         return lang.theme_mica_full;
       case Options_Mica.PARTIAL:
         return lang.theme_mica_partial;
+      case Options_Mica.ALT:
+        return 'Mica Alt';
       case Options_Mica.DISABLED:
         return lang.settings_option_generic_disabled;
       default:

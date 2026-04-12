@@ -34,5 +34,6 @@ message Options {
         FULL = 0;
         PARTIAL = 1;
         DISABLED = 2;
+        ALT = 3;
     }
 }
