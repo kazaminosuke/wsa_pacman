@@ -373,12 +373,23 @@ void main(List<String> arguments) async {
       await windowManager.focus();
 
       // 5. Mica エフェクト初回適用
-      //    show() / focus() でウィンドウが確定してから HWND を操作する
+      //    show() / focus() でウィンドウが確定してから HWND を操作する。
+      //    ユーザーの保存済みテーマ設定を待ってから isDark を確定する。
+      final savedTheme = await GState.theme.whenReady();
+      final savedMica  = await GState.mica.whenReady();
+      final bool initialIsDark;
+      if (savedTheme.mode == ThemeMode.light) {
+        initialIsDark = false;
+      } else if (savedTheme.mode == ThemeMode.dark) {
+        initialIsDark = true;
+      } else {
+        initialIsDark = darkMode; // System → OS 設定を使用
+      }
       MicaHelper.apply(
-        micaEnabled: GState.mica.$.enabled,
-        isDark: darkMode,
+        micaEnabled: savedMica.enabled,
+        isDark: initialIsDark,
         windowTitle: appTitle,
-        micaAlt: GState.mica.$.alt,
+        micaAlt: savedMica.alt,
       );
     });
   }
@@ -394,8 +405,12 @@ class MyApp extends StatelessWidget {
     final theme = GState.theme.of(context).mode;
     final mica  = GState.mica.of(context);
 
-    final bool isDark =
-        theme == ThemeMode.system ? darkMode : theme == ThemeMode.dark;
+    // OS 側のダーク/ライト変化にも追従するため MediaQuery を使用する。
+    // darkMode グローバルはアプリ起動時に一度だけ設定されるため、
+    // System モード時に OS の設定が変わっても反映されない問題があった。
+    final bool isDark = theme == ThemeMode.system
+        ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
+        : theme == ThemeMode.dark;
     final bool micaEnabled = mica.enabled;
 
     // テーマまたは Mica 設定が変わったとき、次フレームで DWM に反映する。
