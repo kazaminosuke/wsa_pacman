@@ -353,8 +353,10 @@ void main(List<String> arguments) async {
       title: appTitle,
       skipTaskbar: false,
       titleBarStyle: TitleBarStyle.hidden,
+      // ウィンドウ生成時点で背景を透明にし Mica がすぐ透けるようにする
+      backgroundColor: Colors.transparent,
     ), () async {
-      // 1. サイズの設定
+      // ── ステップ 1: ウィンドウサイズ ─────────────────────────
       if (Constants.installMode || Constants.uninstallMode) {
         await windowManager.setSize(const Size(500, 335));
         await windowManager.setMinimumSize(const Size(500, 335));
@@ -364,34 +366,42 @@ void main(List<String> arguments) async {
         await windowManager.setMinimumSize(const Size(640, 500));
       }
 
-      // 2. 画面中央へ配置
+      // ── ステップ 2: 中央配置 ──────────────────────────────────
       await windowManager.center();
 
-      // 3. 準備が整ってから表示（ここで初めて表示される）
-      await windowManager.show();
-
-      // 4. フォーカスを当てる
-      await windowManager.focus();
-
-      // 5. Mica エフェクト初回適用
-      //    show() / focus() でウィンドウが確定してから HWND を操作する。
-      //    ユーザーの保存済みテーマ設定を待ってから isDark を確定する。
+      // ── ステップ 3: テーマ・Mica 設定を先行ロード ─────────────
+      // show() の前に確定させることで「表示された瞬間から Mica が有効」な状態を作る。
+      // GState.mica のデフォルト値は Options_Mica.FULL（= Mica 有効）であり、
+      // 初回起動（設定ファイルが空）でも Mica が必ず有効になる。
       final savedTheme = await GState.theme.whenReady();
       final savedMica  = await GState.mica.whenReady();
-      final bool initialIsDark;
-      if (savedTheme.mode == ThemeMode.light) {
-        initialIsDark = false;
-      } else if (savedTheme.mode == ThemeMode.dark) {
-        initialIsDark = true;
-      } else {
-        initialIsDark = darkMode; // System → OS 設定を使用
-      }
+
+      // isDark は OS の platformBrightness ではなくアプリの ThemeMode 設定を優先。
+      // System モード時のみ起動時に一度取得した darkMode グローバルで補完する。
+      final bool initialIsDark = savedTheme.mode == ThemeMode.dark ||
+          (savedTheme.mode == ThemeMode.system && darkMode);
+
+      // ── ステップ 4: Flutter 描画サーフェスを透明化 ───────────
+      // DWM バックドロップ（Mica）がウィジェットに遮られないようにする。
+      // WindowOptions.backgroundColor と合わせて二重に設定しておくことで
+      // 初回フレームでも白/黒フラッシュが出ない。
+      await windowManager.setBackgroundColor(Colors.transparent);
+
+      // ── ステップ 5: Mica を show() の直前に適用 ──────────────
+      // show() が呼ばれる前に DWM 属性（20: DarkMode, 38: Backdrop）をセットし、
+      // ウィンドウが可視化された瞬間から背景が透けている状態を確立する。
       MicaHelper.apply(
         micaEnabled: savedMica.enabled,
         isDark: initialIsDark,
         windowTitle: appTitle,
         micaAlt: savedMica.alt,
       );
+
+      // ── ステップ 6: ウィンドウ表示 ───────────────────────────
+      await windowManager.show();
+
+      // ── ステップ 7: フォーカス ────────────────────────────────
+      await windowManager.focus();
     });
   }
 

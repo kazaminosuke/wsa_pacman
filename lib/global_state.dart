@@ -54,6 +54,9 @@ class GState {
       value: false,
       loader: (o) => o.legacyIcons,
       setter: (o, e) => o.legacyIcons = e);
+  // デフォルト値は Options_Mica.FULL（= Mica 有効）。
+  // proto 側も [default = FULL] を指定しているため、初回起動（空の設定ファイル）でも
+  // Mica が必ず有効状態になる。ここを DISABLED に変えない限り初回から Mica が動く。
   static final mica = PersistableValue<Options_Mica>(
       value: Options_Mica.FULL,
       loader: (o) => o.mica,
