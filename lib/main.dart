@@ -33,6 +33,7 @@ import 'theme.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
 import 'package:flutter/material.dart' show Icons;
 import 'package:wsa_pacman/windows/mica_helper.dart';
+import 'package:wsa_pacman/widget/title_bar.dart';
 
 const String appTitle = 'WSA Package Manager';
 const String appVersion = '1.6.0';
@@ -405,12 +406,11 @@ class MyApp extends StatelessWidget {
     final theme = GState.theme.of(context).mode;
     final mica  = GState.mica.of(context);
 
-    // OS 側のダーク/ライト変化にも追従するため MediaQuery を使用する。
-    // darkMode グローバルはアプリ起動時に一度だけ設定されるため、
-    // System モード時に OS の設定が変わっても反映されない問題があった。
-    final bool isDark = theme == ThemeMode.system
-        ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
-        : theme == ThemeMode.dark;
+    // isDark はアプリ側の ThemeMode 設定を最優先とし、OS の platformBrightness には依存しない。
+    // System モード時は起動時に一度だけ取得した darkMode グローバルを使用する。
+    // これにより MicaHelper に渡す isDark と DWM 属性 20 が常に一致する。
+    final bool isDark = theme == ThemeMode.dark ||
+        (theme == ThemeMode.system && darkMode);
     final bool micaEnabled = mica.enabled;
 
     // テーマまたは Mica 設定が変わったとき、次フレームで DWM に反映する。
@@ -466,96 +466,18 @@ class MyApp extends StatelessWidget {
                     child: child!,
                   ),
                   // ── タイトルバー ──────────────────────────────────────
-                  // [Layer 1] WindowCaption: フル幅で背景・タイトル・システムボタンを描画。
-                  //   DragToMoveArea の外側に出すことで、ボタン上にジェスチャー競合が
-                  //   生じなくなり、クリックラグが解消される。
+                  // AppTitleBar が以下を一括管理する:
+                  //   - WindowCaption (システムボタン + タイトル)
+                  //   - DragToMoveArea (右 140px 除外)
+                  //   - 上端リサイズハンドル (最大化中は非表示)
+                  //   - 最大化時の WS_CAPTION 再剥奪
                   if (isDesktop)
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 32.0,
-                      child: ValueListenableBuilder<int>(
-                        valueListenable: _dialogCount,
-                        builder: (context, count, _) {
-                          return Stack(
-                            children: [
-                              WindowCaption(
-                                brightness: FluentTheme.of(context).brightness,
-                                title: GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => ContentDialog(
-                                        title: const Text('About WSA PacMan'),
-                                        content: const Text(
-                                          'WSA Package Manager (WSA PacMan) is a GUI package manager and package installer for Windows Subsystem for Android (WSA).\n\n'
-                                          'This tool makes it easy to install, uninstall, and manage Android apps on your Windows 11 device.',
-                                        ),
-                                        actions: [
-                                          Button(
-                                            child: const Text('Close'),
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  child: Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        const TextSpan(text: '$appTitle '),
-                                        TextSpan(
-                                          text: 'v$appVersion',
-                                          style: TextStyle(
-                                            color: Colors.grey[100],
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                backgroundColor: bgColor,
-                              ),
-                              // ダイアログ表示時のみ影を重ねる（操作は透過）
-                              if (count > 0)
-                                IgnorePointer(
-                                  child: Container(
-                                    color: Colors.black.withOpacity(0.4),
-                                  ),
-                                ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  // [Layer 2] DragToMoveArea: ボタンエリア(右140px)を除いた範囲のみ。
-                  //   WindowCaption より前面に置くが、右端のボタンには一切被らない。
-                  if (isDesktop)
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 140,
-                      height: 32.0,
-                      child: DragToMoveArea(child: const SizedBox.expand()),
-                    ),
-                  // [Layer 3] 上端リサイズハンドル: 最前面・右140px除外（Win32不使用）。
-                  if (isDesktop)
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 140,
-                      height: 8,
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.resizeUpDown,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onPanStart: (_) =>
-                              windowManager.startResizing(ResizeEdge.top),
-                        ),
+                    Positioned.fill(
+                      child: AppTitleBar(
+                        bgColor: bgColor,
+                        dialogCount: _dialogCount,
+                        title: appTitle,
+                        version: appVersion,
                       ),
                     ),
                 ],
