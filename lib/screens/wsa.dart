@@ -360,7 +360,9 @@ class _ScreenWSAState extends State<ScreenWSA> {
                 ? lang.status_starting
                 : lang.wsa_manage_app),
             isButton: true,
-            onPressed: _loadingAction != null
+            onPressed: (_loadingAction != null ||
+                    connectionStatus.type == ConnectionStatus.MISSING ||
+                    connectionStatus.type == ConnectionStatus.UNSUPPORTED)
                 ? null
                 : () => _executeWsaAction('app', (address) async {
                       await Process.run(
@@ -384,7 +386,9 @@ class _ScreenWSAState extends State<ScreenWSA> {
                 ? lang.status_starting
                 : lang.wsa_manage_settings),
             isButton: true,
-            onPressed: _loadingAction != null
+            onPressed: (_loadingAction != null ||
+                    connectionStatus.type == ConnectionStatus.MISSING ||
+                    connectionStatus.type == ConnectionStatus.UNSUPPORTED)
                 ? null
                 : () => _executeWsaAction('settings', (address) async {
                       await Process.run(

@@ -5,7 +5,8 @@
       "Bash(find /c/Users/ryutu/AppData/Local/Pub/Cache/hosted/pub.dev -name \"window_manager_plugin.cpp\" 2>/dev/null | head -5)",
       "Bash(xargs grep -l \"SetTitleBarStyle\\\\|WS_CAPTION\")",
       "Bash(xargs grep -l \"waitUntilReadyToShow\\\\|titleBarStyle\\\\|hidden\")",
-      "Bash(dart analyze *)"
+      "Bash(dart analyze *)",
+      "Bash(/c/Users/ryutu/.puro/envs/stable/flutter/bin/flutter.bat analyze *)"
     ]
   }
 }
