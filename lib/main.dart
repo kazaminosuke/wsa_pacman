@@ -38,6 +38,97 @@ import 'package:wsa_pacman/widget/title_bar.dart';
 const String appTitle = 'WSA Package Manager';
 const String appVersion = '1.6.0';
 
+// ── Windows 11 Settings 風ホバーエフェクト付き PaneItem ──────────────────────
+//
+// fluent_ui の top モードでは kDefaultPaneItemColor が常に transparent を返すため
+// デフォルトのホバー効果が存在しない。PaneItem.build() をオーバーライドし、
+// AnimatedOpacity + DecoratedBox で角丸ボーダーをフェードイン/アウトする。
+class _HoverBorderPaneItem extends PaneItem {
+  _HoverBorderPaneItem({
+    required super.icon,
+    super.title,
+    required super.body,
+  });
+
+  @override
+  Widget build({
+    required BuildContext context,
+    required bool selected,
+    required VoidCallback? onPressed,
+    required PaneDisplayMode? displayMode,
+    required int itemIndex,
+    bool? autofocus,
+    bool showTextOnTop = true,
+    int depth = 0,
+  }) {
+    final item = super.build(
+      context: context,
+      selected: selected,
+      onPressed: onPressed,
+      displayMode: displayMode,
+      itemIndex: itemIndex,
+      autofocus: autofocus,
+      showTextOnTop: showTextOnTop,
+      depth: depth,
+    );
+    final mode = displayMode ?? NavigationView.dataOf(context).displayMode;
+    // ホバーボーダーは top モードの非選択項目にのみ適用する
+    if (mode != PaneDisplayMode.top || selected) return item;
+    return _HoverBorderWrapper(child: item);
+  }
+}
+
+class _HoverBorderWrapper extends StatefulWidget {
+  final Widget child;
+  const _HoverBorderWrapper({required this.child});
+
+  @override
+  State<_HoverBorderWrapper> createState() => _HoverBorderWrapperState();
+}
+
+class _HoverBorderWrapperState extends State<_HoverBorderWrapper> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = FluentTheme.of(context).brightness == Brightness.dark;
+    // PaneItem 内部の Container margin (横 6px) と bottom Padding (4px) に合わせた
+    // オフセットで DecoratedBox を重ねる
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: Stack(
+        children: [
+          widget.child,
+          Positioned.fill(
+            child: IgnorePointer(
+              child: AnimatedOpacity(
+                opacity: _hovered ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 120),
+                curve: Curves.easeOut,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0x2FFFFFFF)
+                            : const Color(0x1F000000),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 final ValueNotifier<int> _dialogCount = ValueNotifier<int>(0);
 
 class _DialogObserver extends NavigatorObserver {
@@ -582,12 +673,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               }(),
               items: [
-                PaneItem(
+                _HoverBorderPaneItem(
                   icon: Icon(Icons.android, size: 18),
                   title: const Text('WSA'),
                   body: const ScreenWSA(),
                 ),
-                PaneItem(
+                _HoverBorderPaneItem(
                   icon: const Icon(fsi.FluentIcons.delete_24_regular, size: 18),
                   title: const Text('Uninstall'),
                   body: const ScreenAppManager(),
@@ -604,9 +695,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-                PaneItem(
-                  icon:
-                      const Icon(fsi.FluentIcons.settings_24_regular, size: 18),
+                _HoverBorderPaneItem(
+                  icon: const Icon(fsi.FluentIcons.settings_24_regular, size: 18),
                   title: Text(lang.screen_settings),
                   body: ScreenSettings(controller: settingsController),
                 ),
