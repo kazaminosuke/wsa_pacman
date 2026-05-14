@@ -6,7 +6,8 @@
       "Bash(xargs grep -l \"SetTitleBarStyle\\\\|WS_CAPTION\")",
       "Bash(xargs grep -l \"waitUntilReadyToShow\\\\|titleBarStyle\\\\|hidden\")",
       "Bash(dart analyze *)",
-      "Bash(/c/Users/ryutu/.puro/envs/stable/flutter/bin/flutter.bat analyze *)"
+      "Bash(/c/Users/ryutu/.puro/envs/stable/flutter/bin/flutter.bat analyze *)",
+      "Bash(grep -n \"manage_app\\\\|manage_settings\\\\|manage_applications\\\\|scan_system\\\\|backup_registry\\\\|click_scan_to_find\\\\|status_unsupported\\\\|status_missing\\\\|wsa_manage\" /c/Users/ryutu/.puro/envs/stable/flutter/bin/../../../.pub-cache/hosted/pub.dev 2>/dev/null; grep -n \"manage_app\\\\|manage_settings\\\\|scan_system\\\\|backup_registry\\\\|click_scan\\\\|status_unsupported\\\\|wsa_manage\" \"D:/wsatools/wsa_pacman/lib/l10n/app_localizations_en.dart\" 2>/dev/null | head -30)"
     ]
   }
 }

@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart' as fsi;
 
-// lib/screens/app_manager.dart の一番上付近
-import '../global_state.dart'; // ★これを追加
-import 'dart:async'; // ★ これを追加
+import '../global_state.dart';
+import '../utils/env.dart';
+import 'dart:async';
 import '../widget/fluent_card.dart';
 
 class ScreenAppManager extends StatefulWidget {
@@ -294,6 +294,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
   Widget build(BuildContext context) {
     final theme = FluentTheme.of(context);
     final lang = AppLocalizations.of(context)!;
+    final wsaNotInstalled = !Env.WSA_INSTALLED;
 
     return ScaffoldPage.withPadding(
       header: PageHeader(
@@ -306,7 +307,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
             content: Row(
               children: [
                 FilledButton(
-                  onPressed: _isScanning ? null : () => _startScan(lang),
+                  onPressed: (_isScanning || wsaNotInstalled) ? null : () => _startScan(lang),
                   style: ButtonStyle(
                     shape: WidgetStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0))),
@@ -321,7 +322,7 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                 ),
                 const SizedBox(width: 12),
                 Button(
-                  onPressed: () => _backupRegistry(lang),
+                  onPressed: wsaNotInstalled ? null : () => _backupRegistry(lang),
                   style: ButtonStyle(
                     shape: WidgetStateProperty.resolveWith(
                         (states) => RoundedRectangleBorder(
@@ -399,7 +400,9 @@ class _ScreenAppManagerState extends State<ScreenAppManager> {
                               ),
                             ],
                           )
-                        : Text(lang.click_scan_to_find_ghost_apps),
+                        : Text(wsaNotInstalled
+                              ? lang.status_unsupported
+                              : lang.click_scan_to_find_ghost_apps),
                   )
                 : ListView.builder(
                     itemCount: _detectedApps.length,
