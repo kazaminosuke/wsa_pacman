@@ -1,16 +1,10 @@
 // ignore_for_file: constant_identifier_names
-import 'dart:developer';
-import 'dart:ffi' hide Size;
-
-import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart' show ValueListenable;
-import 'package:win32/win32.dart' hide MoveWindow;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:window_manager/window_manager.dart';
 
 /// カスタムタイトルバー。
 ///
-/// - 最大化時に WS_CAPTION を再剥奪し OS 標準キャプションとの二重表示を防ぐ。
 /// - 最大化中は上端リサイズハンドルを非表示にする。
 /// - [WindowListener] で最大化イベントを受け取る。
 class AppTitleBar extends StatefulWidget {
@@ -32,14 +26,6 @@ class AppTitleBar extends StatefulWidget {
 }
 
 class _AppTitleBarState extends State<AppTitleBar> with WindowListener {
-  // ── Win32 定数 ────────────────────────────────────────────────
-  static const int _GWL_STYLE = -16;
-  static const int _WS_CAPTION = 0x00C00000;
-  static const int _SWP_NOSIZE = 0x0001;
-  static const int _SWP_NOMOVE = 0x0002;
-  static const int _SWP_NOZORDER = 0x0004;
-  static const int _SWP_FRAMECHANGED = 0x0020;
-
   bool _isMaximized = false;
 
   @override
@@ -60,38 +46,8 @@ class _AppTitleBarState extends State<AppTitleBar> with WindowListener {
     super.dispose();
   }
 
-  // HWND をウィンドウタイトルで検索し、見つからなければフォアグラウンドウィンドウを返す
-  int _findHwnd() {
-    int hwnd = 0;
-    using((arena) {
-      final ptr = widget.title.toNativeUtf16(allocator: arena);
-      hwnd = FindWindow(nullptr, ptr);
-      if (hwnd == 0) hwnd = GetForegroundWindow();
-    });
-    return hwnd;
-  }
-
-  /// 最大化時: OS が復元した WS_CAPTION を再剥奪し、カスタムボタンとの二重表示を防ぐ。
-  void _stripCaption() {
-    try {
-      final hwnd = _findHwnd();
-      if (hwnd == 0) return;
-      final style = GetWindowLongPtr(hwnd, _GWL_STYLE);
-      if (style & _WS_CAPTION != 0) {
-        SetWindowLongPtr(hwnd, _GWL_STYLE, style & ~_WS_CAPTION);
-        SetWindowPos(hwnd, 0, 0, 0, 0, 0,
-            _SWP_NOSIZE | _SWP_NOMOVE | _SWP_NOZORDER | _SWP_FRAMECHANGED);
-      }
-    } catch (e) {
-      log('[TitleBar] _stripCaption エラー: $e');
-    }
-  }
-
   @override
-  void onWindowMaximize() {
-    setState(() => _isMaximized = true);
-    _stripCaption();
-  }
+  void onWindowMaximize() => setState(() => _isMaximized = true);
 
   @override
   void onWindowUnmaximize() => setState(() => _isMaximized = false);
