@@ -110,12 +110,9 @@ class _HoverBorderWrapperState extends State<_HoverBorderWrapper> {
                   padding: const EdgeInsets.fromLTRB(6, 0, 6, 4),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: isDark
-                            ? const Color(0x2FFFFFFF)
-                            : const Color(0x1F000000),
-                        width: 1,
-                      ),
+                      color: isDark
+                          ? const Color(0x0FFFFFFF)
+                          : const Color(0x09000000),
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -638,6 +635,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       children: [
         Expanded(
+          child: NavigationPaneTheme(
+          data: NavigationPaneTheme.of(context).merge(NavigationPaneThemeData(
+            selectedTopTextStyle: WidgetStateProperty.resolveWith((states) {
+              return theme.typography.body?.copyWith(
+                color: states.isPressed
+                    ? theme.resources.textFillColorTertiary
+                    : theme.resources.textFillColorPrimary,
+              );
+            }),
+          )),
           child: NavigationView(
             pane: NavigationPane(
               selected: index,
@@ -702,6 +709,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+          ),
           ),
         ),
       ],
