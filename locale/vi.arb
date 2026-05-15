@@ -1,0 +1,231 @@
+{
+    "@@locale": "vi",
+    "@locale_desc": {
+        "description": "Vietnamese [vi_VN]"
+    },
+    "locale_desc": "Tiếng Việt",
+    "locale_system": "Hệ thống",
+    "btn_auth": "Đăng nhập lại",
+    "btn_dev_settings": "Tùy chọn nhà phát triển",
+    "btn_switch_on": "Bật",
+    "btn_switch_off": "Tắt",
+    "status_subtext_winver_10": "Windows 10",
+    "status_subtext_winver_older": "Phiên bản Windows cũ hơn",
+    "status_unsupported": "WSA chưa được cài đặt",
+    "status_unsupported_desc": "{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.",
+    "status_unauthorized": "Không được phép",
+    "status_unauthorized_desc": "Đã từ chối hoặc thu hồi quyền xác minh gỡ lỗi; nhấn vào nút đầu tiên, chọn 'luôn cho phép', sau đó nhấp vào 'cho phép'; Nếu không có cửa sổ xuất hiện, mở tùy chọn nhà phát triển và vô hiệu hóa rồi bật lại 'gỡ lỗi USB'",
+    "status_missing": "WSA chưa được cài đặt",
+    "status_missing_desc": "WSA could not be found on your system.\nSince the official Microsoft WSA has been discontinued, we recommend installing the community-driven 'WSABuilds'.",
+    "btn_wsabuilds": "Open WSABuilds (GitHub)",
+    "status_unknown": "Đang kết nối",
+    "status_unknown_desc": "Đang đợi kết nối WSA được thiết lập...",
+    "status_starting": "Bắt đầu",
+    "status_starting_desc": "WSA đang bắt đầu, vui lòng chờ...",
+    "status_arrested": "Tắt",
+    "status_arrested_desc": "WSA đã bị tắt",
+    "status_offline": "Ngoại tuyến",
+    "status_offline_desc": "Không thể thiết lập kết nối với WSA: Chế độ nhà phát triển và gỡ lỗi USB đã bị tắt hoặc sai cổng (Port) được chỉ định",
+    "status_disconnected": "Đã ngắt kết nối",
+    "status_disconnected_desc": "Kết nối WSA không thể được thiết lập vì những lý do không xác định",
+    "status_connected": "Đã kết nối",
+    "status_connected_desc": "Successfully connected to WSA. All systems are operational and ready.",
+    "screen_wsa": "Trình Quản Lý Cài Đặt - WSA",
+    "screen_settings": "Cài Đặt",
+    "wsa_manage": "Quản Lý Android",
+    "wsa_manage_app": "Manage Applications",
+    "wsa_manage_settings": "Manage Settings",
+    "settings_port": "Cổng WSA (Port)",
+    "settings_ip": "Địa chỉ IP WSA",
+    "settings_autostart": "Tự động khởi động WSA trước khi cài đặt",
+    "settings_timeout": "Thời gian chờ ({seconds} giây)",
+    "settings_language": "Ngôn ngữ",
+    "settings_option_generic_system": "Hệ thống",
+    "settings_option_generic_disabled": "Disabled",
+    "theme_mode": "Giao diện",
+    "theme_mode_dark": "Tối",
+    "theme_mode_light": "Sáng",
+    "theme_mica": "Mica Effect (Window Transparency)",
+    "theme_mica_full": "Full",
+    "theme_mica_partial": "Partial",
+    "theme_icon_adaptive": "Biểu tượng icon",
+    "theme_icon_adaptive_squircle": "Squircle (Rounded Corner)",
+    "theme_icon_adaptive_circle": "Vòng tròn",
+    "theme_icon_adaptive_rounded_square": "Rounded Square",
+    "installer_message": "Bạn có muốn cài đặt ứng dụng này không?",
+    "installer_info_version": "Phiên bản: {appVersion}",
+    "installer_info_version_change": "Phiên bản: {appVersionOld} => {appVersionNew}",
+    "installer_info_package": "Gói: {appPackage}",
+    "installer_installing": "Cài đặt ứng dụng {appTitle}...",
+    "installer_installed": "Ứng dụng {appTitle} đã được cài đặt thành công",
+    "installer_fail": "Ứng dụng {appTitle} chưa được cài đặt",
+    "installer_error_nomsg": "Cài đặt không thành công, nhưng không có lỗi nào được đưa ra",
+    "installer_error_timeout": "Quá thời gian cài đặt, khách hàng đã ngừng chờ, nhưng nó có thể vẫn đang tiếp diễn ở nền...",
+    "installer_warning_dirty": "Cần thực hiện việc dọn dẹp tập tin thủ công trong thư mục “{tempDir}”",
+    "installer_btn_starting": "Đang bắt đầu...",
+    "installer_btn_loading": "Đang tải...",
+    "installer_btn_cancel": "Hủy bỏ",
+    "installer_btn_install": "Cài đặt",
+    "installer_btn_reinstall": "Cài đặt lại",
+    "installer_btn_update": "Cập nhật",
+    "installer_btn_downgrade": "Hạ cấp (không an toàn)",
+    "installer_btn_dismiss": "Bỏ qua",
+    "installer_btn_open": "Chạy ứng dụng",
+    "installer_btn_checkbox_shortcut": "Tạo lối tắt trên màn hình",
+    "android_permission_none": "Không cần quyền",
+    "android_permission_admin": "Quản lý thiết bị với tư cách Quản Trị Viên",
+    "android_permission_admin_brick": "Vô hiệu hóa hoặc đặt lại thiết bị từ xa",
+    "android_permission_admin_lock": "Khóa thiết bị từ xa",
+    "android_permission_storage": "Tập tin và phương tiện",
+    "android_permission_microphone": "Microphone",
+    "android_permission_camera": "Máy ảnh",
+    "android_permission_location": "Vị trí",
+    "android_permission_phone": "Điện thoại",
+    "android_permission_call_log": "Nhật ký cuộc gọi",
+    "android_permission_sms": "Tin nhắn",
+    "android_permission_contacts": "Danh bạn",
+    "android_permission_calendar": "Lịch",
+    "android_permission_activity_recognition": "Hoạt động thể chất",
+    "android_permission_sensors": "Cảm biến thiết bị",
+    "android_permission_sensors_body": "Cảm biến cơ thể",
+    "android_permission_nearby_devices": "Xác định vị trí các thiết bị lân cận",
+    "screen_uninstall": "Gỡ cài đặt",
+    "scan_system": "Quét hệ thống",
+    "scanning": "Đang quét...",
+    "backup_registry": "Sao lưu Registry",
+    "execute_cleanup": "Thực hiện dọn dẹp",
+    "scanning_wsa_env": "Đang quét môi trường WSA một cách sâu...",
+    "click_scan_to_find_ghost_apps": "Nhấp vào 'Quét hệ thống' để tìm các ứng dụng còn sót lại hoặc bị ẩn.",
+    "type_registry_only": "Registry Only",
+    "type_orphaned_shortcut": "Orphaned Shortcut",
+    "type_hidden_adb_app": "Hidden ADB App",
+    "cleanup_complete": "Cleanup Complete",
+    "cleanup_success_desc": "Completely deleted {count} apps and unnecessary data.",
+    "@cleanup_success_desc": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "auto_backup_registry": "Auto-backup before uninstall",
+    "backup_cancelled": "Backup cancelled",
+    "backup_success": "Backup successfully saved",
+    "btn_restart_wsa": "Restart WSA",
+    "settings_auto_backup_dir": "Auto Backup Directory",
+    "tooltip_reset_desktop": "Reset to Default (Desktop)",
+    "btn_browse": "Browse...",
+    "settings_theme_color": "Theme Color",
+    "settings_theme_color_system": "System (Windows)",
+    "settings_theme_color_default": "Default",
+    "settings_custom_color": "Create Custom Color",
+    "btn_apply": "Apply",
+    "dialog_backup_dir_title": "Select a folder to save auto-backups",
+    "dialog_backup_dir_filename": "Select this folder",
+    "dialog_backup_dir_filter": "Folder|*.none",
+    "@status_subtext_winver_10": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
+    "@status_subtext_winver_older": {
+        "description": "Only used inside 'status_unsupported_desc', modify taking this in consideration"
+    },
+    "@status_unsupported_desc": {
+        "placeholders": {
+            "windowsVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "@settings_timeout": {
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version": {
+        "placeholders": {
+            "appVersion": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_version_change": {
+        "placeholders": {
+            "appVersionOld": {
+                "type": "String"
+            },
+            "appVersionNew": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_info_package": {
+        "placeholders": {
+            "appPackage": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installing": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_installed": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_fail": {
+        "placeholders": {
+            "appTitle": {
+                "type": "String"
+            }
+        }
+    },
+    "@installer_warning_dirty": {
+        "placeholders": {
+            "tempDir": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_status_uninstalling": "Uninstalling {appName}...",
+    "@uninstaller_status_uninstalling": {
+        "placeholders": {
+            "appName": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_status_starting_wsa": "Starting Windows Subsystem for Android...",
+    "uninstaller_status_success": "Successfully uninstalled.",
+    "uninstaller_status_errors": "Uninstalled with some errors.",
+    "uninstaller_status_error_msg": "Error during uninstall: {error}",
+    "@uninstaller_status_error_msg": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_confirm": "Are you sure you want to uninstall {appName}?",
+    "@uninstaller_confirm": {
+        "placeholders": {
+            "appName": {
+                "type": "String"
+            }
+        }
+    },
+    "uninstaller_btn_yes": "Yes"
+,
+    "btn_refresh_status": "Làm mới trạng thái",
+    "tooltip_refresh_status": "Kiểm tra lại trạng thái WSA ngay bây giờ"
+,
+    "btn_launch_wsa": "Khởi động WSA"
+}
