@@ -1,0 +1,6 @@
+runtimes\win-x64\native\WebView2Loader.dll
+App.xbf
+MainWindow.xbf
+Pages\SettingsPage.xbf
+Pages\UninstallPage.xbf
+Pages\WsaPage.xbf

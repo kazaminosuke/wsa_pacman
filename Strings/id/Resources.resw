@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <data name="locale_desc" xml:space="preserve">
+    <value>Bahasa Indonesia</value>
+  </data>
+  <data name="locale_system" xml:space="preserve">
+    <value>Sistem</value>
+  </data>
+  <data name="btn_auth" xml:space="preserve">
+    <value>Otentikasi ulang</value>
+  </data>
+  <data name="btn_dev_settings" xml:space="preserve">
+    <value>Opsi pengembang</value>
+  </data>
+  <data name="btn_switch_on" xml:space="preserve">
+    <value>Nyala</value>
+  </data>
+  <data name="btn_switch_off" xml:space="preserve">
+    <value>Mati</value>
+  </data>
+  <data name="status_subtext_winver_10" xml:space="preserve">
+    <value>Windows 10</value>
+  </data>
+  <data name="status_subtext_winver_older" xml:space="preserve">
+    <value>Versi Lama Windows</value>
+  </data>
+  <data name="status_unsupported" xml:space="preserve">
+    <value>WSA belum terinstal</value>
+  </data>
+  <data name="status_unsupported_desc" xml:space="preserve">
+    <value>{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.</value>
+  </data>
+  <data name="status_unauthorized" xml:space="preserve">
+    <value>Tidak sah</value>
+  </data>
+  <data name="status_unauthorized_desc" xml:space="preserve">
+    <value>Otorisasi debugging ditolak atau dicabut; tekan tombol pertama, pilih 'selalu izinkan' lalu klik 'izinkan'; Jika tidak muncul pop-up, buka opsi pengembang dan nonaktifkan dan aktifkan kembali 'debugging USB'</value>
+  </data>
+  <data name="status_missing" xml:space="preserve">
+    <value>WSA tidak ditemukan</value>
+  </data>
+  <data name="status_missing_desc" xml:space="preserve">
+    <value>WSA could not be found on your system.
+Since the official Microsoft WSA has been discontinued, we recommend installing the community-driven 'WSABuilds'.</value>
+  </data>
+  <data name="btn_wsabuilds" xml:space="preserve">
+    <value>Open WSABuilds (GitHub)</value>
+  </data>
+  <data name="status_unknown" xml:space="preserve">
+    <value>Menghubungkan</value>
+  </data>
+  <data name="status_unknown_desc" xml:space="preserve">
+    <value>Menunggu koneksi WSA dibuat...</value>
+  </data>
+  <data name="status_starting" xml:space="preserve">
+    <value>Memulai</value>
+  </data>
+  <data name="status_starting_desc" xml:space="preserve">
+    <value>WSA dimulai, harap bersiap-siap...</value>
+  </data>
+  <data name="status_arrested" xml:space="preserve">
+    <value>Ditangkap</value>
+  </data>
+  <data name="status_arrested_desc" xml:space="preserve">
+    <value>WSA dimatikan</value>
+  </data>
+  <data name="status_offline" xml:space="preserve">
+    <value>Luring</value>
+  </data>
+  <data name="status_offline_desc" xml:space="preserve">
+    <value>Tidak dapat membuat koneksi dengan WSA: mode pengembang dan debugging USB dinonaktifkan atau port yang salah ditentukan</value>
+  </data>
+  <data name="status_disconnected" xml:space="preserve">
+    <value>Terputus</value>
+  </data>
+  <data name="status_disconnected_desc" xml:space="preserve">
+    <value>Koneksi WSA tidak dapat dibuat karena alasan yang tidak diketahui</value>
+  </data>
+  <data name="status_connected" xml:space="preserve">
+    <value>Terhubung</value>
+  </data>
+  <data name="status_connected_desc" xml:space="preserve">
+    <value>Successfully connected to WSA. All systems are operational and ready.</value>
+  </data>
+  <data name="screen_wsa" xml:space="preserve">
+    <value>Manajer Paket WSA</value>
+  </data>
+  <data name="screen_settings" xml:space="preserve">
+    <value>Pengaturan</value>
+  </data>
+  <data name="wsa_manage" xml:space="preserve">
+    <value>Manajemen Android</value>
+  </data>
+  <data name="wsa_manage_app" xml:space="preserve">
+    <value>Manage Applications</value>
+  </data>
+  <data name="wsa_manage_settings" xml:space="preserve">
+    <value>Manage Settings</value>
+  </data>
+  <data name="settings_port" xml:space="preserve">
+    <value>Port WSA</value>
+  </data>
+  <data name="settings_ip" xml:space="preserve">
+    <value>Alamat IP WSA</value>
+  </data>
+  <data name="settings_autostart" xml:space="preserve">
+    <value>Otomatis mulai WSA sebelum instalasi</value>
+  </data>
+  <data name="settings_timeout" xml:space="preserve">
+    <value>Batas waktu ({seconds} detik)</value>
+  </data>
+  <data name="settings_language" xml:space="preserve">
+    <value>Bahasa</value>
+  </data>
+  <data name="settings_option_generic_system" xml:space="preserve">
+    <value>Sistem</value>
+  </data>
+  <data name="settings_option_generic_disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="theme_mode" xml:space="preserve">
+    <value>Mode tema</value>
+  </data>
+  <data name="theme_mode_dark" xml:space="preserve">
+    <value>Gelap</value>
+  </data>
+  <data name="theme_mode_light" xml:space="preserve">
+    <value>Terang</value>
+  </data>
+  <data name="theme_mica" xml:space="preserve">
+    <value>Mica Effect (Window Transparency)</value>
+  </data>
+  <data name="theme_mica_full" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="theme_mica_partial" xml:space="preserve">
+    <value>Partial</value>
+  </data>
+  <data name="theme_icon_adaptive" xml:space="preserve">
+    <value>Ikon adaptif Bentuk</value>
+  </data>
+  <data name="theme_icon_adaptive_squircle" xml:space="preserve">
+    <value>Squircle (Rounded Corner)</value>
+  </data>
+  <data name="theme_icon_adaptive_circle" xml:space="preserve">
+    <value>Lingkaran</value>
+  </data>
+  <data name="theme_icon_adaptive_rounded_square" xml:space="preserve">
+    <value>Rounded Square</value>
+  </data>
+  <data name="installer_message" xml:space="preserve">
+    <value>Apakah Anda ingin menginstal aplikasi ini?</value>
+  </data>
+  <data name="installer_info_version" xml:space="preserve">
+    <value>Versi: {appVersion}</value>
+  </data>
+  <data name="installer_info_version_change" xml:space="preserve">
+    <value>Versi: {appVersionOld} =&gt; {appVersionNew}</value>
+  </data>
+  <data name="installer_info_package" xml:space="preserve">
+    <value>Paket: {appPackage}</value>
+  </data>
+  <data name="installer_installing" xml:space="preserve">
+    <value>Menginstal aplikasi {appTitle}...</value>
+  </data>
+  <data name="installer_installed" xml:space="preserve">
+    <value>Aplikasi {appTitle} berhasil diinstal</value>
+  </data>
+  <data name="installer_fail" xml:space="preserve">
+    <value>Aplikasi {appTitle} tidak dipasang</value>
+  </data>
+  <data name="installer_error_nomsg" xml:space="preserve">
+    <value>Instalasi telah gagal, tetapi tidak ada kesalahan yang terjadi</value>
+  </data>
+  <data name="installer_error_timeout" xml:space="preserve">
+    <value>Pemasangan kehabisan waktu, klien sudah tidak menunggu lagi, tapi masih mungkin berjalan di latar belakang...</value>
+  </data>
+  <data name="installer_warning_dirty" xml:space="preserve">
+    <value>Dibutuhkan pembersihan file manual di direktori “{tempDir}”</value>
+  </data>
+  <data name="installer_btn_starting" xml:space="preserve">
+    <value>Memulai...</value>
+  </data>
+  <data name="installer_btn_loading" xml:space="preserve">
+    <value>Memuat...</value>
+  </data>
+  <data name="installer_btn_cancel" xml:space="preserve">
+    <value>Batal</value>
+  </data>
+  <data name="installer_btn_install" xml:space="preserve">
+    <value>Instal</value>
+  </data>
+  <data name="installer_btn_reinstall" xml:space="preserve">
+    <value>Instal ulang</value>
+  </data>
+  <data name="installer_btn_update" xml:space="preserve">
+    <value>Perbarui</value>
+  </data>
+  <data name="installer_btn_downgrade" xml:space="preserve">
+    <value>Turunkan versi (tidak aman)</value>
+  </data>
+  <data name="installer_btn_dismiss" xml:space="preserve">
+    <value>Memberhentikan</value>
+  </data>
+  <data name="installer_btn_open" xml:space="preserve">
+    <value>Buka aplikasi</value>
+  </data>
+  <data name="installer_btn_checkbox_shortcut" xml:space="preserve">
+    <value>Buat pintasan desktop</value>
+  </data>
+  <data name="android_permission_none" xml:space="preserve">
+    <value>Tidak diperlukan izin</value>
+  </data>
+  <data name="android_permission_admin" xml:space="preserve">
+    <value>Atur perangkat sebagai administrator</value>
+  </data>
+  <data name="android_permission_admin_brick" xml:space="preserve">
+    <value>Nonaktifkan atau setel ulang perangkat dari jarak jauh</value>
+  </data>
+  <data name="android_permission_admin_lock" xml:space="preserve">
+    <value>Mengunci perangkat dari jarak jauh</value>
+  </data>
+  <data name="android_permission_storage" xml:space="preserve">
+    <value>File dan media</value>
+  </data>
+  <data name="android_permission_microphone" xml:space="preserve">
+    <value>Mikropon</value>
+  </data>
+  <data name="android_permission_camera" xml:space="preserve">
+    <value>Kamera</value>
+  </data>
+  <data name="android_permission_location" xml:space="preserve">
+    <value>Lokasi</value>
+  </data>
+  <data name="android_permission_phone" xml:space="preserve">
+    <value>Telepon</value>
+  </data>
+  <data name="android_permission_call_log" xml:space="preserve">
+    <value>Log panggilan</value>
+  </data>
+  <data name="android_permission_sms" xml:space="preserve">
+    <value>Pesan</value>
+  </data>
+  <data name="android_permission_contacts" xml:space="preserve">
+    <value>Kontak</value>
+  </data>
+  <data name="android_permission_calendar" xml:space="preserve">
+    <value>Kalender</value>
+  </data>
+  <data name="android_permission_activity_recognition" xml:space="preserve">
+    <value>Aktivitas fisik</value>
+  </data>
+  <data name="android_permission_sensors" xml:space="preserve">
+    <value>Sensor perangkat</value>
+  </data>
+  <data name="android_permission_sensors_body" xml:space="preserve">
+    <value>Sensor tubuh</value>
+  </data>
+  <data name="android_permission_nearby_devices" xml:space="preserve">
+    <value>Temukan perangkat terdekat</value>
+  </data>
+  <data name="screen_uninstall" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
+  <data name="scan_system" xml:space="preserve">
+    <value>Scan System</value>
+  </data>
+  <data name="scanning" xml:space="preserve">
+    <value>Scanning...</value>
+  </data>
+  <data name="backup_registry" xml:space="preserve">
+    <value>Backup Registry</value>
+  </data>
+  <data name="execute_cleanup" xml:space="preserve">
+    <value>Execute Cleanup</value>
+  </data>
+  <data name="scanning_wsa_env" xml:space="preserve">
+    <value>Scanning WSA environment deeply...</value>
+  </data>
+  <data name="click_scan_to_find_ghost_apps" xml:space="preserve">
+    <value>Click 'Scan System' to find remnant or hidden apps.</value>
+  </data>
+  <data name="type_registry_only" xml:space="preserve">
+    <value>Registry Only</value>
+  </data>
+  <data name="type_orphaned_shortcut" xml:space="preserve">
+    <value>Orphaned Shortcut</value>
+  </data>
+  <data name="type_hidden_adb_app" xml:space="preserve">
+    <value>Hidden ADB App</value>
+  </data>
+  <data name="cleanup_complete" xml:space="preserve">
+    <value>Cleanup Complete</value>
+  </data>
+  <data name="cleanup_success_desc" xml:space="preserve">
+    <value>Completely deleted {count} apps and unnecessary data.</value>
+  </data>
+  <data name="auto_backup_registry" xml:space="preserve">
+    <value>Auto-backup before uninstall</value>
+  </data>
+  <data name="backup_cancelled" xml:space="preserve">
+    <value>Backup cancelled</value>
+  </data>
+  <data name="backup_success" xml:space="preserve">
+    <value>Backup successfully saved</value>
+  </data>
+  <data name="btn_restart_wsa" xml:space="preserve">
+    <value>Restart WSA</value>
+  </data>
+  <data name="settings_auto_backup_dir" xml:space="preserve">
+    <value>Auto Backup Directory</value>
+  </data>
+  <data name="tooltip_reset_desktop" xml:space="preserve">
+    <value>Reset to Default (Desktop)</value>
+  </data>
+  <data name="btn_browse" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="settings_theme_color" xml:space="preserve">
+    <value>Theme Color</value>
+  </data>
+  <data name="settings_theme_color_system" xml:space="preserve">
+    <value>System (Windows)</value>
+  </data>
+  <data name="settings_theme_color_default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="settings_custom_color" xml:space="preserve">
+    <value>Create Custom Color</value>
+  </data>
+  <data name="btn_apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="dialog_backup_dir_title" xml:space="preserve">
+    <value>Select a folder to save auto-backups</value>
+  </data>
+  <data name="dialog_backup_dir_filename" xml:space="preserve">
+    <value>Select this folder</value>
+  </data>
+  <data name="dialog_backup_dir_filter" xml:space="preserve">
+    <value>Folder|*.none</value>
+  </data>
+  <data name="uninstaller_status_uninstalling" xml:space="preserve">
+    <value>Uninstalling {appName}...</value>
+  </data>
+  <data name="uninstaller_status_starting_wsa" xml:space="preserve">
+    <value>Starting Windows Subsystem for Android...</value>
+  </data>
+  <data name="uninstaller_status_success" xml:space="preserve">
+    <value>Successfully uninstalled.</value>
+  </data>
+  <data name="uninstaller_status_errors" xml:space="preserve">
+    <value>Uninstalled with some errors.</value>
+  </data>
+  <data name="uninstaller_status_error_msg" xml:space="preserve">
+    <value>Error during uninstall: {error}</value>
+  </data>
+  <data name="uninstaller_confirm" xml:space="preserve">
+    <value>Are you sure you want to uninstall {appName}?</value>
+  </data>
+  <data name="uninstaller_btn_yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="btn_refresh_status" xml:space="preserve">
+    <value>Perbarui Status</value>
+  </data>
+  <data name="tooltip_refresh_status" xml:space="preserve">
+    <value>Periksa ulang status WSA sekarang</value>
+  </data>
+  <data name="btn_launch_wsa" xml:space="preserve">
+    <value>Jalankan WSA</value>
+  </data>
+</root>
