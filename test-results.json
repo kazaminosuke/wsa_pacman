@@ -1,0 +1,82 @@
+[
+  {
+    "name": "NavItemWsa exists",
+    "status": "PASS"
+  },
+  {
+    "name": "NavItemUninstall exists",
+    "status": "PASS"
+  },
+  {
+    "name": "NavItemSettings exists",
+    "status": "PASS"
+  },
+  {
+    "name": "RefreshStatus button exists",
+    "status": "PASS"
+  },
+  {
+    "name": "ManageApps button exists",
+    "status": "PASS"
+  },
+  {
+    "name": "ManageSettings button exists",
+    "status": "PASS"
+  },
+  {
+    "name": "Navigate to Uninstall",
+    "status": "PASS"
+  },
+  {
+    "name": "BtnScan exists",
+    "status": "PASS"
+  },
+  {
+    "name": "BtnBackupRegistry exists",
+    "status": "PASS"
+  },
+  {
+    "name": "BtnCleanup exists",
+    "status": "PASS"
+  },
+  {
+    "name": "BtnCleanup disabled by default",
+    "status": "PASS"
+  },
+  {
+    "name": "Navigate to Settings",
+    "status": "PASS"
+  },
+  {
+    "name": "SettingPort exists",
+    "status": "PASS"
+  },
+  {
+    "name": "SettingAutostart exists",
+    "status": "PASS"
+  },
+  {
+    "name": "SettingAutoBackup exists",
+    "status": "PASS"
+  },
+  {
+    "name": "SettingTimeout exists",
+    "status": "PASS"
+  },
+  {
+    "name": "SettingLanguage exists",
+    "status": "PASS"
+  },
+  {
+    "name": "SettingBackupDir exists",
+    "status": "PASS"
+  },
+  {
+    "name": "Navigate back to WSA",
+    "status": "PASS"
+  },
+  {
+    "name": "WSA page restored",
+    "status": "PASS"
+  }
+]

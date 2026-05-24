@@ -9,16 +9,17 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel Padding="24,16,24,24" Spacing="8">
+        <StackPanel Padding="24,16,24,24" Spacing="0">
 
             <TextBlock
-                Margin="0,0,0,4"
+                Margin="0,0,0,12"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="{x:Bind R.screen_wsa}" />
 
             <!-- WSA Status InfoBar -->
             <InfoBar
                 x:Name="StatusInfoBar"
+                Margin="0,0,0,28"
                 IsClosable="False"
                 IsOpen="True"
                 Message="{x:Bind R.status_unknown_desc}"
@@ -39,7 +40,7 @@
 
             <!-- Android Management Section -->
             <TextBlock
-                Margin="0,16,0,8"
+                Margin="0,0,0,20"
                 Style="{StaticResource SubtitleTextBlockStyle}"
                 Text="{x:Bind R.wsa_manage}" />
 
@@ -49,8 +50,15 @@
                 AutomationProperties.Name="{x:Bind R.wsa_manage_app}"
                 Click="ManageApps_Click"
                 HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch">
-                <Grid Padding="4">
+                HorizontalContentAlignment="Stretch"
+                Margin="0,0,0,4"
+                MinHeight="68"
+                Padding="16,0,16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -58,7 +66,7 @@
                     </Grid.ColumnDefinitions>
                     <FontIcon
                         Grid.Column="0"
-                        Margin="0,0,16,0"
+                        Margin="0,0,17,0"
                         FontSize="24"
                         Glyph="&#xECAA;"
                         VerticalAlignment="Center" />
@@ -69,7 +77,7 @@
                         VerticalAlignment="Center" />
                     <FontIcon
                         Grid.Column="2"
-                        FontSize="12"
+                        FontSize="11"
                         Glyph="&#xE76C;"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         VerticalAlignment="Center" />
@@ -82,8 +90,14 @@
                 AutomationProperties.Name="{x:Bind R.wsa_manage_settings}"
                 Click="ManageSettings_Click"
                 HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch">
-                <Grid Padding="4">
+                HorizontalContentAlignment="Stretch"
+                MinHeight="68"
+                Padding="16,0,16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -91,7 +105,7 @@
                     </Grid.ColumnDefinitions>
                     <FontIcon
                         Grid.Column="0"
-                        Margin="0,0,16,0"
+                        Margin="0,0,17,0"
                         FontSize="24"
                         Glyph="&#xE713;"
                         VerticalAlignment="Center" />
@@ -102,7 +116,7 @@
                         VerticalAlignment="Center" />
                     <FontIcon
                         Grid.Column="2"
-                        FontSize="12"
+                        FontSize="11"
                         Glyph="&#xE76C;"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         VerticalAlignment="Center" />
