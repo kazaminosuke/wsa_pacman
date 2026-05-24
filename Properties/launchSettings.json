@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WsaPacman (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WsaPacman (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

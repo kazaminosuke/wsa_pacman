@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="WsaPacman.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:WsaPacman.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <StackPanel Padding="24,16,24,24" Spacing="4">
+
+            <!-- WSA Port -->
+            <controls:SettingsCard
+                AutomationProperties.AutomationId="SettingPort"
+                Description="127.0.0.1"
+                Header="{x:Bind R.settings_port}">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE704;" />
+                </controls:SettingsCard.HeaderIcon>
+                <TextBox
+                    AutomationProperties.AutomationId="TxtPort"
+                    AutomationProperties.Name="{x:Bind R.settings_port}"
+                    InputScope="Number"
+                    MaxLength="5"
+                    PlaceholderText="58526"
+                    Text="58526"
+                    Width="180" />
+            </controls:SettingsCard>
+
+            <!-- Autostart WSA -->
+            <controls:SettingsCard
+                AutomationProperties.AutomationId="SettingAutostart"
+                Header="{x:Bind R.settings_autostart}">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE7E8;" />
+                </controls:SettingsCard.HeaderIcon>
+                <ToggleSwitch
+                    AutomationProperties.AutomationId="ToggleAutostart"
+                    AutomationProperties.Name="{x:Bind R.settings_autostart}"
+                    IsOn="False"
+                    OffContent="{x:Bind R.btn_switch_off}"
+                    OnContent="{x:Bind R.btn_switch_on}" />
+            </controls:SettingsCard>
+
+            <!-- Auto-backup registry -->
+            <controls:SettingsCard
+                AutomationProperties.AutomationId="SettingAutoBackup"
+                Header="{x:Bind R.auto_backup_registry}">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE74E;" />
+                </controls:SettingsCard.HeaderIcon>
+                <ToggleSwitch
+                    AutomationProperties.AutomationId="ToggleAutoBackup"
+                    AutomationProperties.Name="{x:Bind R.auto_backup_registry}"
+                    IsOn="True"
+                    OffContent="{x:Bind R.btn_switch_off}"
+                    OnContent="{x:Bind R.btn_switch_on}" />
+            </controls:SettingsCard>
+
+            <!-- Install timeout -->
+            <controls:SettingsCard
+                AutomationProperties.AutomationId="SettingTimeout"
+                Header="{x:Bind TimeoutLabel, Mode=OneWay}">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE916;" />
+                </controls:SettingsCard.HeaderIcon>
+                <Slider
+                    AutomationProperties.AutomationId="SliderTimeout"
+                    Maximum="105"
+                    Minimum="15"
+                    StepFrequency="15"
+                    Value="120"
+                    Width="220"
+                    ValueChanged="Timeout_ValueChanged" />
+            </controls:SettingsCard>
+
+            <!-- Language -->
+            <controls:SettingsCard
+                AutomationProperties.AutomationId="SettingLanguage"
+                Header="{x:Bind R.settings_language}">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xF2B7;" />
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox
+                    AutomationProperties.AutomationId="ComboLanguage"
+                    AutomationProperties.Name="{x:Bind R.settings_language}"
+                    MinWidth="200"
+                    SelectedIndex="0">
+                    <ComboBoxItem Content="{x:Bind R.settings_option_generic_system}" />
+                    <ComboBoxItem Content="English (US)" />
+                    <ComboBoxItem Content="日本語" />
+                </ComboBox>
+            </controls:SettingsCard>
+
+            <!-- Theme mode expander -->
+            <controls:SettingsExpander
+                AutomationProperties.AutomationId="SettingThemeMode"
+                Header="{x:Bind R.theme_mode}"
+                IsExpanded="False">
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE793;" />
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioThemeSystem"
+                            Content="{x:Bind R.settings_option_generic_system}"
+                            GroupName="ThemeMode"
+                            IsChecked="True" />
+                    </controls:SettingsCard>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioThemeLight"
+                            Content="{x:Bind R.theme_mode_light}"
+                            GroupName="ThemeMode" />
+                    </controls:SettingsCard>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioThemeDark"
+                            Content="{x:Bind R.theme_mode_dark}"
+                            GroupName="ThemeMode" />
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+
+            <!-- Theme color expander -->
+            <controls:SettingsExpander
+                AutomationProperties.AutomationId="SettingThemeColor"
+                Header="{x:Bind R.settings_theme_color}"
+                IsExpanded="False">
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE790;" />
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <StackPanel Spacing="16">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button
+                                    Width="32" Height="32" Padding="0" CornerRadius="16"
+                                    Background="#0078D4"
+                                    AutomationProperties.Name="{x:Bind R.settings_theme_color_system}"
+                                    ToolTipService.ToolTip="{x:Bind R.settings_theme_color_system}" />
+                                <Button
+                                    Width="32" Height="32" Padding="0" CornerRadius="16"
+                                    Background="#005FB8"
+                                    AutomationProperties.Name="{x:Bind R.settings_theme_color_default}"
+                                    ToolTipService.ToolTip="{x:Bind R.settings_theme_color_default}" />
+                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#FFCC00" AutomationProperties.Name="Yellow" ToolTipService.ToolTip="Yellow" />
+                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#D83B01" AutomationProperties.Name="Orange" ToolTipService.ToolTip="Orange" />
+                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#D13438" AutomationProperties.Name="Red" ToolTipService.ToolTip="Red" />
+                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#B146C2" AutomationProperties.Name="Magenta" ToolTipService.ToolTip="Magenta" />
+                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#6B69D6" AutomationProperties.Name="Purple" ToolTipService.ToolTip="Purple" />
+                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#038387" AutomationProperties.Name="Teal" ToolTipService.ToolTip="Teal" />
+                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#107C10" AutomationProperties.Name="Green" ToolTipService.ToolTip="Green" />
+                            </StackPanel>
+                            <Button
+                                AutomationProperties.AutomationId="BtnCustomColor"
+                                Click="CustomColor_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Ellipse
+                                        x:Name="CustomColorPreview"
+                                        Width="16" Height="16"
+                                        Fill="#0078D4" />
+                                    <TextBlock Text="{x:Bind R.settings_custom_color}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+
+            <!-- Backup directory -->
+            <controls:SettingsCard
+                AutomationProperties.AutomationId="SettingBackupDir"
+                Header="{x:Bind R.settings_auto_backup_dir}">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE8B7;" />
+                </controls:SettingsCard.HeaderIcon>
+                <controls:SettingsCard.Description>
+                    <TextBlock
+                        x:Name="BackupDirText"
+                        IsTextSelectionEnabled="True"
+                        Text="Desktop" />
+                </controls:SettingsCard.Description>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button
+                        AutomationProperties.AutomationId="BtnResetBackupDir"
+                        AutomationProperties.Name="{x:Bind R.tooltip_reset_desktop}"
+                        Click="ResetBackupDir_Click"
+                        ToolTipService.ToolTip="{x:Bind R.tooltip_reset_desktop}">
+                        <FontIcon FontSize="14" Glyph="&#xE894;" />
+                    </Button>
+                    <Button
+                        AutomationProperties.AutomationId="BtnBrowseBackupDir"
+                        AutomationProperties.Name="{x:Bind R.btn_browse}"
+                        Click="BrowseBackupDir_Click"
+                        Content="{x:Bind R.btn_browse}" />
+                </StackPanel>
+            </controls:SettingsCard>
+
+            <!-- Mica effect expander -->
+            <controls:SettingsExpander
+                AutomationProperties.AutomationId="SettingMica"
+                Header="{x:Bind R.theme_mica}"
+                IsExpanded="False">
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xEB42;" />
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioMicaFull"
+                            Content="{x:Bind R.theme_mica_full}"
+                            GroupName="Mica"
+                            IsChecked="True" />
+                    </controls:SettingsCard>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioMicaPartial"
+                            Content="{x:Bind R.theme_mica_partial}"
+                            GroupName="Mica" />
+                    </controls:SettingsCard>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioMicaDisabled"
+                            Content="{x:Bind R.settings_option_generic_disabled}"
+                            GroupName="Mica" />
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+
+            <!-- Adaptive icon shape expander -->
+            <controls:SettingsExpander
+                AutomationProperties.AutomationId="SettingIconShape"
+                Header="{x:Bind R.theme_icon_adaptive}"
+                IsExpanded="False">
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xEA3A;" />
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioIconSquircle"
+                            Content="{x:Bind R.theme_icon_adaptive_squircle}"
+                            GroupName="IconShape"
+                            IsChecked="True" />
+                    </controls:SettingsCard>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioIconCircle"
+                            Content="{x:Bind R.theme_icon_adaptive_circle}"
+                            GroupName="IconShape" />
+                    </controls:SettingsCard>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <RadioButton
+                            AutomationProperties.AutomationId="RadioIconRoundedSquare"
+                            Content="{x:Bind R.theme_icon_adaptive_rounded_square}"
+                            GroupName="IconShape" />
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

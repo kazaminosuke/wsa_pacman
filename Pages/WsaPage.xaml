@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="WsaPacman.Pages.WsaPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:WsaPacman.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <StackPanel Padding="24,16,24,24" Spacing="8">
+
+            <!-- WSA Status InfoBar -->
+            <InfoBar
+                x:Name="StatusInfoBar"
+                IsClosable="False"
+                IsOpen="True"
+                Message="{x:Bind R.status_unknown_desc}"
+                Severity="Informational"
+                Title="{x:Bind R.status_unknown}">
+                <InfoBar.ActionButton>
+                    <Button
+                        AutomationProperties.AutomationId="BtnRefreshStatus"
+                        AutomationProperties.Name="{x:Bind R.btn_refresh_status}"
+                        Click="RefreshStatus_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                            <TextBlock Text="{x:Bind R.btn_refresh_status}" />
+                        </StackPanel>
+                    </Button>
+                </InfoBar.ActionButton>
+            </InfoBar>
+
+            <!-- Android Management Section -->
+            <TextBlock
+                Margin="0,16,0,8"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                Text="{x:Bind R.wsa_manage}" />
+
+            <!-- Manage Applications Card -->
+            <Button
+                AutomationProperties.AutomationId="BtnManageApps"
+                AutomationProperties.Name="{x:Bind R.wsa_manage_app}"
+                Click="ManageApps_Click"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <Grid Padding="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,16,0"
+                        FontSize="24"
+                        Glyph="&#xECAA;"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="{x:Bind R.wsa_manage_app}"
+                        VerticalAlignment="Center" />
+                    <FontIcon
+                        Grid.Column="2"
+                        FontSize="12"
+                        Glyph="&#xE76C;"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+
+            <!-- Manage Settings Card -->
+            <Button
+                AutomationProperties.AutomationId="BtnManageSettings"
+                AutomationProperties.Name="{x:Bind R.wsa_manage_settings}"
+                Click="ManageSettings_Click"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <Grid Padding="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,16,0"
+                        FontSize="24"
+                        Glyph="&#xE713;"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="{x:Bind R.wsa_manage_settings}"
+                        VerticalAlignment="Center" />
+                    <FontIcon
+                        Grid.Column="2"
+                        FontSize="12"
+                        Glyph="&#xE76C;"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

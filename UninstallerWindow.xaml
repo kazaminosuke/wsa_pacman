@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="WsaPacman.UninstallerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:WsaPacman"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Window.SystemBackdrop>
+        <MicaBackdrop Kind="BaseAlt" />
+    </Window.SystemBackdrop>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TitleBar
+            x:Name="AppTitleBar"
+            Grid.Row="0"
+            Title="WSA Pacman — Uninstall"
+            IsPaneToggleButtonVisible="False" />
+
+        <Grid Grid.Row="1" Padding="24,16,24,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- App info header -->
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Grid.Column="0"
+                    Width="48"
+                    Height="48"
+                    Margin="0,0,16,0"
+                    Background="{ThemeResource ControlFillColorDefaultBrush}"
+                    CornerRadius="{StaticResource OverlayCornerRadius}">
+                    <FontIcon FontSize="24" Glyph="&#xECAA;" />
+                </Border>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                    <TextBlock
+                        x:Name="AppNameText"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="App Name" />
+                    <TextBlock
+                        x:Name="PackageText"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="com.example.app" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Content: confirm or progress -->
+            <Grid Grid.Row="1">
+
+                <!-- Confirm state -->
+                <TextBlock
+                    x:Name="ConfirmText"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    TextWrapping="Wrap" />
+
+                <!-- Processing state -->
+                <StackPanel
+                    x:Name="ProgressPanel"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="16"
+                    Visibility="Collapsed">
+                    <ProgressRing
+                        x:Name="UninstallProgress"
+                        Width="44"
+                        Height="44"
+                        IsActive="True" />
+                    <TextBlock
+                        x:Name="StatusText"
+                        HorizontalAlignment="Center"
+                        TextAlignment="Center" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Buttons -->
+            <StackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="8">
+                <Button
+                    x:Name="CancelButton"
+                    AutomationProperties.AutomationId="BtnCancel"
+                    AutomationProperties.Name="{x:Bind R.installer_btn_cancel}"
+                    Click="Cancel_Click"
+                    Content="{x:Bind R.installer_btn_cancel}"
+                    MinWidth="80" />
+                <Button
+                    x:Name="UninstallButton"
+                    AutomationProperties.AutomationId="BtnUninstall"
+                    AutomationProperties.Name="{x:Bind R.uninstaller_btn_yes}"
+                    Click="Uninstall_Click"
+                    Content="{x:Bind R.uninstaller_btn_yes}"
+                    MinWidth="80">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource SystemErrorTextColor}" />
+                            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource SystemErrorTextColor}" />
+                            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{ThemeResource SystemErrorTextColor}" />
+                        </ResourceDictionary>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
