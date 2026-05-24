@@ -26,7 +26,12 @@ public sealed partial class UninstallerWindow : Window
 
         var hwnd = Microsoft.UI.Win32Interop.GetWindowFromWindowId(AppWindow.Id);
         var scale = GetDpiForWindow(hwnd) / 96.0;
-        AppWindow.Resize(new SizeInt32((int)(420 * scale), (int)(320 * scale)));
+        AppWindow.Resize(new SizeInt32((int)(500 * scale), (int)(335 * scale)));
+        if (AppWindow.Presenter is OverlappedPresenter p)
+        {
+            p.IsResizable = false;
+            p.IsMaximizable = false;
+        }
     }
 
     public void Initialize(string packageId, string appName)

@@ -27,7 +27,12 @@ public sealed partial class InstallerWindow : Window
 
         var hwnd = Microsoft.UI.Win32Interop.GetWindowFromWindowId(AppWindow.Id);
         var scale = GetDpiForWindow(hwnd) / 96.0;
-        AppWindow.Resize(new SizeInt32((int)(500 * scale), (int)(700 * scale)));
+        AppWindow.Resize(new SizeInt32((int)(500 * scale), (int)(335 * scale)));
+        if (AppWindow.Presenter is OverlappedPresenter p)
+        {
+            p.IsResizable = false;
+            p.IsMaximizable = false;
+        }
     }
 
     private void Cancel_Click(object sender, RoutedEventArgs e)

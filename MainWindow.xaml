@@ -49,7 +49,7 @@
                         Source="Assets/logo.png"
                         VerticalAlignment="Center" />
                     <TextBlock
-                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
                         Text="WSA PacMan"
                         VerticalAlignment="Center" />
                 </StackPanel>
