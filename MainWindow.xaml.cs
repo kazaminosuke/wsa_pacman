@@ -31,21 +31,12 @@ public sealed partial class MainWindow : Window
 
     private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        if (args.IsSettingsSelected)
+        if (args.SelectedItem is not NavigationViewItem item) return;
+        switch (item.Tag)
         {
-            NavFrame.Navigate(typeof(SettingsPage));
-        }
-        else if (args.SelectedItem is NavigationViewItem item)
-        {
-            switch (item.Tag)
-            {
-                case "wsa":
-                    NavFrame.Navigate(typeof(WsaPage));
-                    break;
-                case "uninstall":
-                    NavFrame.Navigate(typeof(UninstallPage));
-                    break;
-            }
+            case "wsa": NavFrame.Navigate(typeof(WsaPage)); break;
+            case "uninstall": NavFrame.Navigate(typeof(UninstallPage)); break;
+            case "settings": NavFrame.Navigate(typeof(SettingsPage)); break;
         }
     }
 }

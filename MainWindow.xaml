@@ -29,7 +29,7 @@
             x:Name="NavView"
             Grid.Row="1"
             IsBackButtonVisible="Collapsed"
-            IsSettingsVisible="True"
+            IsSettingsVisible="False"
             PaneDisplayMode="Top"
             SelectionChanged="NavView_SelectionChanged">
             <NavigationView.Resources>
@@ -73,6 +73,16 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem
+                    AutomationProperties.AutomationId="NavItemSettings"
+                    AutomationProperties.Name="{x:Bind R.screen_settings}"
+                    Tag="settings">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
             <Frame x:Name="NavFrame" />
         </NavigationView>
     </Grid>

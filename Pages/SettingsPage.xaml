@@ -12,6 +12,11 @@
     <ScrollViewer>
         <StackPanel Padding="24,16,24,24" Spacing="4">
 
+            <TextBlock
+                Margin="0,0,0,12"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="{x:Bind R.screen_settings}" />
+
             <!-- WSA Port -->
             <controls:SettingsCard
                 AutomationProperties.AutomationId="SettingPort"

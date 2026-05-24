@@ -11,6 +11,11 @@
     <ScrollViewer>
         <StackPanel Padding="24,16,24,24" Spacing="8">
 
+            <TextBlock
+                Margin="0,0,0,4"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="{x:Bind R.screen_wsa}" />
+
             <!-- WSA Status InfoBar -->
             <InfoBar
                 x:Name="StatusInfoBar"
