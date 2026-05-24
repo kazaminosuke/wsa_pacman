@@ -8,26 +8,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
-        <MicaBackdrop Kind="BaseAlt" />
+        <MicaBackdrop />
     </Window.SystemBackdrop>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
+            <RowDefinition Height="32" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <TitleBar
             x:Name="AppTitleBar"
             Grid.Row="0"
-            Title="WSA Pacman"
-            BackRequested="TitleBar_BackRequested"
-            IsBackButtonVisible="{x:Bind NavFrame.CanGoBack, Mode=OneWay}"
-            IsPaneToggleButtonVisible="False">
-            <TitleBar.IconSource>
-                <ImageIconSource ImageSource="Assets/AppIcon.ico" />
-            </TitleBar.IconSource>
-        </TitleBar>
+            Title="WSA Package Manager"
+            Subtitle="v1.6.0"
+            IsBackButtonVisible="False"
+            IsPaneToggleButtonVisible="False" />
 
         <NavigationView
             x:Name="NavView"
@@ -36,10 +32,32 @@
             IsSettingsVisible="True"
             PaneDisplayMode="Top"
             SelectionChanged="NavView_SelectionChanged">
+            <NavigationView.Resources>
+                <SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
+                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent" />
+                <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
+            </NavigationView.Resources>
+            <NavigationView.PaneHeader>
+                <StackPanel
+                    Margin="4,0,16,0"
+                    Orientation="Horizontal"
+                    Spacing="8"
+                    VerticalAlignment="Center">
+                    <Image
+                        Width="24"
+                        Height="24"
+                        Source="Assets/logo.png"
+                        VerticalAlignment="Center" />
+                    <TextBlock
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="WSA PacMan"
+                        VerticalAlignment="Center" />
+                </StackPanel>
+            </NavigationView.PaneHeader>
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     AutomationProperties.AutomationId="NavItemWsa"
-                    Content="{x:Bind R.screen_wsa}"
+                    Content="WSA"
                     IsSelected="True"
                     Tag="wsa">
                     <NavigationViewItem.Icon>
@@ -48,7 +66,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     AutomationProperties.AutomationId="NavItemUninstall"
-                    Content="{x:Bind R.screen_uninstall}"
+                    Content="Uninstall"
                     Tag="uninstall">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE74D;" />

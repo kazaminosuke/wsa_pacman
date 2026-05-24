@@ -20,18 +20,13 @@ public sealed partial class MainWindow : Window
 
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
-        AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
-        AppWindow.SetIcon("Assets/AppIcon.ico");
+        AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Standard;
+        AppWindow.SetIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico"));
+        AppWindow.Title = "WSA Package Manager";
 
         var hwnd = Microsoft.UI.Win32Interop.GetWindowFromWindowId(AppWindow.Id);
         var scale = GetDpiForWindow(hwnd) / 96.0;
-        AppWindow.Resize(new SizeInt32((int)(1100 * scale), (int)(740 * scale)));
-    }
-
-    private void TitleBar_BackRequested(TitleBar sender, object args)
-    {
-        if (NavFrame.CanGoBack)
-            NavFrame.GoBack();
+        AppWindow.Resize(new SizeInt32((int)(740 * scale), (int)(540 * scale)));
     }
 
     private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
