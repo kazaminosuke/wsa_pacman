@@ -22,20 +22,21 @@
             Text="{x:Bind R.screen_uninstall}" />
 
         <!-- Command bar -->
-        <Border Grid.Row="1" Padding="24,0,24,12">
+        <Border Grid.Row="1" Padding="24,0,24,16">
             <Border
+                MinHeight="68"
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
-                CornerRadius="{StaticResource OverlayCornerRadius}"
-                Padding="12,8,12,8">
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Padding="20,16,17,16">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12">
                     <Button
                         x:Name="BtnScan"
                         AutomationProperties.AutomationId="BtnScan"
