@@ -51,7 +51,7 @@
                 Click="ManageApps_Click"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
-                Margin="0,0,0,4"
+                Margin="0,0,0,5"
                 MinHeight="68"
                 Padding="16,0,16,0"
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
