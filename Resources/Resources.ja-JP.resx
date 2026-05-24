@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -6,374 +6,385 @@
   <resheader name="version">
     <value>2.0</value>
   </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
   <data name="locale_desc" xml:space="preserve">
-    <value>العربية</value>
+    <value>日本語</value>
+    <comment>Japanese [ja_JP]</comment>
   </data>
   <data name="locale_system" xml:space="preserve">
-    <value>النظام</value>
+    <value>システム</value>
+    <comment>システム ロケールを記述します</comment>
   </data>
   <data name="btn_auth" xml:space="preserve">
-    <value>إعادة المصادقة</value>
+    <value>再認証</value>
   </data>
   <data name="btn_dev_settings" xml:space="preserve">
-    <value>خيارات المطور</value>
+    <value>開発者オプション</value>
   </data>
   <data name="btn_switch_on" xml:space="preserve">
-    <value>مفعل</value>
+    <value>オン</value>
   </data>
   <data name="btn_switch_off" xml:space="preserve">
-    <value>مغلق</value>
+    <value>オフ</value>
   </data>
   <data name="status_subtext_winver_10" xml:space="preserve">
-    <value>ويندوز 10</value>
+    <value>Windows 10</value>
+    <comment>Only used inside 'status_unsupported_desc', modify taking this in consideration</comment>
   </data>
   <data name="status_subtext_winver_older" xml:space="preserve">
-    <value>إصدار ويندوز أقدم</value>
+    <value>古い Windows のバージョン</value>
+    <comment>Only used inside 'status_unsupported_desc', modify taking this in consideration</comment>
   </data>
   <data name="status_unsupported" xml:space="preserve">
-    <value>حزمة WSA غير مثبتة</value>
+    <value>WSA がインストールされていません。</value>
   </data>
   <data name="status_unsupported_desc" xml:space="preserve">
-    <value>{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.</value>
+    <value>{windowsVersion} が検出されましたが、WSAが見つかりませんでした。このアプリケーションはWSAに依存していますが、WSAは公式には Windows 11 のみサポートされています。</value>
   </data>
   <data name="status_unauthorized" xml:space="preserve">
-    <value>غير مصرح به</value>
+    <value>未認証</value>
   </data>
   <data name="status_unauthorized_desc" xml:space="preserve">
-    <value>تم رفض التصريح الإصداري أو الغاءه؛ اضغط على الزر الأول، اختر 'دائما السماح'، ثم اضغط على 'السماح'؛ إذا لم يظهر مربع حوار، فتح خيارات المطور وعطل وإعادة تمكين 'تصحيح USB'</value>
+    <value>デバッグ認証は拒否されたか、取り消されました。最初のボタンを押し、「常に許可」を選択し、「許可」をクリックしてください。ポップアップが表示されない場合は、開発者オプションを開き、「USBデバッグ」を無効にして再度有効にしてください。</value>
   </data>
   <data name="status_missing" xml:space="preserve">
-    <value>حزمة WSA غير مثبتة</value>
+    <value>WSA がインストールされていません。</value>
   </data>
   <data name="status_missing_desc" xml:space="preserve">
-    <value>WSA could not be found on your system.
-Since the official Microsoft WSA has been discontinued, we recommend installing the community-driven 'WSABuilds'.</value>
+    <value>WSAがシステムに見つかりません。
+Microsoft公式のWSAは提供が終了したため、有志による『WSABuilds』からの導入をおすすめします。</value>
   </data>
   <data name="btn_wsabuilds" xml:space="preserve">
-    <value>Open WSABuilds (GitHub)</value>
+    <value>WSABuilds を開く (GitHub)</value>
   </data>
   <data name="status_unknown" xml:space="preserve">
-    <value>جاري الاتصال</value>
+    <value>接続中</value>
   </data>
   <data name="status_unknown_desc" xml:space="preserve">
-    <value>في انتظار الاتصال بWSA</value>
+    <value>WSA との接続が確立されるのを待っています...</value>
   </data>
   <data name="status_starting" xml:space="preserve">
-    <value>جاري التشغيل</value>
+    <value>起動中</value>
   </data>
   <data name="status_starting_desc" xml:space="preserve">
-    <value>جاري تشغيل WSA, برجاء الانتظار</value>
+    <value>WSA が起動しています。しばらくお待ちください...</value>
   </data>
   <data name="status_arrested" xml:space="preserve">
-    <value>غير مفعل</value>
+    <value>停止中</value>
   </data>
   <data name="status_arrested_desc" xml:space="preserve">
-    <value>WSA غير مفعل</value>
+    <value>WSA が停止しています。</value>
   </data>
   <data name="status_offline" xml:space="preserve">
-    <value>غير متصل</value>
+    <value>オフライン</value>
   </data>
   <data name="status_offline_desc" xml:space="preserve">
-    <value>لم يمكن الاتصال بWSA: يمكن ان يكون وضع المطور غير مفعل, او تم تحديد المخرج الخاطىء</value>
+    <value>WSA との接続を確立できませんでした: 開発者モードや USB デバッグが無効になっているか、間違ったポートが指定されている可能性があります。</value>
   </data>
   <data name="status_disconnected" xml:space="preserve">
-    <value>لا يمكن الاتصال</value>
+    <value>切断</value>
   </data>
   <data name="status_disconnected_desc" xml:space="preserve">
-    <value>لا يمكن عمل اتصال لWSA لاسباب غير معلومه</value>
+    <value>WSA との接続が不明な理由で確立できませんでした。
+WSAの開発者モードとローカルネットワークアクセスが有効化されているか確認してください。</value>
   </data>
   <data name="status_connected" xml:space="preserve">
-    <value>متصل</value>
+    <value>接続完了</value>
   </data>
   <data name="status_connected_desc" xml:space="preserve">
-    <value>Successfully connected to WSA. All systems are operational and ready.</value>
+    <value>WSA に正常に接続されました。すべてのシステムが利用可能です。</value>
   </data>
   <data name="screen_wsa" xml:space="preserve">
-    <value>مدير حزم الWSA</value>
+    <value>WSA Package Manager</value>
   </data>
   <data name="screen_settings" xml:space="preserve">
-    <value>الضبط</value>
+    <value>設定</value>
   </data>
   <data name="wsa_manage" xml:space="preserve">
-    <value>إدارة الاندرويد</value>
+    <value>Android の管理</value>
   </data>
   <data name="wsa_manage_app" xml:space="preserve">
-    <value>Manage Applications</value>
+    <value>アプリケーションの管理</value>
   </data>
   <data name="wsa_manage_settings" xml:space="preserve">
-    <value>Manage Settings</value>
+    <value>設定の管理</value>
   </data>
   <data name="settings_port" xml:space="preserve">
-    <value>مدخل الWSA</value>
+    <value>WSA ポート</value>
   </data>
   <data name="settings_ip" xml:space="preserve">
-    <value>عنوان الIP الخاص بWSA</value>
+    <value>WSA IP アドレス</value>
   </data>
   <data name="settings_autostart" xml:space="preserve">
-    <value>تفعبل تلقائي لWSA قبل التثبيت</value>
+    <value>インストール前に WSA を自動起動する</value>
   </data>
   <data name="settings_timeout" xml:space="preserve">
-    <value>مهلة ({seconds} ثواني)</value>
+    <value>タイムアウト ({seconds} 秒)</value>
   </data>
   <data name="settings_language" xml:space="preserve">
-    <value>اللغة</value>
+    <value>言語</value>
   </data>
   <data name="settings_option_generic_system" xml:space="preserve">
-    <value>النظام</value>
+    <value>システム</value>
   </data>
   <data name="settings_option_generic_disabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>無効</value>
   </data>
   <data name="theme_mode" xml:space="preserve">
-    <value>وضع السمات</value>
+    <value>テーマモード</value>
   </data>
   <data name="theme_mode_dark" xml:space="preserve">
-    <value>داكن</value>
+    <value>ダーク</value>
   </data>
   <data name="theme_mode_light" xml:space="preserve">
-    <value>ساطع</value>
+    <value>ライト</value>
   </data>
   <data name="theme_mica" xml:space="preserve">
-    <value>Mica Effect (Window Transparency)</value>
+    <value>Mica 効果 (ウィンドウの透明度)</value>
   </data>
   <data name="theme_mica_full" xml:space="preserve">
-    <value>Full</value>
+    <value>フル</value>
   </data>
   <data name="theme_mica_partial" xml:space="preserve">
-    <value>Partial</value>
+    <value>部分的</value>
   </data>
   <data name="theme_icon_adaptive" xml:space="preserve">
-    <value>ايقونات متكيفة</value>
+    <value>アダプティブアイコンのスタイル</value>
   </data>
   <data name="theme_icon_adaptive_squircle" xml:space="preserve">
-    <value>Squircle (Rounded Corner)</value>
+    <value>スワークル (角丸)</value>
   </data>
   <data name="theme_icon_adaptive_circle" xml:space="preserve">
-    <value>دائري</value>
+    <value>円</value>
   </data>
   <data name="theme_icon_adaptive_rounded_square" xml:space="preserve">
-    <value>Rounded Square</value>
+    <value>角丸正方形</value>
   </data>
   <data name="installer_message" xml:space="preserve">
-    <value>هل تريد تثبيت هذا التطبيق؟</value>
+    <value>このアプリケーションをインストールしますか?</value>
   </data>
   <data name="installer_info_version" xml:space="preserve">
-    <value>الإصدار: {appVersion}</value>
+    <value>バージョン: {appVersion}</value>
   </data>
   <data name="installer_info_version_change" xml:space="preserve">
-    <value>الإصدار: {appVersionOld} =&gt; {appVersionNew}</value>
+    <value>バージョン: {appVersionOld} ⇒ {appVersionNew}</value>
   </data>
   <data name="installer_info_package" xml:space="preserve">
-    <value>الحزمة: {appPackage}</value>
+    <value>パッケージ: {appPackage}</value>
   </data>
   <data name="installer_installing" xml:space="preserve">
-    <value>جاري تثبيث {appTitle}...</value>
+    <value>アプリ「{appTitle}」をインストールしています...</value>
   </data>
   <data name="installer_installed" xml:space="preserve">
-    <value>تم تثبيت {appTitle} بنجاح</value>
+    <value>アプリ「{appTitle}」がインストールされました。</value>
   </data>
   <data name="installer_fail" xml:space="preserve">
-    <value>لم يتم تثبيت {appTitle}</value>
+    <value>アプリ「{appTitle}」をインストールできませんでした。</value>
   </data>
   <data name="installer_error_nomsg" xml:space="preserve">
-    <value>فشل التثبيت, لكن بلا أخطاء</value>
+    <value>インストールに失敗しました。</value>
   </data>
   <data name="installer_error_timeout" xml:space="preserve">
-    <value>انتهت مهلة التثبيت، لقد توقف العميل عن الانتظار، لكن قد يظل التثبيت قيد التقدم في الخلفية...</value>
+    <value>インストールがタイムアウトしました。クライアントはもう待っていませんが、バックグラウンドではまだ実行されている可能性があります...</value>
   </data>
   <data name="installer_warning_dirty" xml:space="preserve">
-    <value>يلزم تنظيف يدوي للملفات في الدليل ‹{tempDir}›</value>
+    <value>「{tempDir}」ディレクトリでの手動ファイルクリーンアップが必要です</value>
   </data>
   <data name="installer_btn_starting" xml:space="preserve">
-    <value>يتم التشغيل...</value>
+    <value>起動中です...</value>
   </data>
   <data name="installer_btn_loading" xml:space="preserve">
-    <value>تحميل...</value>
+    <value>読み込んでいます...</value>
   </data>
   <data name="installer_btn_cancel" xml:space="preserve">
-    <value>إلغاء</value>
+    <value>キャンセル</value>
   </data>
   <data name="installer_btn_install" xml:space="preserve">
-    <value>تثبيت</value>
+    <value>インストール</value>
   </data>
   <data name="installer_btn_reinstall" xml:space="preserve">
-    <value>إعادة التثبيت</value>
+    <value>再インストール</value>
   </data>
   <data name="installer_btn_update" xml:space="preserve">
-    <value>تحديث</value>
+    <value>アップデート</value>
   </data>
   <data name="installer_btn_downgrade" xml:space="preserve">
-    <value>الرجوع إلى إصدار قديم(غير آمن)</value>
+    <value>ダウングレード(非推奨)</value>
   </data>
   <data name="installer_btn_dismiss" xml:space="preserve">
-    <value>تم</value>
+    <value>閉じる</value>
   </data>
   <data name="installer_btn_open" xml:space="preserve">
-    <value>فتح التطبيق</value>
+    <value>アプリを開く</value>
   </data>
   <data name="installer_btn_checkbox_shortcut" xml:space="preserve">
-    <value>عمل اختصار على سطح المكتب</value>
+    <value>デスクトップにショートカットを作成する</value>
   </data>
   <data name="android_permission_none" xml:space="preserve">
-    <value>لا يطلب اي اذونات</value>
+    <value>権限は必要ありません</value>
   </data>
   <data name="android_permission_admin" xml:space="preserve">
-    <value>يدير الجهاز كمشرف</value>
+    <value>管理者としてデバイスを管理</value>
   </data>
   <data name="android_permission_admin_brick" xml:space="preserve">
-    <value>يلغي تفعيل الجهاز او يعيد ضبطه عن بعد</value>
+    <value>デバイスをリモートで無効にする</value>
   </data>
   <data name="android_permission_admin_lock" xml:space="preserve">
-    <value>قفل الجهاز عن بعد</value>
+    <value>デバイスをリモートでロックする</value>
   </data>
   <data name="android_permission_storage" xml:space="preserve">
-    <value>الملفات و الوسائط</value>
+    <value>ファイルとメディア</value>
   </data>
   <data name="android_permission_microphone" xml:space="preserve">
-    <value>الميكروفون</value>
+    <value>マイク</value>
   </data>
   <data name="android_permission_camera" xml:space="preserve">
-    <value>الكاميرا</value>
+    <value>カメラ</value>
   </data>
   <data name="android_permission_location" xml:space="preserve">
-    <value>الموقع</value>
+    <value>位置情報</value>
   </data>
   <data name="android_permission_phone" xml:space="preserve">
-    <value>الهاتف</value>
+    <value>電話</value>
   </data>
   <data name="android_permission_call_log" xml:space="preserve">
-    <value>سجلات المكالمات</value>
+    <value>通話ログ</value>
   </data>
   <data name="android_permission_sms" xml:space="preserve">
-    <value>الرسائل</value>
+    <value>メッセージ</value>
   </data>
   <data name="android_permission_contacts" xml:space="preserve">
-    <value>جهات الاتصال</value>
+    <value>連絡先</value>
   </data>
   <data name="android_permission_calendar" xml:space="preserve">
-    <value>التقويم</value>
+    <value>カレンダー</value>
   </data>
   <data name="android_permission_activity_recognition" xml:space="preserve">
-    <value>الانشطة البدنية</value>
+    <value>身体活動</value>
   </data>
   <data name="android_permission_sensors" xml:space="preserve">
-    <value>مستشعرات الجهاز</value>
+    <value>デバイスセンサー</value>
   </data>
   <data name="android_permission_sensors_body" xml:space="preserve">
-    <value>مستشعرات البدن</value>
+    <value>ボディセンサー</value>
   </data>
   <data name="android_permission_nearby_devices" xml:space="preserve">
-    <value>تحديد الاجهزة القريبة</value>
+    <value>近くのデバイスを探す</value>
   </data>
   <data name="screen_uninstall" xml:space="preserve">
-    <value>Uninstall</value>
+    <value>アンインストール</value>
   </data>
   <data name="scan_system" xml:space="preserve">
-    <value>Scan System</value>
+    <value>システムをスキャン</value>
   </data>
   <data name="scanning" xml:space="preserve">
-    <value>Scanning...</value>
+    <value>スキャン中...</value>
   </data>
   <data name="backup_registry" xml:space="preserve">
-    <value>Backup Registry</value>
+    <value>レジストリをバックアップ</value>
   </data>
   <data name="execute_cleanup" xml:space="preserve">
-    <value>Execute Cleanup</value>
+    <value>クリーンアップ実行</value>
   </data>
   <data name="scanning_wsa_env" xml:space="preserve">
-    <value>Scanning WSA environment deeply...</value>
+    <value>WSA環境を深くスキャンしています...</value>
   </data>
   <data name="click_scan_to_find_ghost_apps" xml:space="preserve">
-    <value>Click 'Scan System' to find remnant or hidden apps.</value>
+    <value>「システムをスキャン」をクリックして、アプリを検出します。</value>
   </data>
   <data name="type_registry_only" xml:space="preserve">
-    <value>Registry Only</value>
+    <value>レジストリのみ</value>
   </data>
   <data name="type_orphaned_shortcut" xml:space="preserve">
-    <value>Orphaned Shortcut</value>
+    <value>無効なショートカット</value>
   </data>
   <data name="type_hidden_adb_app" xml:space="preserve">
-    <value>Hidden ADB App</value>
+    <value>非表示のADBアプリ</value>
   </data>
   <data name="cleanup_complete" xml:space="preserve">
-    <value>Cleanup Complete</value>
+    <value>クリーンアップ完了</value>
   </data>
   <data name="cleanup_success_desc" xml:space="preserve">
-    <value>Completely deleted {count} apps and unnecessary data.</value>
+    <value>{count} 件のアプリと不要なデータを完全に削除しました。</value>
   </data>
   <data name="auto_backup_registry" xml:space="preserve">
-    <value>Auto-backup before uninstall</value>
+    <value>削除前にレジストリを自動バックアップ</value>
   </data>
   <data name="backup_cancelled" xml:space="preserve">
-    <value>Backup cancelled</value>
+    <value>バックアップがキャンセルされました</value>
   </data>
   <data name="backup_success" xml:space="preserve">
-    <value>Backup successfully saved</value>
+    <value>バックアップを保存しました</value>
   </data>
   <data name="btn_restart_wsa" xml:space="preserve">
-    <value>Restart WSA</value>
+    <value>WSAを再起動</value>
   </data>
   <data name="settings_auto_backup_dir" xml:space="preserve">
-    <value>Auto Backup Directory</value>
+    <value>自動バックアップの保存先</value>
   </data>
   <data name="tooltip_reset_desktop" xml:space="preserve">
-    <value>Reset to Default (Desktop)</value>
+    <value>標準(デスクトップ)に戻す</value>
   </data>
   <data name="btn_browse" xml:space="preserve">
-    <value>Browse...</value>
+    <value>参照...</value>
   </data>
   <data name="settings_theme_color" xml:space="preserve">
-    <value>Theme Color</value>
+    <value>テーマカラー</value>
   </data>
   <data name="settings_theme_color_system" xml:space="preserve">
-    <value>System (Windows)</value>
+    <value>システム (Windows)</value>
   </data>
   <data name="settings_theme_color_default" xml:space="preserve">
-    <value>Default</value>
+    <value>デフォルト</value>
   </data>
   <data name="settings_custom_color" xml:space="preserve">
-    <value>Create Custom Color</value>
+    <value>カスタム色を作成</value>
   </data>
   <data name="btn_apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>適用</value>
   </data>
   <data name="dialog_backup_dir_title" xml:space="preserve">
-    <value>Select a folder to save auto-backups</value>
+    <value>自動バックアップを保存するフォルダを選択してください</value>
   </data>
   <data name="dialog_backup_dir_filename" xml:space="preserve">
-    <value>Select this folder</value>
+    <value>このフォルダを選択</value>
   </data>
   <data name="dialog_backup_dir_filter" xml:space="preserve">
-    <value>Folder|*.none</value>
+    <value>フォルダ</value>
   </data>
   <data name="uninstaller_status_uninstalling" xml:space="preserve">
-    <value>Uninstalling {appName}...</value>
+    <value>{appName} をアンインストールしています...</value>
   </data>
   <data name="uninstaller_status_starting_wsa" xml:space="preserve">
-    <value>Starting Windows Subsystem for Android...</value>
+    <value>Windows Subsystem for Android を起動しています...</value>
   </data>
   <data name="uninstaller_status_success" xml:space="preserve">
-    <value>Successfully uninstalled.</value>
+    <value>正常にアンインストールされました。</value>
   </data>
   <data name="uninstaller_status_errors" xml:space="preserve">
-    <value>Uninstalled with some errors.</value>
+    <value>アンインストール中にいくつかエラーが発生しました。</value>
   </data>
   <data name="uninstaller_status_error_msg" xml:space="preserve">
-    <value>Error during uninstall: {error}</value>
+    <value>アンインストール中にエラーが発生しました: {error}</value>
   </data>
   <data name="uninstaller_confirm" xml:space="preserve">
-    <value>Are you sure you want to uninstall {appName}?</value>
+    <value>{appName} をアンインストールしますか？</value>
   </data>
   <data name="uninstaller_btn_yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>はい</value>
   </data>
   <data name="btn_refresh_status" xml:space="preserve">
-    <value>تحديث الحالة</value>
+    <value>ステータスを更新</value>
   </data>
   <data name="tooltip_refresh_status" xml:space="preserve">
-    <value>إعادة التحقق من حالة WSA الآن</value>
+    <value>WSA のステータスを今すぐ再確認</value>
   </data>
   <data name="btn_launch_wsa" xml:space="preserve">
-    <value>تشغيل WSA</value>
+    <value>WSA を起動</value>
   </data>
 </root>

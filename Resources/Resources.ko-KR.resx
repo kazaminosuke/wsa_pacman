@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -6,44 +6,54 @@
   <resheader name="version">
     <value>2.0</value>
   </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
   <data name="locale_desc" xml:space="preserve">
-    <value>فارسی</value>
+    <value>한국어</value>
+    <comment>Korean [ko_KR]</comment>
   </data>
   <data name="locale_system" xml:space="preserve">
-    <value>سیستم</value>
+    <value>시스템</value>
+    <comment>시스템 언어를 지칭합니다</comment>
   </data>
   <data name="btn_auth" xml:space="preserve">
-    <value>تأیید دوباره</value>
+    <value>다시 인증</value>
   </data>
   <data name="btn_dev_settings" xml:space="preserve">
-    <value>گزینه‌های توسعه‌دهنده</value>
+    <value>개발자 옵션</value>
   </data>
   <data name="btn_switch_on" xml:space="preserve">
-    <value>روشن</value>
+    <value>켬</value>
   </data>
   <data name="btn_switch_off" xml:space="preserve">
-    <value>خاموش</value>
+    <value>끔</value>
   </data>
   <data name="status_subtext_winver_10" xml:space="preserve">
-    <value>ویندوز 10</value>
+    <value>Windows 10</value>
+    <comment>Only used inside 'status_unsupported_desc', modify taking this in consideration</comment>
   </data>
   <data name="status_subtext_winver_older" xml:space="preserve">
-    <value>نسخه قدیمی ویندوز</value>
+    <value>구형 Windows</value>
+    <comment>Only used inside 'status_unsupported_desc', modify taking this in consideration</comment>
   </data>
   <data name="status_unsupported" xml:space="preserve">
-    <value>WSA نصب نشده</value>
+    <value>WSA가 설치되지 않음</value>
   </data>
   <data name="status_unsupported_desc" xml:space="preserve">
     <value>{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.</value>
   </data>
   <data name="status_unauthorized" xml:space="preserve">
-    <value>غیر مجاز</value>
+    <value>인증되지 않음</value>
   </data>
   <data name="status_unauthorized_desc" xml:space="preserve">
-    <value>تأیید توسعه دهنده رد شده یا لغو شده است؛ لطفا دکمه اول را کلیک کنید، «همیشه مجاز» را انتخاب کرده و روی «مجاز» کلیک کنید؛ اگر پنجره پاپ آپ نشان ندهد، گزینه های توسعه دهنده را باز کرده و غیر فعال کردن و دوباره فعال کردن 'دیباگ USB'</value>
+    <value>디버깅 인증이 거부되었거나 취소되었습니다. 첫 번째 버튼을 누르고 '항상 허용'을 선택하고 '허용'을 클릭하세요. 팝업이 나타나지 않으면 개발자 옵션을 열고 USB 디버깅을 비활성화하고 재활성화하세요.</value>
   </data>
   <data name="status_missing" xml:space="preserve">
-    <value>WSA نصب نشده</value>
+    <value>WSA가 설치되지 않음</value>
   </data>
   <data name="status_missing_desc" xml:space="preserve">
     <value>WSA could not be found on your system.
@@ -52,47 +62,50 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
   <data name="btn_wsabuilds" xml:space="preserve">
     <value>Open WSABuilds (GitHub)</value>
   </data>
+  <data name="status_unknown" xml:space="preserve">
+    <value>연결 중</value>
+  </data>
   <data name="status_unknown_desc" xml:space="preserve">
-    <value>در انتظار برقراری اتصال WSA...</value>
+    <value>WSA에 연결되기를 기다리고 있습니다...</value>
   </data>
   <data name="status_starting" xml:space="preserve">
-    <value>شروع ...</value>
+    <value>시작 중</value>
   </data>
   <data name="status_starting_desc" xml:space="preserve">
-    <value>WSA در حال شروع است، لطفا منتظر بمانید...</value>
+    <value>WSA를 시작하고 있습니다, 잠시 기다려주십시오...</value>
   </data>
   <data name="status_arrested" xml:space="preserve">
-    <value>دستگیر شد</value>
+    <value>정지됨</value>
   </data>
   <data name="status_arrested_desc" xml:space="preserve">
-    <value>WSA خاموش شد</value>
+    <value>WSA가 꺼졌습니다</value>
   </data>
   <data name="status_offline" xml:space="preserve">
-    <value>آفلاین</value>
+    <value>오프라인</value>
   </data>
   <data name="status_offline_desc" xml:space="preserve">
-    <value>اتصال با WSA امکان‌پذیر نیست: یا حالت برنامه‌نویس و اشکال‌زدایی USB غیرفعال هستند یا پورت اشتباهی مشخص شده است.</value>
+    <value>WSA에 연결할 수 없습니다: 개발자 모드 및 USB 디버깅이 꺼져 있거나 포트가 잘못 지정되었습니다</value>
   </data>
   <data name="status_disconnected" xml:space="preserve">
-    <value>قطع شده</value>
+    <value>연결 끊김</value>
   </data>
   <data name="status_disconnected_desc" xml:space="preserve">
-    <value>اتصال WSA به دلایل نامعلومی برقرار نشد</value>
+    <value>알 수 없는 이유로 WSA에 연결할 수 없습니다</value>
   </data>
   <data name="status_connected" xml:space="preserve">
-    <value>وصل شده</value>
+    <value>연결됨</value>
   </data>
   <data name="status_connected_desc" xml:space="preserve">
     <value>Successfully connected to WSA. All systems are operational and ready.</value>
   </data>
   <data name="screen_wsa" xml:space="preserve">
-    <value>مدیریت بسته WSA</value>
+    <value>WSA 패키지 관리자</value>
   </data>
   <data name="screen_settings" xml:space="preserve">
-    <value>تنظیمان</value>
+    <value>설정</value>
   </data>
   <data name="wsa_manage" xml:space="preserve">
-    <value>مدیریت اندروید</value>
+    <value>Android 관리</value>
   </data>
   <data name="wsa_manage_app" xml:space="preserve">
     <value>Manage Applications</value>
@@ -101,34 +114,34 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Manage Settings</value>
   </data>
   <data name="settings_port" xml:space="preserve">
-    <value>پورت WSA</value>
+    <value>WSA 포트</value>
   </data>
   <data name="settings_ip" xml:space="preserve">
-    <value>آدری آی پی WSA</value>
+    <value>WSA IP 주소</value>
   </data>
   <data name="settings_autostart" xml:space="preserve">
-    <value>قبل از نصب WSA را به صورت خودکار راه اندازی شود</value>
+    <value>설치 전 WSA 자동 실행</value>
   </data>
   <data name="settings_timeout" xml:space="preserve">
-    <value>زمان مجاز ({seconds} ثانیه)</value>
+    <value>시간 초과 ({seconds} 초)</value>
   </data>
   <data name="settings_language" xml:space="preserve">
-    <value>زبان</value>
+    <value>언어</value>
   </data>
   <data name="settings_option_generic_system" xml:space="preserve">
-    <value>سیستم</value>
+    <value>시스템</value>
   </data>
   <data name="settings_option_generic_disabled" xml:space="preserve">
     <value>Disabled</value>
   </data>
   <data name="theme_mode" xml:space="preserve">
-    <value>نوع زمینه</value>
+    <value>테마</value>
   </data>
   <data name="theme_mode_dark" xml:space="preserve">
-    <value>تاریک</value>
+    <value>어둡게</value>
   </data>
   <data name="theme_mode_light" xml:space="preserve">
-    <value>روشن</value>
+    <value>밝게</value>
   </data>
   <data name="theme_mica" xml:space="preserve">
     <value>Mica Effect (Window Transparency)</value>
@@ -140,145 +153,145 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Partial</value>
   </data>
   <data name="theme_icon_adaptive" xml:space="preserve">
-    <value>سازگارسازی آیکون</value>
+    <value>적응형 아이콘 모양</value>
   </data>
   <data name="theme_icon_adaptive_squircle" xml:space="preserve">
     <value>Squircle (Rounded Corner)</value>
   </data>
   <data name="theme_icon_adaptive_circle" xml:space="preserve">
-    <value>دایره</value>
+    <value>원형</value>
   </data>
   <data name="theme_icon_adaptive_rounded_square" xml:space="preserve">
     <value>Rounded Square</value>
   </data>
   <data name="installer_message" xml:space="preserve">
-    <value>آیا از نصب این برنامه اطمینان دارید؟</value>
+    <value>이 애플리케이션을 설치하시겠습니까?</value>
   </data>
   <data name="installer_info_version" xml:space="preserve">
-    <value>تسخه: {appVersion}</value>
+    <value>버전: {appVersion}</value>
   </data>
   <data name="installer_info_version_change" xml:space="preserve">
-    <value>نسخه: {appVersionOld} =&gt; {appVersionNew}</value>
+    <value>버전: {appVersionOld} =&gt; {appVersionNew}</value>
   </data>
   <data name="installer_info_package" xml:space="preserve">
-    <value>بسته: {appPackage}</value>
+    <value>패키지: {appPackage}</value>
   </data>
   <data name="installer_installing" xml:space="preserve">
-    <value>در حال نصب {appTitle}...</value>
+    <value>{appTitle} 앱을 설치하고 있습니다...</value>
   </data>
   <data name="installer_installed" xml:space="preserve">
-    <value>برنامه {appTitle} نصب شد</value>
+    <value>{appTitle} 앱이 성공적으로 설치되었습니다</value>
   </data>
   <data name="installer_fail" xml:space="preserve">
-    <value>برنامه {appTitle} نصب نشد.</value>
+    <value>{appTitle} 앱이 설치되지 않았습니다</value>
   </data>
   <data name="installer_error_nomsg" xml:space="preserve">
-    <value>نصب انجام نشد، اما خطایی هم رخ نداد</value>
+    <value>설치에 실패하였으나, 오류를 확인할 수 없습니다</value>
   </data>
   <data name="installer_error_timeout" xml:space="preserve">
-    <value>زمان نصب تمام شد، مشتری نیازی به صبر ندارد، اما فرایند هنوز ممکن است در پسزمینه داشته باشد...</value>
+    <value>설치가 시간 초과되었습니다. 클라이언트는 더 이상 기다리지 않지만 백그라운드에서는 아직 진행 중일 수 있습니다...</value>
   </data>
   <data name="installer_warning_dirty" xml:space="preserve">
-    <value>شاید نیاز به پاک کردن دستی فایل‌ها در پوشه ‌«{tempDir}» باشد</value>
+    <value>디렉터리 “{tempDir}” 에서 수동 파일 정리가 필요합니다</value>
   </data>
   <data name="installer_btn_starting" xml:space="preserve">
-    <value>شروع...</value>
+    <value>시작하는 중...</value>
   </data>
   <data name="installer_btn_loading" xml:space="preserve">
-    <value>بارگذاری...</value>
+    <value>불러오는 중...</value>
   </data>
   <data name="installer_btn_cancel" xml:space="preserve">
-    <value>لغو</value>
+    <value>취소</value>
   </data>
   <data name="installer_btn_install" xml:space="preserve">
-    <value>نصب</value>
+    <value>설치</value>
   </data>
   <data name="installer_btn_reinstall" xml:space="preserve">
-    <value>نصب مجدد</value>
+    <value>재설치</value>
   </data>
   <data name="installer_btn_update" xml:space="preserve">
-    <value>بروزرسانی</value>
+    <value>업데이트</value>
   </data>
   <data name="installer_btn_downgrade" xml:space="preserve">
-    <value>Downgrade (امن نیست)</value>
+    <value>다운그레이드 (불안정)</value>
   </data>
   <data name="installer_btn_dismiss" xml:space="preserve">
-    <value>رد کردن</value>
+    <value>다시는 알리지 않음</value>
   </data>
   <data name="installer_btn_open" xml:space="preserve">
-    <value>باز کردن</value>
+    <value>앱 열기</value>
   </data>
   <data name="installer_btn_checkbox_shortcut" xml:space="preserve">
-    <value>ساخت میانبر در دسکتاپ</value>
+    <value>바탕화면 바로가기 생성</value>
   </data>
   <data name="android_permission_none" xml:space="preserve">
-    <value>هیچ مجوزی لازم نیست</value>
+    <value>권한 필요 없음</value>
   </data>
   <data name="android_permission_admin" xml:space="preserve">
-    <value>مدیریت دستگاه</value>
+    <value>관리자 권한으로 기기 관리</value>
   </data>
   <data name="android_permission_admin_brick" xml:space="preserve">
-    <value>غیرفعال یا بازنشانی دستگاه از راه دور</value>
+    <value>기기 원격 비활성화 및 초기화</value>
   </data>
   <data name="android_permission_admin_lock" xml:space="preserve">
-    <value>قفل دستگاه از راه دور</value>
+    <value>기기 원격 잠금</value>
   </data>
   <data name="android_permission_storage" xml:space="preserve">
-    <value>فایل ها و رسانه ها</value>
+    <value>파일 및 미디어</value>
   </data>
   <data name="android_permission_microphone" xml:space="preserve">
-    <value>میکروفون</value>
+    <value>마이크</value>
   </data>
   <data name="android_permission_camera" xml:space="preserve">
-    <value>دوربین</value>
+    <value>카메라</value>
   </data>
   <data name="android_permission_location" xml:space="preserve">
-    <value>موقعیت مکانی</value>
+    <value>위치</value>
   </data>
   <data name="android_permission_phone" xml:space="preserve">
-    <value>تلفن</value>
+    <value>전화</value>
   </data>
   <data name="android_permission_call_log" xml:space="preserve">
-    <value>تماس ها</value>
+    <value>통화 기록</value>
   </data>
   <data name="android_permission_sms" xml:space="preserve">
-    <value>پیام ها</value>
+    <value>메시지</value>
   </data>
   <data name="android_permission_contacts" xml:space="preserve">
-    <value>مخاطبین</value>
+    <value>주소록</value>
   </data>
   <data name="android_permission_calendar" xml:space="preserve">
-    <value>تقویم</value>
+    <value>일정</value>
   </data>
   <data name="android_permission_activity_recognition" xml:space="preserve">
-    <value>فعالیت های بدنی</value>
+    <value>신체 활동</value>
   </data>
   <data name="android_permission_sensors" xml:space="preserve">
-    <value>سنسور دستگاه</value>
+    <value>기기 센서</value>
   </data>
   <data name="android_permission_sensors_body" xml:space="preserve">
-    <value>سنسور بدن</value>
+    <value>신체 센서</value>
   </data>
   <data name="android_permission_nearby_devices" xml:space="preserve">
-    <value>پیدا کردن دستگاه های نزدیک</value>
+    <value>근처 장치 찾기</value>
   </data>
   <data name="screen_uninstall" xml:space="preserve">
-    <value>Uninstall</value>
+    <value>제거</value>
   </data>
   <data name="scan_system" xml:space="preserve">
-    <value>Scan System</value>
+    <value>시스템 검색</value>
   </data>
   <data name="scanning" xml:space="preserve">
-    <value>Scanning...</value>
+    <value>검색 중...</value>
   </data>
   <data name="backup_registry" xml:space="preserve">
-    <value>Backup Registry</value>
+    <value>레지스트리 백업</value>
   </data>
   <data name="execute_cleanup" xml:space="preserve">
-    <value>Execute Cleanup</value>
+    <value>정리 실행</value>
   </data>
   <data name="scanning_wsa_env" xml:space="preserve">
-    <value>Scanning WSA environment deeply...</value>
+    <value>WSA 환경을 깊이 검색 중...</value>
   </data>
   <data name="click_scan_to_find_ghost_apps" xml:space="preserve">
     <value>Click 'Scan System' to find remnant or hidden apps.</value>
@@ -343,9 +356,6 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
   <data name="dialog_backup_dir_filter" xml:space="preserve">
     <value>Folder|*.none</value>
   </data>
-  <data name="status_unknown" xml:space="preserve">
-    <value>Connecting</value>
-  </data>
   <data name="uninstaller_status_uninstalling" xml:space="preserve">
     <value>Uninstalling {appName}...</value>
   </data>
@@ -368,12 +378,12 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Yes</value>
   </data>
   <data name="btn_refresh_status" xml:space="preserve">
-    <value>به‌روزرسانی وضعیت</value>
+    <value>상태 새로 고침</value>
   </data>
   <data name="tooltip_refresh_status" xml:space="preserve">
-    <value>بررسی مجدد وضعیت WSA اکنون</value>
+    <value>WSA 상태를 지금 다시 확인</value>
   </data>
   <data name="btn_launch_wsa" xml:space="preserve">
-    <value>راه‌اندازی WSA</value>
+    <value>WSA 시작</value>
   </data>
 </root>

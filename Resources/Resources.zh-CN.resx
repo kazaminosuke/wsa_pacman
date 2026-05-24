@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -6,44 +6,54 @@
   <resheader name="version">
     <value>2.0</value>
   </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
   <data name="locale_desc" xml:space="preserve">
-    <value>Français</value>
+    <value>中文 (简体)</value>
+    <comment>Chinese (simplified) [zh_CN] &lt; [zh_Hans]</comment>
   </data>
   <data name="locale_system" xml:space="preserve">
-    <value>Système</value>
+    <value>系统</value>
+    <comment>描述系统区域设置</comment>
   </data>
   <data name="btn_auth" xml:space="preserve">
-    <value>Réauthentifier</value>
+    <value>重新认证</value>
   </data>
   <data name="btn_dev_settings" xml:space="preserve">
-    <value>Options de développeur</value>
+    <value>开发者选项</value>
   </data>
   <data name="btn_switch_on" xml:space="preserve">
-    <value>On</value>
+    <value>打开</value>
   </data>
   <data name="btn_switch_off" xml:space="preserve">
-    <value>Off</value>
+    <value>关闭</value>
   </data>
   <data name="status_subtext_winver_10" xml:space="preserve">
     <value>Windows 10</value>
+    <comment>仅在 'status_unsupported_desc' 中使用，修改时考虑到这一点</comment>
   </data>
   <data name="status_subtext_winver_older" xml:space="preserve">
-    <value>Version antérieure de Windows</value>
+    <value>旧 Windows 版本</value>
+    <comment>仅在 'status_unsupported_desc' 中使用，修改时考虑到这一点</comment>
   </data>
   <data name="status_unsupported" xml:space="preserve">
-    <value>WSA pas installé</value>
+    <value>WSA 未安装</value>
   </data>
   <data name="status_unsupported_desc" xml:space="preserve">
     <value>{windowsVersion} detected but WSA was not found. This application depends on WSA, which is officially supported only on Windows 11.</value>
   </data>
   <data name="status_unauthorized" xml:space="preserve">
-    <value>Non autorisé</value>
+    <value>未授权</value>
   </data>
   <data name="status_unauthorized_desc" xml:space="preserve">
-    <value>L'autorisation de débogage a été refusée ou révoquée; appuyez sur le premier bouton, sélectionnez 'toujours autoriser' et cliquez sur 'autoriser'; Si aucune fenêtre contextuelle n'apparaît, ouvrez les options de développeur et désactivez et réactivez le débogage USB</value>
+    <value>调试授权被拒绝或撤销；点击第一个按钮，选择“始终允许”，然后点击“允许”；如果没有弹出窗口，请打开开发者选项并禁用和重新启用“USB调试”</value>
   </data>
   <data name="status_missing" xml:space="preserve">
-    <value>WSA pas installé</value>
+    <value>WSA 未安装</value>
   </data>
   <data name="status_missing_desc" xml:space="preserve">
     <value>WSA could not be found on your system.
@@ -53,49 +63,49 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Open WSABuilds (GitHub)</value>
   </data>
   <data name="status_unknown" xml:space="preserve">
-    <value>Connecting</value>
+    <value>正在连接</value>
   </data>
   <data name="status_unknown_desc" xml:space="preserve">
-    <value>Attente de l'établissement d'une connexion à WSA...</value>
+    <value>正在等待建立 WSA 连接...</value>
   </data>
   <data name="status_starting" xml:space="preserve">
-    <value>Démarrage</value>
+    <value>正在启动</value>
   </data>
   <data name="status_starting_desc" xml:space="preserve">
-    <value>WSA démarre, veuillez patienter...</value>
+    <value>WSA 正在启动，请稍候...</value>
   </data>
   <data name="status_arrested" xml:space="preserve">
-    <value>Arrêté</value>
+    <value>已停滞</value>
   </data>
   <data name="status_arrested_desc" xml:space="preserve">
-    <value>WSA est éteint</value>
+    <value>WSA 已关闭</value>
   </data>
   <data name="status_offline" xml:space="preserve">
-    <value>Hors-ligne</value>
+    <value>离线</value>
   </data>
   <data name="status_offline_desc" xml:space="preserve">
-    <value>Impossible d'établir une connexion avec WSA: le mode développeur et le débogage USB sont désactivés, ou un port incorrect a été spécifié</value>
+    <value>无法与 WSA 建立连接：开发者模式和 USB 调试被禁用或指定了错误的端口</value>
   </data>
   <data name="status_disconnected" xml:space="preserve">
-    <value>Déconnecté</value>
+    <value>已断开连接</value>
   </data>
   <data name="status_disconnected_desc" xml:space="preserve">
-    <value>Une connexion au WSA n'a pas pu être établie pour des raisons inconnues</value>
+    <value>由于未知原因，无法建立 WSA 连接</value>
   </data>
   <data name="status_connected" xml:space="preserve">
-    <value>Connecté</value>
+    <value>已连接</value>
   </data>
   <data name="status_connected_desc" xml:space="preserve">
     <value>Successfully connected to WSA. All systems are operational and ready.</value>
   </data>
   <data name="screen_wsa" xml:space="preserve">
-    <value>Gestionnaire de paquets WSA</value>
+    <value>WSA 包管理器</value>
   </data>
   <data name="screen_settings" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>设置</value>
   </data>
   <data name="wsa_manage" xml:space="preserve">
-    <value>Gestion Android</value>
+    <value>Android 管理</value>
   </data>
   <data name="wsa_manage_app" xml:space="preserve">
     <value>Manage Applications</value>
@@ -104,34 +114,34 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Manage Settings</value>
   </data>
   <data name="settings_port" xml:space="preserve">
-    <value>Port WSA</value>
+    <value>WSA 端口</value>
   </data>
   <data name="settings_ip" xml:space="preserve">
-    <value>Adresse IP WSA</value>
+    <value>WSA IP 地址</value>
   </data>
   <data name="settings_autostart" xml:space="preserve">
-    <value>Démarrage automatique de WSA avant l'installation</value>
+    <value>在安装之前自动启动 WSA</value>
   </data>
   <data name="settings_timeout" xml:space="preserve">
-    <value>Délai ({seconds} secondes)</value>
+    <value>超时 ({seconds} 秒)</value>
   </data>
   <data name="settings_language" xml:space="preserve">
-    <value>Langue</value>
+    <value>语言</value>
   </data>
   <data name="settings_option_generic_system" xml:space="preserve">
-    <value>Système</value>
+    <value>系统</value>
   </data>
   <data name="settings_option_generic_disabled" xml:space="preserve">
     <value>Disabled</value>
   </data>
   <data name="theme_mode" xml:space="preserve">
-    <value>Mode thème</value>
+    <value>主题模式</value>
   </data>
   <data name="theme_mode_dark" xml:space="preserve">
-    <value>Sombre</value>
+    <value>深色模式</value>
   </data>
   <data name="theme_mode_light" xml:space="preserve">
-    <value>Clair</value>
+    <value>浅色模式</value>
   </data>
   <data name="theme_mica" xml:space="preserve">
     <value>Mica Effect (Window Transparency)</value>
@@ -143,157 +153,157 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Partial</value>
   </data>
   <data name="theme_icon_adaptive" xml:space="preserve">
-    <value>Forme adaptative des icones</value>
+    <value>自适应图标形状</value>
   </data>
   <data name="theme_icon_adaptive_squircle" xml:space="preserve">
     <value>Squircle (Rounded Corner)</value>
   </data>
   <data name="theme_icon_adaptive_circle" xml:space="preserve">
-    <value>Cercle</value>
+    <value>圆形</value>
   </data>
   <data name="theme_icon_adaptive_rounded_square" xml:space="preserve">
     <value>Rounded Square</value>
   </data>
   <data name="installer_message" xml:space="preserve">
-    <value>Voulez-vous installer cette application ?</value>
+    <value>您要安装此应用程序吗？</value>
   </data>
   <data name="installer_info_version" xml:space="preserve">
-    <value>Version: {appVersion}</value>
+    <value>版本：{appVersion}</value>
   </data>
   <data name="installer_info_version_change" xml:space="preserve">
-    <value>Version: {appVersionOld} =&gt; {appVersionNew}</value>
+    <value>版本：{appVersionOld} =&gt; {appVersionNew}</value>
   </data>
   <data name="installer_info_package" xml:space="preserve">
-    <value>Paquet: {appPackage}</value>
+    <value>包名：{appPackage}</value>
   </data>
   <data name="installer_installing" xml:space="preserve">
-    <value>Installation de l'application {appTitle}...</value>
+    <value>正在安装 {appTitle} 应用程序...</value>
   </data>
   <data name="installer_installed" xml:space="preserve">
-    <value>L'application {appTitle} a été installée avec succès</value>
+    <value>应用程序 {appTitle} 已成功安装</value>
   </data>
   <data name="installer_fail" xml:space="preserve">
-    <value>The application {appTitle} n'a pas été installée</value>
+    <value>应用程序 {appTitle} 未安装</value>
   </data>
   <data name="installer_error_nomsg" xml:space="preserve">
-    <value>L'installation a échoué, mais aucune erreur n'a été renvoyée</value>
+    <value>安装失败，但没有抛出错误</value>
   </data>
   <data name="installer_error_timeout" xml:space="preserve">
-    <value>Installation expirée, le client a arrêté d'attendre, mais le processus peut encore être en cours en arrière-plan...</value>
+    <value>安装已超时，客户端已停止等待，但可能仍在后台执行...</value>
   </data>
   <data name="installer_warning_dirty" xml:space="preserve">
-    <value>Un nettoyage manuel des fichiers est nécessaire dans le répertoire “{tempDir}”</value>
+    <value>目录「{tempDir}」需要手动清理文件</value>
   </data>
   <data name="installer_btn_starting" xml:space="preserve">
-    <value>Démarrage...</value>
+    <value>正在启动...</value>
   </data>
   <data name="installer_btn_loading" xml:space="preserve">
-    <value>Chargement...</value>
+    <value>加载中...</value>
   </data>
   <data name="installer_btn_cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>取消</value>
   </data>
   <data name="installer_btn_install" xml:space="preserve">
-    <value>Installer</value>
+    <value>安装</value>
   </data>
   <data name="installer_btn_reinstall" xml:space="preserve">
-    <value>Réinstaller</value>
+    <value>重新安装</value>
   </data>
   <data name="installer_btn_update" xml:space="preserve">
-    <value>Mettre à jour</value>
+    <value>更新</value>
   </data>
   <data name="installer_btn_downgrade" xml:space="preserve">
-    <value>Rétrograder (non sécuritaire)</value>
+    <value>降级（不安全）</value>
   </data>
   <data name="installer_btn_dismiss" xml:space="preserve">
-    <value>Ignorer</value>
+    <value>完成</value>
   </data>
   <data name="installer_btn_open" xml:space="preserve">
-    <value>Ouvrir l'app</value>
+    <value>打开应用程序</value>
   </data>
   <data name="installer_btn_checkbox_shortcut" xml:space="preserve">
-    <value>Créer un raccourci sur le bureau</value>
+    <value>创建桌面快捷方式</value>
   </data>
   <data name="android_permission_none" xml:space="preserve">
-    <value>Aucune autorisation requise</value>
+    <value>不需要任何权限</value>
   </data>
   <data name="android_permission_admin" xml:space="preserve">
-    <value>Gérer appareil en tant qu'administrateur</value>
+    <value>以管理员身份管理设备</value>
   </data>
   <data name="android_permission_admin_brick" xml:space="preserve">
-    <value>Désactiver ou réinitialiser l'appareil</value>
+    <value>远程禁用或重置设备</value>
   </data>
   <data name="android_permission_admin_lock" xml:space="preserve">
-    <value>Verrouiller l'appareil à distance</value>
+    <value>远程锁定设备</value>
   </data>
   <data name="android_permission_storage" xml:space="preserve">
-    <value>Fichiers et contenus multimédias</value>
+    <value>文件和媒体</value>
   </data>
   <data name="android_permission_microphone" xml:space="preserve">
-    <value>Microphone</value>
+    <value>麦克风</value>
   </data>
   <data name="android_permission_camera" xml:space="preserve">
-    <value>Caméra</value>
+    <value>相机</value>
   </data>
   <data name="android_permission_location" xml:space="preserve">
-    <value>Localisation</value>
+    <value>位置</value>
   </data>
   <data name="android_permission_phone" xml:space="preserve">
-    <value>Téléphone</value>
+    <value>电话</value>
   </data>
   <data name="android_permission_call_log" xml:space="preserve">
-    <value>Journaux d'appels</value>
+    <value>通话记录</value>
   </data>
   <data name="android_permission_sms" xml:space="preserve">
-    <value>Messages</value>
+    <value>信息</value>
   </data>
   <data name="android_permission_contacts" xml:space="preserve">
-    <value>Contacts</value>
+    <value>联系人</value>
   </data>
   <data name="android_permission_calendar" xml:space="preserve">
-    <value>Calendrier</value>
+    <value>日历</value>
   </data>
   <data name="android_permission_activity_recognition" xml:space="preserve">
-    <value>Activité physique</value>
+    <value>体育活动</value>
   </data>
   <data name="android_permission_sensors" xml:space="preserve">
-    <value>Capteurs de l'appareil</value>
+    <value>设备传感器</value>
   </data>
   <data name="android_permission_sensors_body" xml:space="preserve">
-    <value>Capteurs corporels</value>
+    <value>身体传感器</value>
   </data>
   <data name="android_permission_nearby_devices" xml:space="preserve">
-    <value>Localiser appareils à proximité</value>
+    <value>查找附近的设备</value>
   </data>
   <data name="screen_uninstall" xml:space="preserve">
-    <value>Uninstall</value>
+    <value>卸载</value>
   </data>
   <data name="scan_system" xml:space="preserve">
-    <value>Scan System</value>
+    <value>扫描系统</value>
   </data>
   <data name="scanning" xml:space="preserve">
-    <value>Scanning...</value>
+    <value>正在扫描...</value>
   </data>
   <data name="backup_registry" xml:space="preserve">
-    <value>Backup Registry</value>
+    <value>备份注册表</value>
   </data>
   <data name="execute_cleanup" xml:space="preserve">
-    <value>Execute Cleanup</value>
+    <value>执行清理</value>
   </data>
   <data name="scanning_wsa_env" xml:space="preserve">
-    <value>Scanning WSA environment deeply...</value>
+    <value>深度扫描 WSA 环境...</value>
   </data>
   <data name="click_scan_to_find_ghost_apps" xml:space="preserve">
-    <value>Click 'Scan System' to find remnant or hidden apps.</value>
+    <value>点击“扫描系统”以查找残留或隐藏的应用程序。</value>
   </data>
   <data name="type_registry_only" xml:space="preserve">
-    <value>Registry Only</value>
+    <value>仅注册表</value>
   </data>
   <data name="type_orphaned_shortcut" xml:space="preserve">
-    <value>Orphaned Shortcut</value>
+    <value>孤立快捷方式</value>
   </data>
   <data name="type_hidden_adb_app" xml:space="preserve">
-    <value>Hidden ADB App</value>
+    <value>隐藏 ADB 应用程序</value>
   </data>
   <data name="cleanup_complete" xml:space="preserve">
     <value>Cleanup Complete</value>
@@ -302,43 +312,43 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Completely deleted {count} apps and unnecessary data.</value>
   </data>
   <data name="auto_backup_registry" xml:space="preserve">
-    <value>Auto-backup before uninstall</value>
+    <value>卸载前自动备份注册表</value>
   </data>
   <data name="backup_cancelled" xml:space="preserve">
-    <value>Backup cancelled</value>
+    <value>备份已取消</value>
   </data>
   <data name="backup_success" xml:space="preserve">
-    <value>Backup successfully saved</value>
+    <value>备份已成功保存</value>
   </data>
   <data name="btn_restart_wsa" xml:space="preserve">
-    <value>Restart WSA</value>
+    <value>重启 WSA</value>
   </data>
   <data name="settings_auto_backup_dir" xml:space="preserve">
-    <value>Auto Backup Directory</value>
+    <value>自动备份目录</value>
   </data>
   <data name="tooltip_reset_desktop" xml:space="preserve">
-    <value>Reset to Default (Desktop)</value>
+    <value>重置为默认桌面</value>
   </data>
   <data name="btn_browse" xml:space="preserve">
-    <value>Browse...</value>
+    <value>浏览...</value>
   </data>
   <data name="settings_theme_color" xml:space="preserve">
-    <value>Theme Color</value>
+    <value>主题颜色</value>
   </data>
   <data name="settings_theme_color_system" xml:space="preserve">
-    <value>System (Windows)</value>
+    <value>系统 (Windows)</value>
   </data>
   <data name="settings_theme_color_default" xml:space="preserve">
-    <value>Default</value>
+    <value>默认</value>
   </data>
   <data name="settings_custom_color" xml:space="preserve">
-    <value>Create Custom Color</value>
+    <value>创建自定义颜色</value>
   </data>
   <data name="btn_apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>应用</value>
   </data>
   <data name="dialog_backup_dir_title" xml:space="preserve">
-    <value>Select a folder to save auto-backups</value>
+    <value>选择一个文件夹来保存自动备份</value>
   </data>
   <data name="dialog_backup_dir_filename" xml:space="preserve">
     <value>Select this folder</value>
@@ -368,12 +378,12 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
     <value>Yes</value>
   </data>
   <data name="btn_refresh_status" xml:space="preserve">
-    <value>Actualiser le statut</value>
+    <value>刷新状态</value>
   </data>
   <data name="tooltip_refresh_status" xml:space="preserve">
-    <value>Revérifier le statut WSA maintenant</value>
+    <value>立即重新检查 WSA 状态</value>
   </data>
   <data name="btn_launch_wsa" xml:space="preserve">
-    <value>Lancer WSA</value>
+    <value>启动 WSA</value>
   </data>
 </root>
