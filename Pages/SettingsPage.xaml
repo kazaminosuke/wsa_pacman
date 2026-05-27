@@ -23,7 +23,7 @@
                 Description="127.0.0.1"
                 Header="{x:Bind R.settings_port}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE704;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF8AD;" />
                 </controls:SettingsCard.HeaderIcon>
                 <TextBox
                     AutomationProperties.AutomationId="TxtPort"
@@ -40,7 +40,7 @@
                 AutomationProperties.AutomationId="SettingAutostart"
                 Header="{x:Bind R.settings_autostart}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE7E8;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF60F;" />
                 </controls:SettingsCard.HeaderIcon>
                 <ToggleSwitch
                     AutomationProperties.AutomationId="ToggleAutostart"
@@ -55,7 +55,7 @@
                 AutomationProperties.AutomationId="SettingAutoBackup"
                 Header="{x:Bind R.auto_backup_registry}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE74E;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF680;" />
                 </controls:SettingsCard.HeaderIcon>
                 <ToggleSwitch
                     AutomationProperties.AutomationId="ToggleAutoBackup"
@@ -70,7 +70,7 @@
                 AutomationProperties.AutomationId="SettingTimeout"
                 Header="{x:Bind TimeoutLabel, Mode=OneWay}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE916;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF827;" />
                 </controls:SettingsCard.HeaderIcon>
                 <Slider
                     AutomationProperties.AutomationId="SliderTimeout"
@@ -87,7 +87,7 @@
                 AutomationProperties.AutomationId="SettingLanguage"
                 Header="{x:Bind R.settings_language}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xF2B7;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF834;" />
                 </controls:SettingsCard.HeaderIcon>
                 <ComboBox
                     AutomationProperties.AutomationId="ComboLanguage"
@@ -106,7 +106,7 @@
                 Header="{x:Bind R.theme_mode}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon Glyph="&#xE793;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF87E;" />
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
@@ -137,7 +137,7 @@
                 Header="{x:Bind R.settings_theme_color}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon Glyph="&#xE790;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF593;" />
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
@@ -182,7 +182,7 @@
                 AutomationProperties.AutomationId="SettingBackupDir"
                 Header="{x:Bind R.settings_auto_backup_dir}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon Glyph="&#xE8B7;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF419;" />
                 </controls:SettingsCard.HeaderIcon>
                 <controls:SettingsCard.Description>
                     <TextBlock
@@ -196,7 +196,7 @@
                         AutomationProperties.Name="{x:Bind R.tooltip_reset_desktop}"
                         Click="ResetBackupDir_Click"
                         ToolTipService.ToolTip="{x:Bind R.tooltip_reset_desktop}">
-                        <FontIcon FontSize="14" Glyph="&#xE894;" />
+                        <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE894;" />
                     </Button>
                     <Button
                         AutomationProperties.AutomationId="BtnBrowseBackupDir"
@@ -212,7 +212,7 @@
                 Header="{x:Bind R.theme_mica}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon Glyph="&#xEB42;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF8FB;" />
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
@@ -243,7 +243,7 @@
                 Header="{x:Bind R.theme_icon_adaptive}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon Glyph="&#xEA3A;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="23" Glyph="&#xEA3A;" />
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">

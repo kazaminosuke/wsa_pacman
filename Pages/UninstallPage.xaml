@@ -44,7 +44,7 @@
                         Click="Scan_Click"
                         Style="{StaticResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon FontSize="14" Glyph="&#xE721;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE721;" />
                             <TextBlock x:Name="ScanButtonText" Text="{x:Bind R.scan_system}" />
                         </StackPanel>
                     </Button>
@@ -53,7 +53,7 @@
                         AutomationProperties.Name="{x:Bind R.backup_registry}"
                         Click="BackupRegistry_Click">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon FontSize="14" Glyph="&#xE74E;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE74E;" />
                             <TextBlock Text="{x:Bind R.backup_registry}" />
                         </StackPanel>
                     </Button>
@@ -68,7 +68,7 @@
                     IsEnabled="False"
                     Foreground="{ThemeResource SystemErrorTextColor}">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon FontSize="14" Glyph="&#xE74D;" />
+                        <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE74D;" />
                         <TextBlock Text="{x:Bind R.execute_cleanup}" />
                     </StackPanel>
                 </Button>

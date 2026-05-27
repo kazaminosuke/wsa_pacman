@@ -36,12 +36,13 @@
                 <SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
                 <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent" />
                 <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
+                <x:Double x:Key="NavigationViewTopPaneHeight">50</x:Double>
             </NavigationView.Resources>
             <NavigationView.PaneHeader>
                 <StackPanel
-                    Margin="4,0,16,0"
+                    Margin="12,0,16,0"
                     Orientation="Horizontal"
-                    Spacing="8"
+                    Spacing="10"
                     VerticalAlignment="Center">
                     <Image
                         Width="24"
@@ -57,20 +58,30 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     AutomationProperties.AutomationId="NavItemWsa"
-                    Content="WSA"
+                    AutomationProperties.Name="WSA"
                     IsSelected="True"
                     Tag="wsa">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE8A5;" />
-                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <FontIcon
+                                FontFamily="ms-appx:///Assets/Fonts/materialdesignicons-webfont.ttf#Material Design Icons"
+                                FontSize="20"
+                                Glyph="&#xF0032;"
+                                VerticalAlignment="Center" />
+                            <TextBlock Text="WSA" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </NavigationViewItem.Content>
                 </NavigationViewItem>
                 <NavigationViewItem
                     AutomationProperties.AutomationId="NavItemUninstall"
-                    Content="Uninstall"
+                    AutomationProperties.Name="Uninstall"
                     Tag="uninstall">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE74D;" />
-                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="16" Glyph="&#xF34D;" VerticalAlignment="Center" />
+                            <TextBlock Text="Uninstall" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
@@ -78,9 +89,9 @@
                     AutomationProperties.AutomationId="NavItemSettings"
                     AutomationProperties.Name="{x:Bind R.screen_settings}"
                     Tag="settings">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE713;" />
-                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>
+                        <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="16" Glyph="&#xF6AA;" VerticalAlignment="Center" />
+                    </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
             <Frame x:Name="NavFrame" />

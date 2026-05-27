@@ -31,7 +31,7 @@
                         AutomationProperties.Name="{x:Bind R.btn_refresh_status}"
                         Click="RefreshStatus_Click">
                         <StackPanel Orientation="Horizontal" Spacing="6">
-                            <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE72C;" />
                             <TextBlock Text="{x:Bind R.btn_refresh_status}" />
                         </StackPanel>
                     </Button>
@@ -67,8 +67,9 @@
                     <FontIcon
                         Grid.Column="0"
                         Margin="0,0,17,0"
+                        FontFamily="ms-appx:///Assets/Fonts/materialdesignicons-webfont.ttf#Material Design Icons"
                         FontSize="24"
-                        Glyph="&#xECAA;"
+                        Glyph="&#xF0032;"
                         VerticalAlignment="Center" />
                     <TextBlock
                         Grid.Column="1"
@@ -106,6 +107,7 @@
                     <FontIcon
                         Grid.Column="0"
                         Margin="0,0,17,0"
+                        FontFamily="Segoe Fluent Icons"
                         FontSize="24"
                         Glyph="&#xE713;"
                         VerticalAlignment="Center" />
