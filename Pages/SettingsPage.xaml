@@ -23,7 +23,11 @@
                 Description="127.0.0.1"
                 Header="{x:Bind R.settings_port}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF8AD;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF8AD;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <TextBox
                     AutomationProperties.AutomationId="TxtPort"
@@ -40,7 +44,11 @@
                 AutomationProperties.AutomationId="SettingAutostart"
                 Header="{x:Bind R.settings_autostart}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF60F;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF60F;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ToggleSwitch
                     AutomationProperties.AutomationId="ToggleAutostart"
@@ -55,7 +63,11 @@
                 AutomationProperties.AutomationId="SettingAutoBackup"
                 Header="{x:Bind R.auto_backup_registry}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF680;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF680;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ToggleSwitch
                     AutomationProperties.AutomationId="ToggleAutoBackup"
@@ -70,7 +82,11 @@
                 AutomationProperties.AutomationId="SettingTimeout"
                 Header="{x:Bind TimeoutLabel, Mode=OneWay}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF827;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF827;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <Slider
                     AutomationProperties.AutomationId="SliderTimeout"
@@ -87,7 +103,11 @@
                 AutomationProperties.AutomationId="SettingLanguage"
                 Header="{x:Bind R.settings_language}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF834;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF834;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ComboBox
                     AutomationProperties.AutomationId="ComboLanguage"
@@ -106,7 +126,11 @@
                 Header="{x:Bind R.theme_mode}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF87E;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF87E;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
@@ -137,7 +161,11 @@
                 Header="{x:Bind R.settings_theme_color}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF593;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF593;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
@@ -182,7 +210,11 @@
                 AutomationProperties.AutomationId="SettingBackupDir"
                 Header="{x:Bind R.settings_auto_backup_dir}">
                 <controls:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF419;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF419;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <controls:SettingsCard.Description>
                     <TextBlock
@@ -212,7 +244,11 @@
                 Header="{x:Bind R.theme_mica}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF8FB;" />
+                    <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF8FB;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
@@ -243,7 +279,11 @@
                 Header="{x:Bind R.theme_icon_adaptive}"
                 IsExpanded="False">
                 <controls:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="23" Glyph="&#xEA3A;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="23" Glyph="&#xEA3A;" RenderTransformOrigin="0.5,0.5">
+                        <FontIcon.RenderTransform>
+                            <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
