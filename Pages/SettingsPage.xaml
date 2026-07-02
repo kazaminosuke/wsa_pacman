@@ -120,40 +120,33 @@
                 </ComboBox>
             </controls:SettingsCard>
 
-            <!-- Theme mode expander -->
-            <controls:SettingsExpander
+            <!-- Theme mode -->
+            <controls:SettingsCard
                 AutomationProperties.AutomationId="SettingThemeMode"
-                Header="{x:Bind R.theme_mode}"
-                IsExpanded="False">
-                <controls:SettingsExpander.HeaderIcon>
+                Header="{x:Bind R.theme_mode}">
+                <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF87E;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsExpander.HeaderIcon>
-                <controls:SettingsExpander.Items>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioThemeSystem"
-                            Content="{x:Bind R.settings_option_generic_system}"
-                            GroupName="ThemeMode"
-                            IsChecked="True" />
-                    </controls:SettingsCard>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioThemeLight"
-                            Content="{x:Bind R.theme_mode_light}"
-                            GroupName="ThemeMode" />
-                    </controls:SettingsCard>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioThemeDark"
-                            Content="{x:Bind R.theme_mode_dark}"
-                            GroupName="ThemeMode" />
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox
+                    AutomationProperties.AutomationId="ComboThemeMode"
+                    AutomationProperties.Name="{x:Bind R.theme_mode}"
+                    MinWidth="200"
+                    SelectedIndex="0">
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboThemeModeSystem"
+                        Content="{x:Bind R.settings_option_generic_system}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboThemeModeLight"
+                        Content="{x:Bind R.theme_mode_light}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboThemeModeDark"
+                        Content="{x:Bind R.theme_mode_dark}" />
+                </ComboBox>
+            </controls:SettingsCard>
 
             <!-- Theme color expander -->
             <controls:SettingsExpander
@@ -238,75 +231,61 @@
                 </StackPanel>
             </controls:SettingsCard>
 
-            <!-- Mica effect expander -->
-            <controls:SettingsExpander
+            <!-- Mica effect -->
+            <controls:SettingsCard
                 AutomationProperties.AutomationId="SettingMica"
-                Header="{x:Bind R.theme_mica}"
-                IsExpanded="False">
-                <controls:SettingsExpander.HeaderIcon>
+                Header="{x:Bind R.theme_mica}">
+                <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF8FB;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsExpander.HeaderIcon>
-                <controls:SettingsExpander.Items>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioMicaFull"
-                            Content="{x:Bind R.theme_mica_full}"
-                            GroupName="Mica"
-                            IsChecked="True" />
-                    </controls:SettingsCard>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioMicaPartial"
-                            Content="{x:Bind R.theme_mica_partial}"
-                            GroupName="Mica" />
-                    </controls:SettingsCard>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioMicaDisabled"
-                            Content="{x:Bind R.settings_option_generic_disabled}"
-                            GroupName="Mica" />
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox
+                    AutomationProperties.AutomationId="ComboMica"
+                    AutomationProperties.Name="{x:Bind R.theme_mica}"
+                    MinWidth="200"
+                    SelectedIndex="0">
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboMicaFull"
+                        Content="{x:Bind R.theme_mica_full}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboMicaPartial"
+                        Content="{x:Bind R.theme_mica_partial}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboMicaDisabled"
+                        Content="{x:Bind R.settings_option_generic_disabled}" />
+                </ComboBox>
+            </controls:SettingsCard>
 
-            <!-- Adaptive icon shape expander -->
-            <controls:SettingsExpander
+            <!-- Adaptive icon shape -->
+            <controls:SettingsCard
                 AutomationProperties.AutomationId="SettingIconShape"
-                Header="{x:Bind R.theme_icon_adaptive}"
-                IsExpanded="False">
-                <controls:SettingsExpander.HeaderIcon>
+                Header="{x:Bind R.theme_icon_adaptive}">
+                <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" FontSize="23" Glyph="&#xEA3A;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsExpander.HeaderIcon>
-                <controls:SettingsExpander.Items>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioIconSquircle"
-                            Content="{x:Bind R.theme_icon_adaptive_squircle}"
-                            GroupName="IconShape"
-                            IsChecked="True" />
-                    </controls:SettingsCard>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioIconCircle"
-                            Content="{x:Bind R.theme_icon_adaptive_circle}"
-                            GroupName="IconShape" />
-                    </controls:SettingsCard>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <RadioButton
-                            AutomationProperties.AutomationId="RadioIconRoundedSquare"
-                            Content="{x:Bind R.theme_icon_adaptive_rounded_square}"
-                            GroupName="IconShape" />
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox
+                    AutomationProperties.AutomationId="ComboIconShape"
+                    AutomationProperties.Name="{x:Bind R.theme_icon_adaptive}"
+                    MinWidth="200"
+                    SelectedIndex="0">
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboIconShapeSquircle"
+                        Content="{x:Bind R.theme_icon_adaptive_squircle}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboIconShapeCircle"
+                        Content="{x:Bind R.theme_icon_adaptive_circle}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboIconShapeRoundedSquare"
+                        Content="{x:Bind R.theme_icon_adaptive_rounded_square}" />
+                </ComboBox>
+            </controls:SettingsCard>
 
         </StackPanel>
     </ScrollViewer>

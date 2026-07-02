@@ -1,6 +1,7 @@
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using WsaPacman.Pages;
@@ -67,14 +68,31 @@ public sealed partial class MainWindow : Window
         return CallWindowProc(_oldWndProc, hWnd, msg, wParam, lParam);
     }
 
+    private static readonly string[] NavOrder = ["wsa", "uninstall", "settings"];
+    private int _currentNavIndex = 0;
+
     private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (args.SelectedItem is not NavigationViewItem item) return;
-        switch (item.Tag)
+        var tag = item.Tag as string;
+        var newIndex = Array.IndexOf(NavOrder, tag);
+        if (newIndex < 0) return;
+
+        var effect = newIndex > _currentNavIndex
+            ? SlideNavigationTransitionEffect.FromRight
+            : SlideNavigationTransitionEffect.FromLeft;
+        var transitionInfo = new SlideNavigationTransitionInfo { Effect = effect };
+
+        Type? pageType = tag switch
         {
-            case "wsa": NavFrame.Navigate(typeof(WsaPage)); break;
-            case "uninstall": NavFrame.Navigate(typeof(UninstallPage)); break;
-            case "settings": NavFrame.Navigate(typeof(SettingsPage)); break;
-        }
+            "wsa" => typeof(WsaPage),
+            "uninstall" => typeof(UninstallPage),
+            "settings" => typeof(SettingsPage),
+            _ => null,
+        };
+        if (pageType is null) return;
+
+        NavFrame.Navigate(pageType, null, transitionInfo);
+        _currentNavIndex = newIndex;
     }
 }
