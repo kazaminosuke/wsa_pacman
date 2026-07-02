@@ -17,26 +17,56 @@
                 Text="{x:Bind R.screen_wsa}" />
 
             <!-- WSA Status InfoBar -->
-            <InfoBar
+            <Border
                 x:Name="StatusInfoBar"
                 Margin="0,0,0,28"
-                IsClosable="False"
-                IsOpen="True"
-                Message="{x:Bind R.status_unknown_desc}"
-                Severity="Informational"
-                Title="{x:Bind R.status_unknown}">
-                <InfoBar.ActionButton>
-                    <Button
-                        AutomationProperties.AutomationId="BtnRefreshStatus"
-                        AutomationProperties.Name="{x:Bind R.btn_refresh_status}"
-                        Click="RefreshStatus_Click">
-                        <StackPanel Orientation="Horizontal" Spacing="6">
-                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE72C;" />
-                            <TextBlock Text="{x:Bind R.btn_refresh_status}" />
+                Padding="14"
+                Background="{ThemeResource SystemFillColorAttentionBackgroundBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+                <StackPanel Orientation="Horizontal">
+                    <!-- Severity icon, top-aligned -->
+                    <FontIcon
+                        x:Name="StatusIcon"
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Top"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="18"
+                        Foreground="{ThemeResource SystemFillColorAttentionBrush}"
+                        Glyph="&#xE946;" />
+
+                    <!-- Title (row 1) + description/action row (row 2) -->
+                    <StackPanel VerticalAlignment="Top">
+                        <TextBlock
+                            x:Name="StatusTitleText"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
+                            Text="{x:Bind R.status_unknown}" />
+
+                        <StackPanel
+                            Margin="0,8,0,0"
+                            Orientation="Horizontal"
+                            Spacing="8">
+                            <TextBlock
+                                x:Name="StatusMessageText"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind R.status_unknown_desc}"
+                                TextWrapping="Wrap" />
+
+                            <Button
+                                AutomationProperties.AutomationId="BtnRefreshStatus"
+                                AutomationProperties.Name="{x:Bind R.btn_refresh_status}"
+                                Click="RefreshStatus_Click"
+                                VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE72C;" />
+                                    <TextBlock FontWeight="SemiBold" FontSize="13" Text="{x:Bind R.btn_refresh_status}" />
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
-                    </Button>
-                </InfoBar.ActionButton>
-            </InfoBar>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
 
             <!-- Android Management Section -->
             <TextBlock
