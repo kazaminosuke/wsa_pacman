@@ -10,6 +10,27 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <!-- WSA connection status card backgrounds, one per severity -->
+                <ResourceDictionary x:Key="Light">
+                    <StaticResource x:Key="StatusConnectingBackgroundBrush" ResourceKey="SystemFillColorAttentionBackgroundBrush" />
+                    <StaticResource x:Key="StatusSuccessBackgroundBrush" ResourceKey="SystemFillColorSuccessBackgroundBrush" />
+                    <StaticResource x:Key="StatusWarningBackgroundBrush" ResourceKey="SystemFillColorCautionBackgroundBrush" />
+                    <StaticResource x:Key="StatusErrorBackgroundBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <StaticResource x:Key="StatusConnectingBackgroundBrush" ResourceKey="SystemFillColorAttentionBackgroundBrush" />
+                    <StaticResource x:Key="StatusSuccessBackgroundBrush" ResourceKey="SystemFillColorSuccessBackgroundBrush" />
+                    <StaticResource x:Key="StatusWarningBackgroundBrush" ResourceKey="SystemFillColorCautionBackgroundBrush" />
+                    <StaticResource x:Key="StatusErrorBackgroundBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrast">
+                    <StaticResource x:Key="StatusConnectingBackgroundBrush" ResourceKey="SystemFillColorAttentionBackgroundBrush" />
+                    <StaticResource x:Key="StatusSuccessBackgroundBrush" ResourceKey="SystemFillColorSuccessBackgroundBrush" />
+                    <StaticResource x:Key="StatusWarningBackgroundBrush" ResourceKey="SystemFillColorCautionBackgroundBrush" />
+                    <StaticResource x:Key="StatusErrorBackgroundBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
             <FontFamily x:Key="ContentControlThemeFontFamily">Segoe UI Variable</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
