@@ -154,46 +154,35 @@
                 </ComboBox>
             </controls:SettingsCard>
 
-            <!-- Theme mode (expander + exclusive checkbox list, matching Flutter ExpanderWin11) -->
-            <controls:SettingsExpander
-                AutomationProperties.AutomationId="SettingThemeMode"
-                IsExpanded="False">
-                <controls:SettingsExpander.Header>
+            <!-- Theme mode -->
+            <controls:SettingsCard
+                AutomationProperties.AutomationId="SettingThemeMode">
+                <controls:SettingsCard.Header>
                     <TextBlock FontSize="15" Text="{x:Bind R.theme_mode}" />
-                </controls:SettingsExpander.Header>
-                <controls:SettingsExpander.HeaderIcon>
+                </controls:SettingsCard.Header>
+                <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF87E;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsExpander.HeaderIcon>
-                <controls:SettingsExpander.Items>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <StackPanel Spacing="8">
-                            <CheckBox
-                                x:Name="ThemeModeSystem"
-                                AutomationProperties.AutomationId="CheckThemeModeSystem"
-                                Checked="ThemeMode_Checked"
-                                Content="{x:Bind R.settings_option_generic_system}"
-                                IsChecked="True"
-                                Unchecked="ThemeMode_Unchecked" />
-                            <CheckBox
-                                x:Name="ThemeModeLight"
-                                AutomationProperties.AutomationId="CheckThemeModeLight"
-                                Checked="ThemeMode_Checked"
-                                Content="{x:Bind R.theme_mode_light}"
-                                Unchecked="ThemeMode_Unchecked" />
-                            <CheckBox
-                                x:Name="ThemeModeDark"
-                                AutomationProperties.AutomationId="CheckThemeModeDark"
-                                Checked="ThemeMode_Checked"
-                                Content="{x:Bind R.theme_mode_dark}"
-                                Unchecked="ThemeMode_Unchecked" />
-                        </StackPanel>
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox
+                    AutomationProperties.AutomationId="ComboThemeMode"
+                    AutomationProperties.Name="{x:Bind R.theme_mode}"
+                    MinWidth="200"
+                    SelectedIndex="0">
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboThemeModeSystem"
+                        Content="{x:Bind R.settings_option_generic_system}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboThemeModeLight"
+                        Content="{x:Bind R.theme_mode_light}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboThemeModeDark"
+                        Content="{x:Bind R.theme_mode_dark}" />
+                </ComboBox>
+            </controls:SettingsCard>
 
             <!-- Theme color expander -->
             <controls:SettingsExpander
@@ -318,53 +307,39 @@
                 </StackPanel>
             </controls:SettingsCard>
 
-            <!-- Mica effect (expander + exclusive checkbox list; 4 values incl. Alt) -->
-            <controls:SettingsExpander
-                x:Name="MicaSettingExpander"
-                AutomationProperties.AutomationId="SettingMica"
-                IsExpanded="False">
-                <controls:SettingsExpander.Header>
+            <!-- Mica effect (4 values incl. Alt) -->
+            <controls:SettingsCard
+                x:Name="MicaSettingCard"
+                AutomationProperties.AutomationId="SettingMica">
+                <controls:SettingsCard.Header>
                     <TextBlock FontSize="15" Text="{x:Bind R.theme_mica}" />
-                </controls:SettingsExpander.Header>
-                <controls:SettingsExpander.HeaderIcon>
+                </controls:SettingsCard.Header>
+                <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF8FB;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsExpander.HeaderIcon>
-                <controls:SettingsExpander.Items>
-                    <controls:SettingsCard ContentAlignment="Left">
-                        <StackPanel Spacing="8">
-                            <CheckBox
-                                x:Name="MicaFull"
-                                AutomationProperties.AutomationId="CheckMicaFull"
-                                Checked="Mica_Checked"
-                                Content="{x:Bind R.theme_mica_full}"
-                                IsChecked="True"
-                                Unchecked="Mica_Unchecked" />
-                            <CheckBox
-                                x:Name="MicaPartial"
-                                AutomationProperties.AutomationId="CheckMicaPartial"
-                                Checked="Mica_Checked"
-                                Content="{x:Bind R.theme_mica_partial}"
-                                Unchecked="Mica_Unchecked" />
-                            <CheckBox
-                                x:Name="MicaAlt"
-                                AutomationProperties.AutomationId="CheckMicaAlt"
-                                Checked="Mica_Checked"
-                                Content="Mica Alt"
-                                Unchecked="Mica_Unchecked" />
-                            <CheckBox
-                                x:Name="MicaDisabled"
-                                AutomationProperties.AutomationId="CheckMicaDisabled"
-                                Checked="Mica_Checked"
-                                Content="{x:Bind R.settings_option_generic_disabled}"
-                                Unchecked="Mica_Unchecked" />
-                        </StackPanel>
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
+                </controls:SettingsCard.HeaderIcon>
+                <ComboBox
+                    AutomationProperties.AutomationId="ComboMica"
+                    AutomationProperties.Name="{x:Bind R.theme_mica}"
+                    MinWidth="200"
+                    SelectedIndex="0">
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboMicaFull"
+                        Content="{x:Bind R.theme_mica_full}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboMicaPartial"
+                        Content="{x:Bind R.theme_mica_partial}" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboMicaAlt"
+                        Content="Mica Alt" />
+                    <ComboBoxItem
+                        AutomationProperties.AutomationId="ComboMicaDisabled"
+                        Content="{x:Bind R.settings_option_generic_disabled}" />
+                </ComboBox>
+            </controls:SettingsCard>
 
             <!-- Adaptive icon shape (expander + exclusive checkbox list) -->
             <controls:SettingsExpander

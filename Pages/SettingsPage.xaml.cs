@@ -31,7 +31,7 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         // Mica requires Windows 11; hide the card entirely on older builds (S19)
         if (System.Environment.OSVersion.Version.Build < 22000)
         {
-            MicaSettingExpander.Visibility = Visibility.Collapsed;
+            MicaSettingCard.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -86,10 +86,8 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TimeoutLabel)));
     }
 
-    // --- Exclusive checkbox groups (Flutter-style expander checklists) ---
+    // --- Exclusive checkbox group (Flutter-style expander checklist) ---
 
-    private CheckBox[] ThemeModeGroup => new[] { ThemeModeSystem, ThemeModeLight, ThemeModeDark };
-    private CheckBox[] MicaGroup => new[] { MicaFull, MicaPartial, MicaAlt, MicaDisabled };
     private CheckBox[] IconShapeGroup => new[] { IconShapeSquircle, IconShapeCircle, IconShapeRoundedSquare };
 
     private bool _suppressCheckEvents;
@@ -119,10 +117,6 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         _suppressCheckEvents = false;
     }
 
-    private void ThemeMode_Checked(object sender, RoutedEventArgs e) => ExclusiveCheck(ThemeModeGroup, (CheckBox)sender);
-    private void ThemeMode_Unchecked(object sender, RoutedEventArgs e) => KeepOneChecked(ThemeModeGroup, (CheckBox)sender);
-    private void Mica_Checked(object sender, RoutedEventArgs e) => ExclusiveCheck(MicaGroup, (CheckBox)sender);
-    private void Mica_Unchecked(object sender, RoutedEventArgs e) => KeepOneChecked(MicaGroup, (CheckBox)sender);
     private void IconShape_Checked(object sender, RoutedEventArgs e) => ExclusiveCheck(IconShapeGroup, (CheckBox)sender);
     private void IconShape_Unchecked(object sender, RoutedEventArgs e) => KeepOneChecked(IconShapeGroup, (CheckBox)sender);
 
