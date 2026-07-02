@@ -152,16 +152,42 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
 
     private const int DefaultPort = 58526;
 
-    private void Port_BeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
+    private void Port_Loaded(object sender, RoutedEventArgs e)
     {
-        foreach (var ch in args.NewText)
+        // The built-in clear (×) button overlaps our reset button; collapse it for good.
+        // It can only be reached through the visual tree — there is no public API.
+        if (FindDescendantByName(PortTextBox, "DeleteButton") is Button deleteButton)
         {
-            if (!char.IsAsciiDigit(ch))
-            {
-                args.Cancel = true;
-                return;
-            }
+            deleteButton.MinWidth = 0;
+            deleteButton.MaxWidth = 0;
+            deleteButton.Opacity = 0;
+            deleteButton.IsHitTestVisible = false;
+            deleteButton.IsTabStop = false;
         }
+    }
+
+    private static FrameworkElement? FindDescendantByName(DependencyObject root, string name)
+    {
+        var count = VisualTreeHelper.GetChildrenCount(root);
+        for (var i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(root, i);
+            if (child is FrameworkElement fe && fe.Name == name) return fe;
+            if (FindDescendantByName(child, name) is { } match) return match;
+        }
+        return null;
+    }
+
+    // Strip non-digits after the fact instead of cancelling in BeforeTextChanging:
+    // cancelling there fights IME composition and can wedge focus inside the box.
+    private void Port_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var text = PortTextBox.Text;
+        var digits = string.Concat(text.Where(char.IsAsciiDigit));
+        if (digits == text) return;
+        var caret = PortTextBox.SelectionStart - (text.Length - digits.Length);
+        PortTextBox.Text = digits;
+        PortTextBox.SelectionStart = Math.Clamp(caret, 0, digits.Length);
     }
 
     private void Port_LostFocus(object sender, RoutedEventArgs e)

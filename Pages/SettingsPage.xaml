@@ -36,13 +36,16 @@
                         x:Name="PortTextBox"
                         AutomationProperties.AutomationId="TxtPort"
                         AutomationProperties.Name="{x:Bind R.settings_port}"
-                        BeforeTextChanging="Port_BeforeTextChanging"
                         InputScope="Number"
+                        IsSpellCheckEnabled="False"
+                        IsTextPredictionEnabled="False"
+                        Loaded="Port_Loaded"
                         LostFocus="Port_LostFocus"
                         MaxLength="5"
                         Padding="86,5,36,6"
                         PlaceholderText="58526"
                         Text="58526"
+                        TextChanged="Port_TextChanged"
                         VerticalAlignment="Stretch" />
                     <TextBlock
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
