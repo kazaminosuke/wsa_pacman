@@ -27,7 +27,7 @@
                 MinHeight="68"
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
+                BorderThickness="0.5"
                 CornerRadius="{StaticResource ControlCornerRadius}"
                 Padding="20,16,17,16">
             <Grid>
@@ -44,21 +44,23 @@
                         Click="Scan_Click"
                         Style="{StaticResource AccentButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE721;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="16" Glyph="&#xE721;" />
                             <TextBlock x:Name="ScanButtonText" Text="{x:Bind R.scan_system}" />
                         </StackPanel>
                     </Button>
                     <Button
+                        x:Name="BtnBackup"
                         AutomationProperties.AutomationId="BtnBackupRegistry"
                         AutomationProperties.Name="{x:Bind R.backup_registry}"
                         Click="BackupRegistry_Click">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE74E;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" FontSize="18" Glyph="&#xE74E;" />
                             <TextBlock Text="{x:Bind R.backup_registry}" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
 
+                <!-- Red text + red border (40% normal / 70% hover / 15% disabled, U7) -->
                 <Button
                     x:Name="BtnCleanup"
                     Grid.Column="1"
@@ -66,9 +68,18 @@
                     AutomationProperties.Name="{x:Bind R.execute_cleanup}"
                     Click="Cleanup_Click"
                     IsEnabled="False"
+                    BorderThickness="1"
                     Foreground="{ThemeResource SystemErrorTextColor}">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ButtonBorderBrush" Color="#66E81123" />
+                            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#B3E81123" />
+                            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#B3E81123" />
+                            <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#26E81123" />
+                        </ResourceDictionary>
+                    </Button.Resources>
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE74D;" />
+                        <FontIcon FontFamily="Segoe Fluent Icons" FontSize="18" Glyph="&#xE74D;" />
                         <TextBlock Text="{x:Bind R.execute_cleanup}" />
                     </StackPanel>
                 </Button>
@@ -98,53 +109,88 @@
                 x:Name="ScanningState"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Spacing="16"
+                Spacing="20"
                 Visibility="Collapsed">
                 <ProgressRing
                     Width="44"
                     Height="44"
                     IsActive="True" />
                 <TextBlock
-                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     HorizontalAlignment="Center"
+                    Style="{StaticResource BodyLargeTextBlockStyle}"
                     Text="{x:Bind R.scanning}" />
             </StackPanel>
 
-            <!-- Results list -->
+            <!-- Results list (one FluentCard per entry, row click toggles selection) -->
             <ListView
                 x:Name="AppList"
-                Padding="0,12,0,12"
+                Padding="0,0,0,12"
+                IsItemClickEnabled="True"
+                ItemClick="AppList_ItemClick"
                 SelectionMode="None"
                 Visibility="Collapsed">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="0,0,0,8" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="MinHeight" Value="0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:AppEntry">
-                        <Grid Padding="4,8,4,8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,0,12,0"
-                                FontSize="28"
-                                Glyph="&#xECAA;"
-                                VerticalAlignment="Center" />
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock
-                                    Style="{StaticResource BodyStrongTextBlockStyle}"
-                                    Text="{x:Bind Name}" />
-                                <TextBlock
-                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    Style="{StaticResource CaptionTextBlockStyle}"
-                                    Text="{x:Bind PackageId}" />
-                            </StackPanel>
-                            <CheckBox
-                                Grid.Column="2"
-                                AutomationProperties.Name="{x:Bind Name}"
-                                IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
-                                VerticalAlignment="Center" />
-                        </Grid>
+                        <Border
+                            MinHeight="68"
+                            Padding="20,0,17,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="{StaticResource ControlCornerRadius}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <!-- 38×38 icon frame: DisplayIcon image (32×32, rounded 4) or type-colored glyph (U4) -->
+                                <Grid
+                                    Grid.Column="0"
+                                    Width="38"
+                                    Height="38"
+                                    Margin="0,0,17,0"
+                                    VerticalAlignment="Center">
+                                    <FontIcon
+                                        FontSize="28"
+                                        Foreground="{x:Bind IconBrush}"
+                                        Glyph="{x:Bind IconGlyph}"
+                                        Visibility="{x:Bind GlyphVisibility}" />
+                                    <Border
+                                        Width="32"
+                                        Height="32"
+                                        CornerRadius="4"
+                                        Visibility="{x:Bind ImageVisibility}">
+                                        <Image Source="{x:Bind IconImage}" Stretch="UniformToFill" />
+                                    </Border>
+                                </Grid>
+                                <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
+                                    <TextBlock
+                                        Style="{StaticResource BodyLargeTextBlockStyle}"
+                                        Text="{x:Bind Name}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                    <TextBlock
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind PackageId}" />
+                                </StackPanel>
+                                <CheckBox
+                                    Grid.Column="2"
+                                    AutomationProperties.Name="{x:Bind Name}"
+                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
+                                    MinWidth="0"
+                                    VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

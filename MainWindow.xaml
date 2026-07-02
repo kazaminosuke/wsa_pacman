@@ -40,7 +40,7 @@
             </NavigationView.Resources>
             <NavigationView.PaneHeader>
                 <StackPanel
-                    Margin="12,0,16,0"
+                    Margin="12,0,20,0"
                     Orientation="Horizontal"
                     Spacing="10"
                     VerticalAlignment="Center">
@@ -50,7 +50,7 @@
                         Source="Assets/logo.png"
                         VerticalAlignment="Center" />
                     <TextBlock
-                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Style="{StaticResource BodyLargeTextBlockStyle}"
                         Text="WSA PacMan"
                         VerticalAlignment="Center" />
                 </StackPanel>
@@ -65,7 +65,7 @@
                         <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                             <FontIcon
                                 FontFamily="ms-appx:///Assets/Fonts/materialdesignicons-webfont.ttf#Material Design Icons"
-                                FontSize="20"
+                                FontSize="18"
                                 Glyph="&#xF0032;"
                                 VerticalAlignment="Center" />
                             <TextBlock Text="WSA" VerticalAlignment="Center" />
@@ -78,19 +78,30 @@
                     Tag="uninstall">
                     <NavigationViewItem.Content>
                         <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="16" Glyph="&#xF34D;" VerticalAlignment="Center" />
+                            <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="18" Glyph="&#xF34D;" VerticalAlignment="Center" />
                             <TextBlock Text="Uninstall" VerticalAlignment="Center" />
                         </StackPanel>
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
+                <!-- 1×16 vertical divider before the settings tab (Flutter main.dart:694-704) -->
+                <NavigationViewItemHeader MinWidth="0" Padding="0" Margin="4,0">
+                    <Rectangle
+                        Width="1"
+                        Height="16"
+                        Fill="{ThemeResource TextFillColorDisabledBrush}"
+                        VerticalAlignment="Center" />
+                </NavigationViewItemHeader>
                 <NavigationViewItem
                     AutomationProperties.AutomationId="NavItemSettings"
                     AutomationProperties.Name="{x:Bind R.screen_settings}"
                     Tag="settings">
                     <NavigationViewItem.Content>
-                        <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="16" Glyph="&#xF6AA;" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="18" Glyph="&#xF6AA;" VerticalAlignment="Center" />
+                            <TextBlock Text="{x:Bind R.screen_settings}" VerticalAlignment="Center" />
+                        </StackPanel>
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>

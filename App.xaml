@@ -17,21 +17,35 @@
                     <StaticResource x:Key="StatusSuccessBackgroundBrush" ResourceKey="SystemFillColorSuccessBackgroundBrush" />
                     <StaticResource x:Key="StatusWarningBackgroundBrush" ResourceKey="SystemFillColorCautionBackgroundBrush" />
                     <StaticResource x:Key="StatusErrorBackgroundBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+                    <SolidColorBrush x:Key="PermissionListBackgroundBrush" Color="#08000000" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <StaticResource x:Key="StatusConnectingBackgroundBrush" ResourceKey="SystemFillColorAttentionBackgroundBrush" />
                     <StaticResource x:Key="StatusSuccessBackgroundBrush" ResourceKey="SystemFillColorSuccessBackgroundBrush" />
                     <StaticResource x:Key="StatusWarningBackgroundBrush" ResourceKey="SystemFillColorCautionBackgroundBrush" />
                     <StaticResource x:Key="StatusErrorBackgroundBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+                    <SolidColorBrush x:Key="PermissionListBackgroundBrush" Color="#0CFFFFFF" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="HighContrast">
                     <StaticResource x:Key="StatusConnectingBackgroundBrush" ResourceKey="SystemFillColorAttentionBackgroundBrush" />
                     <StaticResource x:Key="StatusSuccessBackgroundBrush" ResourceKey="SystemFillColorSuccessBackgroundBrush" />
                     <StaticResource x:Key="StatusWarningBackgroundBrush" ResourceKey="SystemFillColorCautionBackgroundBrush" />
                     <StaticResource x:Key="StatusErrorBackgroundBrush" ResourceKey="SystemFillColorCriticalBackgroundBrush" />
+                    <StaticResource x:Key="PermissionListBackgroundBrush" ResourceKey="CardBackgroundFillColorDefaultBrush" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
-            <FontFamily x:Key="ContentControlThemeFontFamily">Segoe UI Variable</FontFamily>
+            <FontFamily x:Key="ContentControlThemeFontFamily">Yu Gothic UI</FontFamily>
+            <!-- TextBlock does not inherit ContentControlThemeFontFamily; force via implicit style -->
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Yu Gothic UI" />
+            </Style>
+            <!-- fluent_ui typography.bodyLarge (18px Regular) — not part of the WinUI system ramp -->
+            <Style x:Key="BodyLargeTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Yu Gothic UI" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontWeight" Value="Normal" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

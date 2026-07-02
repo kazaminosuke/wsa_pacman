@@ -10,18 +10,19 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel Padding="24,16,24,24" Spacing="4">
+        <StackPanel Padding="24,16,24,24" Spacing="5">
 
             <TextBlock
-                Margin="0,0,0,12"
+                Margin="0,0,0,22"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="{x:Bind R.screen_settings}" />
 
             <!-- WSA Port -->
             <controls:SettingsCard
-                AutomationProperties.AutomationId="SettingPort"
-                Description="127.0.0.1"
-                Header="{x:Bind R.settings_port}">
+                AutomationProperties.AutomationId="SettingPort">
+                <controls:SettingsCard.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.settings_port}" />
+                </controls:SettingsCard.Header>
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF8AD;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -29,20 +30,47 @@
                         </FontIcon.RenderTransform>
                     </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
-                <TextBox
-                    AutomationProperties.AutomationId="TxtPort"
-                    AutomationProperties.Name="{x:Bind R.settings_port}"
-                    InputScope="Number"
-                    MaxLength="5"
-                    PlaceholderText="58526"
-                    Text="58526"
-                    Width="180" />
+                <!-- 300×32 box with the "127.0.0.1 :" prefix and a reset button drawn inside (S10) -->
+                <Grid Width="300" Height="32">
+                    <TextBox
+                        x:Name="PortTextBox"
+                        AutomationProperties.AutomationId="TxtPort"
+                        AutomationProperties.Name="{x:Bind R.settings_port}"
+                        BeforeTextChanging="Port_BeforeTextChanging"
+                        InputScope="Number"
+                        LostFocus="Port_LostFocus"
+                        MaxLength="5"
+                        Padding="86,5,36,6"
+                        PlaceholderText="58526"
+                        Text="58526"
+                        VerticalAlignment="Stretch" />
+                    <TextBlock
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        IsHitTestVisible="False"
+                        Margin="12,0,0,0"
+                        Text="127.0.0.1 :"
+                        VerticalAlignment="Center" />
+                    <Button
+                        AutomationProperties.AutomationId="BtnResetPort"
+                        AutomationProperties.Name="Reset"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="ResetPort_Click"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,4,0"
+                        Padding="4"
+                        VerticalAlignment="Center">
+                        <FontIcon FontFamily="Segoe Fluent Icons" FontSize="12" Glyph="&#xE894;" />
+                    </Button>
+                </Grid>
             </controls:SettingsCard>
 
             <!-- Autostart WSA -->
             <controls:SettingsCard
-                AutomationProperties.AutomationId="SettingAutostart"
-                Header="{x:Bind R.settings_autostart}">
+                AutomationProperties.AutomationId="SettingAutostart">
+                <controls:SettingsCard.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.settings_autostart}" />
+                </controls:SettingsCard.Header>
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF60F;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -60,8 +88,10 @@
 
             <!-- Auto-backup registry -->
             <controls:SettingsCard
-                AutomationProperties.AutomationId="SettingAutoBackup"
-                Header="{x:Bind R.auto_backup_registry}">
+                AutomationProperties.AutomationId="SettingAutoBackup">
+                <controls:SettingsCard.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.auto_backup_registry}" />
+                </controls:SettingsCard.Header>
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF680;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -79,8 +109,10 @@
 
             <!-- Install timeout -->
             <controls:SettingsCard
-                AutomationProperties.AutomationId="SettingTimeout"
-                Header="{x:Bind TimeoutLabel, Mode=OneWay}">
+                AutomationProperties.AutomationId="SettingTimeout">
+                <controls:SettingsCard.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind TimeoutLabel, Mode=OneWay}" />
+                </controls:SettingsCard.Header>
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF827;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -91,17 +123,19 @@
                 <Slider
                     AutomationProperties.AutomationId="SliderTimeout"
                     Maximum="105"
-                    Minimum="15"
+                    Minimum="0"
                     StepFrequency="15"
-                    Value="120"
-                    Width="220"
+                    Value="30"
+                    Width="300"
                     ValueChanged="Timeout_ValueChanged" />
             </controls:SettingsCard>
 
             <!-- Language -->
             <controls:SettingsCard
-                AutomationProperties.AutomationId="SettingLanguage"
-                Header="{x:Bind R.settings_language}">
+                AutomationProperties.AutomationId="SettingLanguage">
+                <controls:SettingsCard.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.settings_language}" />
+                </controls:SettingsCard.Header>
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="24" Glyph="&#xF834;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -112,7 +146,7 @@
                 <ComboBox
                     AutomationProperties.AutomationId="ComboLanguage"
                     AutomationProperties.Name="{x:Bind R.settings_language}"
-                    MinWidth="200"
+                    Width="300"
                     SelectedIndex="0">
                     <ComboBoxItem Content="{x:Bind R.settings_option_generic_system}" />
                     <ComboBoxItem Content="English (US)" />
@@ -120,39 +154,54 @@
                 </ComboBox>
             </controls:SettingsCard>
 
-            <!-- Theme mode -->
-            <controls:SettingsCard
+            <!-- Theme mode (expander + exclusive checkbox list, matching Flutter ExpanderWin11) -->
+            <controls:SettingsExpander
                 AutomationProperties.AutomationId="SettingThemeMode"
-                Header="{x:Bind R.theme_mode}">
-                <controls:SettingsCard.HeaderIcon>
+                IsExpanded="False">
+                <controls:SettingsExpander.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.theme_mode}" />
+                </controls:SettingsExpander.Header>
+                <controls:SettingsExpander.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF87E;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsCard.HeaderIcon>
-                <ComboBox
-                    AutomationProperties.AutomationId="ComboThemeMode"
-                    AutomationProperties.Name="{x:Bind R.theme_mode}"
-                    MinWidth="200"
-                    SelectedIndex="0">
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboThemeModeSystem"
-                        Content="{x:Bind R.settings_option_generic_system}" />
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboThemeModeLight"
-                        Content="{x:Bind R.theme_mode_light}" />
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboThemeModeDark"
-                        Content="{x:Bind R.theme_mode_dark}" />
-                </ComboBox>
-            </controls:SettingsCard>
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <StackPanel Spacing="8">
+                            <CheckBox
+                                x:Name="ThemeModeSystem"
+                                AutomationProperties.AutomationId="CheckThemeModeSystem"
+                                Checked="ThemeMode_Checked"
+                                Content="{x:Bind R.settings_option_generic_system}"
+                                IsChecked="True"
+                                Unchecked="ThemeMode_Unchecked" />
+                            <CheckBox
+                                x:Name="ThemeModeLight"
+                                AutomationProperties.AutomationId="CheckThemeModeLight"
+                                Checked="ThemeMode_Checked"
+                                Content="{x:Bind R.theme_mode_light}"
+                                Unchecked="ThemeMode_Unchecked" />
+                            <CheckBox
+                                x:Name="ThemeModeDark"
+                                AutomationProperties.AutomationId="CheckThemeModeDark"
+                                Checked="ThemeMode_Checked"
+                                Content="{x:Bind R.theme_mode_dark}"
+                                Unchecked="ThemeMode_Unchecked" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
 
             <!-- Theme color expander -->
             <controls:SettingsExpander
                 AutomationProperties.AutomationId="SettingThemeColor"
-                Header="{x:Bind R.settings_theme_color}"
                 IsExpanded="False">
+                <controls:SettingsExpander.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.settings_theme_color}" />
+                </controls:SettingsExpander.Header>
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF593;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -162,25 +211,53 @@
                 </controls:SettingsExpander.HeaderIcon>
                 <controls:SettingsExpander.Items>
                     <controls:SettingsCard ContentAlignment="Left">
-                        <StackPanel Spacing="16">
-                            <StackPanel Orientation="Horizontal" Spacing="8">
+                        <StackPanel Spacing="24">
+                            <!-- Swatch hex values: fluent_ui Colors.* normal shades (design doc §4.1) -->
+                            <StackPanel x:Name="SwatchPanel" Orientation="Horizontal" Spacing="8">
                                 <Button
+                                    x:Name="SwatchSystem"
                                     Width="32" Height="32" Padding="0" CornerRadius="16"
                                     Background="#0078D4"
+                                    Click="ThemeColorSwatch_Click"
+                                    AutomationProperties.AutomationId="SwatchSystem"
                                     AutomationProperties.Name="{x:Bind R.settings_theme_color_system}"
-                                    ToolTipService.ToolTip="{x:Bind R.settings_theme_color_system}" />
+                                    ToolTipService.ToolTip="{x:Bind R.settings_theme_color_system}">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
                                 <Button
+                                    x:Name="SwatchDefault"
                                     Width="32" Height="32" Padding="0" CornerRadius="16"
-                                    Background="#005FB8"
+                                    Background="#167C80"
+                                    Click="ThemeColorSwatch_Click"
+                                    AutomationProperties.AutomationId="SwatchDefault"
                                     AutomationProperties.Name="{x:Bind R.settings_theme_color_default}"
-                                    ToolTipService.ToolTip="{x:Bind R.settings_theme_color_default}" />
-                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#FFCC00" AutomationProperties.Name="Yellow" ToolTipService.ToolTip="Yellow" />
-                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#D83B01" AutomationProperties.Name="Orange" ToolTipService.ToolTip="Orange" />
-                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#D13438" AutomationProperties.Name="Red" ToolTipService.ToolTip="Red" />
-                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#B146C2" AutomationProperties.Name="Magenta" ToolTipService.ToolTip="Magenta" />
-                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#6B69D6" AutomationProperties.Name="Purple" ToolTipService.ToolTip="Purple" />
-                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#038387" AutomationProperties.Name="Teal" ToolTipService.ToolTip="Teal" />
-                                <Button Width="32" Height="32" Padding="0" CornerRadius="16" Background="#107C10" AutomationProperties.Name="Green" ToolTipService.ToolTip="Green" />
+                                    ToolTipService.ToolTip="{x:Bind R.settings_theme_color_default}">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchYellow" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#FFEB3B" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchYellow" AutomationProperties.Name="Yellow" ToolTipService.ToolTip="Yellow">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchOrange" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#F7630C" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchOrange" AutomationProperties.Name="Orange" ToolTipService.ToolTip="Orange">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchRed" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#E81123" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchRed" AutomationProperties.Name="Red" ToolTipService.ToolTip="Red">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchMagenta" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#B4009E" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchMagenta" AutomationProperties.Name="Magenta" ToolTipService.ToolTip="Magenta">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchPurple" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#744DA9" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchPurple" AutomationProperties.Name="Purple" ToolTipService.ToolTip="Purple">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchBlue" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#0078D4" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchBlue" AutomationProperties.Name="Blue" ToolTipService.ToolTip="Blue">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchTeal" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#00B294" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchTeal" AutomationProperties.Name="Teal" ToolTipService.ToolTip="Teal">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
+                                <Button x:Name="SwatchGreen" Width="32" Height="32" Padding="0" CornerRadius="16" Background="#107C10" Click="ThemeColorSwatch_Click" AutomationProperties.AutomationId="SwatchGreen" AutomationProperties.Name="Green" ToolTipService.ToolTip="Green">
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE73E;" Visibility="Collapsed" />
+                                </Button>
                             </StackPanel>
                             <Button
                                 AutomationProperties.AutomationId="BtnCustomColor"
@@ -189,7 +266,9 @@
                                     <Ellipse
                                         x:Name="CustomColorPreview"
                                         Width="16" Height="16"
-                                        Fill="#0078D4" />
+                                        Fill="#167C80"
+                                        Stroke="{ThemeResource TextFillColorPrimaryBrush}"
+                                        StrokeThickness="1" />
                                     <TextBlock Text="{x:Bind R.settings_custom_color}" />
                                 </StackPanel>
                             </Button>
@@ -200,8 +279,10 @@
 
             <!-- Backup directory -->
             <controls:SettingsCard
-                AutomationProperties.AutomationId="SettingBackupDir"
-                Header="{x:Bind R.settings_auto_backup_dir}">
+                AutomationProperties.AutomationId="SettingBackupDir">
+                <controls:SettingsCard.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.settings_auto_backup_dir}" />
+                </controls:SettingsCard.Header>
                 <controls:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF419;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
@@ -216,76 +297,123 @@
                         Text="Desktop" />
                 </controls:SettingsCard.Description>
                 <StackPanel Orientation="Horizontal" Spacing="8">
+                    <!-- Only shown while the backup dir differs from the default Desktop (S16) -->
                     <Button
+                        x:Name="BtnResetBackupDir"
                         AutomationProperties.AutomationId="BtnResetBackupDir"
                         AutomationProperties.Name="{x:Bind R.tooltip_reset_desktop}"
                         Click="ResetBackupDir_Click"
-                        ToolTipService.ToolTip="{x:Bind R.tooltip_reset_desktop}">
+                        ToolTipService.ToolTip="{x:Bind R.tooltip_reset_desktop}"
+                        Visibility="Collapsed">
                         <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE894;" />
                     </Button>
                     <Button
                         AutomationProperties.AutomationId="BtnBrowseBackupDir"
                         AutomationProperties.Name="{x:Bind R.btn_browse}"
                         Click="BrowseBackupDir_Click"
+                        FontSize="13"
+                        FontWeight="Bold"
+                        Padding="16,8,16,8"
                         Content="{x:Bind R.btn_browse}" />
                 </StackPanel>
             </controls:SettingsCard>
 
-            <!-- Mica effect -->
-            <controls:SettingsCard
+            <!-- Mica effect (expander + exclusive checkbox list; 4 values incl. Alt) -->
+            <controls:SettingsExpander
+                x:Name="MicaSettingExpander"
                 AutomationProperties.AutomationId="SettingMica"
-                Header="{x:Bind R.theme_mica}">
-                <controls:SettingsCard.HeaderIcon>
+                IsExpanded="False">
+                <controls:SettingsExpander.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.theme_mica}" />
+                </controls:SettingsExpander.Header>
+                <controls:SettingsExpander.HeaderIcon>
                     <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="23" Glyph="&#xF8FB;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsCard.HeaderIcon>
-                <ComboBox
-                    AutomationProperties.AutomationId="ComboMica"
-                    AutomationProperties.Name="{x:Bind R.theme_mica}"
-                    MinWidth="200"
-                    SelectedIndex="0">
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboMicaFull"
-                        Content="{x:Bind R.theme_mica_full}" />
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboMicaPartial"
-                        Content="{x:Bind R.theme_mica_partial}" />
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboMicaDisabled"
-                        Content="{x:Bind R.settings_option_generic_disabled}" />
-                </ComboBox>
-            </controls:SettingsCard>
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <StackPanel Spacing="8">
+                            <CheckBox
+                                x:Name="MicaFull"
+                                AutomationProperties.AutomationId="CheckMicaFull"
+                                Checked="Mica_Checked"
+                                Content="{x:Bind R.theme_mica_full}"
+                                IsChecked="True"
+                                Unchecked="Mica_Unchecked" />
+                            <CheckBox
+                                x:Name="MicaPartial"
+                                AutomationProperties.AutomationId="CheckMicaPartial"
+                                Checked="Mica_Checked"
+                                Content="{x:Bind R.theme_mica_partial}"
+                                Unchecked="Mica_Unchecked" />
+                            <CheckBox
+                                x:Name="MicaAlt"
+                                AutomationProperties.AutomationId="CheckMicaAlt"
+                                Checked="Mica_Checked"
+                                Content="Mica Alt"
+                                Unchecked="Mica_Unchecked" />
+                            <CheckBox
+                                x:Name="MicaDisabled"
+                                AutomationProperties.AutomationId="CheckMicaDisabled"
+                                Checked="Mica_Checked"
+                                Content="{x:Bind R.settings_option_generic_disabled}"
+                                Unchecked="Mica_Unchecked" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
 
-            <!-- Adaptive icon shape -->
-            <controls:SettingsCard
+            <!-- Adaptive icon shape (expander + exclusive checkbox list) -->
+            <controls:SettingsExpander
                 AutomationProperties.AutomationId="SettingIconShape"
-                Header="{x:Bind R.theme_icon_adaptive}">
-                <controls:SettingsCard.HeaderIcon>
+                IsExpanded="False">
+                <controls:SettingsExpander.Header>
+                    <TextBlock FontSize="15" Text="{x:Bind R.theme_icon_adaptive}" />
+                </controls:SettingsExpander.Header>
+                <!-- Legacy icons on/off lives on the expander header (S18a; toggle ON = modern icons) -->
+                <ToggleSwitch
+                    x:Name="LegacyIconsToggle"
+                    AutomationProperties.AutomationId="ToggleLegacyIcons"
+                    AutomationProperties.Name="{x:Bind R.theme_icon_adaptive}"
+                    IsOn="True"
+                    OffContent="{x:Bind R.btn_switch_off}"
+                    OnContent="{x:Bind R.btn_switch_on}" />
+                <controls:SettingsExpander.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" FontSize="23" Glyph="&#xEA3A;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                </controls:SettingsCard.HeaderIcon>
-                <ComboBox
-                    AutomationProperties.AutomationId="ComboIconShape"
-                    AutomationProperties.Name="{x:Bind R.theme_icon_adaptive}"
-                    MinWidth="200"
-                    SelectedIndex="0">
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboIconShapeSquircle"
-                        Content="{x:Bind R.theme_icon_adaptive_squircle}" />
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboIconShapeCircle"
-                        Content="{x:Bind R.theme_icon_adaptive_circle}" />
-                    <ComboBoxItem
-                        AutomationProperties.AutomationId="ComboIconShapeRoundedSquare"
-                        Content="{x:Bind R.theme_icon_adaptive_rounded_square}" />
-                </ComboBox>
-            </controls:SettingsCard>
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <StackPanel Spacing="8">
+                            <CheckBox
+                                x:Name="IconShapeSquircle"
+                                AutomationProperties.AutomationId="CheckIconShapeSquircle"
+                                Checked="IconShape_Checked"
+                                Content="{x:Bind R.theme_icon_adaptive_squircle}"
+                                IsChecked="True"
+                                Unchecked="IconShape_Unchecked" />
+                            <CheckBox
+                                x:Name="IconShapeCircle"
+                                AutomationProperties.AutomationId="CheckIconShapeCircle"
+                                Checked="IconShape_Checked"
+                                Content="{x:Bind R.theme_icon_adaptive_circle}"
+                                Unchecked="IconShape_Unchecked" />
+                            <CheckBox
+                                x:Name="IconShapeRoundedSquare"
+                                AutomationProperties.AutomationId="CheckIconShapeRoundedSquare"
+                                Checked="IconShape_Checked"
+                                Content="{x:Bind R.theme_icon_adaptive_rounded_square}"
+                                Unchecked="IconShape_Unchecked" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
 
         </StackPanel>
     </ScrollViewer>

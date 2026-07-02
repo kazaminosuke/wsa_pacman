@@ -8,22 +8,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
-        <MicaBackdrop Kind="BaseAlt" />
+        <MicaBackdrop Kind="Base" />
     </Window.SystemBackdrop>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <TitleBar
-            x:Name="AppTitleBar"
-            Grid.Row="0"
-            Title="WSA Pacman — Install"
-            IsPaneToggleButtonVisible="False" />
-
-        <Grid Grid.Row="1" Padding="24,16,24,24">
+        <Grid Padding="20,20,20,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -31,8 +20,8 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- APK Info Header -->
-            <Grid Grid.Row="0" Margin="0,0,0,16">
+            <!-- APK Info Header: 30×30 icon + app name only (drag region for the borderless window) -->
+            <Grid x:Name="HeaderArea" Grid.Row="0" Margin="0,0,0,16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -40,73 +29,142 @@
 
                 <Border
                     Grid.Column="0"
-                    Width="64"
-                    Height="64"
-                    Margin="0,0,16,0"
-                    Background="{ThemeResource ControlFillColorDefaultBrush}"
-                    CornerRadius="{StaticResource OverlayCornerRadius}">
-                    <FontIcon FontSize="32" Glyph="&#xECAA;" />
+                    Width="30"
+                    Height="30"
+                    Margin="0,0,20,0"
+                    VerticalAlignment="Center">
+                    <FontIcon FontSize="26" Glyph="&#xECAA;" />
                 </Border>
 
-                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
-                    <TextBlock
-                        x:Name="AppNameText"
-                        Style="{StaticResource SubtitleTextBlockStyle}"
-                        Text="App Name" />
-                    <TextBlock
-                        x:Name="AppVersionText"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}"
-                        Text="Version: —" />
-                    <TextBlock
-                        x:Name="AppPackageText"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}"
-                        Text="Package: —" />
-                </StackPanel>
+                <TextBlock
+                    x:Name="AppNameText"
+                    Grid.Column="1"
+                    Style="{StaticResource BodyLargeTextBlockStyle}"
+                    Text="App Name"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap"
+                    VerticalAlignment="Center" />
             </Grid>
 
             <!-- Permissions list / Progress area -->
             <Grid Grid.Row="1">
 
-                <!-- Permission list (shown before install starts) -->
-                <StackPanel x:Name="PermissionsPanel" Spacing="8">
+                <!-- Install prompt (shown before install starts) -->
+                <Grid x:Name="PermissionsPanel">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
                     <TextBlock
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}"
-                        Text="{x:Bind R.installer_message}" />
-                    <ListView
-                        x:Name="PermissionList"
-                        IsHitTestVisible="False"
-                        SelectionMode="None">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <StackPanel Orientation="Horizontal" Spacing="8" Padding="0,4,0,4">
-                                    <FontIcon FontSize="14" Glyph="&#xE7EF;" VerticalAlignment="Center" />
-                                    <TextBlock Text="{x:Bind}" VerticalAlignment="Center" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackPanel>
+                        Grid.Row="0"
+                        Style="{StaticResource BodyTextBlockStyle}"
+                        Text="{x:Bind R.installer_message}"
+                        TextWrapping="Wrap" />
+
+                    <!-- Version / package lines (moved from the header, Flutter apk_installer.dart:283-301) -->
+                    <StackPanel Grid.Row="1" Margin="0,10,0,10">
+                        <TextBlock
+                            x:Name="AppVersionText"
+                            Foreground="{ThemeResource TextFillColorDisabledBrush}"
+                            Text="Version: —"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                        <TextBlock
+                            x:Name="AppPackageText"
+                            Foreground="{ThemeResource TextFillColorDisabledBrush}"
+                            Text="Package: —"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
+                    </StackPanel>
+
+                    <!-- Tinted rounded container around the permission list -->
+                    <Border
+                        Grid.Row="2"
+                        Background="{ThemeResource PermissionListBackgroundBrush}"
+                        CornerRadius="8"
+                        Padding="14">
+                        <ListView
+                            x:Name="PermissionList"
+                            IsHitTestVisible="False"
+                            SelectionMode="None">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Margin" Value="0,1" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <!-- Flutter apk_installer.dart:641-668: padding 8,6 / icon 15 / gap 12 / Medium -->
+                                    <StackPanel Orientation="Horizontal" Spacing="12" Padding="8,6,8,6">
+                                        <FontIcon FontSize="15" Glyph="&#xE7EF;" VerticalAlignment="Center" />
+                                        <TextBlock FontWeight="Medium" Text="{x:Bind}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Border>
+                </Grid>
 
                 <!-- Progress / result (shown during and after install) -->
-                <StackPanel
-                    x:Name="ProgressPanel"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="16"
-                    Visibility="Collapsed">
-                    <ProgressRing
-                        x:Name="InstallProgress"
-                        Width="44"
-                        Height="44"
-                        IsActive="True" />
-                    <TextBlock
-                        x:Name="StatusText"
+                <Grid x:Name="ProgressPanel" Visibility="Collapsed">
+                    <StackPanel
                         HorizontalAlignment="Center"
-                        TextAlignment="Center" />
-                </StackPanel>
+                        VerticalAlignment="Center"
+                        Spacing="24">
+
+                        <!-- 100×100 rounded tinted container with the app icon; green check badge on success -->
+                        <Grid HorizontalAlignment="Center">
+                            <Border
+                                Width="100"
+                                Height="100"
+                                Padding="16"
+                                Background="{ThemeResource PermissionListBackgroundBrush}"
+                                CornerRadius="20">
+                                <FontIcon FontSize="48" Glyph="&#xECAA;" />
+                            </Border>
+                            <!-- Badge: 20px white check + 4px padding + 4px background-colored rim, offset (8,8) -->
+                            <Grid
+                                x:Name="SuccessBadge"
+                                Width="36"
+                                Height="36"
+                                Margin="0,0,-8,-8"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Visibility="Collapsed">
+                                <Ellipse Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}" />
+                                <Ellipse Fill="{ThemeResource SystemFillColorSuccessBrush}" Margin="4" />
+                                <FontIcon
+                                    FontSize="20"
+                                    Foreground="White"
+                                    Glyph="&#xE73E;" />
+                            </Grid>
+                        </Grid>
+
+                        <ProgressRing
+                            x:Name="InstallProgress"
+                            Width="44"
+                            Height="44"
+                            HorizontalAlignment="Center"
+                            IsActive="True" />
+                        <TextBlock
+                            x:Name="StatusText"
+                            HorizontalAlignment="Center"
+                            TextAlignment="Center" />
+                    </StackPanel>
+
+                    <!-- Full-width indeterminate bar pinned to the bottom edge of the window -->
+                    <ProgressBar
+                        x:Name="InstallProgressBar"
+                        Margin="-24,0,-24,-24"
+                        MinHeight="6"
+                        VerticalAlignment="Bottom"
+                        IsIndeterminate="True" />
+                </Grid>
             </Grid>
 
             <!-- Status InfoBar (shown on error/success) -->
@@ -118,25 +176,28 @@
                 Margin="0,8,0,0" />
 
             <!-- Actions row -->
-            <Grid Grid.Row="3" Margin="0,16,0,0">
+            <Grid x:Name="ActionsRow" Grid.Row="3" Margin="0,20,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
+                <!-- Default OFF; only shown on the success screen after a fresh install (I9) -->
                 <CheckBox
                     x:Name="ShortcutCheckBox"
                     Grid.Column="0"
                     Content="{x:Bind R.installer_btn_checkbox_shortcut}"
-                    IsChecked="True"
-                    VerticalAlignment="Center" />
+                    IsChecked="False"
+                    VerticalAlignment="Center"
+                    Visibility="Collapsed" />
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15">
                     <Button
                         x:Name="CancelButton"
                         AutomationProperties.AutomationId="BtnCancel"
                         AutomationProperties.Name="{x:Bind R.installer_btn_cancel}"
                         Click="Cancel_Click"
+                        FontWeight="SemiBold"
                         MinWidth="80"
                         Content="{x:Bind R.installer_btn_cancel}" />
                     <Button
@@ -144,7 +205,8 @@
                         AutomationProperties.AutomationId="BtnInstall"
                         Click="Install_Click"
                         Content="{x:Bind InstallButtonLabel}"
-                        MinWidth="100"
+                        FontWeight="SemiBold"
+                        MinWidth="80"
                         Style="{StaticResource AccentButtonStyle}" />
                 </StackPanel>
             </Grid>

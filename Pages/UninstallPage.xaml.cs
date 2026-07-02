@@ -2,6 +2,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace WsaPacman.Pages;
 
@@ -12,6 +14,20 @@ public sealed class AppEntry : INotifyPropertyChanged
     public string Name { get; set; } = string.Empty;
     public string PackageId { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
+
+    /// <summary>Path to the DisplayIcon image from the registry, when available.</summary>
+    public string IconPath { get; set; } = string.Empty;
+
+    // Fallback icon per entry type: adb = green phone / registry = orange apps (U4)
+    public string IconGlyph => Type == "adb" ? "" : "";
+    public SolidColorBrush IconBrush => new(Type == "adb"
+        ? Windows.UI.Color.FromArgb(0xFF, 0x10, 0x7C, 0x10)
+        : Windows.UI.Color.FromArgb(0xFF, 0xF7, 0x63, 0x0C));
+
+    public ImageSource? IconImage =>
+        string.IsNullOrEmpty(IconPath) ? null : new BitmapImage(new Uri(IconPath));
+    public Visibility ImageVisibility => string.IsNullOrEmpty(IconPath) ? Visibility.Collapsed : Visibility.Visible;
+    public Visibility GlyphVisibility => string.IsNullOrEmpty(IconPath) ? Visibility.Visible : Visibility.Collapsed;
 
     public bool IsSelected
     {
@@ -61,6 +77,22 @@ public sealed partial class UninstallPage : Page
         {
             AppList.Visibility = Visibility.Visible;
         }
+    }
+
+    /// <summary>
+    /// Disables scan/backup and swaps the empty-state text for status_unsupported
+    /// when WSA is not installed (U11). Called by the service layer / VM.
+    /// </summary>
+    public void SetWsaAvailable(bool available)
+    {
+        BtnScan.IsEnabled = available;
+        BtnBackup.IsEnabled = available;
+        EmptyStateText.Text = available ? R.click_scan_to_find_ghost_apps : R.status_unsupported;
+    }
+
+    private void AppList_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is AppEntry entry) entry.IsSelected = !entry.IsSelected;
     }
 
     private void BackupRegistry_Click(object sender, RoutedEventArgs e)

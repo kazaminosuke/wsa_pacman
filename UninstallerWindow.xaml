@@ -8,30 +8,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
-        <MicaBackdrop Kind="BaseAlt" />
+        <MicaBackdrop Kind="Base" />
     </Window.SystemBackdrop>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <TitleBar
-            x:Name="AppTitleBar"
-            Grid.Row="0"
-            Title="WSA Pacman — Uninstall"
-            IsPaneToggleButtonVisible="False" />
-
-        <Grid Grid.Row="1" Padding="24,16,24,24">
+        <Grid Padding="20,20,20,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- App info header -->
-            <Grid Grid.Row="0" Margin="0,0,0,16">
+            <!-- Header: 30×30 icon + screen name (drag region for the borderless window) -->
+            <Grid x:Name="HeaderArea" Grid.Row="0" Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -39,48 +28,59 @@
 
                 <Border
                     Grid.Column="0"
-                    Width="48"
-                    Height="48"
-                    Margin="0,0,16,0"
-                    Background="{ThemeResource ControlFillColorDefaultBrush}"
-                    CornerRadius="{StaticResource OverlayCornerRadius}">
-                    <FontIcon FontSize="24" Glyph="&#xECAA;" />
+                    Width="30"
+                    Height="30"
+                    Margin="0,0,20,0"
+                    VerticalAlignment="Center">
+                    <FontIcon FontSize="26" Glyph="&#xECAA;" />
                 </Border>
 
-                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
-                    <TextBlock
-                        x:Name="AppNameText"
-                        Style="{StaticResource BodyStrongTextBlockStyle}"
-                        Text="App Name" />
-                    <TextBlock
-                        x:Name="PackageText"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}"
-                        Text="com.example.app" />
-                </StackPanel>
+                <TextBlock
+                    Grid.Column="1"
+                    Style="{StaticResource BodyLargeTextBlockStyle}"
+                    Text="{x:Bind R.screen_uninstall}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap"
+                    VerticalAlignment="Center" />
             </Grid>
 
             <!-- Content: confirm or progress -->
             <Grid Grid.Row="1">
 
-                <!-- Confirm state -->
-                <TextBlock
-                    x:Name="ConfirmText"
-                    Style="{StaticResource BodyTextBlockStyle}"
-                    TextWrapping="Wrap" />
+                <!-- Confirm state: confirmation sentence (18px) + 8px + package line (X3) -->
+                <StackPanel x:Name="ConfirmPanel" Spacing="8">
+                    <TextBlock
+                        x:Name="ConfirmText"
+                        Style="{StaticResource BodyLargeTextBlockStyle}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        x:Name="PackageText"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="com.example.app"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap" />
+                </StackPanel>
 
-                <!-- Processing state -->
+                <!-- Processing / done state -->
                 <StackPanel
                     x:Name="ProgressPanel"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Spacing="16"
+                    Spacing="24"
                     Visibility="Collapsed">
                     <ProgressRing
                         x:Name="UninstallProgress"
                         Width="44"
                         Height="44"
                         IsActive="True" />
+                    <!-- Swapped in for the ring when the uninstall finishes (X7) -->
+                    <FontIcon
+                        x:Name="DoneIcon"
+                        FontSize="48"
+                        Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+                        Glyph="&#xE73E;"
+                        Visibility="Collapsed" />
                     <TextBlock
                         x:Name="StatusText"
                         HorizontalAlignment="Center"
@@ -93,7 +93,7 @@
                 Grid.Row="2"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal"
-                Spacing="8">
+                Spacing="15">
                 <Button
                     x:Name="CancelButton"
                     AutomationProperties.AutomationId="BtnCancel"
@@ -101,6 +101,7 @@
                     Click="Cancel_Click"
                     Content="{x:Bind R.installer_btn_cancel}"
                     MinWidth="80" />
+                <!-- Red filled button (Flutter: FilledButton red / hover=light / pressed=dark, white text) -->
                 <Button
                     x:Name="UninstallButton"
                     AutomationProperties.AutomationId="BtnUninstall"
@@ -110,9 +111,15 @@
                     MinWidth="80">
                     <Button.Resources>
                         <ResourceDictionary>
-                            <SolidColorBrush x:Key="ButtonForeground" Color="{ThemeResource SystemErrorTextColor}" />
-                            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{ThemeResource SystemErrorTextColor}" />
-                            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{ThemeResource SystemErrorTextColor}" />
+                            <SolidColorBrush x:Key="ButtonBackground" Color="#C42B1C" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#D13438" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#A4262C" />
+                            <SolidColorBrush x:Key="ButtonForeground" Color="White" />
+                            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
+                            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White" />
+                            <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
+                            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
+                            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent" />
                         </ResourceDictionary>
                     </Button.Resources>
                 </Button>
