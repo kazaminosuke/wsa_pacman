@@ -98,10 +98,7 @@
                     AutomationProperties.Name="{x:Bind R.screen_settings}"
                     Tag="settings">
                     <NavigationViewItem.Content>
-                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                            <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="18" Glyph="&#xF6AA;" VerticalAlignment="Center" />
-                            <TextBlock Text="{x:Bind R.screen_settings}" VerticalAlignment="Center" />
-                        </StackPanel>
+                        <FontIcon FontFamily="ms-appx:///Assets/Fonts/FluentSystemIcons-Regular.ttf#FluentSystemIcons-Regular" FontSize="18" Glyph="&#xF6AA;" VerticalAlignment="Center" />
                     </NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
