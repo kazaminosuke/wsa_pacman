@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using Microsoft.Win32;
+using Windows.ApplicationModel;
 using Windows.Management.Deployment;
 
 namespace WsaPacman.Services.Core;
@@ -31,10 +32,14 @@ public sealed class WsaEnvironment : IWsaEnvironment
     private readonly Lazy<string> _adbPath;
     public string AdbPath => _adbPath.Value;
 
+    // PackageManagerでの照会が「インストール有無」の一次情報源。WSAの着脱は常に
+    // プロセス外（Store/PowerShell経由）で行われるため、プロセス寿命内でのキャッシュでよい。
+    private readonly Lazy<Package?> _wsaPackage;
+
     private readonly Lazy<string> _wsaSystemPath;
     public string WsaSystemPath => _wsaSystemPath.Value;
 
-    public bool IsWsaInstalled => File.Exists(Path.Combine(WsaSystemPath, "AppxManifest.xml"));
+    public bool IsWsaInstalled => _wsaPackage.Value is not null;
 
     private readonly Lazy<string> _wsaFamilyName;
     public string WsaFamilyName => _wsaFamilyName.Value;
@@ -48,8 +53,9 @@ public sealed class WsaEnvironment : IWsaEnvironment
     {
         _toolsDir = new Lazy<string>(ResolveToolsDir);
         _adbPath = new Lazy<string>(() => Path.Combine(ToolsDir, "adb.exe"));
+        _wsaPackage = new Lazy<Package?>(FindWsaPackage);
         _wsaSystemPath = new Lazy<string>(ResolveWsaSystemPath);
-        _wsaFamilyName = new Lazy<string>(ResolveFamilyName);
+        _wsaFamilyName = new Lazy<string>(() => _wsaPackage.Value?.Id.FamilyName ?? KnownFamilyName);
         _wsaClientAppId = new Lazy<string>(ResolveClientAppId);
     }
 
@@ -70,8 +76,35 @@ public sealed class WsaEnvironment : IWsaEnvironment
         return direct;
     }
 
-    private static string ResolveWsaSystemPath()
+    private static Package? FindWsaPackage()
     {
+        try
+        {
+            var pm = new PackageManager();
+            return pm.FindPackagesForUser(string.Empty)
+                .FirstOrDefault(p => p.Id.Name.Contains(
+                    "WindowsSubsystemForAndroid", StringComparison.OrdinalIgnoreCase));
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private string ResolveWsaSystemPath()
+    {
+        // Package.InstalledLocation is the package root (directly contains
+        // AppxManifest.xml) — authoritative, unlike guessing folder depth from
+        // the WsaService registry ImagePath.
+        try
+        {
+            if (_wsaPackage.Value?.InstalledLocation is { } location && !string.IsNullOrEmpty(location.Path))
+            {
+                return location.Path;
+            }
+        }
+        catch { /* fall through to the registry-based fallback below */ }
+
         try
         {
             using var key = Registry.LocalMachine.OpenSubKey(
@@ -79,10 +112,8 @@ public sealed class WsaEnvironment : IWsaEnvironment
             var imagePath = key?.GetValue("ImagePath") as string;
             if (!string.IsNullOrEmpty(imagePath))
             {
-                var exeDir = Path.GetDirectoryName(imagePath.Trim('"'));
-                // Strip two more path segments to reach the WSA package install root.
-                var systemRoot = Directory.GetParent(exeDir ?? "")?.Parent?.FullName;
-                if (!string.IsNullOrEmpty(systemRoot)) return systemRoot;
+                var dir = Path.GetDirectoryName(imagePath.Trim('"'));
+                if (!string.IsNullOrEmpty(dir)) return dir;
             }
         }
         catch { /* fall through to the App Paths fallback */ }
@@ -100,22 +131,6 @@ public sealed class WsaEnvironment : IWsaEnvironment
         catch { /* WSA not installed */ }
 
         return "";
-    }
-
-    private static string ResolveFamilyName()
-    {
-        try
-        {
-            var pm = new PackageManager();
-            var pkg = pm.FindPackagesForUser(string.Empty)
-                .FirstOrDefault(p => p.Id.Name.Contains(
-                    "WindowsSubsystemForAndroid", StringComparison.OrdinalIgnoreCase));
-            return pkg?.Id.FamilyName ?? KnownFamilyName;
-        }
-        catch
-        {
-            return KnownFamilyName;
-        }
     }
 
     private string ResolveClientAppId()

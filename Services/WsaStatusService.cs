@@ -110,9 +110,10 @@ public sealed class WsaStatusService(
             {
                 break;
             }
-            catch
+            catch (Exception ex)
             {
                 // A single bad cycle (unexpected exception) must not stop future polling.
+                System.Diagnostics.Debug.WriteLine($"[WsaStatusService] cycle failed: {ex}");
             }
 
             try
@@ -180,12 +181,6 @@ public sealed class WsaStatusService(
     /// <summary>④adb devices 判定 → 未確定なら ⑤adb connect 判定。</summary>
     private async Task<ConnectionStatus> CheckAdbConnectionAsync(CancellationToken ct)
     {
-        // adbサーバ消滅時の再初期化（§3.4 補足）: 新規プロセスを生やさず一旦Unknownに戻す。
-        if (Process.GetProcessesByName("adb").Length == 0)
-        {
-            return ConnectionStatus.Unknown;
-        }
-
         var ip = settings.Current.IpAddress;
         var port = settings.Current.Port;
 
@@ -208,8 +203,13 @@ public sealed class WsaStatusService(
 
         var connect = await adb.ConnectAsync(ip, port, AdbConnectProbeTimeout, ct).ConfigureAwait(false);
         var text = connect.StdOut + connect.StdErr;
-        if (ConnectFailedRegex.IsMatch(text))
+        var communicationFailed = connect.IsTimeout || (connect.ExitCode != 0 && string.IsNullOrWhiteSpace(text));
+        if (communicationFailed || ConnectFailedRegex.IsMatch(text))
         {
+            // adb.exe自体が実行できなかった場合（embedded-tools不在等）も含め、
+            // 「接続できなかった」として扱う。ここでadb devicesを一度でも呼ぶことが
+            // adbサーバの起動条件でもあるため、事前にプロセス有無で早期リターンしない
+            // （そうすると永久にUnknownのまま進行しなくなる）。
             return environment.IsWsaInstalled ? ConnectionStatus.Offline : ConnectionStatus.Disconnected;
         }
         if (AuthFailedRegex.IsMatch(text))
