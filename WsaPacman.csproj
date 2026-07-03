@@ -45,6 +45,17 @@
     <Content Include="embedded-tools\AdbWinUsbApi.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <!-- APK metadata extraction (ApkReaderService): aapt dump badging/resources/strings,
+         aapt2 dump xmltree, axmldec for raw AndroidManifest.xml decoding -->
+    <Content Include="embedded-tools\aapt.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="embedded-tools\aapt2.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="embedded-tools\axmldec.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

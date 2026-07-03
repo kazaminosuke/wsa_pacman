@@ -11,6 +11,9 @@ public interface IWsaEnvironment
     string ExecDir { get; }
     string ToolsDir { get; }
     string AdbPath { get; }
+    string AaptPath { get; }
+    string Aapt2Path { get; }
+    string AxmlDecPath { get; }
     string WsaSystemPath { get; }
     bool IsWsaInstalled { get; }
     string WsaFamilyName { get; }
@@ -31,6 +34,15 @@ public sealed class WsaEnvironment : IWsaEnvironment
 
     private readonly Lazy<string> _adbPath;
     public string AdbPath => _adbPath.Value;
+
+    private readonly Lazy<string> _aaptPath;
+    public string AaptPath => _aaptPath.Value;
+
+    private readonly Lazy<string> _aapt2Path;
+    public string Aapt2Path => _aapt2Path.Value;
+
+    private readonly Lazy<string> _axmlDecPath;
+    public string AxmlDecPath => _axmlDecPath.Value;
 
     // PackageManagerでの照会が「インストール有無」の一次情報源。WSAの着脱は常に
     // プロセス外（Store/PowerShell経由）で行われるため、プロセス寿命内でのキャッシュでよい。
@@ -53,6 +65,9 @@ public sealed class WsaEnvironment : IWsaEnvironment
     {
         _toolsDir = new Lazy<string>(ResolveToolsDir);
         _adbPath = new Lazy<string>(() => Path.Combine(ToolsDir, "adb.exe"));
+        _aaptPath = new Lazy<string>(() => Path.Combine(ToolsDir, "aapt.exe"));
+        _aapt2Path = new Lazy<string>(() => Path.Combine(ToolsDir, "aapt2.exe"));
+        _axmlDecPath = new Lazy<string>(() => Path.Combine(ToolsDir, "axmldec.exe"));
         _wsaPackage = new Lazy<Package?>(FindWsaPackage);
         _wsaSystemPath = new Lazy<string>(ResolveWsaSystemPath);
         _wsaFamilyName = new Lazy<string>(() => _wsaPackage.Value?.Id.FamilyName ?? KnownFamilyName);
