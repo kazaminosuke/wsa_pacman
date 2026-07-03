@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
 using WsaPacman.Pages;
+using WsaPacman.Services;
 
 namespace WsaPacman;
 
@@ -55,6 +56,10 @@ public sealed partial class MainWindow : Window
         _minHeightPx = (int)(500 * scale);
         _wndProc = WndProc;
         _oldWndProc = SetWindowLongPtr(hwnd, GWLP_WNDPROC, Marshal.GetFunctionPointerForDelegate(_wndProc));
+
+        // WSAの周期監視はMainWindow表示中のみ（内部処理設計書 §6.4）
+        AppServices.WsaStatus.Start();
+        Closed += (_, _) => AppServices.WsaStatus.Stop();
     }
 
     private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)

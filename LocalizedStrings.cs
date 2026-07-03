@@ -12,6 +12,9 @@ public sealed class LocalizedStrings
 
     private static string Get(string key) => Rm.GetString(key) ?? key;
 
+    /// <summary>サービス層がリソースキー文字列で返す文言（WsaStatusSnapshot等）を解決する。</summary>
+    public string this[string key] => Get(key);
+
     // Screen titles
     public string screen_wsa => Get("screen_wsa");
     public string screen_settings => Get("screen_settings");
@@ -40,6 +43,7 @@ public sealed class LocalizedStrings
     public string status_unauthorized => Get("status_unauthorized");
     public string status_unauthorized_desc => Get("status_unauthorized_desc");
     public string status_unsupported => Get("status_unsupported");
+    public string status_unsupported_desc => Get("status_unsupported_desc");
 
     // Buttons
     public string btn_wsabuilds => Get("btn_wsabuilds");
