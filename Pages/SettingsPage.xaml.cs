@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -106,6 +107,25 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
 
         // ON = モダンアイコン（S18a）
         LegacyIconsToggle.IsOn = !settings.LegacyIcons;
+
+        PortTextBox.Text = settings.Port.ToString();
+        AutostartToggle.IsOn = settings.AutostartWsa;
+        AutoBackupToggle.IsOn = settings.AutoBackupRegistry;
+
+        _timeoutSeconds = settings.InstallTimeout;
+        TimeoutSlider.Value = _timeoutSeconds == 0 ? 105 : _timeoutSeconds;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TimeoutLabel)));
+
+        LanguageCombo.SelectedIndex = settings.Locale switch
+        {
+            "en-US" => 1,
+            "ja-JP" => 2,
+            _ => 0,
+        };
+
+        var backupDir = string.IsNullOrEmpty(settings.BackupDirectory) ? DesktopDir : settings.BackupDirectory;
+        BackupDirText.Text = backupDir == DesktopDir ? "Desktop" : backupDir;
+        UpdateBackupResetVisibility();
     }
 
     private void ThemeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -137,6 +157,30 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
         if (_isRestoringSettings) return;
         AppServices.Settings.Update(s => s.LegacyIcons = !LegacyIconsToggle.IsOn);
+    }
+
+    private void Autostart_Toggled(object sender, RoutedEventArgs e)
+    {
+        if (_isRestoringSettings) return;
+        AppServices.Settings.Update(s => s.AutostartWsa = AutostartToggle.IsOn);
+    }
+
+    private void AutoBackup_Toggled(object sender, RoutedEventArgs e)
+    {
+        if (_isRestoringSettings) return;
+        AppServices.Settings.Update(s => s.AutoBackupRegistry = AutoBackupToggle.IsOn);
+    }
+
+    private void Language_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isRestoringSettings) return;
+        var locale = LanguageCombo.SelectedIndex switch
+        {
+            1 => "en-US",
+            2 => "ja-JP",
+            _ => null,
+        };
+        AppServices.Settings.Update(s => s.Locale = locale);
     }
 
     private static string DesktopDir =>
@@ -201,6 +245,9 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         var raw = (int)e.NewValue;
         _timeoutSeconds = raw >= 105 ? 0 : raw;
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TimeoutLabel)));
+
+        if (_isRestoringSettings) return;
+        AppServices.Settings.Update(s => s.InstallTimeout = _timeoutSeconds);
     }
 
     // --- Exclusive checkbox group (Flutter-style expander checklist) ---
@@ -366,26 +413,45 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         if (!int.TryParse(PortTextBox.Text, out var port) || port <= 0)
         {
             PortTextBox.Text = DefaultPort.ToString();
-            return;
+            port = DefaultPort;
         }
-        if (port > 65535) PortTextBox.Text = "65535";
+        else if (port > 65535)
+        {
+            PortTextBox.Text = "65535";
+            port = 65535;
+        }
+
+        if (_isRestoringSettings) return;
+        if (AppServices.Settings.Current.Port != port) AppServices.Settings.Update(s => s.Port = port);
     }
 
     private void ResetPort_Click(object sender, RoutedEventArgs e)
     {
         PortTextBox.Text = DefaultPort.ToString();
+        if (!_isRestoringSettings) AppServices.Settings.Update(s => s.Port = DefaultPort);
     }
 
     private void ResetBackupDir_Click(object sender, RoutedEventArgs e)
     {
         BackupDirText.Text = DesktopDir;
         UpdateBackupResetVisibility();
+        if (!_isRestoringSettings) AppServices.Settings.Update(s => s.BackupDirectory = DesktopDir);
     }
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetActiveWindow();
 
     private async void BrowseBackupDir_Click(object sender, RoutedEventArgs e)
     {
-        // Logic: open folder picker via StorageFolder or PowerShell (implemented later)
-        await System.Threading.Tasks.Task.CompletedTask;
+        var picker = new Windows.Storage.Pickers.FolderPicker();
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, GetActiveWindow());
+        picker.FileTypeFilter.Add("*");
+
+        var folder = await picker.PickSingleFolderAsync();
+        if (folder is null) return;
+
+        BackupDirText.Text = folder.Path;
         UpdateBackupResetVisibility();
+        AppServices.Settings.Update(s => s.BackupDirectory = folder.Path);
     }
 }

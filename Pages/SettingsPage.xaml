@@ -94,11 +94,13 @@
                     </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ToggleSwitch
+                    x:Name="AutostartToggle"
                     AutomationProperties.AutomationId="ToggleAutostart"
                     AutomationProperties.Name="{x:Bind R.settings_autostart}"
                     IsOn="False"
                     OffContent="{x:Bind R.btn_switch_off}"
-                    OnContent="{x:Bind R.btn_switch_on}" />
+                    OnContent="{x:Bind R.btn_switch_on}"
+                    Toggled="Autostart_Toggled" />
             </controls:SettingsCard>
 
             <!-- Auto-backup registry -->
@@ -115,11 +117,13 @@
                     </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ToggleSwitch
+                    x:Name="AutoBackupToggle"
                     AutomationProperties.AutomationId="ToggleAutoBackup"
                     AutomationProperties.Name="{x:Bind R.auto_backup_registry}"
                     IsOn="True"
                     OffContent="{x:Bind R.btn_switch_off}"
-                    OnContent="{x:Bind R.btn_switch_on}" />
+                    OnContent="{x:Bind R.btn_switch_on}"
+                    Toggled="AutoBackup_Toggled" />
             </controls:SettingsCard>
 
             <!-- Install timeout -->
@@ -136,6 +140,7 @@
                     </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <Slider
+                    x:Name="TimeoutSlider"
                     AutomationProperties.AutomationId="SliderTimeout"
                     Maximum="105"
                     Minimum="15"
@@ -160,10 +165,12 @@
                     </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ComboBox
+                    x:Name="LanguageCombo"
                     AutomationProperties.AutomationId="ComboLanguage"
                     AutomationProperties.Name="{x:Bind R.settings_language}"
                     Width="300"
-                    SelectedIndex="0">
+                    SelectedIndex="0"
+                    SelectionChanged="Language_SelectionChanged">
                     <ComboBoxItem Content="{x:Bind R.settings_option_generic_system}" />
                     <ComboBoxItem Content="English (US)" />
                     <ComboBoxItem Content="日本語" />

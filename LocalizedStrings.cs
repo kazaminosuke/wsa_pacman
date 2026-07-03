@@ -1,6 +1,8 @@
+using System.Globalization;
 using System.Reflection;
 using System.Resources;
 using WsaPacman.Models;
+using WsaPacman.Services;
 
 namespace WsaPacman;
 
@@ -11,7 +13,16 @@ public sealed class LocalizedStrings
     private static readonly ResourceManager Rm = new(
         "WsaPacman.Resources.Resources", Assembly.GetExecutingAssembly());
 
-    private static string Get(string key) => Rm.GetString(key) ?? key;
+    private static string Get(string key) => Rm.GetString(key, ResolveCulture()) ?? key;
+
+    /// <summary>設定の言語(BCP-47)が指定されていればそれを、無ければシステムのUIカルチャーを使う。</summary>
+    private static CultureInfo? ResolveCulture()
+    {
+        var locale = AppServices.Settings.Current.Locale;
+        if (string.IsNullOrEmpty(locale)) return null;
+        try { return CultureInfo.GetCultureInfo(locale); }
+        catch (CultureNotFoundException) { return null; }
+    }
 
     /// <summary>サービス層がリソースキー文字列で返す文言（WsaStatusSnapshot等）を解決する。</summary>
     public string this[string key] => Get(key);
