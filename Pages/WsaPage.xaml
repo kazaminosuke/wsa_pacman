@@ -134,28 +134,6 @@
                                     <TextBlock FontWeight="Bold" FontSize="13" Text="{x:Bind R.btn_dev_settings}" />
                                 </StackPanel>
                             </Button>
-
-                            <Button
-                                x:Name="BtnRefreshStatus"
-                                AutomationProperties.AutomationId="BtnRefreshStatus"
-                                AutomationProperties.Name="{x:Bind R.btn_refresh_status}"
-                                Click="RefreshStatus_Click"
-                                Padding="12,6,12,6"
-                                VerticalAlignment="Center">
-                                <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <FontIcon x:Name="RefreshIcon" FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE72C;" />
-                                    <!-- Swapped in for the icon while refreshing / WSA starting (W18) -->
-                                    <ProgressRing
-                                        x:Name="RefreshRing"
-                                        Width="14"
-                                        Height="14"
-                                        MinWidth="14"
-                                        MinHeight="14"
-                                        IsActive="False"
-                                        Visibility="Collapsed" />
-                                    <TextBlock FontWeight="Bold" FontSize="13" Text="{x:Bind R.btn_refresh_status}" />
-                                </StackPanel>
-                            </Button>
                         </controls:WrapPanel>
                     </StackPanel>
                 </Grid>

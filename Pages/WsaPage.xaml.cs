@@ -58,33 +58,10 @@ public sealed partial class WsaPage : Page
         BtnAuth.Visibility = Visible(status is ConnectionStatus.Unauthorized);
         BtnDevSettings.Visibility = Visible(status is ConnectionStatus.Offline or ConnectionStatus.Disconnected
             or ConnectionStatus.Unknown or ConnectionStatus.Unauthorized);
-
-        SetRefreshing(status is ConnectionStatus.Starting);
-    }
-
-    /// <summary>更新ボタンのアイコンを14×14 ProgressRingに差し替える（W18）。</summary>
-    public void SetRefreshing(bool refreshing)
-    {
-        RefreshIcon.Visibility = Visible(!refreshing);
-        RefreshRing.Visibility = Visible(refreshing);
-        RefreshRing.IsActive = refreshing;
     }
 
     private static Visibility Visible(bool visible) =>
         visible ? Visibility.Visible : Visibility.Collapsed;
-
-    private async void RefreshStatus_Click(object sender, RoutedEventArgs e)
-    {
-        SetRefreshing(true);
-        try
-        {
-            await _wsaStatus.CheckNowAsync();
-        }
-        finally
-        {
-            SetRefreshing(_wsaStatus.Current.Status is ConnectionStatus.Starting);
-        }
-    }
 
     private async void WsaBuilds_Click(object sender, RoutedEventArgs e) =>
         await Windows.System.Launcher.LaunchUriAsync(new Uri("https://github.com/MustardChef/WSABuilds"));
