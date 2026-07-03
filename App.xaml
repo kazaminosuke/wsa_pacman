@@ -35,9 +35,14 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
             <FontFamily x:Key="ContentControlThemeFontFamily">Yu Gothic UI</FontFamily>
-            <!-- TextBlock does not inherit ContentControlThemeFontFamily; force via implicit style -->
+            <!-- TextBlock does not inherit ContentControlThemeFontFamily; force via implicit style.
+                 Also applies the Body (14/20) line-height so unstyled TextBlocks (no explicit
+                 Style="{StaticResource ...}") match the ramp too, same reasoning as the named
+                 styles below. -->
             <Style TargetType="TextBlock">
                 <Setter Property="FontFamily" Value="Yu Gothic UI" />
+                <Setter Property="LineHeight" Value="20" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
             </Style>
             <!-- fluent_ui typography.bodyLarge (18px Regular) — not part of the WinUI system ramp -->
             <Style x:Key="BodyLargeTextBlockStyle" TargetType="TextBlock">
@@ -45,6 +50,39 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="FontWeight" Value="Normal" />
                 <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="LineHeight" Value="24" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+            </Style>
+
+            <!--
+                WinUI's built-in *TextBlockStyle resources (generic.xaml) only set FontSize;
+                they never set LineHeight, so LineStackingStrategy stays at its default
+                "MaxHeight" and text renders tighter than the official Windows 11 type ramp.
+                fluent_ui's typography (Flutter's design source) explicitly encodes the ramp's
+                line-height per style (e.g. body 14/20, title 28/36), which is why Flutter
+                screens read as more spaced-out. Re-declaring these styles with the same key
+                (BasedOn pointing at itself resolves to the framework's version) adds the
+                missing LineHeight so both platforms match.
+            -->
+            <Style x:Key="TitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
+                <Setter Property="LineHeight" Value="36" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+            </Style>
+            <Style x:Key="SubtitleTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource SubtitleTextBlockStyle}">
+                <Setter Property="LineHeight" Value="28" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+            </Style>
+            <Style x:Key="BodyTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
+                <Setter Property="LineHeight" Value="20" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+            </Style>
+            <Style x:Key="BodyStrongTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyStrongTextBlockStyle}">
+                <Setter Property="LineHeight" Value="20" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+            </Style>
+            <Style x:Key="CaptionTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
+                <Setter Property="LineHeight" Value="16" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>
