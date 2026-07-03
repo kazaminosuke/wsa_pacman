@@ -15,6 +15,15 @@ public sealed partial class WsaPage : Page
     private readonly IAdbService _adb = AppServices.Adb;
     private readonly ISettingsService _settings = AppServices.Settings;
 
+    // fluent_ui の InfoBar が実際に使っている「塗り潰し円+白抜きグリフ」をそのまま使う。
+    // success/error は Flutter Material Icons の check_circle/cancel（0xE159/0xE139）、
+    // warning/info は fluent_ui 同梱 FluentIcons.ttf の critical_error_solid/info_solid
+    // （0xF5C9/0xF167、内部フォント名は "Fabric MDL2 Assets"）。
+    private static readonly FontFamily MaterialIconsFont =
+        new("ms-appx:///Assets/Fonts/MaterialIcons-Regular.otf#Material Icons");
+    private static readonly FontFamily FluentIconsFont =
+        new("ms-appx:///Assets/Fonts/FluentIcons.ttf#Fabric MDL2 Assets");
+
     public WsaPage()
     {
         InitializeComponent();
@@ -38,15 +47,16 @@ public sealed partial class WsaPage : Page
         StatusTitleText.Text = R[snapshot.TitleKey];
         StatusMessageText.Text = R[snapshot.DescriptionKey];
 
-        // Severity → 背景/アイコン色/グリフ（fluent_ui InfoBarSeverity踏襲）
-        var (bgKey, fgKey, glyph) = snapshot.Severity switch
+        // Severity → 背景/アイコン色/フォント/グリフ（fluent_ui InfoBarSeverity踏襲）
+        var (bgKey, fgKey, font, glyph) = snapshot.Severity switch
         {
-            InfoBarSeverity.Success => ("StatusSuccessBackgroundBrush", "SystemFillColorSuccessBrush", ""),
-            InfoBarSeverity.Error => ("StatusErrorBackgroundBrush", "SystemFillColorCriticalBrush", ""),
-            InfoBarSeverity.Warning => ("StatusWarningBackgroundBrush", "SystemFillColorCautionBrush", ""),
-            _ => ("StatusConnectingBackgroundBrush", "SystemFillColorAttentionBrush", ""),
+            InfoBarSeverity.Success => ("StatusSuccessBackgroundBrush", "SystemFillColorSuccessBrush", MaterialIconsFont, ""),
+            InfoBarSeverity.Error => ("StatusErrorBackgroundBrush", "SystemFillColorCriticalBrush", MaterialIconsFont, ""),
+            InfoBarSeverity.Warning => ("StatusWarningBackgroundBrush", "SystemFillColorCautionBrush", FluentIconsFont, ""),
+            _ => ("StatusConnectingBackgroundBrush", "SystemFillColorAttentionBrush", FluentIconsFont, ""),
         };
         StatusInfoBar.Background = (Brush)Application.Current.Resources[bgKey];
+        StatusIcon.FontFamily = font;
         StatusIcon.Foreground = (Brush)Application.Current.Resources[fgKey];
         StatusIcon.Glyph = glyph;
 

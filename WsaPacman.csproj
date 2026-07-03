@@ -31,6 +31,10 @@
     <Content Include="Assets\Fonts\materialdesignicons-webfont.ttf" />
     <Content Include="Assets\Fonts\FluentIcons.ttf" />
     <Content Include="Assets\Fonts\FluentSystemIcons-Regular.ttf" />
+    <!-- Used only for the WSA status severity icons (check_circle/cancel), matching
+         fluent_ui's InfoBar which draws these two specific icons from Flutter Material
+         Icons rather than its own FluentIcons font. CC-BY 4.0. -->
+    <Content Include="Assets\Fonts\MaterialIcons-Regular.otf" />
     <!-- adb.exe and its Windows USB driver DLLs (WsaEnvironment.AdbPath expects {ExecDir}\embedded-tools) -->
     <Content Include="embedded-tools\adb.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
