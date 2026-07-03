@@ -31,6 +31,16 @@
     <Content Include="Assets\Fonts\materialdesignicons-webfont.ttf" />
     <Content Include="Assets\Fonts\FluentIcons.ttf" />
     <Content Include="Assets\Fonts\FluentSystemIcons-Regular.ttf" />
+    <!-- adb.exe and its Windows USB driver DLLs (WsaEnvironment.AdbPath expects {ExecDir}\embedded-tools) -->
+    <Content Include="embedded-tools\adb.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="embedded-tools\AdbWinApi.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="embedded-tools\AdbWinUsbApi.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
