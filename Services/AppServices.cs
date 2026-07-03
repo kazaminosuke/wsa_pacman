@@ -24,4 +24,6 @@ public static class AppServices
     public static IApkReaderService ApkReader { get; } = new ApkReaderService(ProcessRunner, WsaEnvironment);
     public static IApkInstallService ApkInstall { get; } =
         new ApkInstallService(Adb, WsaClient, WsaStatus, Settings, Registry);
+    public static IApkUninstallService ApkUninstall { get; } =
+        new ApkUninstallService(Adb, WsaClient, WsaStatus, Settings, Registry, Shortcut);
 }
