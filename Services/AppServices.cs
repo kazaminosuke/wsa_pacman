@@ -18,4 +18,5 @@ public static class AppServices
     public static IAdbService Adb { get; } = new AdbService(ProcessRunner, WsaEnvironment, Settings);
     public static IWsaClientService WsaClient { get; } = new WsaClientService(WsaEnvironment, ProcessRunner);
     public static IWsaStatusService WsaStatus { get; } = new WsaStatusService(Adb, WsaEnvironment, Settings);
+    public static IRegistryService Registry { get; } = new RegistryService(ProcessRunner);
 }
