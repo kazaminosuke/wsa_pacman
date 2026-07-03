@@ -26,4 +26,5 @@ public static class AppServices
         new ApkInstallService(Adb, WsaClient, WsaStatus, Settings, Registry);
     public static IApkUninstallService ApkUninstall { get; } =
         new ApkUninstallService(Adb, WsaClient, WsaStatus, Settings, Registry, Shortcut);
+    public static IInstalledAppsService InstalledApps { get; } = new InstalledAppsService(Registry, Adb, Settings);
 }
