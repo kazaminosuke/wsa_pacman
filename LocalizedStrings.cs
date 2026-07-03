@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Resources;
+using WsaPacman.Models;
 
 namespace WsaPacman;
 
@@ -124,6 +125,46 @@ public sealed class LocalizedStrings
         Get("installer_installed").Replace("{appTitle}", title);
     public string installer_fail(string title) =>
         Get("installer_fail").Replace("{appTitle}", title);
+
+    // Android permissions (Installer permission list)
+    public string android_permission_none => Get("android_permission_none");
+    public string android_permission_admin_brick => Get("android_permission_admin_brick");
+    public string android_permission_admin_lock => Get("android_permission_admin_lock");
+    public string android_permission_admin => Get("android_permission_admin");
+    public string android_permission_storage => Get("android_permission_storage");
+    public string android_permission_microphone => Get("android_permission_microphone");
+    public string android_permission_camera => Get("android_permission_camera");
+    public string android_permission_location => Get("android_permission_location");
+    public string android_permission_phone => Get("android_permission_phone");
+    public string android_permission_call_log => Get("android_permission_call_log");
+    public string android_permission_sms => Get("android_permission_sms");
+    public string android_permission_contacts => Get("android_permission_contacts");
+    public string android_permission_calendar => Get("android_permission_calendar");
+    public string android_permission_activity_recognition => Get("android_permission_activity_recognition");
+    public string android_permission_sensors_body => Get("android_permission_sensors_body");
+    public string android_permission_sensors => Get("android_permission_sensors");
+    public string android_permission_nearby_devices => Get("android_permission_nearby_devices");
+
+    public string PermissionDescription(AndroidPermission permission) => permission switch
+    {
+        AndroidPermission.AdminBrick => android_permission_admin_brick,
+        AndroidPermission.AdminLock => android_permission_admin_lock,
+        AndroidPermission.Admin => android_permission_admin,
+        AndroidPermission.Storage => android_permission_storage,
+        AndroidPermission.Microphone => android_permission_microphone,
+        AndroidPermission.Camera => android_permission_camera,
+        AndroidPermission.Location => android_permission_location,
+        AndroidPermission.Phone => android_permission_phone,
+        AndroidPermission.CallLog => android_permission_call_log,
+        AndroidPermission.Sms => android_permission_sms,
+        AndroidPermission.Contacts => android_permission_contacts,
+        AndroidPermission.Calendar => android_permission_calendar,
+        AndroidPermission.ActivityRecognition => android_permission_activity_recognition,
+        AndroidPermission.SensorsBody => android_permission_sensors_body,
+        AndroidPermission.Sensors => android_permission_sensors,
+        AndroidPermission.NearbyDevices => android_permission_nearby_devices,
+        _ => android_permission_none,
+    };
 
     // Uninstaller
     public string uninstaller_status_starting_wsa => Get("uninstaller_status_starting_wsa");
