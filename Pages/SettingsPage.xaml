@@ -9,6 +9,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <local:TimeoutTipConverter x:Key="TimeoutTipConverter" />
+    </Page.Resources>
+
     <ScrollViewer>
         <!-- PointerPressed only bubbles here from non-interactive areas: a background
              click dismisses focus from the port box (WinUI never does this on its own) -->
@@ -136,6 +140,7 @@
                     Maximum="105"
                     Minimum="0"
                     StepFrequency="15"
+                    ThumbToolTipValueConverter="{StaticResource TimeoutTipConverter}"
                     Value="30"
                     Width="300"
                     ValueChanged="Timeout_ValueChanged" />

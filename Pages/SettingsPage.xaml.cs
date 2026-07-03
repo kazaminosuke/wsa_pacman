@@ -6,6 +6,22 @@ using Microsoft.UI.Xaml.Media;
 
 namespace WsaPacman.Pages;
 
+/// <summary>
+/// Timeout slider thumb tooltip: shows the effective seconds
+/// (position 0 still means 15 s) and "∞" at the max position.
+/// </summary>
+public sealed class TimeoutTipConverter : Microsoft.UI.Xaml.Data.IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        var v = (double)value;
+        return v >= 105 ? "∞" : ((int)Math.Max(v, 15)).ToString();
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language) =>
+        throw new NotSupportedException();
+}
+
 public sealed partial class SettingsPage : Page, INotifyPropertyChanged
 {
     public LocalizedStrings R { get; } = LocalizedStrings.Instance;
