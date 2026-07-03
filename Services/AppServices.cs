@@ -20,4 +20,5 @@ public static class AppServices
     public static IWsaStatusService WsaStatus { get; } = new WsaStatusService(Adb, WsaEnvironment, Settings);
     public static IRegistryService Registry { get; } = new RegistryService(ProcessRunner);
     public static IShortcutService Shortcut { get; } = new ShortcutService(WsaEnvironment);
+    public static IAppSyncService AppSync { get; } = new AppSyncService(Registry, WsaEnvironment);
 }

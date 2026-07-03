@@ -17,6 +17,19 @@ public partial class App : Application
 
         for (int i = 1; i < cmdArgs.Length; i++)
         {
+            // ヘッドレスコマンド（§7-8）: ウィンドウを出さずに処理して即終了する
+            if (cmdArgs[i] == "--sync")
+            {
+                Services.AppServices.AppSync.SyncAsync().GetAwaiter().GetResult();
+                Exit();
+                return;
+            }
+            if (cmdArgs[i] == "--unsync")
+            {
+                Services.AppServices.AppSync.UnsyncAsync().GetAwaiter().GetResult();
+                Exit();
+                return;
+            }
             if (cmdArgs[i] == "--install" && i + 1 < cmdArgs.Length)
             {
                 var apkPath = cmdArgs[i + 1];
