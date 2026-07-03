@@ -3,6 +3,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media;
+using WsaPacman.Models;
+using WsaPacman.Services;
 
 namespace WsaPacman.Pages;
 
@@ -30,6 +32,11 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    // Guards initial control-state restoration from re-persisting the values it just set
+    // (ComboBox.SelectedIndex / CheckBox.IsChecked / ToggleSwitch.IsOn all fire their
+    // change events immediately once the handlers are wired by InitializeComponent()).
+    private bool _isRestoringSettings = true;
+
     public SettingsPage()
     {
         InitializeComponent();
@@ -39,13 +46,97 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
             .GetColorValue(Windows.UI.ViewManagement.UIColorType.Accent);
         SwatchSystem.Background = new SolidColorBrush(accent);
 
-        SelectSwatch(SwatchDefault);
-
         // Mica requires Windows 11; hide the card entirely on older builds (S19)
         if (System.Environment.OSVersion.Version.Build < 22000)
         {
             MicaSettingCard.Visibility = Visibility.Collapsed;
         }
+
+        RestoreSettingsUi();
+        _isRestoringSettings = false;
+    }
+
+    /// <summary>起動時（ページ表示時）に永続化済みの設定をコントロールへ反映する。</summary>
+    private void RestoreSettingsUi()
+    {
+        var settings = AppServices.Settings.Current;
+
+        ThemeModeCombo.SelectedIndex = settings.Theme switch
+        {
+            AppTheme.Light => 1,
+            AppTheme.Dark => 2,
+            _ => 0,
+        };
+
+        MicaCombo.SelectedIndex = settings.Mica switch
+        {
+            MicaMode.Partial => 1,
+            MicaMode.Alt => 2,
+            MicaMode.Disabled => 3,
+            _ => 0,
+        };
+
+        var customColor = AppServices.Theme.CustomAccentColor;
+        if (customColor is { } color)
+        {
+            CustomColorPreview.Fill = new SolidColorBrush(color);
+            var matchedSwatch = SwatchPanel.Children.OfType<Button>()
+                .FirstOrDefault(b => b.Background is SolidColorBrush brush && brush.Color == color);
+            SelectSwatch(matchedSwatch); // null のまま = 完全なカスタム色（どのスウォッチとも一致しない）
+        }
+        else
+        {
+            SelectSwatch(SwatchDefault);
+        }
+
+        switch (settings.IconShape)
+        {
+            case IconShape.Circle:
+                IconShapeSquircle.IsChecked = false;
+                IconShapeCircle.IsChecked = true;
+                break;
+            case IconShape.RoundedSquare:
+                IconShapeSquircle.IsChecked = false;
+                IconShapeRoundedSquare.IsChecked = true;
+                break;
+            default:
+                IconShapeSquircle.IsChecked = true;
+                break;
+        }
+
+        // ON = モダンアイコン（S18a）
+        LegacyIconsToggle.IsOn = !settings.LegacyIcons;
+    }
+
+    private void ThemeMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isRestoringSettings) return;
+        var theme = ThemeModeCombo.SelectedIndex switch
+        {
+            1 => AppTheme.Light,
+            2 => AppTheme.Dark,
+            _ => AppTheme.System,
+        };
+        AppServices.Theme.SetTheme(theme);
+    }
+
+    private void Mica_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isRestoringSettings) return;
+        var mica = MicaCombo.SelectedIndex switch
+        {
+            1 => MicaMode.Partial,
+            2 => MicaMode.Alt,
+            3 => MicaMode.Disabled,
+            _ => MicaMode.Full,
+        };
+        AppServices.Settings.Update(s => s.Mica = mica);
+    }
+
+    private void LegacyIcons_Toggled(object sender, RoutedEventArgs e)
+    {
+        if (_isRestoringSettings) return;
+        AppServices.Settings.Update(s => s.LegacyIcons = !LegacyIconsToggle.IsOn);
     }
 
     private static string DesktopDir =>
@@ -59,8 +150,21 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
 
     // --- Theme color swatches ---
 
-    private void ThemeColorSwatch_Click(object sender, RoutedEventArgs e) =>
-        SelectSwatch((Button)sender);
+    private void ThemeColorSwatch_Click(object sender, RoutedEventArgs e)
+    {
+        var swatch = (Button)sender;
+        SelectSwatch(swatch);
+
+        if (ReferenceEquals(swatch, SwatchDefault))
+        {
+            AppServices.Theme.SetAccentColor(null);
+        }
+        else if (swatch.Background is SolidColorBrush brush)
+        {
+            // "System" は選択した瞬間のOSアクセント色を保存する（以後は追随しない。§2.4）
+            AppServices.Theme.SetAccentColor(brush.Color);
+        }
+    }
 
     private void SelectSwatch(Button? selected)
     {
@@ -130,7 +234,21 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         _suppressCheckEvents = false;
     }
 
-    private void IconShape_Checked(object sender, RoutedEventArgs e) => ExclusiveCheck(IconShapeGroup, (CheckBox)sender);
+    private void IconShape_Checked(object sender, RoutedEventArgs e)
+    {
+        var box = (CheckBox)sender;
+        ExclusiveCheck(IconShapeGroup, box);
+        if (_isRestoringSettings) return;
+
+        var shape = box switch
+        {
+            _ when ReferenceEquals(box, IconShapeCircle) => IconShape.Circle,
+            _ when ReferenceEquals(box, IconShapeRoundedSquare) => IconShape.RoundedSquare,
+            _ => IconShape.Squircle,
+        };
+        AppServices.Settings.Update(s => s.IconShape = shape);
+    }
+
     private void IconShape_Unchecked(object sender, RoutedEventArgs e) => KeepOneChecked(IconShapeGroup, (CheckBox)sender);
 
     private async void CustomColor_Click(object sender, RoutedEventArgs e)
@@ -158,6 +276,7 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         {
             CustomColorPreview.Fill = new SolidColorBrush(picker.Color);
             SelectSwatch(null); // custom color replaces any swatch selection
+            AppServices.Theme.SetAccentColor(picker.Color);
         }
     }
 

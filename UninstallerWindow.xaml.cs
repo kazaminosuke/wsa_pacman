@@ -2,6 +2,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System.Runtime.InteropServices;
 using Windows.Graphics;
+using WsaPacman.Services;
 
 namespace WsaPacman;
 
@@ -35,7 +36,15 @@ public sealed partial class UninstallerWindow : Window
 
         HeaderArea.SizeChanged += (_, _) => UpdateDragRegion();
         HeaderArea.Loaded += (_, _) => UpdateDragRegion();
+
+        // テーマ/Mica/アクセントカラーの復元と、設定変更時の即時反映（§6.5）
+        WindowThemeHelper.Apply(this);
+        AppServices.Theme.ThemeChanged += Theme_ThemeChanged;
+        Closed += (_, _) => AppServices.Theme.ThemeChanged -= Theme_ThemeChanged;
     }
+
+    private void Theme_ThemeChanged(object? sender, EventArgs e) =>
+        DispatcherQueue.TryEnqueue(() => WindowThemeHelper.Apply(this));
 
     // The header band acts as the caption (drag) area of the borderless window
     private void UpdateDragRegion()

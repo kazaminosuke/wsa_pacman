@@ -184,10 +184,12 @@
                     </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ComboBox
+                    x:Name="ThemeModeCombo"
                     AutomationProperties.AutomationId="ComboThemeMode"
                     AutomationProperties.Name="{x:Bind R.theme_mode}"
                     MinWidth="200"
-                    SelectedIndex="0">
+                    SelectedIndex="0"
+                    SelectionChanged="ThemeMode_SelectionChanged">
                     <ComboBoxItem
                         AutomationProperties.AutomationId="ComboThemeModeSystem"
                         Content="{x:Bind R.settings_option_generic_system}" />
@@ -338,10 +340,12 @@
                     </FontIcon>
                 </controls:SettingsCard.HeaderIcon>
                 <ComboBox
+                    x:Name="MicaCombo"
                     AutomationProperties.AutomationId="ComboMica"
                     AutomationProperties.Name="{x:Bind R.theme_mica}"
                     MinWidth="200"
-                    SelectedIndex="0">
+                    SelectedIndex="0"
+                    SelectionChanged="Mica_SelectionChanged">
                     <ComboBoxItem
                         AutomationProperties.AutomationId="ComboMicaFull"
                         Content="{x:Bind R.theme_mica_full}" />
@@ -371,7 +375,8 @@
                     AutomationProperties.Name="{x:Bind R.theme_icon_adaptive}"
                     IsOn="True"
                     OffContent="{x:Bind R.btn_switch_off}"
-                    OnContent="{x:Bind R.btn_switch_on}" />
+                    OnContent="{x:Bind R.btn_switch_on}"
+                    Toggled="LegacyIcons_Toggled" />
                 <controls:SettingsExpander.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" FontSize="23" Glyph="&#xEA3A;" RenderTransformOrigin="0.5,0.5">
                         <FontIcon.RenderTransform>

@@ -60,7 +60,15 @@ public sealed partial class MainWindow : Window
         // WSAの周期監視はMainWindow表示中のみ（内部処理設計書 §6.4）
         AppServices.WsaStatus.Start();
         Closed += (_, _) => AppServices.WsaStatus.Stop();
+
+        // テーマ/Mica/アクセントカラーの復元と、設定変更時の即時反映（§6.5）
+        WindowThemeHelper.Apply(this);
+        AppServices.Theme.ThemeChanged += Theme_ThemeChanged;
+        Closed += (_, _) => AppServices.Theme.ThemeChanged -= Theme_ThemeChanged;
     }
+
+    private void Theme_ThemeChanged(object? sender, EventArgs e) =>
+        DispatcherQueue.TryEnqueue(() => WindowThemeHelper.Apply(this));
 
     private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
