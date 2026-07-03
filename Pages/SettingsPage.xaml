@@ -10,7 +10,13 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel Padding="24,16,24,24" Spacing="5">
+        <!-- PointerPressed only bubbles here from non-interactive areas: a background
+             click dismisses focus from the port box (WinUI never does this on its own) -->
+        <StackPanel
+            Padding="24,16,24,24"
+            Spacing="5"
+            Background="Transparent"
+            PointerPressed="PageBackground_PointerPressed">
 
             <TextBlock
                 Margin="0,0,0,22"
@@ -36,9 +42,11 @@
                         x:Name="PortTextBox"
                         AutomationProperties.AutomationId="TxtPort"
                         AutomationProperties.Name="{x:Bind R.settings_port}"
+                        GotFocus="Port_GotFocus"
                         InputScope="Number"
                         IsSpellCheckEnabled="False"
                         IsTextPredictionEnabled="False"
+                        KeyDown="Port_KeyDown"
                         Loaded="Port_Loaded"
                         LostFocus="Port_LostFocus"
                         MaxLength="5"

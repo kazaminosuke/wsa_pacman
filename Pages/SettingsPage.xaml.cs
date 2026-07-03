@@ -190,6 +190,45 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         PortTextBox.SelectionStart = Math.Clamp(caret, 0, digits.Length);
     }
 
+    private string _portTextOnFocus = "58526";
+
+    private void Port_GotFocus(object sender, RoutedEventArgs e) =>
+        _portTextOnFocus = PortTextBox.Text;
+
+    // WinUI never dismisses TextBox focus on Enter/Escape; do it explicitly.
+    // Escape also restores the value the box had when it was focused.
+    private void Port_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Escape)
+        {
+            PortTextBox.Text = _portTextOnFocus;
+            e.Handled = true;
+            DefocusPort();
+        }
+        else if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            e.Handled = true;
+            DefocusPort();
+        }
+    }
+
+    private void PageBackground_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (Microsoft.UI.Xaml.Input.FocusManager.GetFocusedElement(XamlRoot) is TextBox tb
+            && ReferenceEquals(tb, PortTextBox))
+        {
+            DefocusPort();
+        }
+    }
+
+    // Toggling IsEnabled is the least invasive way to drop focus without
+    // adding a focusable sink element to the tab order
+    private void DefocusPort()
+    {
+        PortTextBox.IsEnabled = false;
+        PortTextBox.IsEnabled = true;
+    }
+
     private void Port_LostFocus(object sender, RoutedEventArgs e)
     {
         if (!int.TryParse(PortTextBox.Text, out var port) || port <= 0)
