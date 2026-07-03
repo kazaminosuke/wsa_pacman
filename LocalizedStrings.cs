@@ -105,6 +105,7 @@ public sealed class LocalizedStrings
     public string installer_message => Get("installer_message");
     public string installer_error_timeout => Get("installer_error_timeout");
     public string installer_error_nomsg => Get("installer_error_nomsg");
+    public string installer_error_boot_timeout => Get("installer_error_boot_timeout");
     public string installer_btn_cancel => Get("installer_btn_cancel");
     public string installer_btn_install => Get("installer_btn_install");
     public string installer_btn_reinstall => Get("installer_btn_reinstall");

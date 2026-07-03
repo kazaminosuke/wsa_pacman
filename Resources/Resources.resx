@@ -191,6 +191,9 @@ Since the official Microsoft WSA has been discontinued, we recommend installing 
   <data name="installer_error_timeout" xml:space="preserve">
     <value>Installation timed out, client has stopped waiting, but it may still be in progress in the background...</value>
   </data>
+  <data name="installer_error_boot_timeout" xml:space="preserve">
+    <value>Waited 2 minutes for WSA to finish starting, but it timed out. WSA may not be running correctly.</value>
+  </data>
   <data name="installer_warning_dirty" xml:space="preserve">
     <value>A manual file cleanup is needed in directory “{tempDir}”</value>
   </data>

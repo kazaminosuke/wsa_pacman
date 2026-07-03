@@ -22,4 +22,6 @@ public static class AppServices
     public static IShortcutService Shortcut { get; } = new ShortcutService(WsaEnvironment);
     public static IAppSyncService AppSync { get; } = new AppSyncService(Registry, WsaEnvironment);
     public static IApkReaderService ApkReader { get; } = new ApkReaderService(ProcessRunner, WsaEnvironment);
+    public static IApkInstallService ApkInstall { get; } =
+        new ApkInstallService(Adb, WsaClient, WsaStatus, Settings, Registry);
 }
