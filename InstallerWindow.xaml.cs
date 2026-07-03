@@ -2,8 +2,11 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Windows.Graphics;
+using WsaPacman.Models;
 using WsaPacman.Services;
 
 namespace WsaPacman;
@@ -26,6 +29,8 @@ public sealed partial class InstallerWindow : Window
     public string InstallButtonLabel => R.installer_btn_install;
 
     private ApkInstallType _installType = ApkInstallType.Install;
+    private ApkInfo? _apkInfo;
+    private bool _apkLoadStarted;
 
     [DllImport("user32.dll")]
     private static extern uint GetDpiForWindow(IntPtr hWnd);
@@ -55,6 +60,98 @@ public sealed partial class InstallerWindow : Window
         WindowThemeHelper.Apply(this);
         AppServices.Theme.ThemeChanged += Theme_ThemeChanged;
         Closed += (_, _) => AppServices.Theme.ThemeChanged -= Theme_ThemeChanged;
+
+        // ApkPath はオブジェクト初期化子で構築後に設定されるため、Activated（Activate()呼び出し時）まで待つ
+        Activated += InstallerWindow_Activated;
+    }
+
+    private async void InstallerWindow_Activated(object sender, WindowActivatedEventArgs e)
+    {
+        if (_apkLoadStarted) return;
+        _apkLoadStarted = true;
+        await LoadApkAsync();
+    }
+
+    /// <summary>ApkReaderServiceでAPK実データを読み込み、インストール種別(新規/再/更新/降格)を判定する。</summary>
+    private async Task LoadApkAsync()
+    {
+        InstallButton.Content = R.installer_btn_loading;
+        InstallButton.IsEnabled = false;
+
+        ApkInfo info;
+        try
+        {
+            info = await AppServices.ApkReader.ReadAsync(ApkPath);
+        }
+        catch (ApkReadException ex)
+        {
+            ShowError(ex.ErrorCode, ex.Message);
+            return;
+        }
+        catch (Exception ex)
+        {
+            ShowError("APK_READ_ERROR", ex.Message);
+            return;
+        }
+
+        _apkInfo = info;
+        AppNameText.Text = info.Label;
+        AppVersionText.Text = R.installer_info_version(info.VersionName);
+        AppPackageText.Text = R.installer_info_package(info.Package);
+        PermissionList.ItemsSource = info.Permissions.Select(R.PermissionDescription).ToList();
+        await ApplyIconAsync(info.IconBytes);
+
+        _installType = await DetermineInstallTypeAsync(info.Package, info.VersionCode);
+        SetInstallType(_installType);
+        InstallButton.IsEnabled = true;
+    }
+
+    /// <summary>adb shell dumpsys package からインストール済みバージョンを読み取り種別を判定する（reader_apk.dart loadInstallType 踏襲）。</summary>
+    private static async Task<ApkInstallType> DetermineInstallTypeAsync(string package, int newVersionCode)
+    {
+        if (string.IsNullOrEmpty(package)) return ApkInstallType.Install;
+        try
+        {
+            var settings = AppServices.Settings.Current;
+            var result = await AppServices.Adb.ShellAsync(
+                settings.IpAddress, settings.Port, $"dumpsys package {package}", TimeSpan.FromSeconds(5));
+            var match = Regex.Match(
+                result.StdOut, @"(\n|\s|^)versionCode=(\d+)");
+            if (match.Success && int.TryParse(match.Groups[2].Value, out var oldVersionCode))
+            {
+                return oldVersionCode < newVersionCode ? ApkInstallType.Update
+                    : oldVersionCode > newVersionCode ? ApkInstallType.Downgrade
+                    : ApkInstallType.Reinstall;
+            }
+        }
+        catch
+        {
+            // 判定できない場合は新規インストール扱い（Flutter版踏襲）。
+        }
+        return ApkInstallType.Install;
+    }
+
+    private async Task ApplyIconAsync(byte[]? iconBytes)
+    {
+        if (iconBytes is null || iconBytes.Length == 0) return;
+        try
+        {
+            using var stream = new MemoryStream(iconBytes);
+            var bitmap = new BitmapImage();
+            await bitmap.SetSourceAsync(stream.AsRandomAccessStream());
+
+            HeaderIconImage.Source = bitmap;
+            HeaderIconGlyph.Visibility = Visibility.Collapsed;
+            HeaderIconImage.Visibility = Visibility.Visible;
+
+            ProgressIconImage.Source = bitmap;
+            ProgressIconGlyph.Visibility = Visibility.Collapsed;
+            ProgressIconImage.Visibility = Visibility.Visible;
+        }
+        catch
+        {
+            // Unsupported image format (e.g. WebP) — keep the placeholder glyph.
+        }
     }
 
     private void Theme_ThemeChanged(object? sender, EventArgs e) =>
@@ -77,13 +174,41 @@ public sealed partial class InstallerWindow : Window
 
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
+        CreateShortcutIfRequested();
         Close();
     }
 
-    private void Install_Click(object sender, RoutedEventArgs e)
+    private void CreateShortcutIfRequested()
     {
-        // Logic: run adb install (implemented in service layer later)
+        if (ShortcutCheckBox.Visibility == Visibility.Visible && ShortcutCheckBox.IsChecked == true
+            && _apkInfo is { } info)
+        {
+            AppServices.Shortcut.CreateWsaAppShortcut(info.Package, info.Label);
+        }
+    }
+
+    private async void Install_Click(object sender, RoutedEventArgs e)
+    {
+        if (_apkInfo is not { } info) return;
+
         ShowInstalling();
+        StatusText.Text = R.installer_installing(info.Label);
+
+        var result = await AppServices.ApkInstall.InstallAsync(
+            ApkPath, info.Package, info.Label, _installType == ApkInstallType.Downgrade);
+
+        switch (result.State)
+        {
+            case InstallState.Success:
+                ShowSuccess(info.Label, _installType == ApkInstallType.Install, !string.IsNullOrEmpty(info.Package));
+                break;
+            case InstallState.Timeout:
+                ShowError(result.ErrorCode ?? "TIMEOUT", result.ErrorDescription ?? R.installer_error_timeout, isWarning: true);
+                break;
+            default:
+                ShowError(result.ErrorCode ?? "INSTALL_ERROR", result.ErrorDescription ?? R.installer_error_nomsg);
+                break;
+        }
     }
 
     /// <summary>Installing screen: 100×100 icon container + ring + bottom indeterminate bar.</summary>
@@ -124,7 +249,11 @@ public sealed partial class InstallerWindow : Window
 
     private void Open_Click(object sender, RoutedEventArgs e)
     {
-        // Logic: adb shell monkey launch of the installed package (implemented later)
+        CreateShortcutIfRequested();
+        if (_apkInfo is { } info && !string.IsNullOrEmpty(info.Package))
+        {
+            AppServices.WsaClient.LaunchApp(info.Package);
+        }
         Close();
     }
 

@@ -33,7 +33,10 @@
                     Height="30"
                     Margin="0,0,20,0"
                     VerticalAlignment="Center">
-                    <FontIcon FontSize="26" Glyph="&#xECAA;" />
+                    <Grid>
+                        <FontIcon x:Name="HeaderIconGlyph" FontSize="26" Glyph="&#xECAA;" />
+                        <Image x:Name="HeaderIconImage" Stretch="Uniform" Visibility="Collapsed" />
+                    </Grid>
                 </Border>
 
                 <TextBlock
@@ -125,7 +128,10 @@
                                 Padding="16"
                                 Background="{ThemeResource PermissionListBackgroundBrush}"
                                 CornerRadius="20">
-                                <FontIcon FontSize="48" Glyph="&#xECAA;" />
+                                <Grid>
+                                    <FontIcon x:Name="ProgressIconGlyph" FontSize="48" Glyph="&#xECAA;" />
+                                    <Image x:Name="ProgressIconImage" Stretch="Uniform" Visibility="Collapsed" />
+                                </Grid>
                             </Border>
                             <!-- Badge: 20px white check + 4px padding + 4px background-colored rim, offset (8,8) -->
                             <Grid
@@ -206,6 +212,7 @@
                         Click="Install_Click"
                         Content="{x:Bind InstallButtonLabel}"
                         FontWeight="SemiBold"
+                        IsEnabled="False"
                         MinWidth="80"
                         Style="{StaticResource AccentButtonStyle}" />
                 </StackPanel>
