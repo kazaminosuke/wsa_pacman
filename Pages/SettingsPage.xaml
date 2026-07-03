@@ -138,8 +138,8 @@
                 <Slider
                     AutomationProperties.AutomationId="SliderTimeout"
                     Maximum="105"
-                    Minimum="0"
-                    StepFrequency="15"
+                    Minimum="15"
+                    StepFrequency="5"
                     ThumbToolTipValueConverter="{StaticResource TimeoutTipConverter}"
                     Value="30"
                     Width="300"

@@ -6,16 +6,13 @@ using Microsoft.UI.Xaml.Media;
 
 namespace WsaPacman.Pages;
 
-/// <summary>
-/// Timeout slider thumb tooltip: shows the effective seconds
-/// (position 0 still means 15 s) and "∞" at the max position.
-/// </summary>
+/// <summary>Timeout slider thumb tooltip: shows the seconds, or "∞" at the max position.</summary>
 public sealed class TimeoutTipConverter : Microsoft.UI.Xaml.Data.IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         var v = (double)value;
-        return v >= 105 ? "∞" : ((int)Math.Max(v, 15)).ToString();
+        return v >= 105 ? "∞" : ((int)v).ToString();
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) =>
@@ -96,9 +93,9 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
 
     private void Timeout_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
     {
-        // Slider position 0 means 15 s, position 105 means infinite (stored as 0)
+        // Slider ranges 15-105 in 5 s steps; position 105 means infinite (stored as 0)
         var raw = (int)e.NewValue;
-        _timeoutSeconds = raw >= 105 ? 0 : Math.Max(raw, 15);
+        _timeoutSeconds = raw >= 105 ? 0 : raw;
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TimeoutLabel)));
     }
 
